@@ -18,7 +18,7 @@ public:
     CannotLocateBodyInImage(std::string error) : m_error() {}
     
     
-    const char* what() const _NOEXCEPT { return m_error.c_str(); } // return the std::string as a const C-style string
+//    const char* what() const _NOEXCEPT { return m_error.c_str(); } // return the std::string as a const C-style string
     
 private:
     std::string m_error;

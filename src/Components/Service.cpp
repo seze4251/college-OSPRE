@@ -18,6 +18,7 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "Service.h"
 
