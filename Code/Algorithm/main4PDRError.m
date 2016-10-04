@@ -63,7 +63,7 @@ end
 figure;
 plot(pixPerDeg, minDegAccuracy_Plot)
 xlabel 'Pixel/Degree'
-ylabel 'Sigma_eff (deg)'
+ylabel 'Maximum Allowable Error From Image Processing (deg)'
 tit = sprintf('Maximum Image processing Error vs Pixel/Degree \n required for a valid solution');
 title(tit);
 
