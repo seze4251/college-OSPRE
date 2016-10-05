@@ -47,12 +47,12 @@ end
 % Determine Position Error (CAMERON FUNCTION HERE)
 % Outputs required
 
-alpha = 1;                      % Sample error in alpha, deg
-beta = 1;                       % Sample error in beta, deg
+alpha = 180;                      % Sample error in alpha, deg
+beta = 180;                       % Sample error in beta, deg
 
+[Rerror_rangeEarth, range] = Earth_Range_Position_Error(alpha, beta, sigma_eff);
 Rerror_rangeMoon = Moon_Range_Position_Error(alpha, beta, sigma_eff);
 Rerror_Angles = Angles_Position_Error(alpha, beta, sigma_eff);
-[Rerror_rangeEarth, range] = Earth_Range_Position_Error(alpha, beta, sigma_eff);
 
 
 % Determine Minimum Position Error  (ANTHONY FUNCTION 1 HERE)
@@ -67,8 +67,8 @@ targetPosErr = 1000; %km
 targetVelErr = 500; %m/s
 [minAccuracyIndex, validSolution] = calcMaxDegErr(r_error, v_error, targetPosErr, targetVelErr);
 
-minAccuracy = error_vec(minAccuracyIndex);
-%minAccuracy = sigma_eff(minAccuracyIndex);
+%minAccuracy = error_vec(minAccuracyIndex);
+minAccuracy = sigma_eff(minAccuracyIndex);
 
 % Switch valid solution to match function requirments
 if validSolution == 0
@@ -116,7 +116,7 @@ if plots == 1 || plots == 3
     hold on
     row = 5;
     plot(range, Rerror_rangeEarth(row,:),'b')
-    plot(range, Rerror_rangeMoon(row,:),'r')
+    %plot(range, Rerror_rangeMoon(row,:),'r')
     plot(range, Rerror_Angles(row,:),'g')
         legend('Earth Ranging', 'Moon Ranging', 'Angles');
     xlabel('Range (km)');
