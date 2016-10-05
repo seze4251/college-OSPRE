@@ -13,7 +13,8 @@ plots = 3; % Show Plots
 pixPerDeg = 0; % Use pixel and FOV in calculations
 plotStr{1} = sprintf('Position Error vs Distance for Camera \n that fits in Volume Constaints');
 plotStr{2} = sprintf('Velocity Error vs Distance for Camera \n that fits in Volume Constaints');
-[validSolution, minDegAccuracy] = PositionVelocityError( pixels, FOV, plots, pixPerDeg, plotStr );
+pixel_error_vec = linspace(.1,50,100);
+[validSolution, minDegAccuracy] = PositionVelocityError( pixels, FOV, plots, pixPerDeg, plotStr, pixel_error_vec );
 
 if validSolution == 0
     str = 'a valid solution.';
@@ -32,7 +33,8 @@ plots = 3; % Show Plots
 pixPerDeg = 0; % Use pixel and FOV in calculations
 plotStr{1} = sprintf('Position Error vs Distance for Camera \n outside of Volume Constaints');
 plotStr{2} = sprintf('Velocity Error vs Distance for Camera \n oustside of Volume Constaints');
-[validSolution, minDegAccuracy] = PositionVelocityError( pixels, FOV, plots, pixPerDeg, plotStr );
+pixel_error_vec = linspace(.1,50,100);
+[validSolution, minDegAccuracy] = PositionVelocityError( pixels, FOV, plots, pixPerDeg, plotStr, pixel_error_vec );
 
 if validSolution == 0
     str = 'a valid solution.';
@@ -49,10 +51,12 @@ pixels = []; %pixels
 FOV = []; %degrees
 plots = 0; % Show Plots
 plotStr = [];
-pixPerDeg = linspace(1,50,20); % Use pixel and FOV in calculations
+pixPerDeg = linspace(1,50,10); % Use pixel and FOV in calculations
+pixel_error_vec = linspace(.1,50,200);
 count = 1;
+
 for i = pixPerDeg
-    [validSolution, minDegAccuracy] = PositionVelocityError( pixels, FOV, plots, [i i], plotStr );
+    [validSolution, minDegAccuracy] = PositionVelocityError( pixels, FOV, plots, [i i], plotStr, pixel_error_vec );
     if validSolution == 0
         minDegAccuracy_Plot(count) = minDegAccuracy;
         pixPerDeg_Plot(count) = i;
@@ -63,7 +67,7 @@ end
 figure;
 plot(pixPerDeg, minDegAccuracy_Plot)
 xlabel 'Pixel/Degree'
-ylabel 'Maximum Allowable Error From Image Processing (deg)'
+ylabel 'Maximum Allowable Pixel Error From Image Processing (Pixel)'
 tit = sprintf('Maximum Image processing Error vs Pixel/Degree \n required for a valid solution');
 title(tit);
 

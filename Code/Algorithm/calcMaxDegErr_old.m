@@ -44,16 +44,14 @@ function[minAllowDeg, success] = calcMaxDegErr(posErr, velErr, targetPosErr, tar
 minAllowDeg = 0;
 success = 0;
 
-%This way does not take into account the last position error?
 % Iterate row by row
-for i = 1:length(posErr(:,1))
+for i = 1:length(posErr(1,:))-1
     % Test if the next row in the loop surpasses the specified error values
     % If the next row does, then set the values to the current row and
     % return
-    if(max(posErr(i,:)) < targetPosErr || max(velErr(i,:))  < targetVelErr)
+    if(posErr(i+1,:) >targetPosErr || velErr(i+1,:)>targetVelErr)
         minAllowDeg = i;
         success = 1;
-    else 
         return;
     end
 end

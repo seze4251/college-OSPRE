@@ -113,16 +113,8 @@ if plots == 1 || plots == 3
     
     figure;
     % Choose a random Deg and plot it
-    hold on
     row = 5;
-    plot(range, Rerror_rangeEarth(row,:),'b')
-    plot(range, Rerror_rangeMoon(row,:),'r')
-    plot(range, Rerror_Angles(row,:),'g')
-        legend('Earth Ranging', 'Moon Ranging', 'Angles');
-    xlabel('Range (km)');
-    ylabel('Position Error (km)');
-    str_tit = sprintf('Position Error vs Range for all three methods \n  with an image processing accuracy of %1.3f deg',sigma_eff(row));
-    title(str_tit)
+    plo
 end
 
 if plots == 2 || plots == 3
@@ -144,7 +136,7 @@ if plots == 2 || plots == 3
         end
     legend('Blue is Ranging to Earth', 'Red is Ranging to Moon', 'Green is Angles');
     xlabel('Range (km)');
-    ylabel('Position Error (km)');
+    ylabel('Velocity Error (m/s)');
     str_tit = sprintf('Method vs Position Error for \n image processing accuracy of %1.3f deg',sigma_eff(i));
     title(str_tit)
     end
