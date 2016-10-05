@@ -67,13 +67,15 @@ targetPosErr = 1000; %km
 targetVelErr = 500; %m/s
 [minAccuracyIndex, validSolution] = calcMaxDegErr(r_error, v_error, targetPosErr, targetVelErr);
 
-%minAccuracy = error_vec(minAccuracyIndex);
-minAccuracy = sigma_eff(minAccuracyIndex);
 
 % Switch valid solution to match function requirments
 if validSolution == 0
     validSolution = -1;
+    minAccuracy = 0;
 else
+    
+    %minAccuracy = error_vec(minAccuracyIndex);
+    minAccuracy = sigma_eff(minAccuracyIndex);
     validSolution = 0;
 end
 
@@ -118,7 +120,7 @@ if plots == 1 || plots == 3
     plot(range, Rerror_rangeEarth(row,:),'b')
     %plot(range, Rerror_rangeMoon(row,:),'r')
     plot(range, Rerror_Angles(row,:),'g')
-        legend('Earth Ranging', 'Moon Ranging', 'Angles');
+    legend('Earth Ranging', 'Moon Ranging', 'Angles');
     xlabel('Range (km)');
     ylabel('Position Error (km)');
     str_tit = sprintf('Position Error vs Range for all three methods \n  with an image processing accuracy of %1.3f deg',sigma_eff(row));
@@ -142,11 +144,11 @@ if plots == 2 || plots == 3
                 plot(range(j),r_error(i,j),'g*')
             end
         end
-    legend('Blue is Ranging to Earth', 'Red is Ranging to Moon', 'Green is Angles');
-    xlabel('Range (km)');
-    ylabel('Position Error (km)');
-    str_tit = sprintf('Method vs Position Error for \n image processing accuracy of %1.3f deg',sigma_eff(i));
-    title(str_tit)
+        legend('Blue is Ranging to Earth', 'Red is Ranging to Moon', 'Green is Angles');
+        xlabel('Range (km)');
+        ylabel('Position Error (km)');
+        str_tit = sprintf('Method vs Position Error for \n image processing accuracy of %1.3f deg',sigma_eff(i));
+        title(str_tit)
     end
 end
 
