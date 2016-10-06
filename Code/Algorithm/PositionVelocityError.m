@@ -47,8 +47,8 @@ end
 % Determine Position Error (CAMERON FUNCTION HERE)
 % Outputs required
 
-alpha = 180;                      % Sample error in alpha, deg
-beta = 180;                       % Sample error in beta, deg
+alpha = 1;                      % Sample error in alpha, deg
+beta = 1;                       % Sample error in beta, deg
 
 [Rerror_rangeEarth, range] = Earth_Range_Position_Error(alpha, beta, sigma_eff);
 Rerror_rangeMoon = Moon_Range_Position_Error(alpha, beta, sigma_eff);
@@ -60,11 +60,11 @@ Rerror_Angles = Angles_Position_Error(alpha, beta, sigma_eff);
 [r_error, MethodMin] = calcRminErr(Rerror_rangeEarth, Rerror_rangeMoon, Rerror_Angles);
 
 % Determine Velocity Error
-v_error = velocityError( r_error.*1e3 );
+v_error = velocityError( r_error.* 1e3 );
 
 % Determine minimum Degree accuracy needed to meet requirments
 targetPosErr = 1000; %km
-targetVelErr = 500; %m/s
+targetVelErr = 250; %m/s
 [minAccuracyIndex, validSolution] = calcMaxDegErr(r_error, v_error, targetPosErr, targetVelErr);
 
 
@@ -73,8 +73,6 @@ if validSolution == 0
     validSolution = -1;
     minAccuracy = 0;
 else
-    
-    %minAccuracy = error_vec(minAccuracyIndex);
     minAccuracy = sigma_eff(minAccuracyIndex);
     validSolution = 0;
 end
@@ -85,6 +83,7 @@ if plots == 1 || plots == 3
     figure;
     hold on;
     a = 1;
+    
     for i = 1 :20: size(r_error,1)
         plot(range, r_error(i,:));
         str_pos{a} = sprintf('Degree Accuracy %5.5f (deg)', sigma_eff(i));
@@ -116,41 +115,43 @@ if plots == 1 || plots == 3
     figure;
     % Choose a random Deg and plot it
     hold on
-    row = 5;
+    row = minAccuracyIndex;
     plot(range, Rerror_rangeEarth(row,:),'b')
-    %plot(range, Rerror_rangeMoon(row,:),'r')
+    plot(range, Rerror_rangeMoon(row,:),'r')
     plot(range, Rerror_Angles(row,:),'g')
+    plot(range,1000*ones(length(range)),'k--')
     legend('Earth Ranging', 'Moon Ranging', 'Angles');
     xlabel('Range (km)');
     ylabel('Position Error (km)');
-    str_tit = sprintf('Position Error vs Range for all three methods \n  with an image processing accuracy of %1.3f deg',sigma_eff(row));
+    str_tit = sprintf('Position Error vs Range \n  with a Maximum Allowable Degree Error of %1.3f deg',sigma_eff(row));
     title(str_tit)
+    ylim([0 1400])
 end
 
-if plots == 2 || plots == 3
-    figure;
-    row_vec = [ 5  50];
-    a = 1;
-    for i = row_vec
-        subplot(1,2,a);
-        a = a + 1;
-        hold on;
-        for j = 1 : length(r_error(1,:))
-            if(MethodMin(i,j) == 1)
-                plot(range(j),r_error(i,j),'b*')
-            elseif(MethodMin(i,j) == 2)
-                plot(range(j),r_error(i,j),'r*')
-            else
-                plot(range(j),r_error(i,j),'g*')
-            end
-        end
-        legend('Blue is Ranging to Earth', 'Red is Ranging to Moon', 'Green is Angles');
-        xlabel('Range (km)');
-        ylabel('Position Error (km)');
-        str_tit = sprintf('Method vs Position Error for \n image processing accuracy of %1.3f deg',sigma_eff(i));
-        title(str_tit)
-    end
-end
+% if plots == 2 || plots == 3
+%     figure;
+%     row_vec = [ 5  50];
+%     a = 1;
+%     for i = row_vec
+%         subplot(1,2,a);
+%         a = a + 1;
+%         hold on;
+%         for j = 1 : length(r_error(1,:))
+%             if(MethodMin(i,j) == 1)
+%                 plot(range(j),r_error(i,j),'b*')
+%             elseif(MethodMin(i,j) == 2)
+%                 plot(range(j),r_error(i,j),'r*')
+%             else
+%                 plot(range(j),r_error(i,j),'g*')
+%             end
+%         end
+%         legend('Ranging to Earth', 'Ranging to Moon', 'Angles');
+%         xlabel('Range (km)');
+%         ylabel('Position Error (km)');
+%         str_tit = sprintf('Method vs Position Error for \n image processing accuracy of %1.3f deg',sigma_eff(i));
+%         title(str_tit)
+%     end
+% end
 
 end
 

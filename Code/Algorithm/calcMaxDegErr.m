@@ -50,7 +50,7 @@ for i = 1:length(posErr(:,1))
     % Test if the next row in the loop surpasses the specified error values
     % If the next row does, then set the values to the current row and
     % return
-    if(max(posErr(i,:)) < targetPosErr || max(velErr(i,:))  < targetVelErr)
+    if(max(posErr(i,:)) < targetPosErr && max(velErr(i,:))  < targetVelErr)
         minAllowDeg = i;
         success = 1;
     else 

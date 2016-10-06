@@ -20,8 +20,6 @@ x_Pos_ECEF = data(:, 2);
 y_Pos_ECEF = data(:, 3);
 z_Pos_ECEF = data(:, 4);
 pos_ECEF = [x_Pos_ECEF'; y_Pos_ECEF'; z_Pos_ECEF'];
-% range = sqrt(x_Pos_ECEF.^2 + y_Pos_ECEF.^2 + z_Pos_ECEF.^2 );
-% ind = find(max(range) == range);
 vec_length = length(time);
 
 omega_E = 7.2921150e-5;     % Earth rotation, rad/s
