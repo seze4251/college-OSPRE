@@ -84,7 +84,6 @@ hold off
 
 ind = find(MaxVelError > 250);
 maxDegError = sigma_eff(ind(1)-1);
-
 %% Relate Pixel / Degree to degree Error
 close all; clc; clearvars -except maxDegError;
 
