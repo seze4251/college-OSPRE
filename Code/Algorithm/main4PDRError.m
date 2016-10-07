@@ -115,7 +115,7 @@ pixPerDeg = linspace(1,250,100); % Use pixel and FOV in calculations
 pixel_error_vec = linspace(1,10,10);
 
 %OPTION 2
-%pixel_error_vec = linspace(.5,8,10);
+pixel_error_vec = linspace(.5,8,10);
 
 % Calculate R_Error and V_Error
 count = 1;
@@ -141,7 +141,7 @@ for i = 1 : size(Max_Pos_Error,1)
 end
 legend(str);
 hline(1000,'k--','Maximum Position Error')
-%ylim([0 1500])
+ylim([0 1500])
 xlabel 'Pixel Per Degree'
 ylabel 'Position Error (km)'
 title 'Position Error vs Pixel Per Degree for Various Degree Errors'
@@ -155,7 +155,7 @@ for i = 1 : size(Max_Vel_Error,1)
 end
 legend(str);
 hline(250,'k--','Maximum Velocity Error')
-%ylim([0 350])
+ylim([0 350])
 xlabel 'Pixel Per Degree'
 ylabel 'Velocity Error (m/s)'
 title 'Velocity Error vs Pixel Per Degree for Various Degree Errors'
