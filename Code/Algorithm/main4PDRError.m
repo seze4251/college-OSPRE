@@ -7,13 +7,13 @@ close all; clc;
 %% Camera 1 18 degree FOV, 13 Mega Pixels
 % clearvars;
 % 
-% pixels = 13011968; %pixels
-% FOV = [18 18]; %degrees
+% pixels = []; %pixels
+% FOV = []; %degrees
 % plots = 3; % Show Plots
-% pixPerDeg = 0; % Use pixel and FOV in calculations
+% pixPerDeg = [ 232 232]; % Use pixel and FOV in calculations
 % plotStr{1} = sprintf('Position Error vs Distance for ZenFone Zoom Camera');
 % plotStr{2} = sprintf('Velocity Error vs Distance for ZenFone Zoom Camera');
-% pixel_error_vec = linspace(2,50,100);
+% pixel_error_vec = linspace(1,100,1000);
 % [validSolution, minDegAccuracy] = PositionVelocityError( pixels, FOV, plots, pixPerDeg, plotStr, pixel_error_vec );
 % 
 % if validSolution == 0
@@ -25,14 +25,14 @@ close all; clc;
 % fprintf('This option is %s Image processing must be accurate to within %.5f degrees \n in order to meet requirments for top choice \n camera within volume constraints \n', str, minDegAccuracy);
 
 %% Create Maximum Image Error vs pixel/deg plot
-% clearvars;
-% 
+ clearvars;
+% % 
 pixels = []; %pixels
 FOV = []; %degrees
 plots = 0; % Show Plots
 plotStr = [];
 pixPerDeg = linspace(1,250,40); % Use pixel and FOV in calculations
-pixel_error_vec = linspace(1,1000,1000);
+pixel_error_vec = linspace(1,1000,100);
 count = 1;
 
 for i = pixPerDeg
@@ -51,7 +51,7 @@ title(tit);
 clearvars;
 
 count = 1;
-sigma_eff = linspace(0.01,.06,1000);
+sigma_eff = linspace(0.01,.06,50);
 [r_error, v_error] = PosVelError2( sigma_eff );
 
 for i = 1 : length(sigma_eff)
@@ -84,12 +84,13 @@ hold off
 
 ind = find(MaxVelError > 250);
 maxDegError = sigma_eff(ind(1)-1);
+maxDegError
 %% Relate Pixel / Degree to degree Error
 close all; clc; clearvars -except maxDegError;
 
 
 pixelperdeg = linspace(3,250,1000);
-pixelerror = linspace(.2,4,6);
+pixelerror = linspace(1 ,8,6 );
 
 figure;
 hold on
@@ -98,6 +99,7 @@ for i = 1 : length(pixelerror)
     plot(pixelperdeg, sigma)
     str{i} = sprintf('Pixel Error %1.2f', pixelerror(i));
 end
+vline([72 232],{'g--','r--','b'},{'Cell Phone Camera','ZenFone Camera'})
 legend(str)
 plot(pixelperdeg, maxDegError * ones(length(pixelperdeg)),'k--')
 ylim([0 0.05])
@@ -107,6 +109,6 @@ tit = sprintf('Degree Error vs Pixel Per Degree \n for Various Amounts of Pixel 
 title(tit)
 hold off
 
-
+% 
 
 

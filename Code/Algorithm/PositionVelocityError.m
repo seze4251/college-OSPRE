@@ -47,8 +47,8 @@ end
 % Determine Position Error (CAMERON FUNCTION HERE)
 % Outputs required
 
-alpha = 1;                      % Sample error in alpha, deg
-beta = 1;                       % Sample error in beta, deg
+alpha = 10;                      % Sample error in alpha, deg
+beta = 10;                       % Sample error in beta, deg
 
 [Rerror_rangeEarth, range] = Earth_Range_Position_Error(alpha, beta, sigma_eff);
 Rerror_rangeMoon = Moon_Range_Position_Error(alpha, beta, sigma_eff);
@@ -84,14 +84,14 @@ if plots == 1 || plots == 3
     hold on;
     a = 1;
     
-    for i = 1 :20: size(r_error,1)
+    for i = 1 : size(r_error,1)
         plot(range, r_error(i,:));
-        str_pos{a} = sprintf('Degree Accuracy %5.5f (deg)', sigma_eff(i));
+        str_pos{a} = sprintf('Pixel Error %2.2f (Pixel)', error_vec(i));
         a = a + 1;
     end
-    
+    hline(1000,'k--','');
     legend(str_pos);
-    xlabel('Range (km)');
+    xlabel('Range from Earth (km)');
     ylabel('Position Error (km)');
     title(plotStr{1})
     hold off;
@@ -100,14 +100,15 @@ if plots == 1 || plots == 3
     figure;
     hold on;
     a = 1;
-    for i = 1 :20: size(v_error,1)
+    for i = 1 : size(v_error,1)
         plot(range(1:end-1), v_error(i,:));
-        str_vel{a} = sprintf('Degree Accuracy %5.5f (deg)', sigma_eff(i));
+        str_vel{a} = sprintf('Pixel Error %2.2f (Pixel)', error_vec(i));
         a = a + 1;
     end
     
     legend(str_vel);
-    xlabel('Range (km)');
+    hline(250,'k--','');
+    xlabel('Range from Earth (km)');
     ylabel('Velocity Error (m/s)');
     title(plotStr{2})
     hold off;
@@ -121,7 +122,7 @@ if plots == 1 || plots == 3
     plot(range, Rerror_Angles(row,:),'g')
     plot(range,1000*ones(length(range)),'k--')
     legend('Earth Ranging', 'Moon Ranging', 'Angles');
-    xlabel('Range (km)');
+    xlabel('Range from Earth (km)');
     ylabel('Position Error (km)');
     str_tit = sprintf('Position Error vs Range \n  with a Maximum Allowable Degree Error of %1.3f deg',sigma_eff(row));
     title(str_tit)
