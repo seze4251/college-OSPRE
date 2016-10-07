@@ -14,6 +14,8 @@ close all; clc;
 % plotStr{1} = sprintf('Position Error vs Distance for ZenFone Zoom Camera');
 % plotStr{2} = sprintf('Velocity Error vs Distance for ZenFone Zoom Camera');
 % pixel_error_vec = linspace(1,100,1000);
+% pixel_error_vec = linspace(.5,8,6);
+% 
 % [validSolution, minDegAccuracy] = PositionVelocityError( pixels, FOV, plots, pixPerDeg, plotStr, pixel_error_vec );
 % 
 % if validSolution == 0
@@ -114,12 +116,12 @@ clearvars;
 pixPerDeg = linspace(1,250,100); % Use pixel and FOV in calculations
 pixel_error_vec = linspace(1,10,10);
 
-%OPTION 2
+% OPTION 2
 pixel_error_vec = linspace(.5,8,6);
 
 % Calculate R_Error and V_Error
 count = 1;
-for i = 1 : length(pixPerDeg)
+for i = pixPerDeg
     [r_error{count}, v_error{count} ] = PositionVelocityError3( i, pixel_error_vec );
     count = count + 1;
 end
@@ -150,9 +152,10 @@ title 'Position Error vs Pixel Per Degree for Various Degree Errors'
 figure;
 hold on
 for i = 1 : size(Max_Vel_Error,1)
-    plot(pixPerDeg,Max_Vel_Error(i,:))
-    str{i} = sprintf('Pixel Error %1.2f (Pixels)',pixel_error_vec(i));
+    plot(pixPerDeg, Max_Vel_Error(i,:))
+    str{i} = sprintf('Pixel Error %1.2f (Pixels)', pixel_error_vec(i));
 end
+
 legend(str);
 hline(250,'k--','Maximum Velocity Error')
 ylim([0 350])

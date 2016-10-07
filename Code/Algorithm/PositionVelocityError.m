@@ -47,8 +47,8 @@ end
 % Determine Position Error (CAMERON FUNCTION HERE)
 % Outputs required
 
-alpha = 10;                      % Sample error in alpha, deg
-beta = 10;                       % Sample error in beta, deg
+alpha = 1;                      % Sample error in alpha, deg
+beta = 1;                       % Sample error in beta, deg
 
 [Rerror_rangeEarth, range] = Earth_Range_Position_Error(alpha, beta, sigma_eff);
 Rerror_rangeMoon = Moon_Range_Position_Error(alpha, beta, sigma_eff);
