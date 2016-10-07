@@ -114,7 +114,6 @@ if plots == 1 || plots == 3
     hold off;
     
     figure;
-    % Choose a random Deg and plot it
     hold on
     row = minAccuracyIndex;
     plot(range, Rerror_rangeEarth(row,:),'b')
