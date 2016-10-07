@@ -115,7 +115,7 @@ pixPerDeg = linspace(1,250,100); % Use pixel and FOV in calculations
 pixel_error_vec = linspace(1,10,10);
 
 %OPTION 2
-pixel_error_vec = linspace(.5,8,10);
+pixel_error_vec = linspace(.5,8,6);
 
 % Calculate R_Error and V_Error
 count = 1;
