@@ -123,7 +123,7 @@ if plots == 1 || plots == 3
     legend('Earth Ranging', 'Moon Ranging', 'Angles');
     xlabel('Range from Earth (km)');
     ylabel('Position Error (km)');
-    str_tit = sprintf('Position Error vs Range \n  with a Maximum Allowable Degree Error of %1.3f deg',sigma_eff(row));
+    str_tit = sprintf('Position Error vs Range from Earth with Pixel Error of 8.12 Pixels');
     title(str_tit)
     ylim([0 1400])
 end
