@@ -10,7 +10,7 @@
 clc; close all; clearvars;
 
 pixPerDeg = [ 25.6 72.3 177.1]; 
-error_vec = linspace(0.1,5,1000);
+error_vec = linspace(0.1,1,1000);
 
 
 figure;
