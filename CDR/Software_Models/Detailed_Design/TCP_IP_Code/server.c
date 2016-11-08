@@ -2,12 +2,11 @@
 // What functionallity do I have to add in order to get reasonable model for abstraction? (Main Goal)
 // Needed Now:
 
-// 2. handle multiple clients simultaneously - VERY LOW
-// 6. Find a smarter way to manage if statments - VERY VERY LOW
+// 10. Implment Error Cases for Nonblocking sockets which include partial read or written message!!!! - High
 // 7. Implement application level communications protocol / message builders / message parsers - medium / HIGH
 //        For 7: DO I NEED SERVER SUBCLASSES OR NOT?
-// 10. Implment Error Cases for Nonblocking sockets which include partial read or written message!!!! - High
-
+// 2. handle multiple clients simultaneously - VERY LOW
+// 6. Find a smarter way to manage if statments - VERY VERY LOW
 
 
 //COMPLETED:
@@ -175,7 +174,6 @@ void run() {
         // Handling Data Events
         if ((cfd != -1) && (FD_ISSET(cfd, &readFds) != 0)) {
             written = false;
-            count++;
             nread = read(cfd, buf, BUF_SIZE);
             
             if (nread == -1) {
@@ -193,6 +191,7 @@ void run() {
         
         if ((cfd != -1) && (FD_ISSET(cfd, &writeFds) != 0)) {
             written = true;
+            count++;
             nwrite = write(cfd, buf, nread);
             if (nwrite != nread) {
                 fprintf(stderr, "Error sending response\n");
