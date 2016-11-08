@@ -1,26 +1,45 @@
 //
-//  scComms.cpp
-//  scComms
+//  main.cpp
+//  SocketTest3
 //
-//  Created by Seth on 10/31/16.
-//  Copyright © 2016 Seth. All rights reserved.
+//  Created by Howard Zegelstein on 11/4/16.
+//  Copyright © 2016 Howard Zegelstein. All rights reserved.
 //
 
-
+#include <iostream>
 #include <iostream>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
 
-class SpacecraftComms{
-    int fd, fd_connect, localport;
+class Message {
+public:
+    int a, b, c;
+    double aa, bb, cc;
+    std::string name;
+    bool status;
+    
+    Message() {
+        status = true;
+        name = "Hello";
+        a = 1;
+        b = 2;
+        c = 3;
+        aa = 4;
+        bb = 5;
+        cc = 6;
+    }
+    
+};
+
+class Spacecraft{
+    int fd, localport, serverport;
     char hostname[256];
     
-    int acceptSC() {
-        
+    int connectToSCComms(){
         // Open Socket
-        std::cout << "Entered acceptSC() attempting to open socket ..." << std::endl;
+        std::cout << "Entered connect() attempting to open socket ..." << std::endl;
         
         // Command to open Socket
         fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -40,18 +59,18 @@ class SpacecraftComms{
         }
         
         struct addrinfo *addrs, *addrs_head;
-        std::cout << "HOSTNAME:\n" << hostname << "\n" << std::endl;
+        std::cout << "\n" << hostname << "\n" << std::endl;
         
-        int s = getaddrinfo(hostname, NULL, NULL, &addrs);
+        int holder = getaddrinfo(hostname, NULL, NULL, &addrs);
         
-        
-        if (s != 0) {
-            fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
-            exit(EXIT_FAILURE);
+        std::cout << "foo" << std::endl;
+        if ( holder!= 0) {
+            
+            fprintf(stderr, "getaddrinfo() failed\n errno = %d, holder = %d", errno, holder);
+            return -5;
         }
         
-        
-        std::cout << "Get ADDRINFO Completed" << std::endl;
+        std::cout << "booger" << std::endl;
         
         addrs_head = addrs; // Save the head to free the memory
         
@@ -81,23 +100,15 @@ class SpacecraftComms{
         
         std::cout << "socket openned & bound" << std::endl;
         
-        sockaddr saddr;
-        saddr.sa_family = AF_INET; // CORE DUMPING HERE HA WHY???
-        
-        bcopy( hostname, saddr.sa_data, strlen(hostname));
-        
-        
-        std::cout << "A" << std::endl;
-        socklen_t len = sizeof(saddr);
-        fd_connect = accept(fd, & saddr, &len);
+        sockaddr * server;
+        server->sa_family = AF_INET;
+        bcopy( hostname, server->sa_data, strlen(hostname));
         
         
-        std::cout << "B" << std::endl;
+        if (connect(fd, server, sizeof(*server)) < 0)
+            error("ERROR connecting");
         
         freeaddrinfo(addrs_head);
-        
-        std::cout << "C" << std::endl;
-        
         return 0;
     }
     
@@ -107,12 +118,9 @@ class SpacecraftComms{
     }
     
 public:
-    SpacecraftComms(){
-        
-    }
-    
-    SpacecraftComms(char * hostname, int port) {
-        localport = port;
+    Spacecraft(char hostname[], int localport, int serverport) {
+        this->localport = localport;
+        this->serverport = serverport;
         bcopy(hostname,
               this->hostname,
               strlen(hostname));
@@ -120,34 +128,49 @@ public:
     
     int run() {
         // Connect to S/C Comms
-        if (acceptSC() != 0) {
+        if (connectToSCComms() != 0) {
             fprintf(stderr, "failed to allocate socket\n");
             return -1;
         }
         
-        std::cout << "D" << std::endl;
+        std::cerr << "foo2" << std::endl;
         
         int n;
         char buffer[256];
         while (1) {
+            printf("Please enter the message: ");
             bzero(buffer,256);
-            n = read(fd_connect, buffer, strlen(buffer));
+            fgets(buffer,sizeof(buffer)-1,stdin);
+            n = write(fd, buffer, strlen(buffer));
             if (n < 0) {
-                error("ERROR reading to socket");
+                error("ERROR writing to socket");
                 return -2;
             }
-            std::cout << buffer << std::endl;
+            
+            sleep(2);
         }
     }
 };
 
-
 int main(int argc, char **argv) {
-    if (argc != 3) {
-        std::cerr << "usage %s hostname, localport";
+    /*
+    if (argc != 4) {
+        std::cerr << "usage %s hostname, localport, serverport";
         exit(0);
     }
+    */
+    argv = new char*[4];
+    argv[0] = "a.out";
+    argv[1] = "localhost";
+    argv[2] = "6003";
+    argv[3] = "6009";
     
-    SpacecraftComms scComms(argv[1], atoi(argv[2]));
-    scComms.run();
+    Spacecraft sc(argv[1], atoi(argv[2]), atoi(argv[3]));
+    sc.run();
+}
+
+int main2(int argc, const char * argv[]) {
+    // insert code here...
+    std::cout << "Hello, World!\n";
+    return 0;
 }

@@ -13,11 +13,31 @@
 #include <netdb.h>
 #include <unistd.h>
 
+class Message {
+public:
+    int a, b, c;
+    double aa, bb, cc;
+    std::string name;
+    bool status;
+    
+    Message() {
+        status = true;
+        name = "Hello";
+        a = 1;
+        b = 2;
+        c = 3;
+        aa = 4;
+        bb = 5;
+        cc = 6;
+    }
+    
+};
+
 class Spacecraft{
     int fd, localport, serverport;
     char hostname[256];
     
-    int connect(){
+    int connectToSCComms(){
         // Open Socket
         std::cout << "Entered connect() attempting to open socket ..." << std::endl;
         
@@ -38,14 +58,20 @@ class Spacecraft{
             return -2;
         }
         
-        fprintf(stdout, "hostname is <%s>\n", hostname);
-        
         struct addrinfo *addrs, *addrs_head;
+        std::cout << "\n" << hostname << "\n" << std::endl;
         
-        if (getaddrinfo(hostname, NULL, NULL, &addrs) != 0) {
-            fprintf(stderr, "getaddrinfo() failed\n");
-            return false;
+        int holder = getaddrinfo(hostname, NULL, NULL, &addrs);
+        
+        std::cout << "foo" << std::endl;
+        if ( holder!= 0) {
+            
+            fprintf(stderr, "getaddrinfo() failed\n errno = %d, holder = %d", errno, holder);
+            return -5;
         }
+        
+        std::cout << "booger" << std::endl;
+        
         addrs_head = addrs; // Save the head to free the memory
         
         // iterate through all the alias until we find one that fits our parameters
@@ -74,15 +100,27 @@ class Spacecraft{
         
         std::cout << "socket openned & bound" << std::endl;
         
-        sockaddr * server;
-        server->sa_family = AF_INET;
-        bcopy( hostname, server->sa_data, strlen(hostname));
+        sockaddr * saddr_p, saddr;
         
+        saddr_p = & saddr;
 
-        if (::connect(fd, server, sizeof(*server)) < 0)
+        saddr.sa_family = AF_INET; // CORE DUMPING HERE HA WHY???
+
+        bcopy( hostname, saddr.sa_data, strlen(hostname));
+        
+        
+        std::cout << "A" << std::endl;
+        
+        if (connect(fd, saddr_p, sizeof(saddr)) < 0)
             error("ERROR connecting");
 
+        
+        std::cout << "B" << std::endl;
+
         freeaddrinfo(addrs_head);
+        
+        std::cout << "C" << std::endl;
+
         return 0;
     }
     
@@ -100,13 +138,15 @@ public:
               strlen(hostname));
     }
     
-    bool run() {
+    int run() {
         // Connect to S/C Comms
-        if (connect() != 0) {
+        if (connectToSCComms() != 0) {
             fprintf(stderr, "failed to allocate socket\n");
-            return false;
+            return -1;
         }
         
+        std::cout << "D" << std::endl;
+
         int n;
         char buffer[256];
         while (1) {
@@ -114,8 +154,11 @@ public:
             bzero(buffer,256);
             fgets(buffer,sizeof(buffer)-1,stdin);
             n = write(fd, buffer, strlen(buffer));
-            if (n < 0)
+            if (n < 0) {
                 error("ERROR writing to socket");
+                return -2;
+            }
+            
             sleep(2);
         }
     }

@@ -166,3 +166,37 @@ ylabel 'Velocity Error (m/s)'
 title 'Velocity Error vs Pixel Per Degree'
 
 
+%% Position Error vs Pixel Per Degree with no ranging or Velocity
+clearvars;
+pixPerDeg = linspace(1,100,100); % Use pixel and FOV in calculations
+pixel_error_vec = linspace(.3,.9,8);
+
+% Calculate R_Error and V_Error
+count = 1;
+for i = pixPerDeg
+    r_error{count} = PositionVelocityError4( i, pixel_error_vec );
+    count = count + 1;
+end
+
+% Get Plotting Vectors from r_error and v_error
+for i = 1 : length(pixPerDeg)
+    for j = 1 : length(pixel_error_vec)
+        Max_Pos_Error (j,i) = max(r_error{i}(j,:));
+    end
+end
+
+% Position Plot
+figure;
+hold on
+for i = 1 : size(Max_Pos_Error,1)
+    plot(pixPerDeg,Max_Pos_Error(i,:))
+    str{i} = sprintf('Pixel Error %1.2f (Pixels)',pixel_error_vec(i));
+end
+legend(str);
+vline([ 25.6 72.3],{'g--','r--','b'},{'FLIR','Sony'})
+hline(1000,'k--','Maximum Position Error')
+ylim([0 1500])
+xlabel 'Pixel Per Degree'
+ylabel 'Position Error (km)'
+title 'Position Error vs Pixel Per Degree'
+
