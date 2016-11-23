@@ -10,8 +10,13 @@
 #def ERRORCODE_H
 
 enum ErrorCode {
-    E_SUCCESS = 0;
+    SUCCESS = 0;
     E_INVALID_INPUT = -1;
+    E_GETADDRINFO = -2;
+    E_BIND_UNSUCCESSFUL = -3;
+    E_LISTEN_FAILURE = -4;
+    E_CONNECTION_FAILURE = -5;
 };
 
+void handleError(ErrorCode error);
 #endif

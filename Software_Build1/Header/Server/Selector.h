@@ -29,13 +29,14 @@ public:
     
     //Public Methods
     ErrorCode select();
-    ErrorCode select(timeval* timeout);
+    ErrorCode select(TimeoutManager *timeout);
     ErrorCode selectNow();
+    ErrorCode zeroFDs();
+    ErrorCode registerForReadEvents(std::vector fds);
+    ErrorCode registerForWriteEvents(std::vector fds);
     
 private:
     fd_set readFds, writeFds;
-    int *fd;
-
     
 };
 
