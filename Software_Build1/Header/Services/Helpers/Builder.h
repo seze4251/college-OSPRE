@@ -11,25 +11,36 @@
 #ifndef BUILDER_H
 #define BUILDER_H
 
-#include "ErrorCode.h"
-#include "Messages.h"
+#include "Internal_Messages.h"
+#include "MessageID.h"
 
 class Builder {
 public:
     
     //Constructor
-    Builder();
+    Builder(ByteBuffer &buf);
     
     // Destructor
     ~Builder();
     
     // Public Methods
-    ErrorCode buildMessage(Message message, char ** builtMessage);
+    void buildCaptureImageRequest(DataRequest &msg);
+    void buildDataRequest(DataRequest &msg);
+    void buildEphemerisMessage(EphemerisMessage &msg);
+    void buildImageAdjustment(ImageAdjustment &msg);
+    void buildImageMessage(ImageMessage &msg);
+    void buildOSPREStatus(OSPREStatus &msg);
+    void buildPointingRequest(PointingRequest &msg);
+    void buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest &msg);
+    void buildProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse &msg);
+    void buildSolutionMessage(SolutionMessage &msg);
     
 private:
-    ErrorCode buildHeader();
-    ErrorCode buildBody();
+    //Members
+    ByteBuffer &buf;
     
+    //Methods
+    void createHeader(int length, MessageID msgID);
 };
 
 #endif

@@ -6,11 +6,8 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-
 #ifndef BYTEBUFFER_H
 #define BYTEBUFFER_H
-
-#include "ErrorCode.h"
 
 class ByteBuffer {
 public:
@@ -20,28 +17,36 @@ public:
     //Destructor
     ~ByteBuffer();
     
-    ErrorCode clear();
+    void clear();
+    void compact();
+    void flip();
     
-    ErrorCode compact();
+    int* position();
+    int remaining();
     
-    ErrorCode flip();
+    void putIntoInsertionMode();
+    void putIntoExtractionMode();
     
-    ErrorCode position();
+    char get();
+    void put(char c);
     
-    ErrorCode limit();
+    int getInt();
+    void putInt(int i);
     
-    ErrorCode getInt();
-    ErrorCode putInt(int i);
+    double getDouble();
+    void putDouble(double d);
     
-    ErrorCode get();
-    ErrorCode put(char c);
+    char * get(int length);
+    void put(char * c, int length);
+    
     
 private:
     char *buf;
-    int length;
-    char *head;
-    char *tail;
+    char *currentPos;
+    int size;
+    int capacity;
+    
+    bool insertionMode();
 };
-
 
 #endif

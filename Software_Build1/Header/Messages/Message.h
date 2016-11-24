@@ -12,7 +12,7 @@
 
 class Message {
 public:
-    clock_t timestamp;
+    double timeStamp;
 };
 
 #endif
