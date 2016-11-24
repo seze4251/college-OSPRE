@@ -1,59 +1,4 @@
-//
-//  Server.h
-//  Server
-//
-//  Created by Seth on 11/10/2016.
-//  Copyright © 2016 Seth. All rights reserved.
-//
-
-#include "Server.h"
-#include <iostream>
-
-#include <sys/time.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <sys/select.h>
-#include <signal.h>
-#include <errno.h>
-#include <sys/ioctl.h>
-
-
-
-// Ignores SIG Pipes and opens up Server Socket
-Server::Server(int localPort) {
-    // Initialize Members
-    this -> localPort = port;
-    
-    fds.reserve(10); // Set capacity to 10 for fds
-    signal(SIGPIPE, SIG_IGN);
-    
-    // Open Server Socket
-    handleError(openServerSocket());
-}
-
-// Ignores SIG Pipes, opens up Server Socket and attempts to connect to all other connections
-Server::Server(int localPort, std::vector<int> *serverPorts, char **serverHosts) {
-    // Initialize Members
-    this -> localPort = localPort;
-    this -> serverPorts = serverPorts;
-    this -> serverHosts = serverHosts;
-    
-    fds.reserve(10); // Set capacity to 10 for fds
-    signal(SIGPIPE, SIG_IGN);
-    
-    // Open Server Socket
-    handleError(openServerSocket());
-    
-    // Connect to all other Servers
-    int i = 0;
-    for (auto &element: *serverPorts) {
-        handleError(connectToServer(element, serverHosts[i]));
-    }
-}
+// .cpp
 
 // Always opens Server Socket on fds[0]
 ErrorCode Server::openServerSocket() {
@@ -159,28 +104,3 @@ ErrorCode Server::connectToServer(int serverPort, char *serverHosts) {
     freeaddrinfo(result);
     fds.push_back(fd);
 }
-
-ErrorCode Server::run() {
-    while (1) {
-        // Zero Read and Write FDS
-        sel.zeroFDs();
-        
-        // Register for Read and Write Events
-        sel.registerForReadEvents(fdsRead);
-        sel.registerForWriteEvents(fdsWrite);
-        
-        // Select call
-        handleError(sel.select(&timeout));
-        
-        // Handle Time Out
-        handleError(timeout.handleTimeout);
-        
-        // Parse / Build Messages
-        
-        
-        // Handle Messages
-        handleError(handleMessages());
-    }
-}
-
-

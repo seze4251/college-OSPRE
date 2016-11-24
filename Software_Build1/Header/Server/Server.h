@@ -8,7 +8,7 @@
 
 
 #ifndef SERVER_H
-#def SERVER_H
+#define SERVER_H
 
 #include "ErrorCode.h"
 #include <vector>
@@ -24,24 +24,10 @@ public:
     
     //Public Methods
     ErrorCode run();
-    virtual ErrorCode handleMessages() = 0;
     
 private:
-    int localPort; // Port Number that Server Port Listens on
-    std::vector<int> *serverPorts; // List of Port Numbers to connect to
-    char **serverHosts; // List of Hostnames corresponding with PortNumbers to connect to
-    std::vector<int> fds; //list of file descriptors where the first file descriptor is always the Server Socket
     Selector sel;
-    ByteBuffer bread;
-    ByteBuffer bwrite;
-    Builder build;
-    Parser parse;
-    TimeoutManager timeout;
-    
-    // Private Methods
-    ErrorCode openServerSocket();
-    ErrorCode connectToServer(int serverPort, char *serverHosts);
-    
+    TimeoutManager timeout
 };
 
 #endif

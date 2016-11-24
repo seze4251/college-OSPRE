@@ -1,5 +1,7 @@
 Hello All,
 
-This is our feasibility code for PDR.  We were gettign tired of google drive for code because that sucks so I just through this on my matlab folder. Come watch us kick butt at PDR!
+This started as our Feasibility code for CDR and has expanded to all OSPRE code.  The PDR analysis is in the PDR Folder.  The CDR analysis is in the CDR Folder.  The software build for OSPRE is in the Software_Build1 file.
+
+Enjoy!
 
 Seth Zegelstein

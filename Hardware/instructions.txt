@@ -10,4 +10,4 @@ Plug everything in before you turn in
 8. Hold down power for 5 seconds until you see it blink
 9. use putty to view the UART debug output, Parameters are given in programmers guid section 7 
 10. Connect computer monitor to dvi using HDMI port
-11. 
+

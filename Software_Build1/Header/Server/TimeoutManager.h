@@ -8,7 +8,7 @@
 
 
 #ifndef TIMEOUTMANAGER_H
-#def TIMEOUTMANAGER_H
+#define TIMEOUTMANAGER_H
 
 #include "ErrorCode.h"
 
@@ -24,7 +24,7 @@ public:
     ErrorCode handleTimeout();
     
     //Public Members
-    bool timeout;
+    bool timedout;
     
 private:
     struct timeval timeout;

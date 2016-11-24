@@ -8,7 +8,7 @@
 
 
 #ifndef SCCOMMS_H
-#def SCCOMMS_H
+#define SCCOMMS_H
 
 #include "Server.h"
 #include "ErrorCode.h"

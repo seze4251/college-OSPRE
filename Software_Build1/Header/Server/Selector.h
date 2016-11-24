@@ -8,7 +8,7 @@
 
 
 #ifndef SELECTOR_H
-#def SELECTOR_H
+#define SELECTOR_H
 
 #include "ErrorCode.h"
 #include <sys/select.h>
@@ -28,15 +28,30 @@ public:
     ~Selector();
     
     //Public Methods
-    ErrorCode select();
-    ErrorCode select(TimeoutManager *timeout);
+    int select();
+    
+    void registerService(int fd, Service *srv);
+    void unregisterSerivce(int fd);
+    
+    void interestInRead(int fd);
+    void interestInWrite(int fd);
+    
+    void noInterestInRead(int fd);
+    void noInterestInWrite(int fd);
+    
+    ErrorCode select(timeval &timeout);
     ErrorCode selectNow();
-    ErrorCode zeroFDs();
-    ErrorCode registerForReadEvents(std::vector fds);
-    ErrorCode registerForWriteEvents(std::vector fds);
+    
+    
+    // Public Members
+    bool read;
+    bool write;
     
 private:
+    std::vector<Service> srv;
+    Service *services[FD_SETSIZE];
     fd_set readFds, writeFds;
+    fd_set tempReadFds, tempWriteFds;
     
 };
 

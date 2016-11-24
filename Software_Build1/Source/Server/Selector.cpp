@@ -1,0 +1,108 @@
+//
+//  Selector.h
+//  Selector
+//
+//  Created by Seth on 11/10/2016.
+//  Copyright © 2016 Seth. All rights reserved.
+//
+
+#include "Selector.h"
+
+Selector::Selector() {
+    for (int x = 0; x < FD_SETSIZE; x++) {
+        services[x] = NULL;
+    }
+}
+
+
+Selector::~Selector() {
+    
+}
+
+void Selector::registerSerice(int fd, Service *srv) {
+    services[fd] = srv;
+}
+
+void Selector::unregisterService(int fd) {
+    services[fd] = NULL;
+    noInterestInRead(fd);
+    noInterestInWrite(fd);
+}
+
+void Selector::interestInRead(int fd) {
+    FD_SET(fd, &readFds);
+}
+
+void Selector::interestInWrite(int fd) {
+    FD_SET(fd, &writeFds);
+}
+
+void Selector::noInterestInRead(int fd) {
+    FD_CLR(fd, &readFds);
+}
+
+void Selector::noInterestInWrite(int fd) {
+    FD_CLR(fd, &writeFds);
+}
+
+int Selector::select() {
+    
+    while (true) {
+        memcpy(&tempReadFds, &readFds, sizeof(readFds));
+        memcpy(&tempWriteFds, &writeFds, sizeof(writeFds));
+        
+        int numSelected = select(FD_SETSIZE, &tempReadFds, &tempWriteFds, NULL, NULL);
+        
+        if (numSelected == -1) {
+            if (errno == EINTR) {
+                continue;
+            } else {
+                return -1;
+            }
+        }
+        
+        for (int i = 0, count = 0; (count < numSelected) && (i < FD_SETSIZE) ; i++) {
+            if (FD_ISSET(i, &tempReadFds)) {
+                
+                if (services[i] != NULL) {
+                    services[i]->handleRead();
+                } else {
+                    std::err << "Error, attempt to read() on FD with no associated service" << std::endl;
+                    return -1;
+                }
+                count++;
+            }
+            
+            if (FD_ISSET(i, &tempWriteFds)) {
+                
+                if (services[i] != NULL) {
+                    services[i]->handleWrite();
+                } else {
+                    std::err << "Error, attempt to write() on FD with no associated service" << std::endl;
+                    return -1;
+                }
+                count++
+                
+            }
+        }
+        
+        break;
+    }
+}
+
+
+
+
+
+ErrorCode Selector::select(timeval* timeout) {
+    int numSelect = select(FD_SETSIZE, &readFds, &writeFds, NULL, &timeout);
+    
+}
+
+
+ErrorCode Selector::selectNow() {
+    
+}
+
+
+

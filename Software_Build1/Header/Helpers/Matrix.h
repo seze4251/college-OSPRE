@@ -8,7 +8,7 @@
 
 
 #ifndef MATRIX_H
-#def MATRIX_H
+#define MATRIX_H
 
 #include "ErrorCode.h"
 

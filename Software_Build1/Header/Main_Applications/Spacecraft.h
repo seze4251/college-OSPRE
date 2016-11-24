@@ -8,7 +8,7 @@
 
 
 #ifndef SPACECRAFT_H
-#def SPACECRAFT_H
+#define SPACECRAFT_H
 
 #include "Server.h"
 #include "ErrorCode.h"

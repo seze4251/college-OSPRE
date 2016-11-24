@@ -8,7 +8,7 @@
 
 
 #ifndef BYTEBUFFER_H
-#def BYTEBUFFER_H
+#define BYTEBUFFER_H
 
 #include "ErrorCode.h"
 

@@ -8,7 +8,7 @@
 
 
 #ifndef CAMERACONTROLLER_H
-#def CAMERACONTROLLER_H
+#define CAMERACONTROLLER_H
 
 #include "Server.h"
 #include "ErrorCode.h"

@@ -8,7 +8,7 @@
 
 
 #ifndef GNC_H
-#def GNC_H
+#define GNC_H
 
 #include "Server.h"
 #include "ErrorCode.h"

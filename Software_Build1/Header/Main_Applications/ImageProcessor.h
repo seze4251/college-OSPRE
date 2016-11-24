@@ -8,7 +8,7 @@
 
 
 #ifndef IMAPGEPROCESSOR_H
-#def IMAPGEPROCESSOR_H
+#define IMAPGEPROCESSOR_H
 
 #include "Server.h"
 #include "ErrorCode.h"

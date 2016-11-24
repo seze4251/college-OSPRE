@@ -7,7 +7,7 @@
 //
 
 #ifndef ERRORCODE_H
-#def ERRORCODE_H
+#define ERRORCODE_H
 
 enum ErrorCode {
     SUCCESS = 0;

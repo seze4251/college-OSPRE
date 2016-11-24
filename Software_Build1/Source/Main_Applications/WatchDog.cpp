@@ -7,3 +7,11 @@
 //
 
 #include "WatchDog.h"
+
+WatchDog::WatchDog() {
+    
+}
+
+WatchDog::~WatchDog() {
+    
+}

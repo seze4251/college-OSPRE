@@ -8,52 +8,15 @@
 
 
 #ifndef MESSAGES_H
-#def MESSAGES_H
+#define MESSAGES_H
 
-#include "ErrorCode.h"
 
-/*
- * TO DO:
- * Need to implement current time in all messages
- * Timestamp belongs in messages because we want it to be created as close to the time that the message was actually created
- * Builders will put message header onto the bytestream
- * Need to change vectors and Matrix's to Matrix Vector Class that will make
- */
 
 class Message {
 public:
     clock_t timestamp;
 };
 
-class OSPREStatus : public Message {
-public:
-    bool active; // True if On, False if Off
-    bool healthy; // True if Healthy, False if sick
-    char * message;
-    
-    OSPREStatus() {
-        
-    }
-    
-    OSPREStatus(bool active, bool healthy, char * message) {
-        this -> active = active;
-        this -> healthy = healthy;
-        this -> message = new sizeof(*message);
-        bcopy(message, this -> message, sizeof(*message));
-    }
-    
-    ~OSPREStatus() {
-        free(message);
-    }
-};
-
-// May remove this message, might not :) Could go from GNC to S/C Comms
-class DataRequest : public Message {
-public:
-    DataRequest() {
-        
-    }
-};
 
 class PointingRequest : public Message {
 public:

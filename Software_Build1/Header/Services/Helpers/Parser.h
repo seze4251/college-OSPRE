@@ -8,7 +8,7 @@
 
 
 #ifndef PARSER_H
-#def PARSER_H
+#define PARSER_H
 
 #include "ErrorCode.h"
 
