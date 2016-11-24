@@ -16,7 +16,7 @@ ByteBuffer::ByteBuffer(int capacity) {
 }
 
 ByteBuffer::~ByteBuffer() {
-    delete buf;
+    delete[] buf;
 }
 
 void ByteBuffer::clear() {

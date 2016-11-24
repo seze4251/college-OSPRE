@@ -31,6 +31,8 @@ public:
     void put(char c);
     
     int getInt();
+    int peakInt();
+    int peakAheadInt();
     void putInt(int i);
     
     double getDouble();
@@ -39,6 +41,7 @@ public:
     char * get(int length);
     void put(char * c, int length);
     
+   
     
 private:
     char *buf;
