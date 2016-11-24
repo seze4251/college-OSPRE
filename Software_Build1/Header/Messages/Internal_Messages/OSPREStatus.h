@@ -7,11 +7,10 @@
 //
 
 
-#ifndef MESSAGES_H
-#define MESSAGES_H
+#ifndef OSPRESTATUS_H
+#define OSPRESTATUS_H
 
 #include "Message.h"
-
 
 class OSPREStatus : public Message {
 public:

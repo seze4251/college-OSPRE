@@ -1,14 +1,16 @@
 //
-//  Messages.h
-//  Messages
+//  DataRequest.h
+//  DataRequest
 //
-//  Created by Seth on 11/10/2016.
+//  Created by Seth on 11/24/2016.
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
 
-#ifndef MESSAGES_H
-#define MESSAGES_H
+#ifndef DATAREQUEST_H
+#define DATAREQUEST_H
+
+#include "Message.h"
 
 class DataRequest : public Message {
 public:

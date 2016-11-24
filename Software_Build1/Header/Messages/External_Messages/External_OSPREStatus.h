@@ -1,13 +1,20 @@
 //
-//  Messages.h
-//  Messages
+//  External_OSPREStatus.h
+//  External_OSPREStatus
 //
-//  Created by Seth on 11/10/2016.
+//  Created by Seth on 11/24/2016.
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
 
-#ifndef MESSAGES_H
-#define MESSAGES_H
+#ifndef EXTERNAL_OSPRESTATUS_H
+#define EXTERNAL_OSPRESTATUS_H
+
+#include "Message.h"
+
+class External_OSPREStatus : public Message {
+public:
+    
+};
 
 #endif

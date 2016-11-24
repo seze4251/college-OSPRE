@@ -1,13 +1,23 @@
 //
-//  Messages.h
-//  Messages
+//  CaptureImageRequest.h
+//  CaptureImageRequest
 //
-//  Created by Seth on 11/10/2016.
+//  Created by Seth on 11/24/2016.
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
 
-#ifndef MESSAGES_H
-#define MESSAGES_H
+#ifndef CAPTUREIMAGEREQUEST_H
+#define CAPTUREIMAGEREQUEST_H
+
+#include "Message.h"
+
+class CaptureImageRequest : public Message {
+public:
+    
+    CaptureImageRequest() {
+        
+    }
+};
 
 #endif

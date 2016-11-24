@@ -7,8 +7,8 @@
 //
 
 
-#ifndef EXTERNAL_MESSAGES
-#define EXTERNAL_MESSAGES
+#ifndef EXTERNAL_MESSAGES_H
+#define EXTERNAL_MESSAGES_H
 
 #include "External_OSPREStatus.h"
 #include "External_PointingRequest.h"
