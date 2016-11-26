@@ -27,15 +27,13 @@ void createHeader(int length, MessageID msgID) {
 
 void Builder::buildCaptureImageRequest(DataRequest &msg) {
    // Check Buffer Has Enough Room
-    int messageLength = sizeof(CaptureImageRequest);
-    
-    if (buf.remaining() < messageLength) {
+    if (buf.remaining() < sizeof(CaptureImageRequest)) {
         //TODO: Throw Exception Here
         return;
     }
     
-    createHeader(messageLength, I_CaptureImageRequest);
-    buf.putDouble(msg.timeStamp);
+    createHeader(sizeof(CaptureImageRequest), I_CaptureImageRequest);
+    buf.putLong(msg.timeStamp);
 }
 
 // *******************************

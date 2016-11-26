@@ -20,14 +20,11 @@ public:
     Selector getSelector() { return sel; }
     
 protected:
-    openServerSocket();
+    int openServerSocket();
     connectToServer(int serverPort, char *serverHosts);
 
 private:
     Selector &sel;
-    Connector con;
-    Acceptor accept;
-    
 };
 
 #endif

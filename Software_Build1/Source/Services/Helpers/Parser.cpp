@@ -10,22 +10,56 @@
 
 Parser::Parser(ByteBuffer &buf) {
     this->buf = buf;
+    messageLength = -1;
+    capture = NULL;
+    // TODO:: Set Rest to NULL
 }
 
-bool Parser::fullMessage() {
-    if (buf.remaining() >= buf.peakAheadInt()) {
-        return true;
-    } else {
+Parser::~Parser() {
+    
+}
+
+bool Parser::parseHeader() {
+    // If there is not a full header, do not parse header
+    if (buf.remaining() < 2 * sizeof(int)) {
         return false;
     }
+    messageID = buf.getInt();
+    messageLength = buf.getInt();
+    return true;
 }
 
-MessageID Parser::typeMessage() {
-    return (MessageID) buf.peekInt();
-}
-
-CaptureImageRequest& Parser::parseCaptureImageRequest() {
+Message* Parser::parseMessage() {
+    if (messageLength == -1) {
+        if(!parseHeader()) {
+            return NULL;
+        }
+    }
     
+    if (buf.remaining() < messageLength) {
+        return NULL;
+    }
+    
+    Message* msg;
+    switch (messageID) {
+        case I_CaptureImageRequest:
+             msg = parseCaptureImageRequest();
+            break;
+        default:
+            msg = NULL;
+            std::cout << "Need To Implement Rest of Parser";
+            break;
+    }
+    messageLength = -1;
+    return msg;
+}
+
+Message* Parser::parseCaptureImageRequest() {
+    if (capture == NULL) {
+        capture = CaptureImageRequest();
+    }
+    capture.timeStamp = buf.getLong();
+    return capture;
 }
 
 // *******************************
@@ -34,38 +68,38 @@ CaptureImageRequest& Parser::parseCaptureImageRequest() {
 //
 // ********************************
 
-DataRequest& Parser::parseDataRequest() {
+Message* Parser::parseDataRequest() {
     
 }
 
-EphemerisMessage& Parser::parseEphemerisMessage() {
+Message* Parser::parseEphemerisMessage() {
     
 }
 
-ImageAdjustment& Parser::parseImageAdjustment() {
+Message* Parser::parseImageAdjustment() {
     
 }
 
-ImageMessage& Parser::parseImageMessage() {
+Message* Parser::parseImageMessage() {
     
 }
 
-OSPREStatus& Parser::parseOSPREStatus() {
+Message* Parser::parseOSPREStatus() {
     
 }
 
-PointingRequest& Parser::parsePointingRequest() {
+Message* Parser::parsePointingRequest() {
     
 }
 
-ProccessHealthAndStatusRequest& Parser::parseProccessHealthAndStatusRequest() {
+Message* Parser::parseProccessHealthAndStatusRequest() {
     
 }
 
-ProccessHealthAndStatusResponse& Parser::parseProccessHealthAndStatusResponse() {
+Message* Parser::parseProccessHealthAndStatusResponse() {
     
 }
 
-SolutionMessage& Parser::parseSolutionMessage() {
+Message* Parser::parseSolutionMessage() {
     
 }

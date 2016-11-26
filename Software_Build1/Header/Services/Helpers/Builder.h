@@ -13,6 +13,7 @@
 
 #include "Internal_Messages.h"
 #include "MessageID.h"
+#include "ByteBuffer.h"
 
 class Builder {
 public:

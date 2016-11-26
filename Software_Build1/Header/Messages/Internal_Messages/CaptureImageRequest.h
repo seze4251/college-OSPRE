@@ -16,8 +16,9 @@ class CaptureImageRequest : public Message {
 public:
     
     CaptureImageRequest() {
-        
     }
+    
+    virtual MessageID getMessageID() { return I_CaptureImageRequest; }
 };
 
 #endif

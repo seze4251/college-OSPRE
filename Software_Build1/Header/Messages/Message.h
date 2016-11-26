@@ -12,7 +12,8 @@
 
 class Message {
 public:
-    double timeStamp;
+    virtual MessageID getMessageID() = 0;
+    long timeStamp;
 };
 
 #endif

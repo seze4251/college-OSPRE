@@ -22,32 +22,42 @@ public:
     //Destructor
     ~Parser();
     
-    // Message Header: 1. int MSG ID 2. int length
-    // If I have full Message return True, Else return False
-    bool fullMessage();
+    bool parseMessage();
     
-    // Return Message Type
-    MessageID typeMessage();
+    // Header
     
-    //Do I need or not, how will I use this class?
-    parseMessage();
+    MessageID messageID;
+    
+    // Messages
+    CaptureImageRequest *capture;
+    DataRequest *data;
+    EphemerisMessage *ephem;
+    ImageAdjustment *adjustment;
+    ImageMessage *image;
+    OSPREStatus *status;
+    PointingRequest *pointing;
+    ProccessHealthAndStatusRequest *request;
+    ProccessHealthAndStatusResponse *response;
+    SolutionMessage *solution;
     
     
-    CaptureImageRequest& parseCaptureImageRequest();
-    DataRequest& parseDataRequest();
-    EphemerisMessage& parseEphemerisMessage();
-    ImageAdjustment& parseImageAdjustment();
-    ImageMessage& parseImageMessage();
-    OSPREStatus& parseOSPREStatus();
-    PointingRequest& parsePointingRequest();
-    ProccessHealthAndStatusRequest& parseProccessHealthAndStatusRequest();
-    ProccessHealthAndStatusResponse& parseProccessHealthAndStatusResponse();
-    SolutionMessage& parseSolutionMessage();
-
     
 private:
+    // Buffer
     ByteBuffer &buf;
+    int messageLength;
     
+    bool parseHeader();
+    Message* parseCaptureImageRequest();
+    Message* parseDataRequest();
+    Message* parseEphemerisMessage();
+    Message* parseImageAdjustment();
+    Message* parseImageMessage();
+    Message* parseOSPREStatus();
+    Message* parsePointingRequest();
+    Message* parseProccessHealthAndStatusRequest();
+    Message* parseProccessHealthAndStatusResponse();
+    Message* parseSolutionMessage();
 };
 
 

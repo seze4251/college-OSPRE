@@ -35,8 +35,8 @@ public:
     int peakAheadInt();
     void putInt(int i);
     
-    double getDouble();
-    void putDouble(double d);
+    double getLong();
+    void putLong(Long l);
     
     char * get(int length);
     void put(char * c, int length);

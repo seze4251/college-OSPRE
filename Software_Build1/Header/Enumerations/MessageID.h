@@ -9,6 +9,7 @@
 #ifndef MESSAGEID_H
 #define MESSAGEID_H
 
+// Start at 1
 enum MessageID {
     I_CaptureImageRequest = 0;
     I_DataRequest = 1;
