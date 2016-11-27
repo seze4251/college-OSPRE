@@ -11,6 +11,7 @@
 #define TIMEOUTMANAGER_H
 
 #include "ErrorCode.h"
+#include <sys/time.h>
 
 class TimeoutManager {
 public:
@@ -21,13 +22,12 @@ public:
     ~TimeoutManager();
     
     //Public Methods
-    void handleTimeout();
+    ErrorCode handleTimeout();
+    bool getNextTimeout(timeval *t);
     
-    //Public Members
-    bool timedout;
     
 private:
-    struct timeval timeout;
+    timeval timeout;
     
 };
 

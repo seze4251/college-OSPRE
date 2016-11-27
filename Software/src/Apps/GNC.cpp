@@ -11,3 +11,7 @@
 GNC::GNC(int localPort) : Server(localPort) {
     
 }
+
+GNC::~GNC() {
+    
+}

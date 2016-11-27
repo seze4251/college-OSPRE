@@ -6,7 +6,20 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-int Server::openServerSocket() {
+#include "Service.h"
+#include <iostream>
+#include <string>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <sys/select.h>
+#include <signal.h>
+#include <errno.h>
+#include <sys/ioctl.h>
+
+int Service::openServerSocket(int portNumber) {
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -18,7 +31,7 @@ int Server::openServerSocket() {
     hints.ai_addr = NULL;
     hints.ai_next = NULL;
     
-    int s = getaddrinfo(NULL, portNumber, &hints, &result);
+    int s = ::getaddrinfo(NULL, (char *)(&portNumber), &hints, &result);
     
     if (s != 0) {
         std::cout << "Open Server Socket Failed \n";
@@ -52,13 +65,13 @@ int Server::openServerSocket() {
     // Listen on Server Socket for incomming connections
     if (listen(sfd, 4) == -1) {
         std::cout << "Open Server Socket Failed \n";
-        return -1
+        return -1;
     }
     
     return sfd;
 }
 
-int Server::connectToServer(int serverPort, char *serverHosts) {
+int Service::connectToServer(char *serverHosts, int serverPort) {
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     
@@ -70,7 +83,7 @@ int Server::connectToServer(int serverPort, char *serverHosts) {
     hints.ai_protocol = 0;          /* Any protocol */
     
     
-    int s = getaddrinfo(serverHosts, serverPort, &hints, &result);
+    int s = ::getaddrinfo(serverHosts, (char *) &serverPort, &hints, &result);
     
     if (s != 0) {
         return E_GETADDRINFO;

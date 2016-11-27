@@ -11,3 +11,7 @@
 ImageProcessor::ImageProcessor(int localPort) : Server(localPort) {
     
 }
+
+ImageProcessor::~ImageProcessor() {
+    
+}

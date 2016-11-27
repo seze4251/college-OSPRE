@@ -1,18 +1,28 @@
+//
+//  WatchDogService.cpp
+//  WatchDogService
+//
+//  Created by Seth on 11/27/2016.
+//  Copyright © 2016 Seth. All rights reserved.
+//
 
+#include "WatchDogService.h"
+#include <unistd.h>
 
+WatchDogService::WatchDogService(Selector &sel, std::string hostName, int portNumber) : ServiceInternal(sel), fd(-1) { }
 
-WatchDogService::WatchDogService(std::string hostName, int portNumber) {
-    fd = -1;
+WatchDogService::~WatchDogService() {
+    
 }
 
 void WatchDogService::handleRead() {
-    int numRead = read(fd, readbuf); // you need to create this read() it usese a a ByteBuffer.
+    //int numRead = ::read(fd, readbuf); // you need to create this read() it usese a a ByteBuffer.
     
-    
+ /*
     if (numRead == 0) {
         // handle error case
     }
-    
+  */
     
     // determine if you have a complete message
     // if yes, pass it to the parser to extract that message
@@ -39,42 +49,12 @@ void WatchDogService::handleWrite() {
 
 void WatchDogService::close() {
     if (fd != -1) {
-        close(fd);
+        ::close(fd);
         fd = -1;
     }
-    readBuf.clear();
-    writeBuf.clear();
+    readbuf.clear();
+    writebuf.clear();
 }
 
-// Ignores SIG Pipes and opens up Server Socket
-Server::Server(int localPort) {
-    // Initialize Members
-    this -> localPort = port;
-    
-    fds.reserve(10); // Set capacity to 10 for fds
-    signal(SIGPIPE, SIG_IGN);
-    
-    // Open Server Socket
-    handleError(openServerSocket());
-}
 
-// Ignores SIG Pipes, opens up Server Socket and attempts to connect to all other connections
-Server::Server(int localPort, std::vector<int> *serverPorts, char **serverHosts) {
-    // Initialize Members
-    this -> localPort = localPort;
-    this -> serverPorts = serverPorts;
-    this -> serverHosts = serverHosts;
-    
-    fds.reserve(10); // Set capacity to 10 for fds
-    signal(SIGPIPE, SIG_IGN);
-    
-    // Open Server Socket
-    handleError(openServerSocket());
-    
-    // Connect to all other Servers
-    int i = 0;
-    for (auto &element: *serverPorts) {
-        handleError(connectToServer(element, serverHosts[i]));
-    }
-}
 

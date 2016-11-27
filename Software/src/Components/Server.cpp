@@ -20,6 +20,13 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 
+Server::Server(int localPort) {
+    
+}
+
+Server::~Server() {
+    
+}
 
 ErrorCode Server::run() {
     
@@ -28,7 +35,7 @@ ErrorCode Server::run() {
         timeval t;
         
         if (timeout.getNextTimeout(&t) == true) {
-            if (sel.select(t) == false) {
+            if (sel.select(&t) == false) {
                 std::cerr << "select() error, exiting" << std::endl;
                 break;
             }
@@ -41,6 +48,8 @@ ErrorCode Server::run() {
             }
         }
     }
+    
+    return SUCCESS;
 }
 
 

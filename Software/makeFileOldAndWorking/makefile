@@ -24,30 +24,9 @@ SRCDIR := src
 BUILDDIR := build
 TARGETDIR := bin
 
-# Targets (6 executables)
-#WATCHDOG
-EXECUTABLE_WatchDog := WatchDog
-TARGET_WatchDog := $(TARGETDIR)/$(EXECUTABLE_WatchDog)
-
-#SCCOMMS
-EXECUTABLE_ScComms := ScComms
-TARGET_ScComms := $(TARGETDIR)/$(EXECUTABLE_ScComms)
-
-#CAMERA CONTROLLER
-EXECUTABLE_CameraController := CameraController
-TARGET_CameraController := $(TARGETDIR)/$(EXECUTABLE_CameraController)
-
-#IMAGE PROCCESSOR
-EXECUTABLE_ImageProccessor := ImageProccessor
-TARGET_ImageProccessor := $(TARGETDIR)/$(TARGET_ImageProccessor)
-
-#GNC
-EXECUTABLE_GNC := GNC
-TARGET_GNC := $(TARGETDIR)/$(EXECUTABLE_GNC)
-
-#SPACECRAFT
-EXECUTABLE_SPACECRAFT := Spacecraft
-TARGET_SPACECRAFT := $(TARGETDIR)/$(EXECUTABLE_SPACECRAFT)
+# Targets
+EXECUTABLE := WatchDog
+TARGET := $(TARGETDIR)/$(EXECUTABLE)
 
 # Final Paths
 INSTALLBINDIR := /usr/local/bin
@@ -78,42 +57,10 @@ else
 	CFLAGS += -std=c++11 -stdlib=libc++ -O2
 endif
 
-#WATCHDOG
-$(TARGET_WatchDog): $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_WatchDog)"; $(CC) $^ -o $(TARGET_WatchDog)
-
-#SCCOMMS
-$(TARGET_ScComms): $(OBJECTS)
-	@mkdir -p $(TARGETDIR)
-	@echo "Linking..."
-	@echo "	 Linking $(TARGET_ScComms)"; $(CC) $^ -o $(TARGET_ScComms)
-
-#CAMERA CONTROLLER
-$(TARGET_CameraController): $(OBJECTS)
-	@mkdir -p $(TARGETDIR)
-	@echo "Linking..."
-	@echo "	 Linking $(TARGET_CameraController)"; $(CC) $^ -o $(TARGET_CameraController)
-
-#IMAGE PROCCESSOR
-$(TARGET_ImageProccessor): $(OBJECTS)
-	@mkdir -p $(TARGETDIR)
-	@echo "Linking..."
-	@echo "	 Linking $(TARGET_ImageProccessor)"; $(CC) $^ -o $(TARGET_ImageProccessor)
-
-#GNC
-$(TARGET_GNC): $(OBJECTS)
-	@mkdir -p $(TARGETDIR)
-	@echo "Linking..."
-	@echo "	 Linking $(TARGET_GNC)"; $(CC) $^ -o $(TARGET_GNC)
-
-#SPACECRAFT
-$(TARGET_SPACECRAFT): $(OBJECTS)
-	@mkdir -p $(TARGETDIR)
-	@echo "Linking..."
-	@echo "	 Linking $(TARGET_SPACECRAFT)"; $(CC) $^ -o $(TARGET_SPACECRAFT)
-
+	@echo "	 Linking $(TARGET)"; $(CC) $^ -o $(TARGET)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDLIST)

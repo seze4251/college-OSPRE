@@ -8,6 +8,19 @@
 
 #include "TimeoutManager.h"
 
-ErrorCode TimeoutManager::handleTimeout() {
+TimeoutManager::TimeoutManager() {
     
+}
+
+TimeoutManager::~TimeoutManager() {
+    
+}
+
+ErrorCode TimeoutManager::handleTimeout() {
+    return SUCCESS;
+}
+
+bool TimeoutManager::getNextTimeout(timeval *t) {
+    t = &timeout;
+    return true;
 }

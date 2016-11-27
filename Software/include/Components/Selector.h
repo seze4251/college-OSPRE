@@ -15,14 +15,6 @@
 
 class Service;
 
-// Potentially
-/*
- class Service {
-    void handleRead();
-    void handleWrite();
- };
- */
-
 class Selector {
 public:
     // Constructors

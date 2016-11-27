@@ -14,6 +14,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "Service.h"
 
 Selector::Selector() {
     for (int x = 0; x < FD_SETSIZE; x++) {

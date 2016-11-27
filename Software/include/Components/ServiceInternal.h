@@ -10,15 +10,26 @@
 #ifndef SERVICEINTERNAL_H
 #define SERVICEINTERNAL_H
 
-#include <Service.h>
+#include "Service.h"
+#include "Builder.h"
+#include "Parser.h"
+#include "ByteBuffer.h"
+#include <string>
 
 class ServiceInternal : public Service {
 public:
-    ServiceInternal() : Service(Selector &sel);
+    ServiceInternal(Selector &sel) : Service(sel), readbuf(1024*1024), writebuf(1024*1024), build(writebuf), parse(readbuf) {
+    }
     
     
 protected:
-    
+    std::string hostName;
+    int portNumber;
+    ByteBuffer readbuf;
+    ByteBuffer writebuf;
+    Builder build;
+    Parser parse;
+
     
 private:
 

@@ -12,3 +12,6 @@ Spacecraft::Spacecraft(int localPort) : Server(localPort) {
     
 }
 
+Spacecraft::~Spacecraft() {
+    
+}

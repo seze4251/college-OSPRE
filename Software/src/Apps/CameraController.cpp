@@ -11,3 +11,7 @@
 CameraController::CameraController(int localPort) : Server(localPort) {
     
 }
+
+CameraController::~CameraController() {
+    
+}

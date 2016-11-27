@@ -21,8 +21,8 @@ public:
     Selector getSelector() { return sel; }
     
 protected:
-    int openServerSocket();
-    int connectToServer(int serverPort, char *serverHosts);
+    int openServerSocket(int portNumber);
+    int connectToServer(char *serverHosts, int serverPort);
 
 private:
     Selector &sel;

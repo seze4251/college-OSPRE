@@ -15,7 +15,7 @@
 Acceptor::Acceptor(Selector &sel, std::string hostName, int port, void (*callBack)(int)) : Service(sel) {
     this->port = port;
     this->hostName = hostName;
-    fd = openServerSocket();
+    fd = openServerSocket(port);
     if (fd == -1) {
         std::cerr << "Failure to Open Server Socket, Acceptor Exiting\n";
         exit(-1);
