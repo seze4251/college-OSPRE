@@ -17,13 +17,15 @@
 class Server {
 public:
     // Constructors
-    Server(int localPort);
+    Server();
 
     //Destructor
     virtual ~Server();
     
     //Public Methods
     ErrorCode run();
+    
+    Selector& getSelector();
     
 private:
     Selector sel;

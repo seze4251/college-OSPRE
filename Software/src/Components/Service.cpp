@@ -19,6 +19,10 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 
+Service::Service(Selector &sharedSel) : sel(sharedSel) {
+    std::cout << "Service Constructor \n";
+}
+
 int Service::openServerSocket(int portNumber) {
     struct addrinfo hints;
     struct addrinfo *result, *rp;

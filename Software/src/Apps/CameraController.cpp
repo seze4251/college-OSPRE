@@ -8,7 +8,7 @@
 
 #include "CameraController.h"
 
-CameraController::CameraController(int localPort) : Server(localPort) {
+CameraController::CameraController(int localPort) : Server() {
     
 }
 

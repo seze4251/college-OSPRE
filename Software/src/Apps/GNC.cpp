@@ -8,7 +8,7 @@
 
 #include "GNC.h"
 
-GNC::GNC(int localPort) : Server(localPort) {
+GNC::GNC(int localPort) : Server() {
     
 }
 

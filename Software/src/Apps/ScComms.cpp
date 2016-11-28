@@ -8,7 +8,7 @@
 
 #include "ScComms.h"
 
-ScComms::ScComms(int localPort) : Server(localPort) {
+ScComms::ScComms(int localPort) : Server() {
     
 }
 

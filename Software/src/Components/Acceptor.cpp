@@ -13,6 +13,7 @@
 #include <sys/socket.h>
 
 Acceptor::Acceptor(Selector &sel, std::string hostName, int port, void (*callBack)(int)) : Service(sel) {
+    std::cout << "Made it to Top of Acceptor Constructor\n";
     this->port = port;
     this->hostName = hostName;
     fd = openServerSocket(port);
@@ -26,6 +27,7 @@ Acceptor::Acceptor(Selector &sel, std::string hostName, int port, void (*callBac
         std::cerr << "CallBack equals NULL, Acceptor Exiting\n";
         exit(-1);
     }
+    std::cout << "Bottom of Acceptor Constructor\n";
 }
 
 void Acceptor::handleRead() {

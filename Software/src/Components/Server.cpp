@@ -20,12 +20,17 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 
-Server::Server(int localPort) {
-    
+Server::Server() {
+    std::cout << "Made it to Server Constructor \n";
 }
 
 Server::~Server() {
     
+}
+
+Selector& Server::getSelector() {
+    std::cout << "getSelector \n";
+    return sel;
 }
 
 ErrorCode Server::run() {

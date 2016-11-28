@@ -17,6 +17,7 @@
 #include "Service.h"
 
 Selector::Selector() {
+    std::cout << "Selector Constructor Called \n";
     for (int x = 0; x < FD_SETSIZE; x++) {
         services[x] = NULL;
     }

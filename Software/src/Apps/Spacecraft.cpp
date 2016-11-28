@@ -8,7 +8,7 @@
 
 #include "Spacecraft.h"
 
-Spacecraft::Spacecraft(int localPort) : Server(localPort) {
+Spacecraft::Spacecraft(int localPort) : Server() {
     
 }
 

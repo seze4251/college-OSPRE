@@ -38,8 +38,8 @@ EXECUTABLE_CameraController := CameraController
 TARGET_CameraController := $(TARGETDIR)/$(EXECUTABLE_CameraController)
 
 #IMAGE PROCCESSOR
-EXECUTABLE_ImageProccessor := ImageProccessor
-TARGET_ImageProccessor := $(TARGETDIR)/$(TARGET_ImageProccessor)
+EXECUTABLE_ImageProcessor := ImageProcessor
+TARGET_IMAGEPROC := $(TARGETDIR)/$(EXECUTABLE_ImageProcessor)
 
 #GNC
 EXECUTABLE_GNC := GNC
@@ -48,6 +48,11 @@ TARGET_GNC := $(TARGETDIR)/$(EXECUTABLE_GNC)
 #SPACECRAFT
 EXECUTABLE_SPACECRAFT := Spacecraft
 TARGET_SPACECRAFT := $(TARGETDIR)/$(EXECUTABLE_SPACECRAFT)
+
+#
+# Main OBJS
+MAINDIR := Main_Files
+MAINOBJ_DIR := build_Main
 
 # Final Paths
 INSTALLBINDIR := /usr/local/bin
@@ -62,6 +67,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 INCDIRS := $(shell find include/**/* -name '*.h' -exec dirname {} \; | sort | uniq)
 INCLIST := $(patsubst include/%,-I include/%,$(INCDIRS))
 BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
+
 
 # Shared Compiler Flags
 CFLAGS := -c
@@ -79,37 +85,39 @@ else
 endif
 
 #WATCHDOG
-$(TARGET_WatchDog): $(OBJECTS)
+$(TARGET_WatchDog): $(OBJECTS) $(MAINOBJ_DIR)/mainWatchDog.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_WatchDog)"; $(CC) $^ -o $(TARGET_WatchDog)
+	@echo "	 Linking $(TARGET_WatchDog)"
+	$(CC) $^ -o $(TARGET_WatchDog) 
+
 
 #SCCOMMS
-$(TARGET_ScComms): $(OBJECTS)
+$(TARGET_ScComms): $(OBJECTS) $(MAINOBJ_DIR)/mainScComms.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
 	@echo "	 Linking $(TARGET_ScComms)"; $(CC) $^ -o $(TARGET_ScComms)
 
 #CAMERA CONTROLLER
-$(TARGET_CameraController): $(OBJECTS)
+$(TARGET_CameraController): $(OBJECTS) $(MAINOBJ_DIR)/mainCameraController.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
 	@echo "	 Linking $(TARGET_CameraController)"; $(CC) $^ -o $(TARGET_CameraController)
 
 #IMAGE PROCCESSOR
-$(TARGET_ImageProccessor): $(OBJECTS)
+$(TARGET_IMAGEPROC): $(OBJECTS) $(MAINOBJ_DIR)/mainImageProcessor.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_ImageProccessor)"; $(CC) $^ -o $(TARGET_ImageProccessor)
+	@echo "	 Linking $(TARGET_IMAGEPROC)"; $(CC) $^ -o $(TARGET_IMAGEPROC)
 
 #GNC
-$(TARGET_GNC): $(OBJECTS)
+$(TARGET_GNC): $(OBJECTS) $(MAINOBJ_DIR)/mainGNC.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
 	@echo "	 Linking $(TARGET_GNC)"; $(CC) $^ -o $(TARGET_GNC)
 
 #SPACECRAFT
-$(TARGET_SPACECRAFT): $(OBJECTS)
+$(TARGET_SPACECRAFT): $(OBJECTS) $(MAINOBJ_DIR)/mainSpacecraft.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
 	@echo "	 Linking $(TARGET_SPACECRAFT)"; $(CC) $^ -o $(TARGET_SPACECRAFT)
@@ -119,13 +127,19 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDLIST)
 	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
-clean:
-	@echo "Cleaning $(TARGET)..."; $(RM) -r $(BUILDDIR) $(TARGET)
 
-install:
-	@echo "Installing $(EXECUTABLE)..."; cp $(TARGET) $(INSTALLBINDIR)
+# Need to have all dependencies mapped out for building 
+$(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(SRCEXT)
+	@mkdir -p $(BUILDLIST)
+	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+
+clean:
+	@echo "Cleaning $(TARGET)..."; $(RM) -r $(BUILDDIR) $(TARGET); rm build_Main/*;
+
+#install:
+#	@echo "Installing $(EXECUTABLE)..."; cp $(TARGET) $(INSTALLBINDIR)
 	
-distclean:
-	@echo "Removing $(EXECUTABLE)"; rm $(INSTALLBINDIR)/$(EXECUTABLE)
+#distclean:
+#	@echo "Removing $(EXECUTABLE)"; rm $(INSTALLBINDIR)/$(EXECUTABLE)
 
 .PHONY: clean

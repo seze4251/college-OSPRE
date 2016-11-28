@@ -8,7 +8,7 @@
 
 #include "ImageProcessor.h"
 
-ImageProcessor::ImageProcessor(int localPort) : Server(localPort) {
+ImageProcessor::ImageProcessor(int localPort) : Server() {
     
 }
 

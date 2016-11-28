@@ -14,7 +14,7 @@
 
 class Service {
 public:
-    Service(Selector &sharedSel) : sel(sharedSel) {}
+    Service(Selector &sharedSel);
     virtual ~Service() {}
     virtual void handleRead() = 0;
     virtual void handleWrite() = 0;

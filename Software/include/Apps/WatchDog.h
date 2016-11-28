@@ -11,14 +11,19 @@
 #define WATCHDOG_H
 
 #include "Server.h"
-
+#include "Acceptor.h"
+#include "WatchDogClientHandler.h"
 
 class WatchDog : public Server {
+    enum {MaxClients = 16 };
 public:
     WatchDog(int localPort);
     ~WatchDog();
+    static void handleWatchDogConnections(int i);
     
 private:
+    //Acceptor accept;
+    WatchDogClientHandler *client[MaxClients];
     
 };
 
