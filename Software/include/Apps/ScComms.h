@@ -19,7 +19,7 @@ public:
     ~ScComms();
     
 private:
-    
+    int fd;
 };
 
 #endif

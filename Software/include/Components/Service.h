@@ -20,9 +20,9 @@ public:
     virtual void handleWrite() = 0;
     Selector getSelector() { return sel; }
     
-protected:
+public:
     int openServerSocket(int portNumber);
-    int connectToServer(char *serverHosts, int serverPort);
+    int static connectToServer(const char *serverHosts, int serverPort);
 
 private:
     Selector &sel;

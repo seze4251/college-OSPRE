@@ -21,7 +21,7 @@
 #include <sys/ioctl.h>
 
 Server::Server() {
-    std::cout << "Made it to Server Constructor \n";
+    std::cout << "Server Constructor called" << std::endl;
 }
 
 Server::~Server() {
@@ -33,7 +33,31 @@ Selector& Server::getSelector() {
     return sel;
 }
 
+void Server::handleTimeout() {
+    
+}
+
 ErrorCode Server::run() {
+    
+    bool terminateFlag = false;
+    while (terminateFlag == false) {
+        timeval t;
+        
+        t.tv_sec = 5;
+        t.tv_usec = 0;
+        
+        if (sel.select(&t) == -1) {
+            std::cerr << "select() error, exiting" << std::endl;
+            break;
+        }
+        
+        handleTimeout();
+    }
+    
+    return SUCCESS;
+}
+
+ErrorCode Server::run2() {
     
     bool terminateFlag = false;
     while (terminateFlag == false) {

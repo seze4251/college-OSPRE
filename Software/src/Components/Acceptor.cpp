@@ -12,22 +12,33 @@
 #include <sys/types.h>       
 #include <sys/socket.h>
 
-Acceptor::Acceptor(Selector &sel, std::string hostName, int port, void (*callBack)(int)) : Service(sel) {
-    std::cout << "Made it to Top of Acceptor Constructor\n";
-    this->port = port;
+Acceptor::Acceptor(Selector &sel) : Service(sel) {
+    std::cout << "Acceptor Constructor called" << std::endl;
+    port = -1;
+    hostName = "";
+    fd = -1;
+    std::cout << "print after that" << std::endl;
+}
+
+bool Acceptor::open(std::string hostName, int portNumber) {
+    port = portNumber;
     this->hostName = hostName;
     fd = openServerSocket(port);
     if (fd == -1) {
         std::cerr << "Failure to Open Server Socket, Acceptor Exiting\n";
-        exit(-1);
+        return false;
     }
-    this->callBack = callBack;
     
     if (callBack == NULL) {
         std::cerr << "CallBack equals NULL, Acceptor Exiting\n";
-        exit(-1);
+        return false;
     }
-    std::cout << "Bottom of Acceptor Constructor\n";
+    getSelector().registerService(fd, this);
+    return true;
+}
+
+void Acceptor::registerCallback(void (*callbackFunc)(int)) {
+    callBack = callbackFunc;
 }
 
 void Acceptor::handleRead() {

@@ -35,10 +35,12 @@ int Service::openServerSocket(int portNumber) {
     hints.ai_addr = NULL;
     hints.ai_next = NULL;
     
-    int s = ::getaddrinfo(NULL, (char *)(&portNumber), &hints, &result);
+    char buf[16];
+    sprintf(buf, "%d", portNumber);
+    int s = ::getaddrinfo(NULL, buf, &hints, &result);
     
     if (s != 0) {
-        std::cout << "Open Server Socket Failed \n";
+        std::cout << "get ADDRINFO Failed! \n";
         return -1;
     }
     
@@ -75,7 +77,7 @@ int Service::openServerSocket(int portNumber) {
     return sfd;
 }
 
-int Service::connectToServer(char *serverHosts, int serverPort) {
+int Service::connectToServer(const char *serverHosts, int serverPort) {
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     
@@ -86,8 +88,10 @@ int Service::connectToServer(char *serverHosts, int serverPort) {
     hints.ai_flags = 0;
     hints.ai_protocol = 0;          /* Any protocol */
     
+    char buf[16];
+    sprintf(buf, "%d", serverPort);
     
-    int s = ::getaddrinfo(serverHosts, (char *) &serverPort, &hints, &result);
+    int s = ::getaddrinfo(serverHosts, buf, &hints, &result);
     
     if (s != 0) {
         return E_GETADDRINFO;
@@ -126,5 +130,6 @@ int Service::connectToServer(char *serverHosts, int serverPort) {
     }
     
     freeaddrinfo(result);
+    std::cout<< "CONNECTED\n";
     return fd;
 }

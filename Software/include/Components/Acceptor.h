@@ -17,7 +17,10 @@
 class Acceptor : public Service {
 public:
     // Constructor
-    Acceptor(Selector &sel, std::string hostName, int port, void (*callBack)(int));
+    Acceptor(Selector &sel);
+    
+    bool open(std::string hostName, int portNumber);
+    void registerCallback(void (*callBackFunc)(int));
     
     void handleRead();
     void handleWrite();

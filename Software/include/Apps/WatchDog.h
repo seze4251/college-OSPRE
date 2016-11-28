@@ -22,7 +22,7 @@ public:
     static void handleWatchDogConnections(int i);
     
 private:
-    //Acceptor accept;
+    Acceptor accept;
     WatchDogClientHandler *client[MaxClients];
     
 };

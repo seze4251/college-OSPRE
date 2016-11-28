@@ -30,6 +30,9 @@ public:
 private:
     Selector sel;
     TimeoutManager timeout;
+    
+    void handleTimeout();
+    ErrorCode run2();
 };
 
 #endif

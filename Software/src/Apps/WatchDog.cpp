@@ -11,9 +11,14 @@
 #include <unistd.h>
 
 //accept(getSelector(), NULL, localPort, WatchDog::handleWatchDogConnections)
-WatchDog::WatchDog(int localPort) /* : accept(getSelector(), NULL, localPort, WatchDog::handleWatchDogConnections)*/ {
-    std::cout<< "Made it to WatchDog Constructor\n";
-    
+WatchDog::WatchDog(int localPort) : accept(getSelector()) {
+    std::cout<< " WatchDog Constructor called" << std::endl;
+    accept.registerCallback(WatchDog::handleWatchDogConnections);
+    if(accept.open("localhost", 5000) == false) {
+        std::cerr << "Server Socket Failed To Open, WatchDog Exiting" << std::endl;
+        exit(-1);
+    }
+    std::cout << "Server Socket Opened" << std::endl;
 }
 
 WatchDog::~WatchDog() {

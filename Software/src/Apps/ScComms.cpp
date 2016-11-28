@@ -7,9 +7,10 @@
 //
 
 #include "ScComms.h"
+#include "Service.h" 
 
 ScComms::ScComms(int localPort) : Server() {
-    
+    fd = Service::connectToServer("localhost", 5000);
 }
 
 ScComms::~ScComms() {
