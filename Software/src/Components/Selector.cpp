@@ -118,7 +118,11 @@ int Selector::select(timeval *timeout) {
             } else {
                 return -1;
             }
+        } else if (numSelected == 0) {
+            return 0;
         }
+        
+        std::cout<< " checking readFds & writeFds" << std::endl;
         
         for (int i = 0, count = 0; (count < numSelected) && (i < FD_SETSIZE) ; i++) {
             if (FD_ISSET(i, &tempReadFds)) {

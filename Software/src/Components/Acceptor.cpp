@@ -34,6 +34,7 @@ bool Acceptor::open(std::string hostName, int portNumber) {
         return false;
     }
     getSelector().registerService(fd, this);
+    getSelector().interestInRead(fd);
     return true;
 }
 

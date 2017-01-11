@@ -34,7 +34,7 @@ Selector& Server::getSelector() {
 }
 
 void Server::handleTimeout() {
-    
+    std::cout << "I should do something here" << std::endl;
 }
 
 ErrorCode Server::run() {
