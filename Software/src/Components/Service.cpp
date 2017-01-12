@@ -27,7 +27,7 @@ int Service::openServerSocket(int portNumber) {
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_UNSPEC;
+    hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM; // Stream Socket
     hints.ai_flags = AI_PASSIVE;    /* For wildcard IP address */
     hints.ai_protocol = 0;          /* Any protocol */
@@ -40,7 +40,7 @@ int Service::openServerSocket(int portNumber) {
     int s = ::getaddrinfo(NULL, buf, &hints, &result);
     
     if (s != 0) {
-        std::cout << "get ADDRINFO Failed! \n";
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
         return -1;
     }
     
@@ -70,6 +70,7 @@ int Service::openServerSocket(int portNumber) {
     
     // Listen on Server Socket for incomming connections
     if (listen(sfd, 4) == -1) {
+        perror("listen");
         std::cout << "Open Server Socket Failed \n";
         return -1;
     }
@@ -83,7 +84,7 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
     
     /* Obtain address(es) matching host/port */
     memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
+    hints.ai_family = AF_INET;    /* Allow IPv4 or IPv6 */
     hints.ai_socktype = SOCK_STREAM; // TCP Stream Socket
     hints.ai_flags = 0;
     hints.ai_protocol = 0;          /* Any protocol */
@@ -94,7 +95,8 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
     int s = ::getaddrinfo(serverHosts, buf, &hints, &result);
     
     if (s != 0) {
-        return E_GETADDRINFO;
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+        return -1;
     }
     
     int fd = -1;
@@ -110,6 +112,7 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
             
             // Attempt to connect socket
             if (connect(fd, rp->ai_addr, rp->ai_addrlen) != -1) {
+                std::cout<< "CONNECTED\n" << std::endl;
                 break;
             }
             
@@ -126,10 +129,10 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
     }
     
     if (fd == -1) {
-        return E_CONNECTION_FAILURE;
+        fprintf(stderr, "Could not Connect\n");
+        return -1;
     }
     
     freeaddrinfo(result);
-    std::cout<< "CONNECTED\n";
     return fd;
 }

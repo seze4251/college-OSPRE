@@ -7,8 +7,11 @@
 //
 
 #include <WatchDogClientHandler.h>
+#include <iostream>
 
-WatchDogClientHandler::WatchDogClientHandler(Selector &sel, std::string hostName, int portNumber) : ServiceInternal(sel), fd(-1) { } 
+WatchDogClientHandler::WatchDogClientHandler(Selector &sel, std::string hostName, int portNumber) : ServiceInternal(sel), fd(-1) {
+    std::cout << "WatchDogClientHandler Constructor " << std::endl;
+}
 
 WatchDogClientHandler::~WatchDogClientHandler() {
     

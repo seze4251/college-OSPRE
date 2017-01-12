@@ -7,8 +7,11 @@
 //
 
 #include "Builder.h"
+#include <iostream>
 
-Builder::Builder(ByteBuffer &bufParam) : buf(bufParam) {}
+Builder::Builder(ByteBuffer &bufParam) : buf(bufParam) {
+    std::cout << "Builder Constructor" << std::endl;
+}
 
 Builder::~Builder() {
     

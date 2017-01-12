@@ -34,7 +34,7 @@ Selector& Server::getSelector() {
 }
 
 void Server::handleTimeout() {
-    std::cout << "I should do something here" << std::endl;
+    std::cout << "Server::handleTimeout() I should do something here" << std::endl;
 }
 
 ErrorCode Server::run() {
@@ -47,7 +47,7 @@ ErrorCode Server::run() {
         t.tv_usec = 0;
         
         if (sel.select(&t) == -1) {
-            std::cerr << "select() error, exiting" << std::endl;
+            std::cerr << "Server::run() select() error, exiting" << std::endl;
             break;
         }
         
@@ -65,14 +65,14 @@ ErrorCode Server::run2() {
         
         if (timeout.getNextTimeout(&t) == true) {
             if (sel.select(&t) == false) {
-                std::cerr << "select() error, exiting" << std::endl;
+                std::cerr << "Server::run() select() error, exiting" << std::endl;
                 break;
             }
             
             timeout.handleTimeout();
         } else {
             if (sel.select() == false) {
-                std::cerr << "select() error, exiting" << std::endl;
+                std::cerr << "Server::run() select() error, exiting" << std::endl;
                 break;
             }
         }

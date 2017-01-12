@@ -21,6 +21,9 @@ Selector::Selector() {
     for (int x = 0; x < FD_SETSIZE; x++) {
         services[x] = NULL;
     }
+    
+    FD_ZERO(&readFds);
+    FD_ZERO(&writeFds);
 }
 
 
@@ -29,6 +32,7 @@ Selector::~Selector() {
 }
 
 void Selector::registerService(int fd, Service *srv) {
+    printf("Selector:: registerService fd: %d\n",fd);
     services[fd] = srv;
 }
 
@@ -39,18 +43,22 @@ void Selector::unregisterService(int fd) {
 }
 
 void Selector::interestInRead(int fd) {
+    printf("Selector:: Interest in Read fd: %d\n",fd);
     FD_SET(fd, &readFds);
 }
 
 void Selector::interestInWrite(int fd) {
+     printf("Selector:: Interest in Write fd: %d\n",fd);
     FD_SET(fd, &writeFds);
 }
 
 void Selector::noInterestInRead(int fd) {
+    printf("Selector:: NO---Interest in Read fd: %d\n",fd);
     FD_CLR(fd, &readFds);
 }
 
 void Selector::noInterestInWrite(int fd) {
+    printf("Selector:: NO --- Interest in Write fd: %d\n",fd);
     FD_CLR(fd, &writeFds);
 }
 
@@ -103,7 +111,6 @@ int Selector::select() {
 
 
 
-// Very Incomplete
 int Selector::select(timeval *timeout) {
     
     while (true) {
@@ -111,6 +118,7 @@ int Selector::select(timeval *timeout) {
         memcpy(&tempWriteFds, &writeFds, sizeof(writeFds));
         
         int numSelected = ::select(FD_SETSIZE, &tempReadFds, &tempWriteFds, NULL, timeout);
+        printf("Select Returned: %d\n", numSelected);
         
         if (numSelected == -1) {
             if (errno == EINTR) {
@@ -128,6 +136,7 @@ int Selector::select(timeval *timeout) {
             if (FD_ISSET(i, &tempReadFds)) {
                 
                 if (services[i] != NULL) {
+                    printf("HandleRead Called for %d\n", i);
                     services[i]->handleRead();
                 } else {
                     std::cerr << "Error, attempt to read() on FD with no associated service" << std::endl;

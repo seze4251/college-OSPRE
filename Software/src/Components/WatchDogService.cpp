@@ -8,14 +8,18 @@
 
 #include "WatchDogService.h"
 #include <unistd.h>
+#include <iostream>
 
-WatchDogService::WatchDogService(Selector &sel, std::string hostName, int portNumber) : ServiceInternal(sel), fd(-1) { }
+WatchDogService::WatchDogService(Selector &sel, std::string hostName, int portNumber) : ServiceInternal(sel), fd(-1) {
+    std::cout << "WatchDogService Constructor called" << std::endl;
+}
 
 WatchDogService::~WatchDogService() {
     
 }
 
 void WatchDogService::handleRead() {
+    std::cout << "WatchDogService handleRead() " << std::endl;
     //int numRead = ::read(fd, readbuf); // you need to create this read() it usese a a ByteBuffer.
     
  /*
@@ -41,13 +45,14 @@ void WatchDogService::handleRead() {
 }
 
 void WatchDogService::handleWrite() {
-    
+    std::cout << "WatchDogService handleWrite() " << std::endl;
     
     // After written, Tell selector no longer interested if no more data to write
     
 }
 
 void WatchDogService::close() {
+    std::cout << "WatchDogService close() " << std::endl;
     if (fd != -1) {
         ::close(fd);
         fd = -1;

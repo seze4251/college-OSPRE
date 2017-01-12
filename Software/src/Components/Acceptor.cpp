@@ -13,14 +13,14 @@
 #include <sys/socket.h>
 
 Acceptor::Acceptor(Selector &sel) : Service(sel) {
-    std::cout << "Acceptor Constructor called" << std::endl;
+    std::cout << "Acceptor Constructor" << std::endl;
     port = -1;
     hostName = "";
     fd = -1;
-    std::cout << "print after that" << std::endl;
 }
 
 bool Acceptor::open(std::string hostName, int portNumber) {
+    std::cout << "Acceptor open()" << std::endl;
     port = portNumber;
     this->hostName = hostName;
     fd = openServerSocket(port);
@@ -39,10 +39,12 @@ bool Acceptor::open(std::string hostName, int portNumber) {
 }
 
 void Acceptor::registerCallback(void (*callbackFunc)(int)) {
+    std::cout << "Acceptor registerCallback()" << std::endl;
     callBack = callbackFunc;
 }
 
 void Acceptor::handleRead() {
+    std::cout << "Acceptor handleRead()" << std::endl;
     int cfd = accept(fd, NULL, NULL);
     
     std::cout << "Received client connection, processing input " << cfd << std::endl;
@@ -52,5 +54,5 @@ void Acceptor::handleRead() {
 }
 
 void Acceptor::handleWrite() {
-    std::cerr << "Don't Call This" << std::endl;
+    std::cerr << "Acceptor handleWrite() Don't Call This" << std::endl;
 }

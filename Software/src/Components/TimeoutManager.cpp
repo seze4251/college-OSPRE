@@ -10,7 +10,7 @@
 #include <iostream>
 
 TimeoutManager::TimeoutManager() {
-    std::cout<< "TimeoutManager Constructor Called\n";
+    std::cout<< "TimeoutManager Constructor\n";
 }
 
 TimeoutManager::~TimeoutManager() {
@@ -18,10 +18,12 @@ TimeoutManager::~TimeoutManager() {
 }
 
 ErrorCode TimeoutManager::handleTimeout() {
+    std::cout << "TimeoutManager handleTimeout() " << std::endl;
     return SUCCESS;
 }
 
 bool TimeoutManager::getNextTimeout(timeval *t) {
+    std::cout << "TimeoutManager getNextTimeout() " << std::endl;
     t = &timeout;
     return true;
 }

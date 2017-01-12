@@ -8,8 +8,10 @@
 
 #include <string>
 #include "ByteBuffer.h"
+#include <iostream>
 
 ByteBuffer::ByteBuffer(int capacity) {
+    std::cout << "ByteBuffer Constructor" << std::endl;
     buf = new char[capacity];
     currentPos = buf;
     this->capacity = capacity;

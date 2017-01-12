@@ -10,6 +10,7 @@
 #include "Parser.h"
 
 Parser::Parser(ByteBuffer &bufParam) : buf(bufParam) {
+    std::cout << "Parser Constructor" << std::endl;
     messageLength = -1;
     capture = nullptr;
 }
