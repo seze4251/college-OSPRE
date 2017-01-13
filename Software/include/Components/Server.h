@@ -32,7 +32,6 @@ private:
     TimeoutManager timeout;
     
     void handleTimeout();
-    ErrorCode run2();
 };
 
 #endif

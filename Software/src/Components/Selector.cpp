@@ -64,55 +64,6 @@ void Selector::noInterestInWrite(int fd) {
     FD_CLR(fd, &writeFds);
 }
 
-int Selector::select() {
-    
-    while (true) {
-        memcpy(&tempReadFds, &readFds, sizeof(readFds));
-        memcpy(&tempWriteFds, &writeFds, sizeof(writeFds));
-        
-        int numSelected = ::select(FD_SETSIZE, &tempReadFds, &tempWriteFds, NULL, NULL);
-        
-        if (numSelected == -1) {
-            if (errno == EINTR) {
-                continue;
-            } else {
-                return -1;
-            }
-        }
-        
-        for (int i = 0, count = 0; (count < numSelected) && (i < FD_SETSIZE) ; i++) {
-            if (FD_ISSET(i, &tempReadFds)) {
-                
-                if (services[i] != NULL) {
-                    services[i]->handleRead();
-                } else {
-                    std::cerr << "Error, attempt to read() on FD with no associated service" << std::endl;
-                    return -1;
-                }
-                count++;
-            }
-            
-            if (FD_ISSET(i, &tempWriteFds)) {
-                
-                if (services[i] != NULL) {
-                    services[i]->handleWrite();
-                } else {
-                    std::cerr << "Error, attempt to write() on FD with no associated service" << std::endl;
-                    return -1;
-                }
-                count++;
-                
-            }
-        }
-        
-        break;
-    }
-    return 0;
-}
-
-
-
-
 int Selector::select(timeval *timeout) {
     std::cout << "Selector::select(timeout)" << std::endl;
     while (true) {
@@ -168,11 +119,6 @@ int Selector::select(timeval *timeout) {
     return 0;
 }
 
-
-int Selector::selectNow() {
-    std::cout << "Selector:: selectNow() Not Implemented" << std::endl;
-    return -1;
-}
 
 void Selector::printFds(fd_set* set) {
     

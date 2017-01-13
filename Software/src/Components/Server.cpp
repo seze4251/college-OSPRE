@@ -57,29 +57,4 @@ ErrorCode Server::run() {
     return SUCCESS;
 }
 
-/*
-ErrorCode Server::run2() {
-    
-    bool terminateFlag = false;
-    while (terminateFlag == false) {
-        timeval t;
-        
-        if (timeout.getNextTimeout(&t) == true) {
-            if (sel.select(&t) == false) {
-                std::cerr << "Server::run() select() error, exiting" << std::endl;
-                break;
-            }
-            
-            timeout.handleTimeout();
-        } else {
-            if (sel.select() == false) {
-                std::cerr << "Server::run() select() error, exiting" << std::endl;
-                break;
-            }
-        }
-    }
-    
-    return SUCCESS;
-}
-*/
 
