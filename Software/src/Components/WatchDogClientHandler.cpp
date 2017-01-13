@@ -9,10 +9,21 @@
 #include <WatchDogClientHandler.h>
 #include <iostream>
 
-WatchDogClientHandler::WatchDogClientHandler(Selector &sel, std::string hostName, int portNumber) : ServiceInternal(sel), fd(-1) {
+WatchDogClientHandler::WatchDogClientHandler(Selector &sel, int fd) : ServiceInternal(sel), fd(fd), sel(sel) {
     std::cout << "WatchDogClientHandler Constructor " << std::endl;
+    getSelector().registerService(fd, this);
+    getSelector().interestInRead(fd);
+
 }
 
 WatchDogClientHandler::~WatchDogClientHandler() {
     
+}
+
+void WatchDogClientHandler::handleRead() {
+    std::cout << "WatchDogClientHandler handleRead " << std::endl;
+}
+
+void WatchDogClientHandler::handleWrite() {
+    std::cout << "WatchDogClientHandler handleWrite " << std::endl;
 }

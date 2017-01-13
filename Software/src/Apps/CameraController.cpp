@@ -15,3 +15,5 @@ CameraController::CameraController(int localPort) : Server() {
 CameraController::~CameraController() {
     
 }
+
+// Connect to WatchDog

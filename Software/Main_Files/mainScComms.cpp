@@ -11,8 +11,9 @@
 
 int main(int argc, char **argv) {
     std::cout << "\nScComms Application Starting\n";
-    ScComms comms(5000);
+    ScComms comms(std::string("localhost"), 5000);
     std::cout << "ScComms Initalized\n";
+    comms.open(std::string("localhost"), 5000, 6000);
     comms.run();
     std::cout << "ScComms Application Terminating\n";
     return 0;

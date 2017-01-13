@@ -15,3 +15,6 @@ ImageProcessor::ImageProcessor(int localPort) : Server() {
 ImageProcessor::~ImageProcessor() {
     
 }
+
+// Connect to Camera Controller
+// Connect to WatchDog

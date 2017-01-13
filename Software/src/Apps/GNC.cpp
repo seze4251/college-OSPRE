@@ -15,3 +15,6 @@ GNC::GNC(int localPort) : Server() {
 GNC::~GNC() {
     
 }
+
+// Connect to Image Processor
+// Connect to WatchDog

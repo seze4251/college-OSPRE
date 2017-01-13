@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
     std::cout << "WatchDog Application Starting\n";
     WatchDog dog(5000);
     std::cout << "WatchDog Initalized\n";
-    dog.open();
+    dog.open(std::string("localhost"), 5000);
     dog.run();
     std::cout << "WatchDog Application Terminating\n";
     return 0;

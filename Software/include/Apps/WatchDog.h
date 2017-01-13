@@ -13,19 +13,20 @@
 #include "Server.h"
 #include "Acceptor.h"
 #include "WatchDogClientHandler.h"
+#include <string>
 
 class WatchDog : public Server {
+    public:
     enum {MaxClients = 16 };
-public:
     WatchDog(int localPort);
     ~WatchDog();
-    static void handleWatchDogConnections(int i);
-    bool open();
+    static void handleWatchDogConnections(int fd);
+    bool open(std::string hostname, int portNumber);
     
 private:
     Acceptor accept;
-    WatchDogClientHandler *client[MaxClients];
-    
+    static WatchDogClientHandler *client[MaxClients];
+    static int clientCount;
 };
 
 #endif

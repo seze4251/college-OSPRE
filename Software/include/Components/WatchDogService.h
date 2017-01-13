@@ -6,6 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
+// GOES INTO CLIENTS
 
 #ifndef WATCHDOGSERVICE_H
 #define WATCHDOGSERVICE_H
@@ -16,7 +17,7 @@ class WatchDogService : public ServiceInternal {
 public:
     WatchDogService(Selector &sel, std::string hostName, int portNumber);
     ~WatchDogService();
-    
+    bool open();
     bool isConnected() { return fd != -1 ? true : false; }
     void close();
     
@@ -25,7 +26,8 @@ public:
     
 private:
     int fd;
-
+    std::string hostName;
+    int portNumber;
 };
 
 #endif

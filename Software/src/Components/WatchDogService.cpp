@@ -10,12 +10,18 @@
 #include <unistd.h>
 #include <iostream>
 
-WatchDogService::WatchDogService(Selector &sel, std::string hostName, int portNumber) : ServiceInternal(sel), fd(-1) {
+WatchDogService::WatchDogService(Selector &sel, std::string hostName, int portNumber) : ServiceInternal(sel), hostName(hostName), portNumber(portNumber), fd(-1) {
     std::cout << "WatchDogService Constructor called" << std::endl;
 }
 
 WatchDogService::~WatchDogService() {
     
+}
+
+bool WatchDogService::open() {
+    // Connect to WatchDog
+    fd = Service::connectToServer(hostName.c_str(), portNumber);
+    return true;
 }
 
 void WatchDogService::handleRead() {

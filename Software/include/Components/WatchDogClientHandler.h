@@ -6,6 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
+// GOES INTO WATCHDOG
 
 #ifndef WATCHDOGCLIENTHANDLER_H
 #define WATCHDOGCLIENTHANDLER_H
@@ -15,14 +16,15 @@
 class WatchDogClientHandler : ServiceInternal {
 public:
     //Constructor
-    WatchDogClientHandler(Selector &sel, std::string hostName, int portNumber);
+    WatchDogClientHandler(Selector &sel, int fd);
     ~WatchDogClientHandler();
-    
-    //
+    void handleRead();
+    void handleWrite();
+    bool isConnected() { return fd != -1 ? true : false; }
     
 private:
     int fd;
-    
+    Selector &sel;
 };
 
 

@@ -20,6 +20,8 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 
+Server* Server::appl;
+
 Server::Server() {
     std::cout << "Server Constructor called" << std::endl;
 }
@@ -29,8 +31,16 @@ Server::~Server() {
 }
 
 Selector& Server::getSelector() {
-    std::cout << "getSelector \n";
+//    std::cout << "getSelector \n";
     return sel;
+}
+
+Server* Server::getAppl() {
+    return appl;
+}
+
+void Server::setAppl(Server* srv) {
+    appl = srv;
 }
 
 void Server::handleTimeout() {

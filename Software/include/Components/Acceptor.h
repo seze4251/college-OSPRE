@@ -24,6 +24,7 @@ public:
     
     void handleRead();
     void handleWrite();
+    bool isConnected() { return fd != -1 ? true : false; }
     
 private:
     int port;

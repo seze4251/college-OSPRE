@@ -15,3 +15,5 @@ Spacecraft::Spacecraft(int localPort) : Server() {
 Spacecraft::~Spacecraft() {
     
 }
+
+// Connect to ScComms

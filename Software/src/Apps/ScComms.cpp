@@ -7,12 +7,38 @@
 //
 
 #include "ScComms.h"
-#include "Service.h" 
+#include "Service.h"
+#include <iostream>
 
-ScComms::ScComms(int localPort) : Server() {
-    fd = Service::connectToServer("localhost", 5000);
+ScComms::ScComms( std::string hostName, int portNumber) : watchDog(getSelector(), hostName, portNumber), accept(getSelector()) {
+    setAppl(this);
+    std::cout<< " ScComms Constructor called" << std::endl;
+    
 }
 
 ScComms::~ScComms() {
     
+}
+
+// Connect to Camera Controller
+// Connect to WatchDog
+// Connect to GNC
+// Accept S/C
+bool ScComms::open(std::string hostName, int portNumber, int localPort) {
+    
+    //WatchDog Service
+    if (watchDog.isConnected() == false) {
+        watchDog.open();
+    }
+    
+    //Acceptor
+    if (accept.isConnected() == false) {
+        accept.open(hostName, localPort);
+    }
+        
+    
+    
+    // Other Services
+    
+    return true;
 }

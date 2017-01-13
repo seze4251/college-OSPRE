@@ -18,11 +18,11 @@ public:
     virtual ~Service() {}
     virtual void handleRead() = 0;
     virtual void handleWrite() = 0;
+    virtual bool isConnected() = 0;
     Selector& getSelector() { return sel; }
     
-public:
     int openServerSocket(int portNumber);
-    int static connectToServer(const char *serverHosts, int serverPort);
+    static int connectToServer(const char *serverHosts, int serverPort);
 
 private:
     Selector &sel;

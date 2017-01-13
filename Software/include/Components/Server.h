@@ -24,13 +24,17 @@ public:
     
     //Public Methods
     ErrorCode run();
-    
     Selector& getSelector();
+    
+    static Server* getAppl();
+
+protected:
+    static void setAppl(Server* srv);
+    static Server* appl;
     
 private:
     Selector sel;
     TimeoutManager timeout;
-    
     void handleTimeout();
 };
 
