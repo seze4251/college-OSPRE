@@ -21,6 +21,7 @@ public:
     ScComms(std::string hostName, int portNumber);
     ~ScComms();
     bool open(std::string hostName, int portNumber, int localPort);
+    void getStatus();
     
 private:
     int fd;

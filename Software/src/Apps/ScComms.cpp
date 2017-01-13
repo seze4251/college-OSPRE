@@ -42,3 +42,9 @@ bool ScComms::open(std::string hostName, int portNumber, int localPort) {
     
     return true;
 }
+
+void getStatus() {
+    
+}
+
+

@@ -20,6 +20,11 @@ WatchDogClientHandler::~WatchDogClientHandler() {
     
 }
 
+void WatchDogClientHandler::sendStatusRequestMessage() {
+    
+}
+
+
 void WatchDogClientHandler::handleRead() {
     std::cout << "WatchDogClientHandler handleRead " << std::endl;
 }

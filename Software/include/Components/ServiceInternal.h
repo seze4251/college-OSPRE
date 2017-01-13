@@ -21,6 +21,11 @@ public:
     ServiceInternal(Selector &sel) : Service(sel), readbuf(1024*1024), writebuf(1024*1024), build(writebuf), parse(readbuf) {
     }
     
+    ServiceInternal(Selector &sel, std::string hostName, int portNumber) : Service(sel), hostName(hostName), portNumber(portNumber), readbuf(1024*1024), writebuf(1024*1024), build(writebuf), parse(readbuf) {
+    }
+    
+    
+    
     
 protected:
     std::string hostName;

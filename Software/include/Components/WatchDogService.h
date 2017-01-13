@@ -26,8 +26,6 @@ public:
     
 private:
     int fd;
-    std::string hostName;
-    int portNumber;
 };
 
 #endif
