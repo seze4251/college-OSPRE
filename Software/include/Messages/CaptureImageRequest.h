@@ -15,8 +15,7 @@
 class CaptureImageRequest : public Message {
 public:
     
-    CaptureImageRequest() {
-    }
+    CaptureImageRequest() : Message(getMessageID(), time(0)) {}
     
     MessageID getMessageID() { return I_CaptureImageRequest; }
 };

@@ -14,6 +14,8 @@
 
 class ImageAdjustment : public Message {
 public:
+    ImageAdjustment() : Message(getMessageID(), time(0)) {}
+    
     MessageID getMessageID() { return I_ImageAdjustment; }
 };
 

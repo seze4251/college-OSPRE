@@ -14,6 +14,8 @@
 
 class External_SolutionMessage : public Message {
 public:
+    External_SolutionMessage() : Message(getMessageID(), time(0)) {}
+    
     MessageID getMessageID() { return E_SolutionMessage; }
 };
 

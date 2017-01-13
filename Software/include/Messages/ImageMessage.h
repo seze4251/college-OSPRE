@@ -14,6 +14,7 @@
 
 class ImageMessage : public Message {
 public:
+    ImageMessage() : Message(getMessageID(), time(0)) {}
     MessageID getMessageID() { return I_ImageMessage; }
 };
 

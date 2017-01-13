@@ -21,7 +21,8 @@ WatchDogClientHandler::~WatchDogClientHandler() {
 }
 
 void WatchDogClientHandler::sendStatusRequestMessage() {
-    
+    ProccessHealthAndStatusRequest* msg = new ProccessHealthAndStatusRequest();
+    build.buildProccessHealthAndStatusRequest(*msg);
 }
 
 

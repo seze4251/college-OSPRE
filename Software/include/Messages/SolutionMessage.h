@@ -14,6 +14,7 @@
 
 class SolutionMessage : public Message {
 public:
+    SolutionMessage() : Message(getMessageID(), time(0)) {}
     MessageID getMessageID() {return I_SolutionMessage;}
 };  
 

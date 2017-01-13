@@ -14,6 +14,8 @@
 
 class DataRequest : public Message {
 public:
+    DataRequest() : Message(getMessageID(), time(0)) {}
+    
     MessageID getMessageID() { return I_DataRequest; }
 };
 

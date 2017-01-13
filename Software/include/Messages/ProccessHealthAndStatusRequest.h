@@ -15,6 +15,7 @@
 // Small and tight
 class ProccessHealthAndStatusRequest : public Message {
 public:
+    ProccessHealthAndStatusRequest() : Message(getMessageID(), time(0)) {}
     MessageID getMessageID() { return I_ProccessHealthAndStatusRequest; }
 };
 #endif

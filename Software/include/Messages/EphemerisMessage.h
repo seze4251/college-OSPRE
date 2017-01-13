@@ -15,6 +15,8 @@
 // Not quite sure how ephemris is going to be passed to us!
 class EphemerisMessage : public Message {
 public:
+    EphemerisMessage() : Message(getMessageID(), time(0)) {}
+    
     MessageID getMessageID() { return I_EphemerisMessage; }
 };
     

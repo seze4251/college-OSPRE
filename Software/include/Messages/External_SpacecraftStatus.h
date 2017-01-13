@@ -14,6 +14,7 @@
 
 class External_SpacecraftStatus : public Message {
 public:
+    External_SpacecraftStatus() : Message(getMessageID(), time(0)) {}
     MessageID getMessageID() { return E_SpacecraftStatus; }
 };
 

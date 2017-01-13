@@ -11,11 +11,14 @@
 #define MESSAGE_H
 
 #include "MessageID.h"
+#include <ctime>
 
 class Message {
 public:
+    Message(MessageID iden, time_t timeStamp) : timeStamp(timeStamp), iden(iden) {}
     virtual MessageID getMessageID() = 0;
-    long timeStamp;
+    time_t timeStamp;
+    MessageID iden;
 };
 
 #endif
