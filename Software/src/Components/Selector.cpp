@@ -117,14 +117,8 @@ int Selector::select(timeval *timeout) {
     std::cout << "Selector::select(timeout)" << std::endl;
     while (true) {
         
-        std::cout << "Printing ReadFDS Above" << std::endl;
-        printFds(&readFds);
-        
         memcpy(&tempReadFds, &readFds, sizeof(readFds));
         memcpy(&tempWriteFds, &writeFds, sizeof(writeFds));
-        
-        std::cout << "Printing ReadFDS Below" << std::endl;
-        printFds(&readFds);
         
         std::cout << "Printing tempReadFds" << std::endl;
         printFds(&tempReadFds);

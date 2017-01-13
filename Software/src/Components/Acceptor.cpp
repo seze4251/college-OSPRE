@@ -35,9 +35,6 @@ bool Acceptor::open(std::string hostName, int portNumber) {
     }
     getSelector().registerService(fd, this);
     getSelector().interestInRead(fd);
-    
-    std::cout << "Printing ReadFDS in Accept Open" << std::endl;
-    getSelector().printFds(&getSelector().readFds);
     return true;
 }
 
