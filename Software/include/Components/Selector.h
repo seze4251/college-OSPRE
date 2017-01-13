@@ -37,11 +37,9 @@ public:
     int select(timeval *timeout);
     int selectNow();
     
-    // Public Members
-    bool read;
-    bool write;
+    void printFds(fd_set* set);
     
-private:
+//private:
     Service *services[FD_SETSIZE];
     fd_set readFds, writeFds;
     fd_set tempReadFds, tempWriteFds;

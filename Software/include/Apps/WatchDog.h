@@ -20,6 +20,7 @@ public:
     WatchDog(int localPort);
     ~WatchDog();
     static void handleWatchDogConnections(int i);
+    bool open();
     
 private:
     Acceptor accept;

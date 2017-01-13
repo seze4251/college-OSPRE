@@ -18,7 +18,7 @@ public:
     virtual ~Service() {}
     virtual void handleRead() = 0;
     virtual void handleWrite() = 0;
-    Selector getSelector() { return sel; }
+    Selector& getSelector() { return sel; }
     
 public:
     int openServerSocket(int portNumber);

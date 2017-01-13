@@ -57,6 +57,7 @@ ErrorCode Server::run() {
     return SUCCESS;
 }
 
+/*
 ErrorCode Server::run2() {
     
     bool terminateFlag = false;
@@ -80,5 +81,5 @@ ErrorCode Server::run2() {
     
     return SUCCESS;
 }
-
+*/
 

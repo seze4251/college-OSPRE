@@ -16,15 +16,6 @@
 #include <unistd.h>
 #include "Service.h"
 
-void printFds(fd_set* set) {
-    
-    for (int i = 0; i < FD_SETSIZE; i++) {
-        if (FD_ISSET(i, set)) {
-            std::cout << "File Descriptor: " << i << " is set" << std::endl;
-        }
-    }
-}
-
 Selector::Selector() {
     std::cout << "Selector Constructor Called \n";
     for (int x = 0; x < FD_SETSIZE; x++) {
@@ -54,6 +45,8 @@ void Selector::unregisterService(int fd) {
 void Selector::interestInRead(int fd) {
     printf("Selector:: Interest in Read fd: %d\n",fd);
     FD_SET(fd, &readFds);
+    std::cout << "Printing ReadFds" << std::endl;
+    printFds(&readFds);
 }
 
 void Selector::interestInWrite(int fd) {
@@ -123,8 +116,15 @@ int Selector::select() {
 int Selector::select(timeval *timeout) {
     std::cout << "Selector::select(timeout)" << std::endl;
     while (true) {
+        
+        std::cout << "Printing ReadFDS Above" << std::endl;
+        printFds(&readFds);
+        
         memcpy(&tempReadFds, &readFds, sizeof(readFds));
         memcpy(&tempWriteFds, &writeFds, sizeof(writeFds));
+        
+        std::cout << "Printing ReadFDS Below" << std::endl;
+        printFds(&readFds);
         
         std::cout << "Printing tempReadFds" << std::endl;
         printFds(&tempReadFds);
@@ -176,8 +176,19 @@ int Selector::select(timeval *timeout) {
 
 
 int Selector::selectNow() {
-    return 0;
+    std::cout << "Selector:: selectNow() Not Implemented" << std::endl;
+    return -1;
 }
+
+void Selector::printFds(fd_set* set) {
+    
+    for (int i = 0; i < FD_SETSIZE; i++) {
+        if (FD_ISSET(i, set)) {
+            std::cout << "File Descriptor: " << i << " is set" << std::endl;
+        }
+    }
+}
+
 
 
 
