@@ -30,23 +30,6 @@ void WatchDogClientHandler::sendStatusRequestMessage() {
 }
 
 
-void WatchDogClientHandler::handleRead() {
-    std::cout << "WatchDogClientHandler handleRead " << std::endl;
-}
-
-void WatchDogClientHandler::handleWrite() {
-     writebuf.putIntoExtractionMode();
-    
-    if (writebuf.remaining() < 0) {
-        std::cout << "Nothing Left to Write to Socket" << std::endl;
-        return;
-    }
-    
-    
-    
-}
-
-
 
 
 

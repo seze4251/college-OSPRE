@@ -21,9 +21,6 @@ public:
     bool isConnected() { return fd != -1 ? true : false; }
     void close();
     
-    void handleRead();
-    void handleWrite();
-    
 private:
     // Hostname and PortNumber for Server Socket
     std::string hostName;

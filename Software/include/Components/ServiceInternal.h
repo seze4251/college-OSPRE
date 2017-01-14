@@ -21,6 +21,9 @@ public:
     ServiceInternal(Selector& sel, int fd = -1) : Service(sel), fd(fd), readbuf(1024*1024), writebuf(1024*1024), build(writebuf), parse(readbuf) {
     }
     
+    void handleRead();
+    void handleWrite();
+    
 protected:
     int fd;
     ByteBuffer readbuf;
@@ -28,7 +31,6 @@ protected:
     Builder build;
     Parser parse;
 
-    
 private:
 
     

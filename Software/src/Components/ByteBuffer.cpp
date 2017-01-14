@@ -33,27 +33,29 @@ void ByteBuffer::compact() {
     if (size == 0) {
         clear();
     } else {
-        memcpy(buf, (currentPos - size), size);
-        currentPos = buf + size;
+        memcpy(buf, currentPos, size);
+        currentPos = buf;
     }
 }
 
 // verify - looks right so long as size is kept accurate
 void ByteBuffer::flip() {
-    currentPos = buf;
+    if (buf + size == currentPos) {
+        currentPos = buf;
+    } else {
+        currentPos = buf + size;
+    }
 }
 
 int ByteBuffer::position() {
     return (int) (currentPos-buf);
 }
 
-// not sure I understand the use of this method in extraction mode.
-int ByteBuffer::remaining() {
-    if ((currentPos - size) == buf) {
-        return (capacity - size);
-    } else {
-        return size;
-    }
+
+void ByteBuffer::position(int written) {
+    currentPos += written;
+    size -= written;
+    
 }
 
 char ByteBuffer::get() {
@@ -110,37 +112,10 @@ void ByteBuffer::putLong(long d) {
     
 }
 
-char * ByteBuffer::get(int bytes) {
-    return NULL;
-}
 
 void ByteBuffer::put(char * c, int length) {
     
 }
-
-
-bool ByteBuffer::insertionMode() {
-    if ((currentPos - size) == buf) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-void ByteBuffer::putIntoInsertionMode() {
-    
-    if (!insertionMode()) {
-        compact();
-        flip();
-    }
-}
-
-void ByteBuffer::putIntoExtractionMode() {
-    if (insertionMode()) {
-        flip();
-    }
-}
-
 
 
 

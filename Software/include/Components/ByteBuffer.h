@@ -20,28 +20,24 @@ public:
     void clear();
     void compact();
     void flip();
+    int used() {return size;}
+    int remaining() {return (capacity - size);}
     
     int position();
-    int remaining();
-    
-    void putIntoInsertionMode();
-    void putIntoExtractionMode();
+    void position(int length);
     
     char get();
     void put(char c);
     
     int getInt();
-    int peakInt();
-    int peakAheadInt();
     void putInt(int i);
     
     long getLong();
     void putLong(long d);
     
-    char * get(int length);
-    void put(char * c, int length);
+    char* getBuffer() {return currentPos;}
+    void put(char* c, int length);
     
-   
     
 private:
     char *buf;
@@ -49,7 +45,6 @@ private:
     int size;
     int capacity;
     
-    bool insertionMode();
 };
 
 #endif
