@@ -9,7 +9,7 @@
 #include "Builder.h"
 #include <iostream>
 
-Builder::Builder(ByteBuffer &bufParam) : buf(bufParam) {
+Builder::Builder(ByteBuffer& bufParam) : buf(bufParam) {
     std::cout << "Builder Constructor" << std::endl;
 }
 
@@ -21,20 +21,29 @@ Builder::~Builder() {
 // Message Header
 // Message ID
 // Message Length
-void Builder::createHeader(int length, MessageID msgID) {
+void Builder::createHeader(int length, MessageID msgID, time_t timeStamp) {
     buf.putInt((int) msgID);
     buf.putInt(length);
+    buf.putLong((long) timeStamp);
 }
 
 void Builder::buildCaptureImageRequest(DataRequest &msg) {
-   // Check Buffer Has Enough Room
+    // Check Buffer Has Enough Room
     if (buf.remaining() < sizeof(CaptureImageRequest)) {
         //TODO: Throw Exception Here
         return;
     }
     
-    createHeader(sizeof(CaptureImageRequest), I_CaptureImageRequest);
-    buf.putLong(msg.timeStamp);
+    createHeader(sizeof(CaptureImageRequest), msg.iden, msg.timeStamp);
+}
+
+void Builder::buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest &msg) {
+    if (buf.remaining() < sizeof(CaptureImageRequest)) {
+        //TODO: Throw Exception Here
+        return;
+    }
+    
+    createHeader(sizeof(ProccessHealthAndStatusRequest), msg.iden, msg.timeStamp);
 }
 
 // *******************************
@@ -65,10 +74,6 @@ void Builder::buildOSPREStatus(OSPREStatus &msg) {
 }
 
 void Builder::buildPointingRequest(PointingRequest &msg) {
-    
-}
-
-void Builder::buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest &msg) {
     
 }
 

@@ -38,10 +38,10 @@ public:
     
 private:
     //Members
-    ByteBuffer &buf;
+    ByteBuffer& buf;
     
     //Methods
-    void createHeader(int length, MessageID msgID);
+    void createHeader(int length, MessageID msgID, time_t timeStamp) ;
 };
 
 #endif

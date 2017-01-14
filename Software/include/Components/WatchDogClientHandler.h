@@ -22,12 +22,9 @@ public:
     void handleWrite();
     bool isConnected() { return fd != -1 ? true : false; }
     
-    
     void sendStatusRequestMessage();
     
 private:
-    int fd;
-    Selector &sel;
 };
 
 

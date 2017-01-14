@@ -25,7 +25,9 @@ public:
     void handleWrite();
     
 private:
-    int fd;
+    // Hostname and PortNumber for Server Socket
+    std::string hostName;
+    int portNumber;
 };
 
 #endif
