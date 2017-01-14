@@ -13,7 +13,7 @@ WatchDogClientHandler::WatchDogClientHandler(Selector &sel, int fd) : ServiceInt
     std::cout << "WatchDogClientHandler Constructor " << std::endl;
     getSelector().registerService(fd, this);
     getSelector().interestInRead(fd);
-
+    
 }
 
 WatchDogClientHandler::~WatchDogClientHandler() {
@@ -30,6 +30,38 @@ void WatchDogClientHandler::sendStatusRequestMessage() {
 }
 
 
+// Message Handlers
+void WatchDogClientHandler::handleCaptureImageRequest(CaptureImageRequest* msg) {
+    std::cerr << "handleCaptureImageRequest() Not Supported for WatchDogClientHandler" << std::endl;
+}
+
+void WatchDogClientHandler::handleDataRequest(DataRequest* msg) {
+    std::cerr << "handleDataRequest() Not Supported for WatchDogClientHandler" << std::endl;
+}
+void WatchDogClientHandler::handleEphemerisMessage(EphemerisMessage* msg) {
+    std::cerr << "handleEphemerisMessage() Not Supported for WatchDogClientHandler" << std::endl;
+}
+void WatchDogClientHandler::handleImageAdjustment(ImageAdjustment* msg) {
+    std::cerr << "handleImageAdjustment() Not Supported for WatchDogClientHandler" << std::endl;
+}
+void WatchDogClientHandler::handleImageMessage(ImageMessage* msg) {
+    std::cerr << "handleImageMessage() Not Supported for WatchDogClientHandler" << std::endl;
+}
+void WatchDogClientHandler::handleOSPREStatus(OSPREStatus* msg) {
+    std::cerr << "handleOSPREStatus() Not Supported for WatchDogClientHandler" << std::endl;
+}
+void WatchDogClientHandler::handlePointingRequest(PointingRequest* msg) {
+    std::cerr << "handlePointingRequest() Not Supported for WatchDogClientHandler" << std::endl;
+}
+void WatchDogClientHandler::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) {
+    std::cerr << "handleProccessHealthAndStatusRequest() Not Supported for WatchDogClientHandler" << std::endl;
+}
+void WatchDogClientHandler::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
+    std::cerr << "handleProccessHealthAndStatusResponse() Not Supported for WatchDogClientHandler" << std::endl;
+}
+void WatchDogClientHandler::handleSolutionMessage(SolutionMessage* msg){
+    std::cerr << "handleSolutionMessage() Not Supported for WatchDogClientHandler" << std::endl;
+}
 
 
 

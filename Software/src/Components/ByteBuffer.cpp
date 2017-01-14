@@ -52,10 +52,15 @@ int ByteBuffer::position() {
 }
 
 
-void ByteBuffer::position(int written) {
+void ByteBuffer::positionWrite(int written) {
     currentPos += written;
     size -= written;
     
+}
+
+void ByteBuffer::positionRead(int read) {
+    currentPos += read;
+    size += read;
 }
 
 char ByteBuffer::get() {
@@ -88,8 +93,8 @@ int ByteBuffer::getInt() {
         return 0;
     }
     
-    int val = *pos;
-    pos += sizeof (int);
+    int val = *currentPos;
+    currentPos += sizeof (int);
     size -= sizeof (int);
     return val;
 }

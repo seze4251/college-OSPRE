@@ -24,7 +24,8 @@ public:
     int remaining() {return (capacity - size);}
     
     int position();
-    void position(int length);
+    void positionWrite(int length);
+    void positionRead(int length);
     
     char get();
     void put(char c);

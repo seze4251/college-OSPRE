@@ -12,7 +12,7 @@
 #include "ServiceInternal.h"
 
 void ServiceInternal::handleRead() {
-    int length = readbuf.used();
+    int length = readbuf.remaining();
     
     if (length == 0) {
         std::cout << "No Room to read into buffer" << std::endl;
@@ -25,10 +25,60 @@ void ServiceInternal::handleRead() {
     char* buf = readbuf.getBuffer();
     
     int amountRead = ::read(fd, buf, length);
-    
+    readbuf.positionRead(amountRead);
     // Handle All Messages
+    
+    Message* msg = nullptr;
+    
     while (true) {
+        msg = parse.parseMessage();
         
+        switch (msg->iden) {
+            case I_CaptureImageRequest:
+                handleCaptureImageRequest((CaptureImageRequest*) msg);
+                break;
+                
+            case I_DataRequest:
+                handleDataRequest((DataRequest*) msg);
+                break;
+                
+            case I_EphemerisMessage:
+                handleEphemerisMessage((EphemerisMessage*) msg);
+                break;
+                
+            case I_ImageAdjustment:
+                handleImageAdjustment((ImageAdjustment*) msg);
+                break;
+                
+            case I_ImageMessage:
+                handleImageMessage((ImageMessage*) msg);
+                break;
+                
+            case I_OSPREStatus:
+                handleOSPREStatus((OSPREStatus*) msg);
+                break;
+                
+            case I_PointingRequest:
+                handlePointingRequest((PointingRequest*) msg);
+                break;
+                
+            case I_ProccessHealthAndStatusRequest:
+                handleProccessHealthAndStatusRequest((ProccessHealthAndStatusRequest*) msg);
+                break;
+                
+            case I_ProccessHealthAndStatusResponse:
+                handleProccessHealthAndStatusResponse((ProccessHealthAndStatusResponse*) msg);
+                break;
+                
+            case I_SolutionMessage:
+                handleSolutionMessage((SolutionMessage*) msg);
+                break;
+                
+            default:
+                std::cerr << "ServiceInternal::handleRead(): Unknown Message Type Recived: " << msg->iden << std::endl;
+                std::cerr << "Fatal Error: Exiting" << std::endl;
+                exit(-1);
+        }
     }
     
     
@@ -49,7 +99,7 @@ void ServiceInternal::handleRead() {
 }
 
 void ServiceInternal::handleWrite() {
-    int length = writebuf.size();
+    int length = writebuf.used();
     
     if (length == 0) {
         std::cout << "Nothing Left to Write to Socket" << std::endl;
@@ -67,7 +117,7 @@ void ServiceInternal::handleWrite() {
         getSelector().noInterestInWrite(fd);
     } else {
         // Compact Buffer and keep the interest in writing with selector
-        writebuf.position(amountWritten);
+        writebuf.positionWrite(amountWritten);
         writebuf.compact();
         writebuf.flip();
     }

@@ -24,6 +24,18 @@ public:
     void handleRead();
     void handleWrite();
     
+    // Message Handlers
+    virtual void handleCaptureImageRequest(CaptureImageRequest* msg) = 0;
+    virtual void handleDataRequest(DataRequest* msg) = 0;
+    virtual void handleEphemerisMessage(EphemerisMessage* msg) = 0;
+    virtual void handleImageAdjustment(ImageAdjustment* msg) = 0;
+    virtual void handleImageMessage(ImageMessage* msg) = 0;
+    virtual void handleOSPREStatus(OSPREStatus* msg) = 0;
+    virtual void handlePointingRequest(PointingRequest* msg) = 0;
+    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) = 0;
+    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) = 0;
+    virtual void handleSolutionMessage(SolutionMessage* msg) = 0;
+    
 protected:
     int fd;
     ByteBuffer readbuf;

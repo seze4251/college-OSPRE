@@ -10,6 +10,7 @@
 #define MESSAGEID_H
 
 enum MessageID {
+    NA = -1,
     I_CaptureImageRequest = 1,
     I_DataRequest = 2,
     I_EphemerisMessage = 3,

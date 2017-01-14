@@ -38,12 +38,21 @@ void Builder::buildCaptureImageRequest(DataRequest &msg) {
 }
 
 void Builder::buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest &msg) {
-    if (buf.remaining() < sizeof(CaptureImageRequest)) {
+    if (buf.remaining() < sizeof(ProccessHealthAndStatusRequest)) {
         //TODO: Throw Exception Here
         return;
     }
     
     createHeader(sizeof(ProccessHealthAndStatusRequest), msg.iden, msg.timeStamp);
+}
+
+void Builder::buildProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse &msg) {
+    if (buf.remaining() < sizeof(ProccessHealthAndStatusResponse)) {
+        //TODO: Throw Exception Here
+        return;
+    }
+    
+    createHeader(sizeof(ProccessHealthAndStatusResponse), msg.iden, msg.timeStamp);
 }
 
 // *******************************
@@ -77,9 +86,6 @@ void Builder::buildPointingRequest(PointingRequest &msg) {
     
 }
 
-void Builder::buildProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse &msg) {
-    
-}
 
 void Builder::buildSolutionMessage(SolutionMessage &msg) {
     

@@ -23,10 +23,14 @@ public:
     ~Parser();
     
     Message* parseMessage();
+
+private:
+    ByteBuffer &buf;
     
-    // Header
-    
+    //Message Header
+    int messageLength;
     MessageID messageID;
+    time_t timeStamp;
     
     // Messages
     CaptureImageRequest *capture;
@@ -39,13 +43,6 @@ public:
     ProccessHealthAndStatusRequest *request;
     ProccessHealthAndStatusResponse *response;
     SolutionMessage *solution;
-    
-    
-    
-private:
-    // Buffer
-    ByteBuffer &buf;
-    int messageLength;
     
     bool parseHeader();
     Message* parseCaptureImageRequest();
