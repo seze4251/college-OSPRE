@@ -25,6 +25,8 @@ void Builder::createHeader(int length, MessageID msgID, time_t timeStamp) {
     buf.putInt((int) msgID);
     buf.putInt(length);
     buf.putLong((long) timeStamp);
+    std::cout << "Builder: msgID: " << msgID << " length: " << length << " timeStamp: " << timeStamp << std::endl;
+    buf.printBuffer();
 }
 
 void Builder::buildCaptureImageRequest(DataRequest &msg) {
@@ -43,7 +45,7 @@ void Builder::buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest
         return;
     }
     
-    createHeader(sizeof(ProccessHealthAndStatusRequest), msg.iden, msg.timeStamp);
+    createHeader((sizeof(long) + 2*sizeof(int)), msg.iden, msg.timeStamp);
 }
 
 void Builder::buildProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse &msg) {

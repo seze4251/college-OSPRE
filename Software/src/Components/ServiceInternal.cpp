@@ -16,9 +16,11 @@
 int ServiceInternal::parseAndProcessMessages() {
     Message* msg = nullptr;
     int count = 0;
+    // Flip Buffer
+    readbuf.flip();
+    
     while (true) {
         msg = parse.parseMessage();
-        
         if (msg == nullptr) {
             return count;
         }
@@ -80,9 +82,13 @@ int ServiceInternal::parseAndProcessMessages() {
                 closeConnection();
         }
     }
+    //Move Read Position
+    readbuf.compact();
+    writebuf.flip();
 }
 
 void ServiceInternal::handleRead() {
+    std::cout << "Entering ServiceInternal::handleRead()" << std::endl;
     int length = readbuf.remaining();
     
     if (length == 0) {
@@ -98,9 +104,11 @@ void ServiceInternal::handleRead() {
     char* buf = readbuf.getBuffer();
     int amountRead = -1;
     
+
+    
     while (amountRead < 0) {
         amountRead = ::read(fd, buf, length);
-        
+        std::cout << "handleRead(): Amount Read: " << amountRead << std::endl;
         
         // ToDo: Revisit code confiriming MANPAGE on read error conditions
         if (amountRead == 0) {
@@ -121,11 +129,18 @@ void ServiceInternal::handleRead() {
     
     readbuf.positionRead(amountRead);
     
+    ///**************
+    //TEMP
+    readbuf.printBuffer();
+    //TEMP
+    //********************
+    
     // Handle All Messages
     parseAndProcessMessages();
 }
 
 void ServiceInternal::handleWrite() {
+    std::cout << "Entering ServiceInternal::handleWrite()" << std::endl;
     int length = writebuf.used();
     
     if (length == 0) {
@@ -138,7 +153,7 @@ void ServiceInternal::handleWrite() {
     char* buf = writebuf.getBuffer();
     
     int amountWritten = write(fd, buf, length);
-    
+    std::cout << "Wrote " << amountWritten << " Bytes" << std::endl;
     if (amountWritten == length) {
         writebuf.clear();
         getSelector().noInterestInWrite(fd);

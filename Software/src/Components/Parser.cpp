@@ -71,21 +71,26 @@ Parser::~Parser() {
 Message* Parser::parseMessage() {
     // If there is not a full header, do not parse header
     if (buf.used() < (2 * sizeof(int) + sizeof(long)) ) {
+        std::cout << "Parser::parseMessage is bailing in first check" << std::endl;
         return nullptr;
     }
     
     messageID = (MessageID) buf.getInt();
     messageLength = buf.getInt();
     
+    std::cout << "Parser::parseMessage: messageID: " << messageID << " messageLength: " << messageLength << std::endl;
+    
     // If there is a partial Message, rewind buffer and return null ptr
     if (buf.used() < messageLength) {
+        std::cout << "Parser::parseMessage: Partial Message, Rewinding Buffer" << std::endl;
         buf.rewind((2 * sizeof(int) ));
         return nullptr;
     }
     
     timeStamp = (time_t) buf.getLong();
     Message* msg = nullptr;
-    
+    std::cout << "Parser Dump: MessageID: " << messageID << " Message Length: " << messageLength << " timeStamp: " << timeStamp << std::endl;
+    std::cout << "Current Time: " << time(0) << std::endl;
     switch (messageID) {
         case I_CaptureImageRequest:
             msg = parseCaptureImageRequest();
@@ -129,8 +134,10 @@ Message* Parser::parseMessage() {
             
         default:
             std::cerr << "Parser::parseMessage(): Unknown Message Type Recived: " << messageID << std::endl;
-            std::cerr << "Fatal Error: Exiting" << std::endl;
-            // TODO: Throw Error to close connection 
+            std::cerr << "Fatal Error: Closing Connection" << std::endl;
+            // TODO: Throw Error to close connection
+            //Change this exit to throw exception!!
+            exit(-1);
     }
     
     return msg;

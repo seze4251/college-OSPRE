@@ -51,6 +51,14 @@ int Service::openServerSocket(int portNumber) {
         //       rp->ai_socktype, rp->ai_protocol);
         
         sfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+        
+        // Set socket to reuse address
+        int reuse = 1;
+        
+        if (setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0) {
+            perror("setsockopt(SO_REUSEADDR) failed");
+        }
+        
         if (sfd == -1)
             continue;
         

@@ -8,6 +8,7 @@
 
 #include <string>
 #include <iostream>
+#include <arpa/inet.h>
 
 #include "ByteBuffer.h"
 
@@ -93,15 +94,65 @@ void ByteBuffer::put(char c) {
 }
 
 int ByteBuffer::getInt() {
-    if (remaining() < sizeof (int)) {
-        // TODO: throw exception - there is not enough data to extract an int.
+    if (size < sizeof(int)) {
+        // TODO: add throw of exception
+        std::cout << "Should Throw Exception in getInt" << std::endl;
         return 0;
     }
     
-    int val = *currentPos;
-    currentPos += sizeof (int);
-    size -= sizeof (int);
-    return val;
+    int i;
+    //char* ptr = (char*) &i;
+    memcpy(&i, currentPos, sizeof(int));
+    size -= sizeof(int);
+    currentPos += sizeof(int);
+    //i = ntohl(i);
+    return i;
+}
+
+
+
+void ByteBuffer::putInt(int i) {
+    if ((size + sizeof(int)) > capacity) {
+        // TODO: add throw of Exception
+        std::cout << "Should Throw Exception in putInt" << std::endl;
+        return;
+    }
+    
+   // i = htonl(i); // convert from host to network format
+    //char* ptr = (char*) &i;
+    memcpy(currentPos, &i, sizeof(int));
+    size += sizeof(int);
+    currentPos += sizeof(int);
+}
+
+void ByteBuffer::putLong(long i) {
+    if ((size + sizeof(long)) > capacity) {
+        // TODO: add throw of Exception
+        std::cout << "Should Throw Exception in putLong" << std::endl;
+        return;
+    }
+    
+   // i = htonl(i); // convert from host to network format
+    //char* ptr = (char*) &i;
+    memcpy(currentPos, &i, sizeof(long));
+    size += sizeof(long);
+    currentPos += sizeof(long);
+}
+
+long ByteBuffer::getLong() {
+    if (size < sizeof(long)) {
+        // TODO: add throw of exception
+        std::cout << "Should Throw Exception in getLong" << std::endl;
+        return 0;
+    }
+    
+    long i;
+    //char* ptr = (char*) &i;
+    memcpy(&i, currentPos, sizeof(long));
+    size -= sizeof(long);
+    currentPos += sizeof(long);
+   // i = ntohl(i);
+    return i;
 }
 
 // *******************************
@@ -110,24 +161,19 @@ int ByteBuffer::getInt() {
 //
 // ********************************
 
-void ByteBuffer::putInt(int i) {
-    
-}
-
-long ByteBuffer::getLong() {
-    return (long) 0;
-}
-
-void ByteBuffer::putLong(long d) {
-    
-}
-
 
 void ByteBuffer::put(char * c, int length) {
     
 }
 
-
+void ByteBuffer::printBuffer() {
+    std::cout<< "Size: " << size << " Capacity: " << capacity<< " <";
+    
+    for (char* ptr = buf; ptr < currentPos; ptr++) {
+        printf("%x",*ptr);
+    }
+    std::cout << ">"<< std::endl;
+}
 
 
 

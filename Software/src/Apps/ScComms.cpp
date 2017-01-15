@@ -12,6 +12,7 @@
 
 ScComms::ScComms( std::string hostName, int portNumber) : watchDog(getSelector(), hostName, portNumber), accept(getSelector()) {
     setAppl(this);
+   // accept.registerCallback(!!!!!!!!!!);
     std::cout<< " ScComms Constructor called" << std::endl;
     
 }
@@ -30,12 +31,12 @@ bool ScComms::open(std::string hostName, int portNumber, int localPort) {
     if (watchDog.isConnected() == false) {
         watchDog.open();
     }
-    
+ /*
     //Acceptor
     if (accept.isConnected() == false) {
         accept.open(hostName, localPort);
     }
-        
+ */
     
     
     // Other Services
@@ -48,7 +49,9 @@ void getStatus() {
 }
 
 void ScComms::handleTimeout() {
-    
+    if (watchDog.isConnected() == false) {
+        watchDog.open();
+    }
 }
 
 

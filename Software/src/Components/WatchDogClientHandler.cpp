@@ -22,6 +22,10 @@ WatchDogClientHandler::~WatchDogClientHandler() {
 }
 
 void WatchDogClientHandler::sendStatusRequestMessage() {
+    if (isConnected() == false) {
+        return;
+    }
+    
     // Create Message
     ProccessHealthAndStatusRequest* msg = new ProccessHealthAndStatusRequest();
     // Put Message in Write Buffer
@@ -32,6 +36,7 @@ void WatchDogClientHandler::sendStatusRequestMessage() {
 
 void WatchDogClientHandler::closeConnection() {
     if (fd != -1) {
+        getSelector().unregisterService(fd);
         ::close(fd);
         fd = -1;
     }

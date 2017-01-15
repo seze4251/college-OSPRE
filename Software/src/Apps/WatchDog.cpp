@@ -34,7 +34,7 @@ bool WatchDog::open(std::string hostname, int portNumber){
     if(accept.open(hostname, portNumber) == false) {
         
         std::cerr << "Server Socket Failed To Open, WatchDog Exiting" << std::endl;
-        return false;
+        exit(-1);
     }
     std::cout << "Server Socket Opened" << std::endl;
     return true;
@@ -58,7 +58,8 @@ void WatchDog::handleTimeout() {
     if (currentTime > pollTime) {
         // Send Poll
         for (int i = 0; i < MaxClients; i++) {
-            if (client[i] != nullptr) {
+            if ( (client[i] != nullptr) && (client[i]->isConnected() == true)) {
+                std::cout << "Attempting to send status request to client " << i << std::endl;
                 client[i]->sendStatusRequestMessage();
             }
             

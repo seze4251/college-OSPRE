@@ -24,6 +24,7 @@ Server* Server::appl;
 
 Server::Server() {
     std::cout << "Server Constructor called" << std::endl;
+    signal(SIGPIPE, SIG_IGN);
     t_val.tv_sec = 5;
     t_val.tv_usec = 0;
 }

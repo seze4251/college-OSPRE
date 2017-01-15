@@ -39,7 +39,7 @@ public:
     
     char* getBuffer() {return currentPos;}
     void put(char* c, int length);
-    
+    void printBuffer();
     
 private:
     char *buf;

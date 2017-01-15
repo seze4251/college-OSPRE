@@ -21,6 +21,8 @@ WatchDogService::~WatchDogService() {
 bool WatchDogService::open() {
     // Connect to WatchDog
     fd = Service::connectToServer(hostName.c_str(), portNumber);
+    getSelector().registerService(fd, this);
+    getSelector().interestInRead(fd);
     return true;
 }
 
