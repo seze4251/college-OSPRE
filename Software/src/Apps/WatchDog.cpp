@@ -14,7 +14,7 @@
 int WatchDog::clientCount;
 WatchDogClientHandler* WatchDog::client[WatchDog::MaxClients];
 
-WatchDog::WatchDog(int localPort) : accept(getSelector()) {
+WatchDog::WatchDog(int localPort) : accept(getSelector()), pollTime(0) {
     setAppl(this);
     std::cout<< " WatchDog Constructor called" << std::endl;
     accept.registerCallback(WatchDog::handleWatchDogConnections);
@@ -51,5 +51,24 @@ void WatchDog::handleWatchDogConnections(int fd) {
     client[clientCount] = new WatchDogClientHandler(appl->getSelector(), fd);
     clientCount++;
 }
+
+void WatchDog::handleTimeout() {
+    time_t currentTime = time(NULL);
+    
+    if (currentTime > pollTime) {
+        // Send Poll
+        for (int i = 0; i < MaxClients; i++) {
+            if (client[i] != nullptr) {
+                client[i]->sendStatusRequestMessage();
+            }
+            
+        }
+        pollTime = currentTime + 5;
+    }
+}
+
+
+
+
 
 

@@ -18,3 +18,7 @@ ImageProcessor::~ImageProcessor() {
 
 // Connect to Camera Controller
 // Connect to WatchDog
+
+void ImageProcessor::handleTimeout() {
+    
+}

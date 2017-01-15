@@ -17,3 +17,7 @@ CameraController::~CameraController() {
 }
 
 // Connect to WatchDog
+
+void CameraController::handleTimeout() {
+    
+}

@@ -17,7 +17,7 @@ class CameraController : public Server {
 public:
     CameraController(int localPort);
     ~CameraController();
-    
+    virtual void handleTimeout();
 private:
     
 };

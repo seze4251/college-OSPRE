@@ -17,7 +17,7 @@ class ImageProcessor : public Server {
 public:
     ImageProcessor(int localPort);
     ~ImageProcessor();
-    
+    virtual void handleTimeout();
 private:
     
 };

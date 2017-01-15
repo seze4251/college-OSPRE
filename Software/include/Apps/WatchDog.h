@@ -22,11 +22,13 @@ class WatchDog : public Server {
     ~WatchDog();
     static void handleWatchDogConnections(int fd);
     bool open(std::string hostname, int portNumber);
+    virtual void handleTimeout();
     
 private:
     Acceptor accept;
     static WatchDogClientHandler *client[MaxClients];
     static int clientCount;
+    time_t pollTime;
 };
 
 #endif

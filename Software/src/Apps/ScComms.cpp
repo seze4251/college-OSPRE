@@ -47,4 +47,11 @@ void getStatus() {
     
 }
 
+void ScComms::handleTimeout() {
+    
+}
+
+
+
+
 

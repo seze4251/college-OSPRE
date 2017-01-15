@@ -17,3 +17,7 @@ Spacecraft::~Spacecraft() {
 }
 
 // Connect to ScComms
+
+void Spacecraft::handleTimeout() {
+    
+}

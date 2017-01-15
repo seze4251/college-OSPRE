@@ -22,7 +22,7 @@ public:
     ~ScComms();
     bool open(std::string hostName, int portNumber, int localPort);
     void getStatus();
-    
+    virtual void handleTimeout();
 private:
     int fd;
     Acceptor accept;

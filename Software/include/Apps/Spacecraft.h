@@ -17,7 +17,7 @@ class Spacecraft : public Server {
 public:
     Spacecraft(int localPort);
     ~Spacecraft();
-    
+    virtual void handleTimeout();
 private:
     
 };

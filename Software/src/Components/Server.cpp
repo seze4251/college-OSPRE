@@ -24,6 +24,8 @@ Server* Server::appl;
 
 Server::Server() {
     std::cout << "Server Constructor called" << std::endl;
+    t_val.tv_sec = 5;
+    t_val.tv_usec = 0;
 }
 
 Server::~Server() {
@@ -48,15 +50,12 @@ void Server::handleTimeout() {
 }
 
 ErrorCode Server::run() {
-    
     bool terminateFlag = false;
+    timeval tempTimeVal;
+    
     while (terminateFlag == false) {
-        timeval t;
-        
-        t.tv_sec = 5;
-        t.tv_usec = 0;
-        
-        if (sel.select(&t) == -1) {
+        tempTimeVal = t_val;
+        if (sel.select(&tempTimeVal) == -1) {
             std::cerr << "Server::run() select() error, exiting" << std::endl;
             break;
         }

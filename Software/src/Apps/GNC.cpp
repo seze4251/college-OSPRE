@@ -18,3 +18,7 @@ GNC::~GNC() {
 
 // Connect to Image Processor
 // Connect to WatchDog
+
+void GNC::handleTimeout() {
+    
+}

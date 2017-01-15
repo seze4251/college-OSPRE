@@ -40,6 +40,16 @@ void WatchDogClientHandler::closeConnection() {
 }
 
 // Message Handlers
+void WatchDogClientHandler::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
+    std::cerr << "handleProccessHealthAndStatusResponse() Not Supported for WatchDogClientHandler" << std::endl;
+}
+
+// *******************************
+//
+// Message Handler Defualt Behavior Below
+//
+// ********************************
+
 void WatchDogClientHandler::handleCaptureImageRequest(CaptureImageRequest* msg) {
     std::cerr << "handleCaptureImageRequest() Not Supported for WatchDogClientHandler" << std::endl;
 }
@@ -65,9 +75,7 @@ void WatchDogClientHandler::handlePointingRequest(PointingRequest* msg) {
 void WatchDogClientHandler::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) {
     std::cerr << "handleProccessHealthAndStatusRequest() Not Supported for WatchDogClientHandler" << std::endl;
 }
-void WatchDogClientHandler::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
-    std::cerr << "handleProccessHealthAndStatusResponse() Not Supported for WatchDogClientHandler" << std::endl;
-}
+
 void WatchDogClientHandler::handleSolutionMessage(SolutionMessage* msg){
     std::cerr << "handleSolutionMessage() Not Supported for WatchDogClientHandler" << std::endl;
 }

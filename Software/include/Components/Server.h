@@ -12,7 +12,6 @@
 
 #include "ErrorCode.h"
 #include "Selector.h"
-#include "TimeoutManager.h"
 
 class Server {
 public:
@@ -31,11 +30,10 @@ public:
 protected:
     static void setAppl(Server* srv);
     static Server* appl;
-    
+    virtual void handleTimeout();
+    timeval t_val;
 private:
     Selector sel;
-    TimeoutManager timeout;
-    void handleTimeout();
 };
 
 #endif

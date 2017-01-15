@@ -16,7 +16,7 @@ class GNC : public Server {
 public:
     GNC(int localPort);
     ~GNC();
-    
+    virtual void handleTimeout();
 private:
     
 };
