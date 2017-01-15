@@ -18,9 +18,10 @@ Builder::~Builder() {
 }
 
 // Current Message Header
-// Message Header
-// Message ID
-// Message Length
+// int Message ID
+// int Message Length
+// int Time Stamp
+
 void Builder::createHeader(int length, MessageID msgID, time_t timeStamp) {
     buf.putInt((int) msgID);
     buf.putInt(length);
@@ -28,6 +29,32 @@ void Builder::createHeader(int length, MessageID msgID, time_t timeStamp) {
     std::cout << "Builder: msgID: " << msgID << " length: " << length << " timeStamp: " << timeStamp << std::endl;
     buf.printBuffer();
 }
+
+void Builder::buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest &msg) {
+    if (buf.remaining() < (sizeof(long) + 2*sizeof(int))) {
+        //TODO: Throw Exception Here
+        std::cout << "Builder::buildProccessHealthAndStatusRequest Should Throw Exception here!, need to implement" << std::endl;
+        return;
+    }
+    
+    createHeader((sizeof(long) + 2*sizeof(int)), msg.iden, msg.timeStamp);
+}
+
+void Builder::buildProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse &msg) {
+    if (buf.remaining() < (sizeof(long) + 2*sizeof(int))) {
+        //TODO: Throw Exception Here
+        std::cout << "Builder::buildProccessHealthAndStatusResponse: Should Throw Exception here!, need to implement" << std::endl;
+        return;
+    }
+    
+    createHeader((sizeof(long) + 2*sizeof(int)), msg.iden, msg.timeStamp);
+}
+
+// *******************************
+//
+// TODO: IMPLEMENT METHODS BELOW
+//
+// ********************************
 
 void Builder::buildCaptureImageRequest(DataRequest &msg) {
     // Check Buffer Has Enough Room
@@ -38,31 +65,6 @@ void Builder::buildCaptureImageRequest(DataRequest &msg) {
     
     createHeader(sizeof(CaptureImageRequest), msg.iden, msg.timeStamp);
 }
-
-void Builder::buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest &msg) {
-    if (buf.remaining() < sizeof(ProccessHealthAndStatusRequest)) {
-        //TODO: Throw Exception Here
-        return;
-    }
-    
-    createHeader((sizeof(long) + 2*sizeof(int)), msg.iden, msg.timeStamp);
-}
-
-void Builder::buildProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse &msg) {
-    if (buf.remaining() < sizeof(ProccessHealthAndStatusResponse)) {
-        //TODO: Throw Exception Here
-        return;
-    }
-    
-    createHeader(sizeof(ProccessHealthAndStatusResponse), msg.iden, msg.timeStamp);
-}
-
-// *******************************
-//
-// TODO: IMPLEMENT METHODS BELOW
-//
-// ********************************
-
 
 void Builder::buildDataRequest(DataRequest &msg) {
     

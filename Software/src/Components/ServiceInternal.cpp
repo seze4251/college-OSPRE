@@ -6,7 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-#include <iostream>
+
 #include <unistd.h>
 #include <errno.h>
 #include <stdio.h>
@@ -62,6 +62,7 @@ int ServiceInternal::parseAndProcessMessages() {
                 break;
                 
             case I_ProccessHealthAndStatusRequest:
+                std::cout << "Entering handleProccessHealthAndStatusRequest" << std::endl;
                 handleProccessHealthAndStatusRequest((ProccessHealthAndStatusRequest*) msg);
                 count++;
                 break;
@@ -136,7 +137,8 @@ void ServiceInternal::handleRead() {
     //********************
     
     // Handle All Messages
-    parseAndProcessMessages();
+    int messagesParsed = parseAndProcessMessages();
+    std::cout << "ServiceInternal::handleRead(): messagesParsed: " << messagesParsed << std::endl;
 }
 
 void ServiceInternal::handleWrite() {

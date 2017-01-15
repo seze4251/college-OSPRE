@@ -121,6 +121,7 @@ Message* Parser::parseMessage() {
             break;
             
         case I_ProccessHealthAndStatusRequest:
+            std::cout << "Entering parseProccessHealthAndStatusRequest" << std::endl;
             msg = parseProccessHealthAndStatusRequest();
             break;
             

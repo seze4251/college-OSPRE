@@ -22,6 +22,7 @@ public:
     virtual void closeConnection();
     
     void close();
+    void sendStatusResponseMessage();
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg);

@@ -36,9 +36,25 @@ void WatchDogService::closeConnection() {
     writebuf.clear();
 }
 
+void WatchDogService::sendStatusResponseMessage() {
+    if (isConnected() == false) {
+        return;
+    }
+    
+    // Create Message
+    ProccessHealthAndStatusResponse* msg = new ProccessHealthAndStatusResponse();
+    // Put Message in Write Buffer
+    build.buildProccessHealthAndStatusResponse(*msg);
+    // Register Intrest in Write
+    getSelector().interestInWrite(fd);
+}
+
+
 // Message Handlers
 void WatchDogService::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) {
-    std::cout << "Process Health and Status Response Received" << std::endl;
+    std::cout << "WatchDogService::handleProccessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+    sendStatusResponseMessage();
+    
 }
 
 // *******************************

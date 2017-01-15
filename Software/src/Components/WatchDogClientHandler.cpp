@@ -46,7 +46,7 @@ void WatchDogClientHandler::closeConnection() {
 
 // Message Handlers
 void WatchDogClientHandler::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
-    std::cerr << "handleProccessHealthAndStatusResponse() Not Supported for WatchDogClientHandler" << std::endl;
+    std::cerr << "handleProccessHealthAndStatusResponse() Recived on fd: " << fd << std::endl;
 }
 
 // *******************************
