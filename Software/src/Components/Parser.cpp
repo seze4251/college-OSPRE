@@ -79,9 +79,9 @@ Message* Parser::parseMessage() {
     messageLength = buf.getInt();
     
     std::cout << "Parser::parseMessage: messageID: " << messageID << " messageLength: " << messageLength << std::endl;
-    
+    std::cout << "buf.used: " << buf.used() << std::endl;
     // If there is a partial Message, rewind buffer and return null ptr
-    if (buf.used() < messageLength) {
+    if (buf.used() < (messageLength - 2 * sizeof(int)) ) {
         std::cout << "Parser::parseMessage: Partial Message, Rewinding Buffer" << std::endl;
         buf.rewind((2 * sizeof(int) ));
         return nullptr;
