@@ -162,7 +162,7 @@ Message* Parser::parseProccessHealthAndStatusRequest() {
 
 Message* Parser::parseProccessHealthAndStatusResponse() {
     if (response == nullptr) {
-        response = new ProccessHealthAndStatusResponse();
+        response = new ProccessHealthAndStatusResponse(P_NA);
     }
     // *******************************
     //
@@ -176,6 +176,7 @@ Message* Parser::parseProccessHealthAndStatusResponse() {
     
     response->timeStamp = timeStamp;
     response->iden = messageID;
+    response->p_ID = (ProcessID) buf.getInt();
     return response;
 }
 

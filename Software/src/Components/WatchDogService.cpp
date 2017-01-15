@@ -12,6 +12,7 @@
 
 WatchDogService::WatchDogService(Selector &sel, std::string hostName, int portNumber) : ServiceInternal(sel), hostName(hostName), portNumber(portNumber) {
     std::cout << "WatchDogService Constructor called" << std::endl;
+    p_ID = P_NA;
 }
 
 WatchDogService::~WatchDogService() {
@@ -42,7 +43,7 @@ void WatchDogService::sendStatusResponseMessage() {
     }
     
     // Create Message
-    ProccessHealthAndStatusResponse* msg = new ProccessHealthAndStatusResponse();
+    ProccessHealthAndStatusResponse* msg = new ProccessHealthAndStatusResponse(p_ID);
     // Put Message in Write Buffer
     build.buildProccessHealthAndStatusResponse(*msg);
     // Register Intrest in Write

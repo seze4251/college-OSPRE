@@ -8,10 +8,18 @@
 #include <unistd.h>
 #include <iostream>
 
+#include "GNC.h"
+
 int main(int argc, char **argv) {
-    for (int i = 0; i<2; i++) {
-        std::cout << "GNC Main is actually being used ... YAY!" << std::endl;
-        sleep(10);
-    }
+    int watchDogPort = 5000;
+    std::string host("localhost");
+    
+    std::cout << "GNC Application Starting\n";
+    GNC gnc(host, watchDogPort);
+    
+    std::cout << "GNC Initalized\n";
+    gnc.open();
+    gnc.run();
+    std::cout << "GNC Application Terminating\n";
     return 0;
 }

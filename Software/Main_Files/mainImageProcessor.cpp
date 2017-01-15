@@ -8,10 +8,19 @@
 #include <unistd.h>
 #include <iostream>
 
+#include "ImageProcessor.h"
+
 int main(int argc, char **argv) {
-    for (int i = 0; i<2; i++) {
-        std::cout << "Image Processor Main is actually being used ... YAY!" << std::endl;
-        sleep(10);
-    }
+    int serverPort = 8000;
+    int watchDogPort = 5000;
+    std::string host("localhost");
+    
+    std::cout << "ImageProcessor Application Starting\n";
+    ImageProcessor proc(host, serverPort, watchDogPort);
+    
+    std::cout << "ImageProcessor Initalized\n";
+    proc.open();
+    proc.run();
+    std::cout << "ImageProcessor Application Terminating\n";
     return 0;
 }

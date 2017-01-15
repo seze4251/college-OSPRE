@@ -8,10 +8,19 @@
 #include <unistd.h>
 #include <iostream>
 
+#include "CameraController.h"
+
 int main(int argc, char **argv) {
-    for (int i = 0; i<2; i++) {
-        std::cout << "CameraController Main is actually being used ... YAY!" << std::endl;
-        sleep(10);
-    }
+    int serverPort = 9000;
+    int watchDogPort = 5000;
+    std::string host("localhost");
+    
+    std::cout << "CameraController Application Starting\n";
+    CameraController controller(host, serverPort, watchDogPort);
+    
+    std::cout << "CameraController Initalized\n";
+    controller.open();
+    controller.run();
+    std::cout << "CameraController Application Terminating\n";
     return 0;
 }

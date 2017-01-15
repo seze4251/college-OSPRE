@@ -5,16 +5,15 @@
 //  Created by Seth on 11/10/2016.
 //  Copyright © 2016 Seth. All rights reserved.
 //
-
-#include "WatchDog.h"
 #include <iostream>
 #include <unistd.h>
 
+#include "WatchDog.h"
 
 int WatchDog::clientCount;
 WatchDogClientHandler* WatchDog::client[WatchDog::MaxClients];
 
-WatchDog::WatchDog(int localPort) : accept(getSelector()), pollTime(0) {
+WatchDog::WatchDog(std::string hostName, int localPort) : accept(getSelector()), pollTime(0), hostName(hostName), localPort(localPort) {
     setAppl(this);
     std::cout<< " WatchDog Constructor called" << std::endl;
     accept.registerCallback(WatchDog::handleWatchDogConnections);
@@ -22,6 +21,7 @@ WatchDog::WatchDog(int localPort) : accept(getSelector()), pollTime(0) {
     for (int i = 0; i < MaxClients; i++) {
         client[i] = nullptr;
     }
+    p_ID = P_WatchDog;
 }
 
 WatchDog::~WatchDog() {
@@ -30,13 +30,17 @@ WatchDog::~WatchDog() {
 
 // Connect to no processes
 // Accept ScComms, ImageProcessor, GNC, CameraController
-bool WatchDog::open(std::string hostname, int portNumber){
-    if(accept.open(hostname, portNumber) == false) {
-        
-        std::cerr << "Server Socket Failed To Open, WatchDog Exiting" << std::endl;
+bool WatchDog::open(){
+    if (accept.isConnected() == true) {
+        return true;
+    }
+    
+    if(accept.open(hostName, localPort) == false) {
+        std::cerr << "Watch Dog Server Socket Failed To Open, WatchDog Exiting" << std::endl;
         exit(-1);
     }
-    std::cout << "Server Socket Opened" << std::endl;
+        
+    std::cout << "WatchDog Server Socket Opened" << std::endl;
     return true;
 }
 

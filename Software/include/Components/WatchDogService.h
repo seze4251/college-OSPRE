@@ -12,6 +12,7 @@
 #define WATCHDOGSERVICE_H
 
 #include "ServiceInternal.h"
+#include "ProcessID.h"
 
 class WatchDogService : public ServiceInternal {
 public:
@@ -21,7 +22,6 @@ public:
     virtual bool isConnected() { return fd != -1 ? true : false; }
     virtual void closeConnection();
     
-    void close();
     void sendStatusResponseMessage();
     
     // Message Handlers
@@ -35,6 +35,9 @@ public:
     virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg);
     virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg);
     virtual void handleSolutionMessage(SolutionMessage* msg);
+    
+    // Added Process ID
+    ProcessID p_ID;
     
 private:
     // Hostname and PortNumber for Server Socket

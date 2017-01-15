@@ -41,13 +41,14 @@ void Builder::buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest
 }
 
 void Builder::buildProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse &msg) {
-    if (buf.remaining() < (sizeof(long) + 2*sizeof(int))) {
+    if (buf.remaining() < (sizeof(long) + 3*sizeof(int))) {
         //TODO: Throw Exception Here
         std::cout << "Builder::buildProccessHealthAndStatusResponse: Should Throw Exception here!, need to implement" << std::endl;
         return;
     }
     
-    createHeader((sizeof(long) + 2*sizeof(int)), msg.iden, msg.timeStamp);
+    createHeader((sizeof(long) + 3*sizeof(int)), msg.iden, msg.timeStamp);
+    buf.putInt((int) msg.p_ID);
 }
 
 // *******************************

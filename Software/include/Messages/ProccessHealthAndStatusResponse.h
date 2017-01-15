@@ -11,11 +11,13 @@
 #define PROCCESSHEALTHANDSTATUSRESPONSE_H
 
 #include "Message.h"
+#include "ProcessID.h"
 
 class ProccessHealthAndStatusResponse : public Message {
 public:
-        ProccessHealthAndStatusResponse() : Message(getMessageID(), time(0)) {}
+        ProccessHealthAndStatusResponse(ProcessID p_ID) : Message(getMessageID(), time(0)), p_ID(p_ID) {}
     MessageID getMessageID() {return I_ProccessHealthAndStatusResponse; }
+    ProcessID p_ID;
 };
 
 #endif

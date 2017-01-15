@@ -5,10 +5,11 @@
 //  Created by Seth on 11/27/2016.
 //  Copyright © 2016 Seth. All rights reserved.
 //
-
-#include <WatchDogClientHandler.h>
 #include <iostream>
-#include <unistd.h> 
+#include <unistd.h>
+
+#include "WatchDogClientHandler.h"
+#include "ProcessID.h"
 
 WatchDogClientHandler::WatchDogClientHandler(Selector &sel, int fd) : ServiceInternal(sel, fd) {
     std::cout << "WatchDogClientHandler Constructor " << std::endl;
@@ -46,7 +47,30 @@ void WatchDogClientHandler::closeConnection() {
 
 // Message Handlers
 void WatchDogClientHandler::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
-    std::cerr << "handleProccessHealthAndStatusResponse() Recived on fd: " << fd << std::endl;
+    //Determine which client sent the message and print that message has been recived
+    switch (msg->p_ID) {
+        case P_CameraController:
+            std::cout << "WatchDog: Health and Status Response Recived from Camera Controller" << std::endl;
+            break;
+            
+        case P_ScComms:
+            std::cout << "WatchDog: Health and Status Response Recived from ScComms" << std::endl;
+            break;
+            
+        case P_GNC:
+            std::cout << "WatchDog: Health and Status Response Recived from GNC" << std::endl;
+            break;
+            
+        case P_ImageProcessor:
+            std::cout << "WatchDog: Health and Status Response Recived from ImageProcessor" << std::endl;
+            break;
+            
+        default:
+            std::cerr << "WatchDogClientHandler::handleProccessHealthAndStatusResponse: Incorrect Process ID, WatchDog Not Monoriting Process ID: " << msg->p_ID << std::endl;
+            std::cerr << "Closing Connection" << std::endl;
+            closeConnection();
+    }
+    
 }
 
 // *******************************

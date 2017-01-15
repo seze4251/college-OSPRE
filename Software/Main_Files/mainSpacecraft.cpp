@@ -8,10 +8,18 @@
 #include <unistd.h>
 #include <iostream>
 
+#include "Spacecraft.h"
+
 int main(int argc, char **argv) {
-    for (int i = 0; i<2; i++) {
-        std::cout << "Spacecraft Main is actually being used ... YAY!" << std::endl;
-    sleep(10);
-}
+    int serverPort = 6000;
+    std::string host("localhost");
+    
+    std::cout << "Spacecraft Application Starting\n";
+    Spacecraft sc(host, serverPort);
+    
+    std::cout << "Spacecraft Initalized\n";
+    sc.open();
+    sc.run();
+    std::cout << "Spacecraft Application Terminating\n";
     return 0;
 }

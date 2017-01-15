@@ -10,15 +10,24 @@
 #ifndef GNC_H
 #define GNC_H
 
+#include <string>
+
 #include "Server.h"
+#include "WatchDogService.h"
+#include "ProcessID.h"
 
 class GNC : public Server {
 public:
-    GNC(int localPort);
+    GNC(std::string hostName, int watchDogPort);
     ~GNC();
     virtual void handleTimeout();
-private:
+    bool open();
     
+    ProcessID p_ID;
+private:
+    time_t pollTime;
+    WatchDogService watchDog;
 };
 
 #endif
+

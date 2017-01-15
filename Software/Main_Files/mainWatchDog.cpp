@@ -7,13 +7,18 @@
 
 #include <unistd.h>
 #include <iostream>
+
 #include "WatchDog.h"
 
 int main(int argc, char **argv) {
+    int serverPort = 5000;
+    std::string host("localhost");
+    
     std::cout << "WatchDog Application Starting\n";
-    WatchDog dog(5000);
+    WatchDog dog(host, serverPort);
+    
     std::cout << "WatchDog Initalized\n";
-    dog.open(std::string("localhost"), 5000);
+    dog.open();
     dog.run();
     std::cout << "WatchDog Application Terminating\n";
     return 0;

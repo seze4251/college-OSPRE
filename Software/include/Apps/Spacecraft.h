@@ -10,16 +10,24 @@
 #ifndef SPACECRAFT_H
 #define SPACECRAFT_H
 
+#include <string>
+
 #include "Server.h"
-#include "ErrorCode.h"
+#include "ProcessID.h"
 
 class Spacecraft : public Server {
 public:
-    Spacecraft(int localPort);
+    Spacecraft(std::string hostName, int localPort);
     ~Spacecraft();
     virtual void handleTimeout();
-private:
+    bool open();
     
+    ProcessID p_ID;
+private:
+    time_t pollTime;
+    std::string hostName;
+    int localPort;
 };
 
 #endif
+

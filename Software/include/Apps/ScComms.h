@@ -10,23 +10,30 @@
 #ifndef SCCOMMS_H
 #define SCCOMMS_H
 
+#include <string>
+
 #include "Server.h"
-#include "ErrorCode.h"
 #include "WatchDogService.h"
 #include "Acceptor.h"
-#include <string>
+#include "ProcessID.h"
+
 
 class ScComms : public Server {
 public:
-    ScComms(std::string hostName, int portNumber);
+    ScComms(std::string hostName, int localPort, int watchDogPort);
     ~ScComms();
-    bool open(std::string hostName, int portNumber, int localPort);
-    void getStatus();
+    bool open();
     virtual void handleTimeout();
+    static void handleScCommsConnections(int fd);
+    
+    ProcessID p_ID;
 private:
-    int fd;
     Acceptor accept;
     WatchDogService watchDog;
+    
+    //Acceptor Port and Host
+    std::string hostName;
+    int localPort;
 };
 
 #endif
