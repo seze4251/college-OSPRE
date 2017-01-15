@@ -10,7 +10,7 @@
 #include "ImageProcessor.h"
 #include "Service.h"
 
-ImageProcessor::ImageProcessor(std::string hostName, int portNumber, int watchDogPort) : watchDog(getSelector(), hostName, watchDogPort), accept(getSelector()), pollTime(0), hostName(hostName), localPort(localPort) {
+ImageProcessor::ImageProcessor(std::string hostName, int localPort, int watchDogPort) : watchDog(getSelector(), hostName, watchDogPort), accept(getSelector()), pollTime(0), hostName(hostName), localPort(localPort) {
     std::cout<< "ImageProcessor Constructor called" << std::endl;
     setAppl(this);
     accept.registerCallback(ImageProcessor::handleImageProcessorConnections);
