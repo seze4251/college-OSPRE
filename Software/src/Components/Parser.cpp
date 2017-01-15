@@ -80,6 +80,7 @@ Message* Parser::parseMessage() {
     
     std::cout << "Parser::parseMessage: messageID: " << messageID << " messageLength: " << messageLength << std::endl;
     std::cout << "buf.used: " << buf.used() << std::endl;
+    
     // If there is a partial Message, rewind buffer and return null ptr
     if (buf.used() < (messageLength - 2 * sizeof(int)) ) {
         std::cout << "Parser::parseMessage: Partial Message, Rewinding Buffer" << std::endl;
@@ -169,7 +170,7 @@ Message* Parser::parseProccessHealthAndStatusResponse() {
     // TODO: Change Size check when message gets completed
     //
     // ********************************
-    if (messageLength != (2 * sizeof(int) + sizeof(time_t) ) ) {
+    if (messageLength != (3 * sizeof(int) + sizeof(time_t) ) ) {
         std::cerr << "Parser::parseProcessHealthAndStatusRequest(): Message Length Incorrect, length = " << messageLength << std::endl;
         return nullptr;
     }
