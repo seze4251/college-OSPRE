@@ -24,9 +24,8 @@ bool WatchDogService::open() {
     return true;
 }
 
-
-void WatchDogService::close() {
-    std::cout << "WatchDogService close() " << std::endl;
+void WatchDogService::closeConnection() {
+    //std::cout << "WatchDogService closeConnection() " << std::endl;
     if (fd != -1) {
         ::close(fd);
         fd = -1;

@@ -8,94 +8,121 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <errno.h>
+#include <stdio.h>
 
 #include "ServiceInternal.h"
 
-void ServiceInternal::handleRead() {
-    int length = readbuf.remaining();
-    
-    if (length == 0) {
-        std::cout << "No Room to read into buffer" << std::endl;
-        // TODO:: Throw Exception
-        // Process Messages!!1
-        // Errorcase: Buffer to small to handle size of 1 message
-        return;
-    }
-    
-    char* buf = readbuf.getBuffer();
-    
-    int amountRead = ::read(fd, buf, length);
-    readbuf.positionRead(amountRead);
-    // Handle All Messages
-    
+int ServiceInternal::parseAndProcessMessages() {
     Message* msg = nullptr;
-    
+    int count = 0;
     while (true) {
         msg = parse.parseMessage();
+        
+        if (msg == nullptr) {
+            return count;
+        }
         
         switch (msg->iden) {
             case I_CaptureImageRequest:
                 handleCaptureImageRequest((CaptureImageRequest*) msg);
+                count++;
                 break;
                 
             case I_DataRequest:
                 handleDataRequest((DataRequest*) msg);
+                count++;
                 break;
                 
             case I_EphemerisMessage:
                 handleEphemerisMessage((EphemerisMessage*) msg);
+                count++;
                 break;
                 
             case I_ImageAdjustment:
                 handleImageAdjustment((ImageAdjustment*) msg);
+                count++;
                 break;
                 
             case I_ImageMessage:
                 handleImageMessage((ImageMessage*) msg);
+                count++;
                 break;
                 
             case I_OSPREStatus:
                 handleOSPREStatus((OSPREStatus*) msg);
+                count++;
                 break;
                 
             case I_PointingRequest:
                 handlePointingRequest((PointingRequest*) msg);
+                count++;
                 break;
                 
             case I_ProccessHealthAndStatusRequest:
                 handleProccessHealthAndStatusRequest((ProccessHealthAndStatusRequest*) msg);
+                count++;
                 break;
                 
             case I_ProccessHealthAndStatusResponse:
                 handleProccessHealthAndStatusResponse((ProccessHealthAndStatusResponse*) msg);
+                count++;
                 break;
                 
             case I_SolutionMessage:
                 handleSolutionMessage((SolutionMessage*) msg);
+                count++;
                 break;
                 
             default:
                 std::cerr << "ServiceInternal::handleRead(): Unknown Message Type Recived: " << msg->iden << std::endl;
                 std::cerr << "Fatal Error: Exiting" << std::endl;
-                exit(-1);
+                closeConnection();
+        }
+    }
+}
+
+void ServiceInternal::handleRead() {
+    int length = readbuf.remaining();
+    
+    if (length == 0) {
+        std::cout << "ServiceInternal::handleRead(): No room to read into buffer" << std::endl;
+        
+        if (parseAndProcessMessages() == 0) {
+            std::cerr << "ServiceInternal::handleRead(): Message is big for buffer" << std::endl;
+            closeConnection();
+        }
+        return;
+    }
+    
+    char* buf = readbuf.getBuffer();
+    int amountRead = -1;
+    
+    while (amountRead < 0) {
+        amountRead = ::read(fd, buf, length);
+        
+        
+        // ToDo: Revisit code confiriming MANPAGE on read error conditions
+        if (amountRead == 0) {
+            std::cerr << "ServiceInternal::handleRead(): read() returned 0, closing connection" << std::endl;
+            closeConnection();
+            return;
+            
+        } else if (amountRead == -1) {
+            if (errno == EINTR) {
+                continue;
+            } else {
+                perror("Error: ");
+                closeConnection();
+                return;
+            }
         }
     }
     
+    readbuf.positionRead(amountRead);
     
-    // determine if you have a complete message
-    // if yes, pass it to the parser to extract that message
-    // keep extracting messages until you've extracted all of them.
-    // protected methods of internal service
-    
-    // ^^ Belongs in Internal Service
-    // All Below belongs in internal Service
-    // Belongs in WatchDogService
-    // for each message do what you are supposed to do with that message.
-    // Virtual Method of InternalService
-    
-    // Do I have data to write!
-    // Tell Selector that I am interested in writing
-    
+    // Handle All Messages
+    parseAndProcessMessages();
 }
 
 void ServiceInternal::handleWrite() {

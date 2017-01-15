@@ -8,6 +8,7 @@
 
 #include <WatchDogClientHandler.h>
 #include <iostream>
+#include <unistd.h> 
 
 WatchDogClientHandler::WatchDogClientHandler(Selector &sel, int fd) : ServiceInternal(sel, fd) {
     std::cout << "WatchDogClientHandler Constructor " << std::endl;
@@ -29,6 +30,14 @@ void WatchDogClientHandler::sendStatusRequestMessage() {
     getSelector().interestInWrite(fd);
 }
 
+void WatchDogClientHandler::closeConnection() {
+    if (fd != -1) {
+        ::close(fd);
+        fd = -1;
+    }
+    readbuf.clear();
+    writebuf.clear();
+}
 
 // Message Handlers
 void WatchDogClientHandler::handleCaptureImageRequest(CaptureImageRequest* msg) {

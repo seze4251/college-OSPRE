@@ -63,6 +63,11 @@ void ByteBuffer::positionRead(int read) {
     size += read;
 }
 
+void ByteBuffer::rewind(int length) {
+    currentPos -= length;
+    size += length;
+}
+
 char ByteBuffer::get() {
     if (size == 0) {
         // TODO: add throw of Exception

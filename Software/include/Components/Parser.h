@@ -44,7 +44,7 @@ private:
     ProccessHealthAndStatusResponse *response;
     SolutionMessage *solution;
     
-    bool parseHeader();
+    // Message Parser Methods
     Message* parseCaptureImageRequest();
     Message* parseDataRequest();
     Message* parseEphemerisMessage();

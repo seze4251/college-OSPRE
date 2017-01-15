@@ -26,6 +26,7 @@ public:
     int position();
     void positionWrite(int length);
     void positionRead(int length);
+    void rewind(int length);
     
     char get();
     void put(char c);

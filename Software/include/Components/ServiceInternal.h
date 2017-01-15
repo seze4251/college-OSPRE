@@ -44,6 +44,7 @@ protected:
     Parser parse;
 
 private:
+    int parseAndProcessMessages();
 
     
 };

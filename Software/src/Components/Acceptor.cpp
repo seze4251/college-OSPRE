@@ -9,8 +9,9 @@
 #include "Acceptor.h"
 #include <iostream>
 #include <sys/ioctl.h>
-#include <sys/types.h>       
+#include <sys/types.h>
 #include <sys/socket.h>
+#include <unistd.h> 
 
 Acceptor::Acceptor(Selector &sel) : Service(sel) {
     std::cout << "Acceptor Constructor" << std::endl;
@@ -41,6 +42,13 @@ bool Acceptor::open(std::string hostName, int portNumber) {
 void Acceptor::registerCallback(void (*callbackFunc)(int)) {
     std::cout << "Acceptor registerCallback()" << std::endl;
     callBack = callbackFunc;
+}
+
+void Acceptor::closeConnection() {
+    if (fd != -1) {
+        ::close(fd);
+        fd = -1;
+    }
 }
 
 void Acceptor::handleRead() {

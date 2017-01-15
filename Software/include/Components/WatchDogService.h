@@ -19,6 +19,8 @@ public:
     ~WatchDogService();
     bool open();
     virtual bool isConnected() { return fd != -1 ? true : false; }
+    virtual void closeConnection();
+    
     void close();
     
     // Message Handlers

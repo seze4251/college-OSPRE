@@ -19,6 +19,7 @@ public:
     virtual void handleRead() = 0;
     virtual void handleWrite() = 0;
     virtual bool isConnected() = 0;
+    virtual void closeConnection() = 0;
     Selector& getSelector() { return sel; }
     
     int openServerSocket(int portNumber);

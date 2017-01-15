@@ -68,27 +68,24 @@ Parser::~Parser() {
     }
 }
 
-bool Parser::parseHeader() {
+Message* Parser::parseMessage() {
     // If there is not a full header, do not parse header
-    if (buf.remaining() < (2 * sizeof(int) + sizeof(long)) ) {
-        return false;
+    if (buf.used() < (2 * sizeof(int) + sizeof(long)) ) {
+        return nullptr;
     }
+    
     messageID = (MessageID) buf.getInt();
     messageLength = buf.getInt();
+    
+    // If there is a partial Message, rewind buffer and return null ptr
+    if (buf.used() < messageLength) {
+        buf.rewind((2 * sizeof(int) ));
+        return nullptr;
+    }
+    
     timeStamp = (time_t) buf.getLong();
-    return true;
-}
-
-Message* Parser::parseMessage() {
-    if(!parseHeader()) {
-        return nullptr;
-    }
-    
-    if (buf.remaining() < messageLength) {
-        return nullptr;
-    }
-    
     Message* msg = nullptr;
+    
     switch (messageID) {
         case I_CaptureImageRequest:
             msg = parseCaptureImageRequest();
@@ -133,7 +130,7 @@ Message* Parser::parseMessage() {
         default:
             std::cerr << "Parser::parseMessage(): Unknown Message Type Recived: " << messageID << std::endl;
             std::cerr << "Fatal Error: Exiting" << std::endl;
-            exit(-1);
+            // TODO: Throw Error to close connection 
     }
     
     return msg;
