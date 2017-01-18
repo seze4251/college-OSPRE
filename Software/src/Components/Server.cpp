@@ -6,7 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-#include "Server.h"
+
 #include <iostream>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -19,6 +19,8 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/ioctl.h>
+
+#include "Server.h"
 
 Server* Server::appl;
 

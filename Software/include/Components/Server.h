@@ -12,6 +12,7 @@
 
 #include "ErrorCode.h"
 #include "Selector.h"
+#include "Acceptor.h"
 
 class Server {
 public:

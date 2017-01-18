@@ -13,7 +13,7 @@
 int WatchDog::clientCount;
 WatchDogClientHandler* WatchDog::client[WatchDog::MaxClients];
 
-WatchDog::WatchDog(std::string hostName, int localPort) : accept(getSelector()), pollTime(0), hostName(hostName), localPort(localPort) {
+WatchDog::WatchDog(std::string hostName, int localPort) : pollTime(0), hostName(hostName), localPort(localPort) {
     setAppl(this);
     std::cout<< " WatchDog Constructor called" << std::endl;
     accept.registerCallback(WatchDog::handleWatchDogConnections);
@@ -72,6 +72,48 @@ void WatchDog::handleTimeout() {
     }
 }
 
+
+// *******************************
+//
+// Message Handler Defualt Behavior Below, Need to Implement
+//
+// ********************************
+// Message Handlers
+void WatchDog::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) {
+    std::cout << "WatchDog::handleProccessHealthAndStatusRequest():  Not Supported for WatchDog" << std::endl;
+    
+}
+
+void WatchDog::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
+    std::cerr << "WatchDog::handleProccessHealthAndStatusResponse() Not Supported for WatchDog" << std::endl;
+}
+
+void WatchDog::handleCaptureImageRequest(CaptureImageRequest* msg) {
+    std::cerr << "WatchDog::handleCaptureImageRequest() Not Supported for WatchDog" << std::endl;
+}
+
+void WatchDog::handleDataRequest(DataRequest* msg) {
+    std::cerr << "WatchDog::handleDataRequest() Not Supported for WatchDog" << std::endl;
+}
+void WatchDog::handleEphemerisMessage(EphemerisMessage* msg) {
+    std::cerr << "WatchDog::handleEphemerisMessage() Not Supported for WatchDog" << std::endl;
+}
+void WatchDog::handleImageAdjustment(ImageAdjustment* msg) {
+    std::cerr << "WatchDog::handleImageAdjustment() Not Supported for WatchDog" << std::endl;
+}
+void WatchDog::handleImageMessage(ImageMessage* msg) {
+    std::cerr << "WatchDog::handleImageMessage() Not Supported for WatchDog" << std::endl;
+}
+void WatchDog::handleOSPREStatus(OSPREStatus* msg) {
+    std::cerr << "WatchDog::handleOSPREStatus() Not Supported for WatchDog" << std::endl;
+}
+void WatchDog::handlePointingRequest(PointingRequest* msg) {
+    std::cerr << "WatchDog::handlePointingRequest() Not Supported for WatchDog" << std::endl;
+}
+
+void WatchDog::handleSolutionMessage(SolutionMessage* msg){
+    std::cerr << "WatchDog::handleSolutionMessage() Not Supported for WatchDog" << std::endl;
+}
 
 
 

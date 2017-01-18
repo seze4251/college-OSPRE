@@ -13,6 +13,11 @@
 
 #include "ServiceInternal.h"
 
+void ServiceInternal::registerCallback(void (*messageCallBackFunc)(Message*)) {
+    std::cout << "ServiceInternal registerCallback()" << std::endl;
+    messageCallBack = messageCallBackFunc;
+}
+
 int ServiceInternal::parseAndProcessMessages() {
     Message* msg = nullptr;
     int count = 0;
@@ -22,70 +27,16 @@ int ServiceInternal::parseAndProcessMessages() {
     while (true) {
         msg = parse.parseMessage();
         if (msg == nullptr) {
-            return count;
+            break;
         }
         
-        switch (msg->iden) {
-            case I_CaptureImageRequest:
-                handleCaptureImageRequest((CaptureImageRequest*) msg);
-                count++;
-                break;
-                
-            case I_DataRequest:
-                handleDataRequest((DataRequest*) msg);
-                count++;
-                break;
-                
-            case I_EphemerisMessage:
-                handleEphemerisMessage((EphemerisMessage*) msg);
-                count++;
-                break;
-                
-            case I_ImageAdjustment:
-                handleImageAdjustment((ImageAdjustment*) msg);
-                count++;
-                break;
-                
-            case I_ImageMessage:
-                handleImageMessage((ImageMessage*) msg);
-                count++;
-                break;
-                
-            case I_OSPREStatus:
-                handleOSPREStatus((OSPREStatus*) msg);
-                count++;
-                break;
-                
-            case I_PointingRequest:
-                handlePointingRequest((PointingRequest*) msg);
-                count++;
-                break;
-                
-            case I_ProccessHealthAndStatusRequest:
-                std::cout << "Entering handleProccessHealthAndStatusRequest" << std::endl;
-                handleProccessHealthAndStatusRequest((ProccessHealthAndStatusRequest*) msg);
-                count++;
-                break;
-                
-            case I_ProccessHealthAndStatusResponse:
-                handleProccessHealthAndStatusResponse((ProccessHealthAndStatusResponse*) msg);
-                count++;
-                break;
-                
-            case I_SolutionMessage:
-                handleSolutionMessage((SolutionMessage*) msg);
-                count++;
-                break;
-                
-            default:
-                std::cerr << "ServiceInternal::handleRead(): Unknown Message Type Recived: " << msg->iden << std::endl;
-                std::cerr << "Fatal Error: Exiting" << std::endl;
-                closeConnection();
-        }
+        (*messageCallBack)(msg);
+        count++;
     }
     //Move Read Position
     readbuf.compact();
     writebuf.flip();
+    return count;
 }
 
 void ServiceInternal::handleRead() {
@@ -105,7 +56,7 @@ void ServiceInternal::handleRead() {
     char* buf = readbuf.getBuffer();
     int amountRead = -1;
     
-
+    
     
     while (amountRead < 0) {
         amountRead = ::read(fd, buf, length);

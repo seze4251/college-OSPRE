@@ -12,12 +12,11 @@
 
 #include <string>
 
-#include "Server.h"
+#include "ServerInternal.h"
 #include "WatchDogService.h"
-#include "Acceptor.h"
 #include "ProcessID.h"
 
-class ImageProcessor : public Server {
+class ImageProcessor : public ServerInternal {
 public:
     ImageProcessor(std::string hostName, int localPort, int watchDogPort);
     ~ImageProcessor();
@@ -25,9 +24,20 @@ public:
     bool open();
     static void handleImageProcessorConnections(int fd);
     
+    // Message Handlers
+    virtual void handleCaptureImageRequest(CaptureImageRequest* msg);
+    virtual void handleDataRequest(DataRequest* msg);
+    virtual void handleEphemerisMessage(EphemerisMessage* msg);
+    virtual void handleImageAdjustment(ImageAdjustment* msg);
+    virtual void handleImageMessage(ImageMessage* msg);
+    virtual void handleOSPREStatus(OSPREStatus* msg);
+    virtual void handlePointingRequest(PointingRequest* msg);
+    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg);
+    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg);
+    virtual void handleSolutionMessage(SolutionMessage* msg);
+    
     ProcessID p_ID;
 private:
-    Acceptor accept;
     time_t pollTime;
     WatchDogService watchDog;
     

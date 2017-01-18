@@ -12,13 +12,12 @@
 
 #include <string>
 
-#include "Server.h"
+#include "ServerInternal.h"
 #include "WatchDogService.h"
-#include "Acceptor.h"
 #include "ProcessID.h"
 
 
-class ScComms : public Server {
+class ScComms : public ServerInternal {
 public:
     ScComms(std::string hostName, int localPort, int watchDogPort);
     ~ScComms();
@@ -26,9 +25,21 @@ public:
     virtual void handleTimeout();
     static void handleScCommsConnections(int fd);
     
+    // Message Handlers
+    virtual void handleCaptureImageRequest(CaptureImageRequest* msg);
+    virtual void handleDataRequest(DataRequest* msg);
+    virtual void handleEphemerisMessage(EphemerisMessage* msg);
+    virtual void handleImageAdjustment(ImageAdjustment* msg);
+    virtual void handleImageMessage(ImageMessage* msg);
+    virtual void handleOSPREStatus(OSPREStatus* msg);
+    virtual void handlePointingRequest(PointingRequest* msg);
+    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg);
+    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg);
+    virtual void handleSolutionMessage(SolutionMessage* msg);
+
     ProcessID p_ID;
 private:
-    Acceptor accept;
+    
     WatchDogService watchDog;
     
     //Acceptor Port and Host

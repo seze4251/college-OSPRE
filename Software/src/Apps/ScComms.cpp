@@ -10,7 +10,7 @@
 #include "ScComms.h"
 #include "Service.h"
 
-ScComms::ScComms( std::string hostName, int localPort, int watchDogPort) : watchDog(getSelector(), hostName, watchDogPort), accept(getSelector()), hostName(hostName), localPort(localPort) {
+ScComms::ScComms( std::string hostName, int localPort, int watchDogPort) : watchDog(getSelector(), hostName, watchDogPort), hostName(hostName), localPort(localPort) {
     setAppl(this);
     accept.registerCallback(ScComms::handleScCommsConnections);
     std::cout<< " ScComms Constructor called" << std::endl;
@@ -62,6 +62,50 @@ void ScComms::handleTimeout() {
 void ScComms::handleScCommsConnections(int fd) {
     
 }
+
+// *******************************
+//
+// Message Handler Defualt Behavior Below, Need to Implement
+//
+// ********************************
+
+// Message Handlers
+void ScComms::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) {
+    std::cout << "ScComms::handleProccessHealthAndStatusRequest():  Not Supported for ScComms" << std::endl;
+    
+}
+
+void ScComms::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
+    std::cerr << "ScComms::handleProccessHealthAndStatusResponse() Not Supported for ScComms" << std::endl;
+}
+
+void ScComms::handleCaptureImageRequest(CaptureImageRequest* msg) {
+    std::cerr << "ScComms::handleCaptureImageRequest() Not Supported for ScComms" << std::endl;
+}
+
+void ScComms::handleDataRequest(DataRequest* msg) {
+    std::cerr << "ScComms::handleDataRequest() Not Supported for ScComms" << std::endl;
+}
+void ScComms::handleEphemerisMessage(EphemerisMessage* msg) {
+    std::cerr << "ScComms::handleEphemerisMessage() Not Supported for ScComms" << std::endl;
+}
+void ScComms::handleImageAdjustment(ImageAdjustment* msg) {
+    std::cerr << "ScComms::handleImageAdjustment() Not Supported for ScComms" << std::endl;
+}
+void ScComms::handleImageMessage(ImageMessage* msg) {
+    std::cerr << "ScComms::handleImageMessage() Not Supported for ScComms" << std::endl;
+}
+void ScComms::handleOSPREStatus(OSPREStatus* msg) {
+    std::cerr << "ScComms::handleOSPREStatus() Not Supported for ScComms" << std::endl;
+}
+void ScComms::handlePointingRequest(PointingRequest* msg) {
+    std::cerr << "ScComms::handlePointingRequest() Not Supported for ScComms" << std::endl;
+}
+
+void ScComms::handleSolutionMessage(SolutionMessage* msg){
+    std::cerr << "ScComms::handleSolutionMessage() Not Supported for ScComms" << std::endl;
+}
+
 
 
 
