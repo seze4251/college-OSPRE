@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
     
     std::cout << "ScComms Initalized\n";
     comms.open();
+    std::cout << "Open Call Made Sucessfully" << std::endl;
     comms.run();
     std::cout << "ScComms Application Terminating\n";
     return 0;

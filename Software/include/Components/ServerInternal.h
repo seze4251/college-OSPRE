@@ -32,7 +32,7 @@ public:
     static void handleConnectionRequest(int fd);
     
     //Public Methods
-    void handleMessage(Message* msg, ServiceInternal* service);
+    static void handleMessage(Message* msg, ServiceInternal* service);
     
     // Virtual Open Method for Applications
     virtual bool open() = 0;

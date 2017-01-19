@@ -38,14 +38,22 @@ bool CameraController::open() {
     
     // Other Services
     // TODO: Change Bool to something more useful
-    if (connections[connectionCount]->open(hostName, watchDogPort) == true) {
-        connectionCount++;
-        std::cout << "handleConnectionRequest() New Client Added" << std::endl;
+    if (connectionCount < ServerInternal::MaxClients) {
+        connections[connectionCount] = new ServiceInternal(getAppl()->getSelector());
+        if (connections[connectionCount]->open(hostName, watchDogPort) == true) {
+            // Register CallBack
+            connections[connectionCount]->registerCallback(handleMessage);
+            std::cout << "handleConnectionRequest() New Client Added" << std::endl;
+            connectionCount++;
+        } else {
+            std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
+        }
+        
+        return true;
     } else {
-        std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
+        std::cout << "handleConnectionRequest() New Client Addition Failed, too many clients" << std::endl;
+        return false;
     }
-    
-    return true;
 }
 
 void CameraController::handleTimeout() {

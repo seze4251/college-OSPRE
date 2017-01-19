@@ -141,7 +141,6 @@ Message* Parser::parseMessage() {
             //Change this exit to throw exception!!
             exit(-1);
     }
-    
     return msg;
 }
 
@@ -149,7 +148,6 @@ Message* Parser::parseProccessHealthAndStatusRequest() {
     if (request == nullptr) {
         request = new ProccessHealthAndStatusRequest();
     }
-    
     if (messageLength != (2 * sizeof(int) + sizeof(time_t) ) ) {
         std::cerr << "Parser::parseProcessHealthAndStatusRequest(): Message Length Incorrect, length = " << messageLength << std::endl;
         return nullptr;

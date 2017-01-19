@@ -49,47 +49,46 @@ void ServerInternal::handleConnectionRequest(int fd) {
 }
 
 void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
-    
     switch (msg->iden) {
         case I_CaptureImageRequest:
-            handleCaptureImageRequest((CaptureImageRequest*) msg, service);
+            ((ServerInternal*) getAppl())->handleCaptureImageRequest((CaptureImageRequest*) msg, service);
             break;
             
         case I_DataRequest:
-            handleDataRequest((DataRequest*) msg, service);
+            ((ServerInternal*) getAppl())->handleDataRequest((DataRequest*) msg, service);
             break;
             
         case I_EphemerisMessage:
-            handleEphemerisMessage((EphemerisMessage*) msg, service);
+            ((ServerInternal*) getAppl())->handleEphemerisMessage((EphemerisMessage*) msg, service);
             break;
             
         case I_ImageAdjustment:
-            handleImageAdjustment((ImageAdjustment*) msg, service);
+            ((ServerInternal*) getAppl())->handleImageAdjustment((ImageAdjustment*) msg, service);
             break;
             
         case I_ImageMessage:
-            handleImageMessage((ImageMessage*) msg, service);
+            ((ServerInternal*) getAppl())->handleImageMessage((ImageMessage*) msg, service);
             break;
             
         case I_OSPREStatus:
-            handleOSPREStatus((OSPREStatus*) msg, service);
+            ((ServerInternal*) getAppl())->handleOSPREStatus((OSPREStatus*) msg, service);
             break;
             
         case I_PointingRequest:
-            handlePointingRequest((PointingRequest*) msg, service);
+            ((ServerInternal*) getAppl())->handlePointingRequest((PointingRequest*) msg, service);
             break;
             
         case I_ProccessHealthAndStatusRequest:
             std::cout << "Entering handleProccessHealthAndStatusRequest" << std::endl;
-            handleProccessHealthAndStatusRequest((ProccessHealthAndStatusRequest*) msg, service);
+            ((ServerInternal*) getAppl())->handleProccessHealthAndStatusRequest((ProccessHealthAndStatusRequest*) msg, service);
             break;
             
         case I_ProccessHealthAndStatusResponse:
-            handleProccessHealthAndStatusResponse((ProccessHealthAndStatusResponse*) msg, service);
+            ((ServerInternal*) getAppl())->handleProccessHealthAndStatusResponse((ProccessHealthAndStatusResponse*) msg, service);
             break;
             
         case I_SolutionMessage:
-            handleSolutionMessage((SolutionMessage*) msg, service);
+            ((ServerInternal*) getAppl())->handleSolutionMessage((SolutionMessage*) msg, service);
             break;
             
         default:
