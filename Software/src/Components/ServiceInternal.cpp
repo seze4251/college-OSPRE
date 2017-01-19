@@ -16,7 +16,6 @@
 // Constructor
 ServiceInternal::ServiceInternal(Selector& sel, int fd, int buffSize) : Service(sel), fd(fd), readbuf(buffSize), writebuf(buffSize), build(writebuf), parse(readbuf) {
     std::cout << "ServiceInternal Constructor Called" << std::endl;
-    p_ID = P_NA;
 }
 
 // Destructor
@@ -109,7 +108,7 @@ void ServiceInternal::handleRead() {
     
     //Compact and flip buffer
     readbuf.compact();
-    writebuf.flip();
+    readbuf.flip();
     
     if (count == 0) {
         std::cerr << "ServiceInternal::handleRead(): Message is big for buffer" << std::endl;
@@ -125,6 +124,7 @@ void ServiceInternal::handleRead() {
 void ServiceInternal::handleWrite() {
     std::cout << "Entering ServiceInternal::handleWrite()" << std::endl;
     int length = writebuf.used();
+    std::cout << "handleWrite int length: " << length << std::endl;
     
     if (length == 0) {
         std::cout << "Nothing Left to Write to Socket" << std::endl;
@@ -132,7 +132,13 @@ void ServiceInternal::handleWrite() {
         return;
     }
     
+
+    std::cout << "ServiceInternal::handleWrite(): Printing Write Buffer" << std::endl;
+    writebuf.printBuffer();
+    
+    
     writebuf.flip();
+
     char* buf = writebuf.getBuffer();
     
     int amountWritten = write(fd, buf, length);
@@ -173,7 +179,7 @@ void ServiceInternal::sendStatusRequestMessage() {
 }
 
 
-void ServiceInternal::sendStatusResponseMessage() {
+void ServiceInternal::sendStatusResponseMessage(ProcessID p_ID) {
     if (isConnected() == false) {
         return;
     }

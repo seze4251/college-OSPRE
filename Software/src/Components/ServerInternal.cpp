@@ -41,6 +41,8 @@ void ServerInternal::handleConnectionRequest(int fd) {
     
     connections[connectionCount] = new ServiceInternal(getAppl()->getSelector());
     if (connections[connectionCount]->open(fd) == true) {
+        // Register CallBack
+        connections[connectionCount]->registerCallback(handleMessage);
         connectionCount++;
         std::cout << "handleConnectionRequest() New Client Added" << std::endl;
     } else {
@@ -97,6 +99,7 @@ void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
             std::cerr << "Fatal Error: Closing Connection" << std::endl;
             service->closeConnection();
     }
+    std::cout << "Leaving ServerInternal::handleMessage, back to ServiceInternal::handleRead()" << std::endl;
 }
 
 

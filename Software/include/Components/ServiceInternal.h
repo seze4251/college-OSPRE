@@ -39,11 +39,8 @@ public:
 
     //Send Message Functions
     void sendStatusRequestMessage();
-    void sendStatusResponseMessage();
+    void sendStatusResponseMessage(ProcessID p_ID);
     
-    void setPID(ProcessID p_IDTemp) {p_ID = p_IDTemp;}
-    
-    ProcessID p_ID;
 protected:
     int fd;
     ByteBuffer readbuf;

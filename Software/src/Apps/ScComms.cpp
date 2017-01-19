@@ -68,7 +68,7 @@ void ScComms::handleTimeout() {
 // Message Handlers
 void ScComms::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProccessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    service->sendStatusResponseMessage();
+    service->sendStatusResponseMessage(p_ID);
 }
 
 void ScComms::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service) {

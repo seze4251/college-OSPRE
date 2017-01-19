@@ -69,7 +69,7 @@ void ImageProcessor::handleTimeout() {
 // Message Handlers
 void ImageProcessor::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProccessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    service->sendStatusResponseMessage();
+    service->sendStatusResponseMessage(p_ID);
 }
 
 void ImageProcessor::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service) {

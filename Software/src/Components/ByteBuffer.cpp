@@ -169,6 +169,10 @@ void ByteBuffer::put(char * c, int length) {
 void ByteBuffer::printBuffer() {
     std::cout<< "Size: " << size << " Capacity: " << capacity<< " <";
     
+    if (currentPos == buf) {
+        std::cout << "printBuffer: currentPos == buf, nothing in buffer" << std::endl;
+    }
+    
     for (char* ptr = buf; ptr < currentPos; ptr++) {
         printf("%x",*ptr);
     }

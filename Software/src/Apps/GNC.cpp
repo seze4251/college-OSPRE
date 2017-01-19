@@ -68,7 +68,7 @@ void GNC::handleTimeout() {
 // Message Handlers
 void GNC::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProccessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    //sendStatusResponseMessage();
+    service->sendStatusResponseMessage(p_ID);
 }
 
 void GNC::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service) {
