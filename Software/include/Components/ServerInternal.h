@@ -13,35 +13,55 @@
 #include <ctime>
 
 #include "Server.h"
+#include "ServiceInternal.h"
 #include "Internal_Messages.h"
 #include "Message.h"
 
 class ServerInternal : public Server {
 public:
     // Constructors
-    ServerInternal();
+    ServerInternal(std::string hostName, int localPort, ProcessID p_ID);
     
     //Destructor
     virtual ~ServerInternal();
     
+    //Maximum Clients Enumeration
+    enum { MaxClients = 16 };
+    
+    // Virtual CallBack Method for Acceptor
+    static void handleConnectionRequest(int fd);
+    
     //Public Methods
-    void handleMessage(Message* msg);
+    void handleMessage(Message* msg, ServiceInternal* service);
+    
+    // Virtual Open Method for Applications
+    virtual bool open() = 0;
     
     // Message Handlers
-    virtual void handleCaptureImageRequest(CaptureImageRequest* msg) = 0;
-    virtual void handleDataRequest(DataRequest* msg) = 0;
-    virtual void handleEphemerisMessage(EphemerisMessage* msg) = 0;
-    virtual void handleImageAdjustment(ImageAdjustment* msg) = 0;
-    virtual void handleImageMessage(ImageMessage* msg) = 0;
-    virtual void handleOSPREStatus(OSPREStatus* msg) = 0;
-    virtual void handlePointingRequest(PointingRequest* msg) = 0;
-    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) = 0;
-    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) = 0;
-    virtual void handleSolutionMessage(SolutionMessage* msg) = 0;
-
+    virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) = 0;
+    virtual void handleDataRequest(DataRequest* msg, ServiceInternal* service) = 0;
+    virtual void handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) = 0;
+    virtual void handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) = 0;
+    virtual void handleImageMessage(ImageMessage* msg, ServiceInternal* service) = 0;
+    virtual void handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) = 0;
+    virtual void handlePointingRequest(PointingRequest* msg, ServiceInternal* service) = 0;
+    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service) = 0;
+    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service) = 0;
+    virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service) = 0;
+    
+    // Process ID object, temporary
+    ProcessID p_ID;
+    
 protected:
     Acceptor accept;
     time_t pollTime;
+    
+    // hostName and localPort needed for serversocket in Acceptor
+    std::string hostName;
+    int localPort;
+    
+    static ServiceInternal *connections[MaxClients];
+    static int connectionCount;
 
 private:
     

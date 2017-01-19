@@ -10,24 +10,21 @@
 #include "ImageProcessor.h"
 #include "Service.h"
 
-ImageProcessor::ImageProcessor(std::string hostName, int localPort, int watchDogPort) : watchDog(getSelector(), hostName, watchDogPort), pollTime(0), hostName(hostName), localPort(localPort) {
+ImageProcessor::ImageProcessor(std::string hostName, int localPort, int watchDogPort) : ServerInternal(hostName, localPort, P_ImageProcessor), watchDogPort(watchDogPort) {
     std::cout<< "ImageProcessor Constructor called" << std::endl;
     setAppl(this);
-    accept.registerCallback(ImageProcessor::handleImageProcessorConnections);
-    p_ID = P_ImageProcessor;
-    watchDog.p_ID = p_ID;
 }
 
 ImageProcessor::~ImageProcessor() {
     
 }
 
+// *******************************
+//
+// TODO: IMPLEMENT METHODS BELOW
+//
+// ********************************
 bool ImageProcessor::open() {
-    //WatchDog Service
-    if (watchDog.isConnected() == false) {
-        watchDog.open();
-    }
-    
     //Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
@@ -39,27 +36,23 @@ bool ImageProcessor::open() {
     
     // Other Services
     // TODO: Change Bool to something more useful
+    // Other Services
+    // TODO: Change Bool to something more useful
+    if (connections[connectionCount]->open(hostName, watchDogPort) == true) {
+        connectionCount++;
+        std::cout << "handleConnectionRequest() New Client Added" << std::endl;
+    } else {
+        std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
+    }
+    
     return true;
 }
-
-
-// Connect to Camera Controller
-// Connect to WatchDog
-
-// *******************************
-//
-// TODO: IMPLEMENT METHODS BELOW
-//
-// ********************************
-
 
 void ImageProcessor::handleTimeout() {
     
 }
 
-void ImageProcessor::handleImageProcessorConnections(int fd) {
-    
-}
+
 
 // *******************************
 //
@@ -68,39 +61,57 @@ void ImageProcessor::handleImageProcessorConnections(int fd) {
 // ********************************
 
 // Message Handlers
-void ImageProcessor::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) {
-    std::cout << "ImageProcessor::handleProccessHealthAndStatusRequest():  Not Supported for ImageProcessor" << std::endl;
-    
+void ImageProcessor::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service) {
+    std::cout << "WatchDogService::handleProccessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+    service->sendStatusResponseMessage();
 }
 
-void ImageProcessor::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
+void ImageProcessor::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handleProccessHealthAndStatusResponse() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
-void ImageProcessor::handleCaptureImageRequest(CaptureImageRequest* msg) {
+void ImageProcessor::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handleCaptureImageRequest() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
-void ImageProcessor::handleDataRequest(DataRequest* msg) {
+void ImageProcessor::handleDataRequest(DataRequest* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handleDataRequest() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ImageProcessor::handleEphemerisMessage(EphemerisMessage* msg) {
+void ImageProcessor::handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handleEphemerisMessage() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ImageProcessor::handleImageAdjustment(ImageAdjustment* msg) {
+void ImageProcessor::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handleImageAdjustment() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ImageProcessor::handleImageMessage(ImageMessage* msg) {
+void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handleImageMessage() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ImageProcessor::handleOSPREStatus(OSPREStatus* msg) {
+void ImageProcessor::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handleOSPREStatus() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ImageProcessor::handlePointingRequest(PointingRequest* msg) {
+void ImageProcessor::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handlePointingRequest() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
-void ImageProcessor::handleSolutionMessage(SolutionMessage* msg){
+void ImageProcessor::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
     std::cerr << "ImageProcessor::handleSolutionMessage() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 

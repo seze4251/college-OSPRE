@@ -17,37 +17,34 @@
 #include "ProcessID.h"
 
 class WatchDog : public ServerInternal {
-    public:
-    enum {MaxClients = 16 };
+public:
+    // Constructor
     WatchDog(std::string hostName, int serverPort);
+    
+    // Destructor
     ~WatchDog();
-    static void handleWatchDogConnections(int fd);
-    bool open();
+    
+    // Opens WatchDogs Connections
+    virtual bool open();
+    
     virtual void handleTimeout();
     
     // Message Handlers
-    virtual void handleCaptureImageRequest(CaptureImageRequest* msg);
-    virtual void handleDataRequest(DataRequest* msg);
-    virtual void handleEphemerisMessage(EphemerisMessage* msg);
-    virtual void handleImageAdjustment(ImageAdjustment* msg);
-    virtual void handleImageMessage(ImageMessage* msg);
-    virtual void handleOSPREStatus(OSPREStatus* msg);
-    virtual void handlePointingRequest(PointingRequest* msg);
-    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg);
-    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg);
-    virtual void handleSolutionMessage(SolutionMessage* msg);
-
-    // Process ID object, temporary
-    ProcessID p_ID;
+    virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
+    virtual void handleDataRequest(DataRequest* msg, ServiceInternal* service);
+    virtual void handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service);
+    virtual void handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service);
+    virtual void handleImageMessage(ImageMessage* msg, ServiceInternal* service);
+    virtual void handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service);
+    virtual void handlePointingRequest(PointingRequest* msg, ServiceInternal* service);
+    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service);
+    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service);
+    virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
+    
     
 private:
-    static WatchDogClientHandler *client[MaxClients];
-    static int clientCount;
-    time_t pollTime;
     
-    //Acceptor Port and Host
-    std::string hostName;
-    int localPort;
+
 };
 
 #endif

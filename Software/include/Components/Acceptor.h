@@ -22,9 +22,9 @@ public:
     bool open(std::string hostName, int portNumber);
     void registerCallback(void (*callBackFunc)(int));
     
-    void handleRead();
-    void handleWrite();
-    bool isConnected() { return fd != -1 ? true : false; }
+    virtual void handleRead();
+    virtual void handleWrite();
+    virtual bool isConnected() { return fd != -1 ? true : false; }
     virtual void closeConnection();
     
 private:

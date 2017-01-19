@@ -52,7 +52,7 @@ void Server::handleTimeout() {
     std::cout << "Server::handleTimeout() I should do something here" << std::endl;
 }
 
-ErrorCode Server::run() {
+int Server::run() {
     bool terminateFlag = false;
     timeval tempTimeVal;
     
@@ -66,7 +66,7 @@ ErrorCode Server::run() {
         handleTimeout();
     }
     
-    return SUCCESS;
+    return 0;
 }
 
 

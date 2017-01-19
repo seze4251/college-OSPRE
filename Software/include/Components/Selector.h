@@ -10,7 +10,6 @@
 #ifndef SELECTOR_H
 #define SELECTOR_H
 
-#include "ErrorCode.h"
 #include <sys/time.h>
 
 class Service;

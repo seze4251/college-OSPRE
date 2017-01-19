@@ -10,7 +10,6 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include "ErrorCode.h"
 #include "Selector.h"
 #include "Acceptor.h"
 
@@ -23,7 +22,7 @@ public:
     virtual ~Server();
     
     //Public Methods
-    ErrorCode run();
+    int run();
     Selector& getSelector();
     
     static Server* getAppl();
@@ -31,8 +30,9 @@ public:
 protected:
     static void setAppl(Server* srv);
     static Server* appl;
-    virtual void handleTimeout();
+    virtual void handleTimeout() = 0;
     timeval t_val;
+    
 private:
     Selector sel;
 };

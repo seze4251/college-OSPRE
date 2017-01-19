@@ -17,8 +17,12 @@
 
 class Spacecraft : public Server {
 public:
+    // Constructor
     Spacecraft(std::string hostName, int localPort);
+    
+    // Destructor
     ~Spacecraft();
+    
     virtual void handleTimeout();
     bool open();
     

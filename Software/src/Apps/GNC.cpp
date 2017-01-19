@@ -10,33 +10,14 @@
 #include "GNC.h"
 #include "Service.h"
 
-GNC::GNC(std::string hostName, int watchDogPort) : watchDog(getSelector(), hostName, watchDogPort), pollTime(0) {
+GNC::GNC(std::string hostName, int localPort, int watchDogPort) : ServerInternal(hostName, localPort, P_GNC), watchDogPort(watchDogPort) {
     std::cout<< "GNC Constructor called" << std::endl;
     setAppl(this);
-    p_ID = P_GNC;
-    watchDog.p_ID = p_ID;
 }
 
 GNC::~GNC() {
     
 }
-
-// Connect to Image Processor
-// Connect to WatchDog
-// Connect to ScComms
-
-bool GNC::open() {
-    if (watchDog.isConnected() == false) {
-        watchDog.open();
-    }
-    
-    if (watchDog.isConnected() == true) {
-        return true;
-    }else {
-        return false;
-    }
-}
-
 
 // *******************************
 //
@@ -44,6 +25,27 @@ bool GNC::open() {
 //
 // ********************************
 
+bool GNC::open() {
+    //Acceptor
+    if (accept.isConnected() == false) {
+        if(accept.open(hostName, localPort) == false) {
+            std::cerr << "CameraController Server Socket Failed To Open, CameraController Exiting" << std::endl;
+            exit(-1);
+        }
+        std::cout << "CameraController Server Socket Opened" << std::endl;
+    }
+    
+    // Other Services
+    // TODO: Change Bool to something more useful
+    if (connections[connectionCount]->open(hostName, watchDogPort) == true) {
+        connectionCount++;
+        std::cout << "handleConnectionRequest() New Client Added" << std::endl;
+    } else {
+        std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
+    }
+    
+    return true;
+}
 
 void GNC::handleTimeout() {
     
@@ -56,39 +58,57 @@ void GNC::handleTimeout() {
 // ********************************
 
 // Message Handlers
-void GNC::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) {
-    std::cout << "GNC::handleProccessHealthAndStatusRequest():  Not Supported for GNC" << std::endl;
-    
+void GNC::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service) {
+    std::cout << "WatchDogService::handleProccessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+    //sendStatusResponseMessage();
 }
 
-void GNC::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
+void GNC::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleProccessHealthAndStatusResponse() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
-void GNC::handleCaptureImageRequest(CaptureImageRequest* msg) {
+void GNC::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleCaptureImageRequest() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
-void GNC::handleDataRequest(DataRequest* msg) {
+void GNC::handleDataRequest(DataRequest* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleDataRequest() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void GNC::handleEphemerisMessage(EphemerisMessage* msg) {
+void GNC::handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleEphemerisMessage() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void GNC::handleImageAdjustment(ImageAdjustment* msg) {
+void GNC::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleImageAdjustment() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void GNC::handleImageMessage(ImageMessage* msg) {
+void GNC::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleImageMessage() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void GNC::handleOSPREStatus(OSPREStatus* msg) {
+void GNC::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleOSPREStatus() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void GNC::handlePointingRequest(PointingRequest* msg) {
+void GNC::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
     std::cerr << "GNC::handlePointingRequest() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
-void GNC::handleSolutionMessage(SolutionMessage* msg){
+void GNC::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
     std::cerr << "GNC::handleSolutionMessage() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 

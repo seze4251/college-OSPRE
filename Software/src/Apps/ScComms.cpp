@@ -10,28 +10,21 @@
 #include "ScComms.h"
 #include "Service.h"
 
-ScComms::ScComms( std::string hostName, int localPort, int watchDogPort) : watchDog(getSelector(), hostName, watchDogPort), hostName(hostName), localPort(localPort) {
-    setAppl(this);
-    accept.registerCallback(ScComms::handleScCommsConnections);
+ScComms::ScComms( std::string hostName, int localPort, int watchDogPort) : ServerInternal(hostName, localPort, P_ScComms), watchDogPort(watchDogPort) {
     std::cout<< " ScComms Constructor called" << std::endl;
-    p_ID = P_ScComms;
-    watchDog.p_ID = p_ID;
+    setAppl(this);
 }
 
 ScComms::~ScComms() {
     
 }
 
-// Connect to Camera Controller
-// Connect to WatchDog
-// Connect to GNC
-// Accept S/C
+// *******************************
+//
+// TODO: IMPLEMENT METHODS BELOW
+//
+// ********************************
 bool ScComms::open() {
-    //WatchDog Service
-    if (watchDog.isConnected() == false) {
-        watchDog.open();
-    }
- 
     //Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
@@ -43,24 +36,19 @@ bool ScComms::open() {
     
     // Other Services
     // TODO: Change Bool to something more useful
+    if (connections[connectionCount]->open(hostName, watchDogPort) == true) {
+        connectionCount++;
+        std::cout << "handleConnectionRequest() New Client Added" << std::endl;
+    } else {
+        std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
+    }
+    
     return true;
 }
 
 
 void ScComms::handleTimeout() {
-    if (watchDog.isConnected() == false) {
-        watchDog.open();
-    }
-}
 
-// *******************************
-//
-// TODO: IMPLEMENT METHODS BELOW
-//
-// ********************************
-
-void ScComms::handleScCommsConnections(int fd) {
-    
 }
 
 // *******************************
@@ -70,40 +58,58 @@ void ScComms::handleScCommsConnections(int fd) {
 // ********************************
 
 // Message Handlers
-void ScComms::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg) {
-    std::cout << "ScComms::handleProccessHealthAndStatusRequest():  Not Supported for ScComms" << std::endl;
-    
+void ScComms::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service) {
+    std::cout << "WatchDogService::handleProccessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+    service->sendStatusResponseMessage();
 }
 
-void ScComms::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg) {
+void ScComms::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service) {
     std::cerr << "ScComms::handleProccessHealthAndStatusResponse() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
-void ScComms::handleCaptureImageRequest(CaptureImageRequest* msg) {
+void ScComms::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
     std::cerr << "ScComms::handleCaptureImageRequest() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
-void ScComms::handleDataRequest(DataRequest* msg) {
+void ScComms::handleDataRequest(DataRequest* msg, ServiceInternal* service) {
     std::cerr << "ScComms::handleDataRequest() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ScComms::handleEphemerisMessage(EphemerisMessage* msg) {
+void ScComms::handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) {
     std::cerr << "ScComms::handleEphemerisMessage() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ScComms::handleImageAdjustment(ImageAdjustment* msg) {
+void ScComms::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
     std::cerr << "ScComms::handleImageAdjustment() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ScComms::handleImageMessage(ImageMessage* msg) {
+void ScComms::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
     std::cerr << "ScComms::handleImageMessage() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ScComms::handleOSPREStatus(OSPREStatus* msg) {
+void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
     std::cerr << "ScComms::handleOSPREStatus() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
-void ScComms::handlePointingRequest(PointingRequest* msg) {
+void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
     std::cerr << "ScComms::handlePointingRequest() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
-void ScComms::handleSolutionMessage(SolutionMessage* msg){
+void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
     std::cerr << "ScComms::handleSolutionMessage() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
 }
 
 

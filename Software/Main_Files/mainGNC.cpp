@@ -11,11 +11,12 @@
 #include "GNC.h"
 
 int main(int argc, char **argv) {
+    int serverPort = 9000;
     int watchDogPort = 5000;
     std::string host("localhost");
     
     std::cout << "GNC Application Starting\n";
-    GNC gnc(host, watchDogPort);
+    GNC gnc(host, serverPort, watchDogPort);
     
     std::cout << "GNC Initalized\n";
     gnc.open();

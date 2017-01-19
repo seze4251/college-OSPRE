@@ -20,15 +20,30 @@
 
 class ServiceInternal : public Service {
 public:
-    ServiceInternal(Selector& sel, int fd = -1) : Service(sel), fd(fd), readbuf(1024*1024), writebuf(1024*1024), build(writebuf), parse(readbuf) {
-        std::cout << "ServiceInternal Constructor Called" << std::endl;
-    }
+    // Constructor
+    ServiceInternal(Selector& sel, int fd = -1,  int buffSize = 1024*1024);
     
-    void handleRead();
-    void handleWrite();
+    // Destructor
+    ~ServiceInternal();
     
-    void registerCallback(void (*messageCallBackFunc)(Message*));
+    //Initialize InternalService Methods
+    bool open(int fd);
+    bool open(std::string hostName, int portNumber);
+    void registerCallback(void (*messageCallBackFunc)(Message*, ServiceInternal*));
     
+    //Virtual Service Methods
+    virtual void handleRead();
+    virtual void handleWrite();
+    virtual bool isConnected() { return fd != -1 ? true : false; }
+    virtual void closeConnection();
+
+    //Send Message Functions
+    void sendStatusRequestMessage();
+    void sendStatusResponseMessage();
+    
+    void setPID(ProcessID p_IDTemp) {p_ID = p_IDTemp;}
+    
+    ProcessID p_ID;
 protected:
     int fd;
     ByteBuffer readbuf;
@@ -37,8 +52,8 @@ protected:
     Parser parse;
 
 private:
-    int parseAndProcessMessages();
-    void (*messageCallBack)(Message*);
+    // Callback Function
+    void (*messageCallBack)(Message*, ServiceInternal*);
 
     
 };

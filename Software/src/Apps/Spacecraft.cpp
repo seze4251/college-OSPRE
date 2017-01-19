@@ -8,12 +8,10 @@
 #include <iostream>
 
 #include "Spacecraft.h"
-#include "Service.h"
 
 Spacecraft::Spacecraft(std::string hostName, int localPort) : pollTime(0), hostName(hostName), localPort(localPort) {
     std::cout<< " Spacecraft Constructor called" << std::endl;
     setAppl(this);
-    p_ID = P_WatchDog;
 }
 
 // *******************************

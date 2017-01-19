@@ -11,7 +11,7 @@
 #include "CameraController.h"
 
 int main(int argc, char **argv) {
-    int serverPort = 9000;
+    int serverPort = 10000;
     int watchDogPort = 5000;
     std::string host("localhost");
     

@@ -19,22 +19,8 @@ public:
     WatchDogService(Selector &sel, std::string hostName, int portNumber);
     ~WatchDogService();
     bool open();
-    virtual bool isConnected() { return fd != -1 ? true : false; }
-    virtual void closeConnection();
     
     void sendStatusResponseMessage();
-    
-    // Message Handlers
-    virtual void handleCaptureImageRequest(CaptureImageRequest* msg);
-    virtual void handleDataRequest(DataRequest* msg);
-    virtual void handleEphemerisMessage(EphemerisMessage* msg);
-    virtual void handleImageAdjustment(ImageAdjustment* msg);
-    virtual void handleImageMessage(ImageMessage* msg);
-    virtual void handleOSPREStatus(OSPREStatus* msg);
-    virtual void handlePointingRequest(PointingRequest* msg);
-    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg);
-    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg);
-    virtual void handleSolutionMessage(SolutionMessage* msg);
     
     // Added Process ID
     ProcessID p_ID;
