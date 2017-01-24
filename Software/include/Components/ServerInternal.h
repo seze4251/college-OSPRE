@@ -37,6 +37,9 @@ public:
     // Virtual Open Method for Applications
     virtual bool open() = 0;
     
+    // Connect to Internal Applicaiton
+    bool connectToAppl(std::string host, int port, ServiceInternal** service);
+    
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) = 0;
     virtual void handleDataRequest(DataRequest* msg, ServiceInternal* service) = 0;
@@ -61,7 +64,6 @@ protected:
     int localPort;
     
     static ServiceInternal *connections[MaxClients];
-    static int connectionCount;
 
 private:
     

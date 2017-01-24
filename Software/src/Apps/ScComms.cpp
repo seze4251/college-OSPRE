@@ -13,6 +13,7 @@
 ScComms::ScComms( std::string hostName, int localPort, int watchDogPort) : ServerInternal(hostName, localPort, P_ScComms), watchDogPort(watchDogPort) {
     std::cout<< " ScComms Constructor called" << std::endl;
     setAppl(this);
+    watchDog = nullptr;
 }
 
 ScComms::~ScComms() {
@@ -34,29 +35,19 @@ bool ScComms::open() {
         std::cout << "ScComms Server Socket Opened" << std::endl;
     }
     
-    // Other Services
-    // TODO: Change Bool to something more useful
-    if (connectionCount < ServerInternal::MaxClients) {
-        connections[connectionCount] = new ServiceInternal(getAppl()->getSelector());
-        if (connections[connectionCount]->open(hostName, watchDogPort) == true) {
-            // Register CallBack
-            connections[connectionCount]->registerCallback(handleMessage);
-            std::cout << "handleConnectionRequest() New Client Added" << std::endl;
-            connectionCount++;
-        } else {
-            std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
-        }
-        
-        return true;
+    //Connect to WatchDog
+    if(connectToAppl(hostName, watchDogPort, &watchDog) == true) {
+        std::cout << "ScComms: Connected to WatchDog" << std::endl;
     } else {
-        std::cout << "handleConnectionRequest() New Client Addition Failed, too many clients" << std::endl;
-        return false;
+        std::cout << "ScComms: Failure to Connect to WatchDog" << std::endl;
     }
+    
+    return true;
 }
 
 
 void ScComms::handleTimeout() {
-    
+    this->open();
 }
 
 // *******************************

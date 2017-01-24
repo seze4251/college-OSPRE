@@ -14,8 +14,11 @@
 
 class PointingRequest : public Message {
 public:
-    PointingRequest() : Message(getMessageID(), time(0)) {}
+    PointingRequest() : Message(getMessageID(), time(0)), point(PEM_NA) {}
     MessageID getMessageID() { return I_PointingRequest; }
+    
+    // Specific Data Members
+    PointEarthMoon point;
 };
 
 

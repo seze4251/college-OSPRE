@@ -10,7 +10,6 @@
 
 #include "ServerInternal.h"
 
-int ServerInternal::connectionCount;
 ServiceInternal* ServerInternal::connections[ServerInternal::MaxClients];
 
 // Constructors
@@ -19,7 +18,6 @@ ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_
     
     accept.registerCallback(handleConnectionRequest);
     
-    connectionCount = 0;
     for (int i = 0; i < MaxClients; i++) {
         connections[i] = nullptr;
     }
@@ -33,20 +31,101 @@ ServerInternal::~ServerInternal() {
 // Public Methods
 void ServerInternal::handleConnectionRequest(int fd) {
     // Check to make sure max client count is not exceeded
-    if (connectionCount >= ServerInternal::MaxClients) {
-        std::cout << "handleConnectionRequest() closing Connection: Too Many Connections" << std::endl;
-        ::close(fd);
-        return;
+    int avail = -1;
+    for (int i = 0; i < ServerInternal::MaxClients; i++) {
+        if (connections[i] == nullptr) {
+            avail = i;
+            break;
+        }
+        
+        if (connections[i]->isConnected() == false) {
+            avail = i;
+            break;
+        }
     }
     
-    connections[connectionCount] = new ServiceInternal(getAppl()->getSelector());
-    if (connections[connectionCount]->open(fd) == true) {
+    if (avail == -1) {
+        std::cout << "ServerInternal::handleConnectionRequest() New Client Addition Failed, too many clients" << std::endl;
+        ::close(fd);
+        return;
+        
+    }
+    
+    // if memory for ServiceInternal has not been created, allocate it
+    if (connections[avail] == nullptr) {
+        connections[avail] = new ServiceInternal(getAppl()->getSelector());
+    }
+    
+    if (connections[avail]->open(fd) == true) {
         // Register CallBack
-        connections[connectionCount]->registerCallback(handleMessage);
-        connectionCount++;
-        std::cout << "handleConnectionRequest() New Client Added" << std::endl;
+        connections[avail]->registerCallback(handleMessage);
+        std::cout << "ServerInternal::handleConnectionRequest() New Client Added" << std::endl;
+        
     } else {
         std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
+    }
+}
+
+bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal** service) {
+    
+    // Make Sure Service is not NULL
+    if (service == nullptr) {
+        std::cout << "ServerInternal::connectToAppl(): service is a nullptr" << std::endl;
+        return false;
+    }
+    
+    // Check to see if Client is already Connected
+    if (*service != nullptr) {
+        if ((*service)->isConnected() == true) {
+            std::cout << "ServerInternal::connectToAppl(): Service is already connected" << std::endl;
+            return true;
+        }
+    }
+    
+    // Look for available space in connection array
+    int avail = -1;
+    for (int i = 0; i < ServerInternal::MaxClients; i++) {
+        if (connections[i] == nullptr) {
+            avail = i;
+            break;
+        }
+        
+        if (connections[i]->isConnected() == false) {
+            avail = i;
+            break;
+        }
+    }
+    
+    // No available space to add a service
+    if (avail == -1) {
+        std::cout << "ServerInternal::connectToAppl() New Client Addition Failed, too many clients" << std::endl;
+        if (service != nullptr) {
+            *service = nullptr;
+        }
+        return false;
+        
+    }
+    
+    
+    // if memory for ServiceInternal has not been created, allocate it
+    if (connections[avail] == nullptr) {
+        connections[avail] = new ServiceInternal(getAppl()->getSelector());
+    }
+    
+    if (connections[avail]->open(host, port) == true) {
+        // Register CallBack
+        connections[avail]->registerCallback(handleMessage);
+        std::cout << "ServerInternal::connectToAppl(): New Client Added" << std::endl;
+        
+        if (service != nullptr) {
+            *service = connections[avail];
+        }
+        return true;
+        
+    } else {
+        std::cout << "ServerInternal::connectToAppl(): New Client Addition Failed" << std::endl;
+        *service = nullptr;
+        return false;
     }
 }
 

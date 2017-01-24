@@ -14,8 +14,12 @@
 
 class ImageMessage : public Message {
 public:
-    ImageMessage() : Message(getMessageID(), time(0)) {}
+    ImageMessage() : Message(getMessageID(), time(0)), point(PEM_NA), image(nullptr) {}
     MessageID getMessageID() { return I_ImageMessage; }
+    
+    //Specific Data Members
+    PointEarthMoon point;
+    char* image;
 };
 
 #endif

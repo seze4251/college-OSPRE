@@ -42,9 +42,14 @@ public:
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
     
 private:
-     int watchDogPort;
-
+    int watchDogPort;
+    
+    ServiceInternal* imageProc;
+    ServiceInternal* scComms;
+    ServiceInternal* watchDog;
 };
 
 #endif
+
+// GNC Connect to WatchDog, IP and SC Comms
 

@@ -10,12 +10,18 @@
 #ifndef OSPRESTATUS_H
 #define OSPRESTATUS_H
 
+#include <vector>
+
 #include "Message.h"
+#include "ProcessError.h"
 
 class OSPREStatus : public Message {
 public:
     OSPREStatus() : Message(getMessageID(), time(0)) {}
     MessageID getMessageID() { return I_OSPREStatus; }
+    
+    //Specific Data Members
+    std::vector<ProcessError> error;
 };
 
 

@@ -42,8 +42,13 @@ public:
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
     
 private:
-     int watchDogPort;
-
+    int watchDogPort;
+    ServiceInternal* imageProc;
+    ServiceInternal* scComms;
+    ServiceInternal* watchDog;
+    
 };
 
 #endif
+
+// Camera Controller Connect to ScComms, WatchDog and IP

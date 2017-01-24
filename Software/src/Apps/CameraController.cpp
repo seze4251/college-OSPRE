@@ -13,6 +13,9 @@
 CameraController::CameraController(std::string hostName, int localPort, int watchDogPort) : ServerInternal(hostName, localPort, P_CameraController), watchDogPort(watchDogPort) {
     std::cout<< "CameraController Constructor called" << std::endl;
     setAppl(this);
+    imageProc = nullptr;
+    scComms = nullptr;
+    watchDog = nullptr;
 }
 
 CameraController::~CameraController() {
@@ -25,9 +28,12 @@ CameraController::~CameraController() {
 //
 // ********************************
 
-// Connect to WatchDog
+// TODO: Change hard coded ports and hostnames to config file if time
+// TODO: Decide if this function should return bool or void or something else
+
 bool CameraController::open() {
-    //Acceptor
+    
+    //Open Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
             std::cerr << "CameraController Server Socket Failed To Open, CameraController Exiting" << std::endl;
@@ -36,28 +42,32 @@ bool CameraController::open() {
         std::cout << "CameraController Server Socket Opened" << std::endl;
     }
     
-    // Other Services
-    // TODO: Change Bool to something more useful
-    if (connectionCount < ServerInternal::MaxClients) {
-        connections[connectionCount] = new ServiceInternal(getAppl()->getSelector());
-        if (connections[connectionCount]->open(hostName, watchDogPort) == true) {
-            // Register CallBack
-            connections[connectionCount]->registerCallback(handleMessage);
-            std::cout << "handleConnectionRequest() New Client Added" << std::endl;
-            connectionCount++;
-        } else {
-            std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
-        }
-        
-        return true;
+    //Connect to WatchDog
+    if(connectToAppl(hostName, watchDogPort, &watchDog) == true) {
+        std::cout << "CameraController: Connected to WatchDog" << std::endl;
     } else {
-        std::cout << "handleConnectionRequest() New Client Addition Failed, too many clients" << std::endl;
-        return false;
+        std::cout << "CameraController: Failure to Connect to WatchDog" << std::endl;
     }
+    
+    //Connect to ScComms
+    if(connectToAppl(hostName, 7000, &scComms) == true) {
+        std::cout << "CameraController: Connected to ScComms" << std::endl;
+    } else {
+        std::cout << "CameraController: Failure to Connect to ScComms" << std::endl;
+    }
+    
+    // Connect to ImageProcessing
+    if(connectToAppl(hostName, 8000, &imageProc) == true) {
+        std::cout << "CameraController: Connected to ImageProcessor" << std::endl;
+    } else {
+        std::cout << "CameraController: Failure to Connect to ImageProcessor" << std::endl;
+    }
+    
+    return true;
 }
 
 void CameraController::handleTimeout() {
-    
+    this->open();
 }
 
 // *******************************

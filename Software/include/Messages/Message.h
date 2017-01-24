@@ -10,8 +10,10 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "MessageID.h"
 #include <ctime>
+
+#include "PointEarthMoon.h"
+#include "MessageID.h"
 
 class Message {
 public:

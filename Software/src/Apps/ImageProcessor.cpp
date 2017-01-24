@@ -13,6 +13,7 @@
 ImageProcessor::ImageProcessor(std::string hostName, int localPort, int watchDogPort) : ServerInternal(hostName, localPort, P_ImageProcessor), watchDogPort(watchDogPort) {
     std::cout<< "ImageProcessor Constructor called" << std::endl;
     setAppl(this);
+    watchDog = nullptr;
 }
 
 ImageProcessor::~ImageProcessor() {
@@ -34,28 +35,18 @@ bool ImageProcessor::open() {
         std::cout << "ImageProcessor Server Socket Opened" << std::endl;
     }
     
-    // Other Services
-    // TODO: Change Bool to something more useful
-    if (connectionCount < ServerInternal::MaxClients) {
-        connections[connectionCount] = new ServiceInternal(getAppl()->getSelector());
-        if (connections[connectionCount]->open(hostName, watchDogPort) == true) {
-            // Register CallBack
-            connections[connectionCount]->registerCallback(handleMessage);
-            std::cout << "handleConnectionRequest() New Client Added" << std::endl;
-            connectionCount++;
-        } else {
-            std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
-        }
-        
-        return true;
+    //Connect to WatchDog
+    if(connectToAppl(hostName, watchDogPort, &watchDog) == true) {
+        std::cout << "ImageProcessor: Connected to WatchDog" << std::endl;
     } else {
-        std::cout << "handleConnectionRequest() New Client Addition Failed, too many clients" << std::endl;
-        return false;
+        std::cout << "ImageProcessor: Failure to Connect to WatchDog" << std::endl;
     }
+    
+    return true;
 }
 
 void ImageProcessor::handleTimeout() {
-    
+    this->open();
 }
 
 

@@ -15,9 +15,13 @@
 class CaptureImageRequest : public Message {
 public:
     
-    CaptureImageRequest() : Message(getMessageID(), time(0)) {}
+    CaptureImageRequest() : Message(getMessageID(), time(0)), point(PEM_NA) { }
     
-    MessageID getMessageID() { return I_CaptureImageRequest; }
+    virtual MessageID getMessageID() { return I_CaptureImageRequest; }
+    
+    // Specific Data Members
+    PointEarthMoon point;
+    
 };
 
 #endif

@@ -45,7 +45,10 @@ public:
     
 private:
      int watchDogPort;
+     ServiceInternal* watchDog;
 
 };
 
 #endif
+
+// Connect to WatchDog

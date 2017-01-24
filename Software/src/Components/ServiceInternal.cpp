@@ -35,7 +35,7 @@ bool ServiceInternal::open(int fd) {
 bool ServiceInternal::open(std::string hostName, int portNumber) {
     fd = Service::connectToServer(hostName.c_str(), portNumber);
     
-    if (fd == false) {
+    if (fd == -1) {
         return false;
     }
     
