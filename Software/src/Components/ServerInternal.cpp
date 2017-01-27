@@ -13,7 +13,7 @@
 ServiceInternal* ServerInternal::connections[ServerInternal::MaxClients];
 
 // Constructors
-ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_ID) : accept(getSelector()), pollTime(0), hostName(hostName), localPort(localPort), p_ID(p_ID) {
+ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_ID) : accept(getSelector()), hostName(hostName), localPort(localPort), p_ID(p_ID) {
     std::cout << "ServerInternal Constructor called" << std::endl;
     
     accept.registerCallback(handleConnectionRequest);
@@ -135,8 +135,8 @@ void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
             ((ServerInternal*) getAppl())->handleCaptureImageRequest((CaptureImageRequest*) msg, service);
             break;
             
-        case I_DataRequest:
-            ((ServerInternal*) getAppl())->handleDataRequest((DataRequest*) msg, service);
+        case I_ProcessedImageMessage:
+            ((ServerInternal*) getAppl())->handleProcessedImageMessage((ProcessedImageMessage*) msg, service);
             break;
             
         case I_EphemerisMessage:
@@ -159,13 +159,13 @@ void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
             ((ServerInternal*) getAppl())->handlePointingRequest((PointingRequest*) msg, service);
             break;
             
-        case I_ProccessHealthAndStatusRequest:
-            std::cout << "Entering handleProccessHealthAndStatusRequest" << std::endl;
-            ((ServerInternal*) getAppl())->handleProccessHealthAndStatusRequest((ProccessHealthAndStatusRequest*) msg, service);
+        case I_ProcessHealthAndStatusRequest:
+            std::cout << "Entering handleProcessHealthAndStatusRequest" << std::endl;
+            ((ServerInternal*) getAppl())->handleProcessHealthAndStatusRequest((ProcessHealthAndStatusRequest*) msg, service);
             break;
             
-        case I_ProccessHealthAndStatusResponse:
-            ((ServerInternal*) getAppl())->handleProccessHealthAndStatusResponse((ProccessHealthAndStatusResponse*) msg, service);
+        case I_ProcessHealthAndStatusResponse:
+            ((ServerInternal*) getAppl())->handleProcessHealthAndStatusResponse((ProcessHealthAndStatusResponse*) msg, service);
             break;
             
         case I_SolutionMessage:

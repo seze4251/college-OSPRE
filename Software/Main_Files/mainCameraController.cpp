@@ -12,11 +12,10 @@
 
 int main(int argc, char **argv) {
     int serverPort = 10000;
-    int watchDogPort = 5000;
     std::string host("localhost");
     
     std::cout << "CameraController Application Starting\n";
-    CameraController controller(host, serverPort, watchDogPort);
+    CameraController controller(host, serverPort);
     
     std::cout << "CameraController Initalized\n";
     controller.open();

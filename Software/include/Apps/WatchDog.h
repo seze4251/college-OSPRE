@@ -11,6 +11,8 @@
 #define WATCHDOG_H
 
 #include <string>
+#include <ctime>
+
 
 #include "ServerInternal.h"
 #include "WatchDogClientHandler.h"
@@ -25,26 +27,30 @@ public:
     ~WatchDog();
     
     // Opens WatchDogs Connections
-    virtual bool open();
+    virtual void open();
     
     virtual void handleTimeout();
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
-    virtual void handleDataRequest(DataRequest* msg, ServiceInternal* service);
     virtual void handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service);
     virtual void handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service);
     virtual void handleImageMessage(ImageMessage* msg, ServiceInternal* service);
     virtual void handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service);
     virtual void handlePointingRequest(PointingRequest* msg, ServiceInternal* service);
-    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service);
-    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service);
+    virtual void handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service);
+    virtual void handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service);
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
-    
+    virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
 private:
-    
+    time_t pollTime;
+    ServiceInternal* scComms;
+    ServiceInternal* gnc;
+    ServiceInternal* imageProc;
+    ServiceInternal* cameraControl;
 
+    
 };
 
 #endif

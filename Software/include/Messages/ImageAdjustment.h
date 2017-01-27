@@ -6,6 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
+// To be determined if we need this
 
 #ifndef IMAGEADJUSTMENT_H
 #define IMAGEADJUSTMENT_H

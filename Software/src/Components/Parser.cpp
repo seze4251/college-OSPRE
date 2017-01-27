@@ -15,7 +15,6 @@ Parser::Parser(ByteBuffer &bufParam) : buf(bufParam) {
     messageID = NA;
     timeStamp = 0;
     capture = nullptr;
-    data = nullptr;
     ephem = nullptr;
     adjustment = nullptr;
     image = nullptr;
@@ -24,15 +23,12 @@ Parser::Parser(ByteBuffer &bufParam) : buf(bufParam) {
     request = nullptr;
     response = nullptr;
     solution = nullptr;
+    processed = nullptr;
 }
 
 Parser::~Parser() {
     if (capture != nullptr) {
         delete capture;
-    }
-    
-    if (data != nullptr) {
-        delete data;
     }
     
     if (ephem != nullptr) {
@@ -66,6 +62,10 @@ Parser::~Parser() {
     if (solution != nullptr) {
         delete solution;
     }
+    
+    if (processed != nullptr) {
+        delete processed;
+    }
 }
 
 Message* Parser::parseMessage() {
@@ -97,8 +97,8 @@ Message* Parser::parseMessage() {
             msg = parseCaptureImageRequest();
             break;
             
-        case I_DataRequest:
-            msg = parseDataRequest();
+        case I_ProcessedImageMessage:
+            msg = parseProcessedImageMessage();
             break;
             
         case I_EphemerisMessage:
@@ -121,13 +121,13 @@ Message* Parser::parseMessage() {
             msg = parsePointingRequest();
             break;
             
-        case I_ProccessHealthAndStatusRequest:
-            std::cout << "Entering parseProccessHealthAndStatusRequest" << std::endl;
-            msg = parseProccessHealthAndStatusRequest();
+        case I_ProcessHealthAndStatusRequest:
+            std::cout << "Entering parseProcessHealthAndStatusRequest" << std::endl;
+            msg = parseProcessHealthAndStatusRequest();
             break;
             
-        case I_ProccessHealthAndStatusResponse:
-            msg = parseProccessHealthAndStatusResponse();
+        case I_ProcessHealthAndStatusResponse:
+            msg = parseProcessHealthAndStatusResponse();
             break;
             
         case I_SolutionMessage:
@@ -144,9 +144,9 @@ Message* Parser::parseMessage() {
     return msg;
 }
 
-Message* Parser::parseProccessHealthAndStatusRequest() {
+Message* Parser::parseProcessHealthAndStatusRequest() {
     if (request == nullptr) {
-        request = new ProccessHealthAndStatusRequest();
+        request = new ProcessHealthAndStatusRequest();
     }
     if (messageLength != (2 * sizeof(int) + sizeof(time_t) ) ) {
         std::cerr << "Parser::parseProcessHealthAndStatusRequest(): Message Length Incorrect, length = " << messageLength << std::endl;
@@ -159,9 +159,9 @@ Message* Parser::parseProccessHealthAndStatusRequest() {
 }
 
 
-Message* Parser::parseProccessHealthAndStatusResponse() {
+Message* Parser::parseProcessHealthAndStatusResponse() {
     if (response == nullptr) {
-        response = new ProccessHealthAndStatusResponse(P_NA);
+        response = new ProcessHealthAndStatusResponse(P_NA);
     }
     // *******************************
     //
@@ -184,6 +184,9 @@ Message* Parser::parseProccessHealthAndStatusResponse() {
 // TODO: IMPLEMENT METHODS BELOW
 //
 // ********************************
+Message* Parser::parseProcessedImageMessage() {
+    return nullptr;
+}
 
 Message* Parser::parseCaptureImageRequest() {
     if (capture == nullptr) {
@@ -191,10 +194,6 @@ Message* Parser::parseCaptureImageRequest() {
     }
     capture->timeStamp = buf.getLong();
     return capture;
-}
-
-Message* Parser::parseDataRequest() {
-    return nullptr;
 }
 
 Message* Parser::parseEphemerisMessage() {

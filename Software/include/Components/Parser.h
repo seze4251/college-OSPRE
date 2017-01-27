@@ -33,16 +33,16 @@ private:
     time_t timeStamp;
     
     // Messages
-    CaptureImageRequest *capture;
-    DataRequest *data;
-    EphemerisMessage *ephem;
-    ImageAdjustment *adjustment;
-    ImageMessage *image;
-    OSPREStatus *status;
-    PointingRequest *pointing;
-    ProccessHealthAndStatusRequest *request;
-    ProccessHealthAndStatusResponse *response;
-    SolutionMessage *solution;
+    CaptureImageRequest* capture;
+    EphemerisMessage* ephem;
+    ImageAdjustment* adjustment;
+    ImageMessage* image;
+    OSPREStatus* status;
+    PointingRequest* pointing;
+    ProcessHealthAndStatusRequest* request;
+    ProcessHealthAndStatusResponse* response;
+    SolutionMessage* solution;
+    ProcessedImageMessage* processed;
     
     // Message Parser Methods
     Message* parseCaptureImageRequest();
@@ -52,9 +52,10 @@ private:
     Message* parseImageMessage();
     Message* parseOSPREStatus();
     Message* parsePointingRequest();
-    Message* parseProccessHealthAndStatusRequest();
-    Message* parseProccessHealthAndStatusResponse();
+    Message* parseProcessHealthAndStatusRequest();
+    Message* parseProcessHealthAndStatusResponse();
     Message* parseSolutionMessage();
+    Message* parseProcessedImageMessage();
 };
 
 

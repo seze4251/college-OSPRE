@@ -10,12 +10,11 @@
 #include "CameraController.h"
 #include "Service.h"
 
-CameraController::CameraController(std::string hostName, int localPort, int watchDogPort) : ServerInternal(hostName, localPort, P_CameraController), watchDogPort(watchDogPort) {
+CameraController::CameraController(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_CameraController), pollTime(0) {
     std::cout<< "CameraController Constructor called" << std::endl;
     setAppl(this);
     imageProc = nullptr;
     scComms = nullptr;
-    watchDog = nullptr;
 }
 
 CameraController::~CameraController() {
@@ -31,8 +30,7 @@ CameraController::~CameraController() {
 // TODO: Change hard coded ports and hostnames to config file if time
 // TODO: Decide if this function should return bool or void or something else
 
-bool CameraController::open() {
-    
+void CameraController::open() {
     //Open Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
@@ -40,13 +38,6 @@ bool CameraController::open() {
             exit(-1);
         }
         std::cout << "CameraController Server Socket Opened" << std::endl;
-    }
-    
-    //Connect to WatchDog
-    if(connectToAppl(hostName, watchDogPort, &watchDog) == true) {
-        std::cout << "CameraController: Connected to WatchDog" << std::endl;
-    } else {
-        std::cout << "CameraController: Failure to Connect to WatchDog" << std::endl;
     }
     
     //Connect to ScComms
@@ -62,32 +53,29 @@ bool CameraController::open() {
     } else {
         std::cout << "CameraController: Failure to Connect to ImageProcessor" << std::endl;
     }
-    
-    return true;
 }
 
+/*
+ 1. Need to check that all connections are still open
+ */
 void CameraController::handleTimeout() {
     this->open();
 }
 
 // *******************************
 //
-// Message Handler Defualt Behavior Below, Need to Implement
+// Message Handlers: Supported By Camera Controller
 //
 // ********************************
 
-// Message Handlers
-void CameraController::handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service) {
-    std::cout << "WatchDogService::handleProccessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+/*
+ Determine Process Status
+ Send Status to WatchDog
+ */
+void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
+    std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
     service->sendStatusResponseMessage(p_ID);
 }
-
-void CameraController::handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service) {
-    std::cerr << "CameraController::handleProccessHealthAndStatusResponse() Not Supported for CameraController" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
-}
-
 
 void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
     std::cerr << "CameraController::handleCaptureImageRequest() Not Supported for CameraController" << std::endl;
@@ -95,18 +83,24 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     service->closeConnection();
 }
 
-void CameraController::handleDataRequest(DataRequest* msg, ServiceInternal* service) {
-    std::cerr << "CameraController::handleDataRequest() Not Supported for CameraController" << std::endl;
+//May not need
+void CameraController::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
+    std::cerr << "ScCoCameraControllermms::handleImageAdjustment() Not Supported for CameraController" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
+}
+// *******************************
+//
+// Message Handlers: Not Supported By Camera Controller
+//
+// ********************************
+void CameraController::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
+    std::cerr << "CameraController::handleProcessHealthAndStatusResponse() Not Supported for CameraController" << std::endl;
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }
 void CameraController::handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) {
     std::cerr << "CameraController::handleEphemerisMessage() Not Supported for CameraController" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
-}
-void CameraController::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
-    std::cerr << "ScCoCameraControllermms::handleImageAdjustment() Not Supported for CameraController" << std::endl;
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }
@@ -125,9 +119,13 @@ void CameraController::handlePointingRequest(PointingRequest* msg, ServiceIntern
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }
-
 void CameraController::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
     std::cerr << "CameraController::handleSolutionMessage() Not Supported for CameraController" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
+}
+void CameraController::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
+    std::cerr << "CameraController::handleProcessedImageMessage() Not Supported for CameraController" << std::endl;
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }

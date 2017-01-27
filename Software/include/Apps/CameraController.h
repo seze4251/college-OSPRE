@@ -6,11 +6,12 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-
 #ifndef CAMERACONTROLLER_H
 #define CAMERACONTROLLER_H
 
 #include <string>
+#include <ctime>
+
 
 #include "ServerInternal.h"
 #include "WatchDogService.h"
@@ -19,33 +20,32 @@
 class CameraController : public ServerInternal {
 public:
     // Constructor
-    CameraController(std::string hostName, int localPort, int watchDogPort);
+    CameraController(std::string hostName, int localPort);
     
     // Destructor
     ~CameraController();
     
     // Opens CameraController Connections
-    virtual bool open();
+    virtual void open();
     
     virtual void handleTimeout();
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
-    virtual void handleDataRequest(DataRequest* msg, ServiceInternal* service);
     virtual void handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service);
     virtual void handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service);
     virtual void handleImageMessage(ImageMessage* msg, ServiceInternal* service);
     virtual void handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service);
     virtual void handlePointingRequest(PointingRequest* msg, ServiceInternal* service);
-    virtual void handleProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest* msg, ServiceInternal* service);
-    virtual void handleProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse* msg, ServiceInternal* service);
+    virtual void handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service);
+    virtual void handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service);
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
+    virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
 private:
-    int watchDogPort;
+    time_t pollTime;
     ServiceInternal* imageProc;
     ServiceInternal* scComms;
-    ServiceInternal* watchDog;
     
 };
 

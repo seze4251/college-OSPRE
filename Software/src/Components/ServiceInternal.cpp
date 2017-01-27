@@ -171,9 +171,9 @@ void ServiceInternal::sendStatusRequestMessage() {
     }
     
     // Create Message
-    ProccessHealthAndStatusRequest* msg = new ProccessHealthAndStatusRequest();
+    ProcessHealthAndStatusRequest* msg = new ProcessHealthAndStatusRequest();
     // Put Message in Write Buffer
-    build.buildProccessHealthAndStatusRequest(*msg);
+    build.buildProcessHealthAndStatusRequest(*msg);
     // Register Intrest in Write
     getSelector().interestInWrite(fd);
 }
@@ -185,9 +185,9 @@ void ServiceInternal::sendStatusResponseMessage(ProcessID p_ID) {
     }
     
     // Create Message
-    ProccessHealthAndStatusResponse* msg = new ProccessHealthAndStatusResponse(p_ID);
+    ProcessHealthAndStatusResponse* msg = new ProcessHealthAndStatusResponse(p_ID);
     // Put Message in Write Buffer
-    build.buildProccessHealthAndStatusResponse(*msg);
+    build.buildProcessHealthAndStatusResponse(*msg);
     // Register Intrest in Write
     getSelector().interestInWrite(fd);
 }

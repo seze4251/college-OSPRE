@@ -11,6 +11,8 @@
 #define SPACECRAFT_H
 
 #include <string>
+#include <ctime>
+
 
 #include "Server.h"
 #include "ProcessID.h"
@@ -24,7 +26,7 @@ public:
     ~Spacecraft();
     
     virtual void handleTimeout();
-    bool open();
+    void open();
     
     ProcessID p_ID;
 private:

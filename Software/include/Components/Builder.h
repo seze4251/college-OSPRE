@@ -25,15 +25,14 @@ public:
     ~Builder();
     
     // Public Methods
-    void buildCaptureImageRequest(DataRequest &msg);
-    void buildDataRequest(DataRequest &msg);
+    void buildCaptureImageRequest(CaptureImageRequest &msg);
     void buildEphemerisMessage(EphemerisMessage &msg);
     void buildImageAdjustment(ImageAdjustment &msg);
     void buildImageMessage(ImageMessage &msg);
     void buildOSPREStatus(OSPREStatus &msg);
     void buildPointingRequest(PointingRequest &msg);
-    void buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest &msg);
-    void buildProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse &msg);
+    void buildProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest &msg);
+    void buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse &msg);
     void buildSolutionMessage(SolutionMessage &msg);
     
 private:

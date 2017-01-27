@@ -12,11 +12,10 @@
 
 int main(int argc, char **argv) {
     int serverPort = 8000;
-    int watchDogPort = 5000;
     std::string host("localhost");
     
     std::cout << "ImageProcessor Application Starting\n";
-    ImageProcessor proc(host, serverPort, watchDogPort);
+    ImageProcessor proc(host, serverPort);
     
     std::cout << "ImageProcessor Initalized\n";
     proc.open();

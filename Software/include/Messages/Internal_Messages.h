@@ -11,14 +11,14 @@
 #define INTERNAL_MESSAGES_H
 
 #include "CaptureImageRequest.h"
-#include "DataRequest.h"
 #include "EphemerisMessage.h"
 #include "ImageAdjustment.h"
 #include "ImageMessage.h"
 #include "OSPREStatus.h"
 #include "PointingRequest.h"
-#include "ProccessHealthAndStatusRequest.h"
-#include "ProccessHealthAndStatusResponse.h"
+#include "ProcessHealthAndStatusRequest.h"
+#include "ProcessHealthAndStatusResponse.h"
 #include "SolutionMessage.h"
+#include "ProcessedImageMessage.h"
 
 #endif

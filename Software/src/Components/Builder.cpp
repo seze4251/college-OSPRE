@@ -30,20 +30,20 @@ void Builder::createHeader(int length, MessageID msgID, time_t timeStamp) {
    // buf.printBuffer();
 }
 
-void Builder::buildProccessHealthAndStatusRequest(ProccessHealthAndStatusRequest &msg) {
+void Builder::buildProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest &msg) {
     if (buf.remaining() < (sizeof(long) + 2*sizeof(int))) {
         //TODO: Throw Exception Here
-        std::cout << "Builder::buildProccessHealthAndStatusRequest Should Throw Exception here!, need to implement" << std::endl;
+        std::cout << "Builder::buildProcessHealthAndStatusRequest Should Throw Exception here!, need to implement" << std::endl;
         return;
     }
     
     createHeader((sizeof(long) + 2*sizeof(int)), msg.iden, msg.timeStamp);
 }
 
-void Builder::buildProccessHealthAndStatusResponse(ProccessHealthAndStatusResponse &msg) {
+void Builder::buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse &msg) {
     if (buf.remaining() < (sizeof(long) + 3*sizeof(int))) {
         //TODO: Throw Exception Here
-        std::cout << "Builder::buildProccessHealthAndStatusResponse: Should Throw Exception here!, need to implement" << std::endl;
+        std::cout << "Builder::buildProcessHealthAndStatusResponse: Should Throw Exception here!, need to implement" << std::endl;
         return;
     }
     
@@ -59,7 +59,7 @@ void Builder::buildProccessHealthAndStatusResponse(ProccessHealthAndStatusRespon
 //
 // ********************************
 
-void Builder::buildCaptureImageRequest(DataRequest &msg) {
+void Builder::buildCaptureImageRequest(CaptureImageRequest &msg) {
     // Check Buffer Has Enough Room
     if (buf.remaining() < sizeof(CaptureImageRequest)) {
         //TODO: Throw Exception Here
@@ -67,10 +67,6 @@ void Builder::buildCaptureImageRequest(DataRequest &msg) {
     }
     
     createHeader(sizeof(CaptureImageRequest), msg.iden, msg.timeStamp);
-}
-
-void Builder::buildDataRequest(DataRequest &msg) {
-    
 }
 
 void Builder::buildEphemerisMessage(EphemerisMessage &msg) {

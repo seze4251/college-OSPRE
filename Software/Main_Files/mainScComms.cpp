@@ -12,11 +12,10 @@
 
 int main(int argc, char **argv) {
     int serverPort = 7000;
-    int watchDogPort = 5000;
     std::string host("localhost");
     
     std::cout << "ScComms Application Starting\n";
-    ScComms comms(host, serverPort, watchDogPort);
+    ScComms comms(host, serverPort);
     
     std::cout << "ScComms Initalized\n";
     comms.open();
