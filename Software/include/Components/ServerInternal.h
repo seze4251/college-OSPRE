@@ -40,7 +40,7 @@ public:
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) = 0;
-    virtual void handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) = 0;
+    virtual void handleDataMessage(DataMessage* msg, ServiceInternal* service) = 0;
     virtual void handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) = 0;
     virtual void handleImageMessage(ImageMessage* msg, ServiceInternal* service) = 0;
     virtual void handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) = 0;

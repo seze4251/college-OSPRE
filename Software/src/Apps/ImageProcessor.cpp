@@ -52,6 +52,17 @@ void ImageProcessor::handleTimeout() {
 
 // *******************************
 //
+// Application Functionality:
+//
+// ********************************
+// TODO: Anthony to complete
+void ImageProcessor::processImage(ImageMessage* msg) {
+    
+}
+
+
+// *******************************
+//
 // Message Handlers: Supported by Image Processor
 //
 // ********************************
@@ -60,9 +71,11 @@ void ImageProcessor::handleTimeout() {
  Determine Process Status
  Send Status to WatchDog
  */
-void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
+void ImageProcessor::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    service->sendStatusResponseMessage(p_ID);
+    service->sendStatusResponseMessage(status);
+    // Clear Status
+    status.clear();
 }
 
 /*
@@ -72,11 +85,11 @@ void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusR
  4. Send Image Adjustment to Camera Controller
 */
 void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handleImageMessage() Not Supported for ImageProcessor" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
+    std::cerr << "ImageProcessor::handleImageMessage() Image Message Recived" << std::endl;
+    //Check Message Integrity
+    
+    processImage(msg);
 }
-
 
 // *******************************
 //
@@ -95,7 +108,7 @@ void ImageProcessor::handleCaptureImageRequest(CaptureImageRequest* msg, Service
 }
 
 void ImageProcessor::handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handleEphemerisMessage() Not Supported for ImageProcessor" << std::endl;
+    std::cerr << "ImageProcessor::handleDataMessage() Not Supported for ImageProcessor" << std::endl;
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }

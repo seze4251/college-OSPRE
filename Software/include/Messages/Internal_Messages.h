@@ -11,7 +11,7 @@
 #define INTERNAL_MESSAGES_H
 
 #include "CaptureImageRequest.h"
-#include "EphemerisMessage.h"
+#include "DataMessage.h"
 #include "ImageAdjustment.h"
 #include "ImageMessage.h"
 #include "OSPREStatus.h"

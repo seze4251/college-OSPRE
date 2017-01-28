@@ -12,17 +12,19 @@
 
 #include <string>
 #include <ctime>
+#include <vector>
 
 
 #include "ServerInternal.h"
 #include "WatchDogService.h"
 #include "ProcessID.h"
+#include "ServiceExternal.h"
 
 
 class ScComms : public ServerInternal {
 public:
     // Constructor
-    ScComms(std::string hostName, int localPort);
+    ScComms(std::string hostName, int localPort, int externalPort);
     
     //Destructor
     ~ScComms();
@@ -32,9 +34,12 @@ public:
     
     virtual void handleTimeout();
     
+    //
+    void handleExternalConnection(int fd);
+    
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
-    virtual void handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service);
+    virtual void handleDataMessage(DataMessage* msg, ServiceInternal* service);
     virtual void handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service);
     virtual void handleImageMessage(ImageMessage* msg, ServiceInternal* service);
     virtual void handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service);
@@ -47,6 +52,11 @@ public:
     
 private:
     time_t pollTime;
+    std::vector<ProcessError> status;
+    
+    Acceptor external_accept;
+    int externalPort;
+    ServiceExternal* spacecraft;
 
 };
 

@@ -33,7 +33,7 @@ public:
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
-    virtual void handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service);
+    virtual void handleDataMessage(DataMessage* msg, ServiceInternal* service);
     virtual void handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service);
     virtual void handleImageMessage(ImageMessage* msg, ServiceInternal* service);
     virtual void handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service);
@@ -49,6 +49,7 @@ private:
     ServiceInternal* gnc;
     ServiceInternal* imageProc;
     ServiceInternal* cameraControl;
+    
 
     
 };

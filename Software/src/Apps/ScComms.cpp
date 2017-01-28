@@ -10,9 +10,11 @@
 #include "ScComms.h"
 #include "Service.h"
 
-ScComms::ScComms( std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_ScComms), pollTime(0) {
+ScComms::ScComms( std::string hostName, int localPort, int externalPort) : ServerInternal(hostName, localPort, P_ScComms), external_accept(getSelector()), hostName(hostName), localPort(localPort), externalPort(externalPort), pollTime(0) {
     std::cout<< " ScComms Constructor called" << std::endl;
     setAppl(this);
+    external_accept.registerCallback(handleExternalConnection);
+    spacecraft = nullptr;
 }
 
 ScComms::~ScComms() {
@@ -28,14 +30,21 @@ void ScComms::open() {
     //Internal Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
-            std::cerr << "ScComms Server Socket Failed To Open, ScComms Exiting" << std::endl;
+            std::cerr << "ScComms Internal Server Socket Failed To Open, ScComms Exiting" << std::endl;
             exit(-1);
         }
-        std::cout << "ScComms Server Socket Opened" << std::endl;
+        std::cout << "ScComms Internal Server Socket Opened" << std::endl;
     }
     
-    // TODO: Creat External Acceptor for Spacecraft
     // External Acceptor
+    if (external_accept.isConnected() == false) {
+        if(external_accept.open(hostName, externalPort) == false) {
+            std::cerr << "ScComms External Server Socket Failed To Open, ScComms Exiting" << std::endl;
+            exit(-1);
+        }
+        std::cout << "ScComms External Server Socket Opened" << std::endl;
+    }
+
 }
 
 /*
@@ -44,6 +53,17 @@ void ScComms::open() {
 void ScComms::handleTimeout() {
     this->open();
 }
+
+// *******************************
+//
+// Application Functionality:
+//
+// ********************************
+// TODO: Seth to complete
+void handleExternalConnection(int fd) {
+    
+}
+
 
 // *******************************
 //
@@ -57,14 +77,16 @@ void ScComms::handleTimeout() {
  */
 void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    service->sendStatusResponseMessage(p_ID);
+    service->sendStatusResponseMessage(status);
+    // Clear Status
+    status.clear();
 }
 
 /*
- 1. Send Ephemeris to GNC
+ 1. Foward Data Message to all Subscribers? or everybody?
  */
-void ScComms::handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleEphemerisMessage() Not Supported for ScComms" << std::endl;
+void ScComms::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
+    std::cerr << "ScComms::handleDataMessage() Not Supported for ScComms" << std::endl;
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }

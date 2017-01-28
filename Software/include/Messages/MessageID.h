@@ -12,7 +12,7 @@
 enum MessageID {
     NA = -1,
     I_CaptureImageRequest = 1,
-    I_EphemerisMessage = 2,
+    I_DataMessage = 2,
     I_ImageAdjustment = 3,
     I_ImageMessage = 4,
     I_OSPREStatus = 5,

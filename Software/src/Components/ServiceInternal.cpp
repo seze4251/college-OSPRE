@@ -179,7 +179,7 @@ void ServiceInternal::sendStatusRequestMessage() {
 }
 
 
-void ServiceInternal::sendStatusResponseMessage(ProcessID p_ID) {
+void ServiceInternal::sendStatusResponseMessage(std::vector<ProcessError> status) {
     if (isConnected() == false) {
         return;
     }
@@ -191,6 +191,34 @@ void ServiceInternal::sendStatusResponseMessage(ProcessID p_ID) {
     // Register Intrest in Write
     getSelector().interestInWrite(fd);
 }
+
+void ServiceInternal::sendImageMessage(char* image) {
+    
+}
+
+void ServiceInternal::sendProcessedImageMessage() {
+    
+}
+
+void ServiceInternal::sendCaptureImageRequestMessage() {
+    
+}
+
+void ServiceInternal::sendPointingRequestMessage() {
+    
+}
+
+void ServiceInternal::sendSolutionMessage() {
+    
+}
+
+
+
+
+
+
+
+
 
 
 

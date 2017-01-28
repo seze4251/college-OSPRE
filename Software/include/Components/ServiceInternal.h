@@ -11,6 +11,7 @@
 #define SERVICEINTERNAL_H
 #include <string>
 #include <iostream> 
+#include <vector>
 
 #include "Service.h"
 #include "Builder.h"
@@ -39,7 +40,12 @@ public:
 
     //Send Message Functions
     void sendStatusRequestMessage();
-    void sendStatusResponseMessage(ProcessID p_ID);
+    void sendStatusResponseMessage(std::vector<ProcessError> status);
+    void sendImageMessage();
+    void sendProcessedImageMessage();
+    void sendCaptureImageRequestMessage();
+    void sendPointingRequestMessage();
+    void sendSolutionMessage();
     
 protected:
     int fd;

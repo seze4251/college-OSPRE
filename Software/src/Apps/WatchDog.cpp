@@ -135,8 +135,8 @@ void WatchDog::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceIntern
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }
-void WatchDog::handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) {
-    std::cerr << "WatchDog::handleEphemerisMessage() Not Supported for WatchDog" << std::endl;
+void WatchDog::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
+    std::cerr << "WatchDog::handleDataMessage() Not Supported for WatchDog" << std::endl;
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }

@@ -11,16 +11,18 @@
 
 #include <string>
 #include <ctime>
+#include <vector>
 
 
 #include "ServerInternal.h"
 #include "WatchDogService.h"
 #include "ProcessID.h"
+#include "ProcessError.h"
 
 class CameraController : public ServerInternal {
 public:
     // Constructor
-    CameraController(std::string hostName, int localPort);
+    CameraController(std::string hostName, int localPort, bool readImageFile);
     
     // Destructor
     ~CameraController();
@@ -30,9 +32,15 @@ public:
     
     virtual void handleTimeout();
     
+    // Applicaiton Functionality
+    bool canCaptureImage(CaptureImageRequest* msg);
+    char* captureImage();
+    char* readImage();
+    void adjustCameraSettings(ImageAdjustment* msg);
+    
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
-    virtual void handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service);
+    virtual void handleDataMessage(DataMessage* msg, ServiceInternal* service);
     virtual void handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service);
     virtual void handleImageMessage(ImageMessage* msg, ServiceInternal* service);
     virtual void handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service);
@@ -46,6 +54,11 @@ private:
     time_t pollTime;
     ServiceInternal* imageProc;
     ServiceInternal* scComms;
+    
+    // If readImageFile == true, then reads in a Image from file
+    // if readImageFile == false, then takes a picture
+    bool readImageFile
+    std::vector<ProcessError> status;
     
 };
 

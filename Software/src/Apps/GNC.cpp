@@ -59,7 +59,37 @@ void GNC::open() {
  */
 void GNC::handleTimeout() {
     this->open();
+    
+    // Send Timed Pointing Requests to Spacecraft
+    // Send Timed Capture Image Requests to Camera
+    time_t currentTime = time(NULL);
+    
+    if (currentTime > pollTime) {
+        // Send Poll
+        scComms -> sendPointingRequestMessage()
+        cameraController -> sendCaptureImageRequestMessage();
+
+        pollTime = currentTime + 2*60;
+    }
+
 }
+
+// *******************************
+//
+// Application Functionality:
+//
+// ********************************
+// TODO: Seth will complete
+bool hasAllDataNeededForCompute() {
+    
+}
+
+
+// TODO: Waiting On Cameron to Complete
+void computeSolution() {
+    
+}
+
 
 // *******************************
 //
@@ -68,30 +98,45 @@ void GNC::handleTimeout() {
 // ********************************
 
 /*
- Determine Process Status
  Send Status to WatchDog
  */
 void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    service->sendStatusResponseMessage(p_ID);
+    service->sendStatusResponseMessage(status);
+    // Clear Status
+    status.clear();
 }
 
-void GNC::handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) {
-    std::cerr << "GNC::handleEphemerisMessage() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
+/*
+ 1. Store the Data Message
+ 2. Check to see if there is enough data to call compute
+ 3. Call Compute and register for Writing
+*/
+void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
+    std::cerr << "GNC::handleDataMessage() Data Message Recived" << std::endl;
+    // TODO:
+    // Store Ephemeris
+    // Check to See if there is enough data to compute
+    if (hasAllDataNeededForCompute() == true) {
+        computeSolution();
+        scComms -> sendSolutionMessage();
+    }
 }
 
+/*
+ 1. Store Data
+ 2. Check to see if there is enough data to call compute
+ if there is enough data to compute:
+ 3a. Call Compute
+ 4a. Send a Solution Message
+ 
+ */
 void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "GNC::handleProcessedImageMessage() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
-}
-
-void GNC::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-    std::cerr << "GNC::handleOSPREStatus() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
+    std::cerr << "GNC::handleProcessedImageMessage() Processed Image Message Recieved" << std::endl;
+    if (hasAllDataNeededForCompute() == true) {
+        computeSolution();
+        scComms -> sendSolutionMessage();
+    }
 }
 
 
@@ -100,6 +145,11 @@ void GNC::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
 // Message Handlers: Not Supported by GNC
 //
 // ********************************
+void GNC::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
+    std::cerr << "GNC::handleOSPREStatus() Not Supported for GNC" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
+}
 void GNC::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleProcessHealthAndStatusResponse() Not Supported for GNC" << std::endl;
     std::cerr << "Closing Connection" << std::endl;
