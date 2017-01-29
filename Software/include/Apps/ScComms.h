@@ -16,7 +16,6 @@
 
 
 #include "ServerInternal.h"
-#include "WatchDogService.h"
 #include "ProcessID.h"
 #include "ServiceExternal.h"
 
@@ -34,8 +33,8 @@ public:
     
     virtual void handleTimeout();
     
-    //
-    void handleExternalConnection(int fd);
+    //Acceptor function for External Connections
+    static void handleExternalConnection(int fd);
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
@@ -56,6 +55,7 @@ private:
     
     Acceptor external_accept;
     int externalPort;
+    
     ServiceExternal* spacecraft;
 
 };

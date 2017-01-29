@@ -139,8 +139,8 @@ void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
             ((ServerInternal*) getAppl())->handleProcessedImageMessage((ProcessedImageMessage*) msg, service);
             break;
             
-        case I_EphemerisMessage:
-            ((ServerInternal*) getAppl())->handleEphemerisMessage((EphemerisMessage*) msg, service);
+        case I_DataMessage:
+            ((ServerInternal*) getAppl())->handleDataMessage((DataMessage*) msg, service);
             break;
             
         case I_ImageAdjustment:

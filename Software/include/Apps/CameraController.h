@@ -15,7 +15,6 @@
 
 
 #include "ServerInternal.h"
-#include "WatchDogService.h"
 #include "ProcessID.h"
 #include "ProcessError.h"
 
@@ -57,7 +56,7 @@ private:
     
     // If readImageFile == true, then reads in a Image from file
     // if readImageFile == false, then takes a picture
-    bool readImageFile
+    bool readImageFile;
     std::vector<ProcessError> status;
     
 };

@@ -10,9 +10,10 @@
 
 #include "Spacecraft.h"
 
-Spacecraft::Spacecraft(std::string hostName, int localPort) : hostName(hostName), localPort(localPort), pollTime(0) {
+Spacecraft::Spacecraft(std::string hostName, int localPort) : pollTime(0) {
     std::cout<< " Spacecraft Constructor called" << std::endl;
     setAppl(this);
+    scComms = nullptr;
 }
 
 // *******************************

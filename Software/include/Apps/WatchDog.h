@@ -15,7 +15,6 @@
 
 
 #include "ServerInternal.h"
-#include "WatchDogClientHandler.h"
 #include "ProcessID.h"
 
 class WatchDog : public ServerInternal {

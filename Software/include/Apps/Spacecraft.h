@@ -15,7 +15,7 @@
 
 
 #include "Server.h"
-#include "ProcessID.h"
+#include "ServiceExternal.h"
 
 class Spacecraft : public Server {
 public:
@@ -28,11 +28,10 @@ public:
     virtual void handleTimeout();
     void open();
     
-    ProcessID p_ID;
 private:
     time_t pollTime;
-    std::string hostName;
-    int localPort;
+    ServiceExternal* scComms;
+    
 };
 
 #endif

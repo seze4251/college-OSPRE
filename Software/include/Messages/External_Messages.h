@@ -13,6 +13,6 @@
 #include "External_OSPREStatus.h"
 #include "External_PointingRequest.h"
 #include "External_SolutionMessage.h"
-#include "External_SpacecraftStatus.h"
+#include "External_DataMessage.h"
 
 #endif

@@ -41,7 +41,7 @@ public:
     //Send Message Functions
     void sendStatusRequestMessage();
     void sendStatusResponseMessage(std::vector<ProcessError> status);
-    void sendImageMessage();
+    void sendImageMessage(char* image);
     void sendProcessedImageMessage();
     void sendCaptureImageRequestMessage();
     void sendPointingRequestMessage();

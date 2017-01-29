@@ -10,13 +10,11 @@
 #ifndef EXTERNAL_SOLUTIONMESSAGE_H
 #define EXTERNAL_SOLUTIONMESSAGE_H
 
-#include "Message.h"
 
-class External_SolutionMessage : public Message {
+class External_SolutionMessage {
 public:
-    External_SolutionMessage() : Message(getMessageID(), time(0)) {}
+    External_SolutionMessage() {}
     
-    MessageID getMessageID() { return E_SolutionMessage; }
 };
 
 #endif

@@ -16,7 +16,6 @@
 
 
 #include "ServerInternal.h"
-#include "WatchDogService.h"
 #include "ProcessID.h"
 
 class ImageProcessor : public ServerInternal {

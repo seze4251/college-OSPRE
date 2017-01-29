@@ -70,19 +70,20 @@ void CameraController::handleTimeout() {
 // ********************************
 //TODO: Needs Implementation
 bool CameraController::canCaptureImage(CaptureImageRequest* msg) {
-        std::cout << "CameraController::canCaptureImage(CaptureImageRequest* msg): Not Implemented yet" << std::endl;
+    std::cout << "CameraController::canCaptureImage(CaptureImageRequest* msg): Not Implemented yet" << std::endl;
+    return false;
 }
 
 // TODO: Waiting on Dylan for Implementation
 char* CameraController::captureImage() {
-        std::cout << "CameraController::captureImage(): Not Implemented yet" << std::endl;
+    std::cout << "CameraController::captureImage(): Not Implemented yet" << std::endl;
     char* image = nullptr;
     return image;
 }
 
 // TODO: Seth Implement
 char* CameraController::readImage() {
-        std::cout << "CameraController::readImage(): Not Implemented yet" << std::endl;
+    std::cout << "CameraController::readImage(): Not Implemented yet" << std::endl;
     char* image = nullptr;
     return image;
 }
@@ -116,11 +117,11 @@ void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatu
  CameraController::handleCaptureImageRequest() Logic
  Determine if Camera Controller can Take a picture
  If Can:
-   Take A Picture / Load A Picture
-   Send Image Message to Image Processor
+ Take A Picture / Load A Picture
+ Send Image Message to Image Processor
  If Cannot:
-   Send WatchDog Reason why Camera Controller Cannot Take Picture
-   Optional: Send Message to GNC stating that data cannot be gathered at this time, I can do this but do I need to?
+ Send WatchDog Reason why Camera Controller Cannot Take Picture
+ Optional: Send Message to GNC stating that data cannot be gathered at this time, I can do this but do I need to?
  */
 
 void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {

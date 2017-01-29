@@ -67,7 +67,7 @@ void WatchDog::open() {
  2. Need to check that all processes have responded to the poll
  3. Need to send OSPRE Status Message to ScComms at timed intervals
  4. Need to check that all connections are still open
-*/
+ */
 void WatchDog::handleTimeout() {
     time_t currentTime = time(NULL);
     
@@ -95,27 +95,21 @@ void WatchDog::handleTimeout() {
  */
 void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
     //Determine which client sent the message and print that message has been recived
-    switch (msg->p_ID) {
-        case P_CameraController:
-            std::cout << "WatchDog: Health and Status Response Recived from Camera Controller" << std::endl;
-            break;
-            
-        case P_ScComms:
-            std::cout << "WatchDog: Health and Status Response Recived from ScComms" << std::endl;
-            break;
-            
-        case P_GNC:
-            std::cout << "WatchDog: Health and Status Response Recived from GNC" << std::endl;
-            break;
-            
-        case P_ImageProcessor:
-            std::cout << "WatchDog: Health and Status Response Recived from ImageProcessor" << std::endl;
-            break;
-            
-        default:
-            std::cerr << "WatchDogClientHandler::handleProcessHealthAndStatusResponse: Incorrect Process ID, WatchDog Not Monoriting Process ID: " << msg->p_ID << std::endl;
-            std::cerr << "Closing Connection" << std::endl;
-            service->closeConnection();
+    
+    if (service == cameraControl) {
+        std::cout << "WatchDog: Health and Status Response Recived from Camera Controller" << std::endl;
+    } else if(service == scComms) {
+        std::cout << "WatchDog: Health and Status Response Recived from ScComms" << std::endl;
+    } else if(service == gnc) {
+        std::cout << "WatchDog: Health and Status Response Recived from GNC" << std::endl;
+    } else if(service == imageProc) {
+        
+        std::cout << "WatchDog: Health and Status Response Recived from ImageProcessor" << std::endl;
+        
+    } else {
+        std::cerr << "WatchDogClientHandler::handleProcessHealthAndStatusResponse: Client Response Message Not Expected" << std::endl;
+        std::cerr << "Closing Connection" << std::endl;
+        service->closeConnection();
     }
 }
 

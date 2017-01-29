@@ -15,7 +15,7 @@ Parser::Parser(ByteBuffer &bufParam) : buf(bufParam) {
     messageID = NA;
     timeStamp = 0;
     capture = nullptr;
-    ephem = nullptr;
+    data = nullptr;
     adjustment = nullptr;
     image = nullptr;
     status = nullptr;
@@ -29,10 +29,6 @@ Parser::Parser(ByteBuffer &bufParam) : buf(bufParam) {
 Parser::~Parser() {
     if (capture != nullptr) {
         delete capture;
-    }
-    
-    if (ephem != nullptr) {
-        delete ephem;
     }
     
     if (adjustment != nullptr) {
@@ -101,8 +97,8 @@ Message* Parser::parseMessage() {
             msg = parseProcessedImageMessage();
             break;
             
-        case I_EphemerisMessage:
-            msg = parseEphemerisMessage();
+        case I_DataMessage:
+            msg = parseDataMessage();
             break;
             
         case I_ImageAdjustment:
@@ -161,7 +157,7 @@ Message* Parser::parseProcessHealthAndStatusRequest() {
 
 Message* Parser::parseProcessHealthAndStatusResponse() {
     if (response == nullptr) {
-        response = new ProcessHealthAndStatusResponse(P_NA);
+        response = new ProcessHealthAndStatusResponse();
     }
     // *******************************
     //
@@ -175,7 +171,7 @@ Message* Parser::parseProcessHealthAndStatusResponse() {
     
     response->timeStamp = timeStamp;
     response->iden = messageID;
-    response->p_ID = (ProcessID) buf.getInt();
+    //response->p_ID = (ProcessID) buf.getInt();
     return response;
 }
 
@@ -196,7 +192,7 @@ Message* Parser::parseCaptureImageRequest() {
     return capture;
 }
 
-Message* Parser::parseEphemerisMessage() {
+Message* Parser::parseDataMessage() {
     return nullptr;
 }
 

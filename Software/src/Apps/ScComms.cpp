@@ -10,7 +10,7 @@
 #include "ScComms.h"
 #include "Service.h"
 
-ScComms::ScComms( std::string hostName, int localPort, int externalPort) : ServerInternal(hostName, localPort, P_ScComms), external_accept(getSelector()), hostName(hostName), localPort(localPort), externalPort(externalPort), pollTime(0) {
+ScComms::ScComms( std::string hostName, int localPort, int externalPort) : ServerInternal(hostName, localPort, P_ScComms), external_accept(getSelector()), externalPort(externalPort), pollTime(0) {
     std::cout<< " ScComms Constructor called" << std::endl;
     setAppl(this);
     external_accept.registerCallback(handleExternalConnection);
@@ -60,7 +60,7 @@ void ScComms::handleTimeout() {
 //
 // ********************************
 // TODO: Seth to complete
-void handleExternalConnection(int fd) {
+void ScComms::handleExternalConnection(int fd) {
     
 }
 

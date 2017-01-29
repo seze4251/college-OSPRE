@@ -66,7 +66,7 @@ void GNC::handleTimeout() {
     
     if (currentTime > pollTime) {
         // Send Poll
-        scComms -> sendPointingRequestMessage()
+        scComms -> sendPointingRequestMessage();
         cameraController -> sendCaptureImageRequestMessage();
 
         pollTime = currentTime + 2*60;
@@ -80,13 +80,13 @@ void GNC::handleTimeout() {
 //
 // ********************************
 // TODO: Seth will complete
-bool hasAllDataNeededForCompute() {
-    
+bool GNC::hasAllDataNeededForCompute() {
+    return false;
 }
 
 
 // TODO: Waiting On Cameron to Complete
-void computeSolution() {
+void GNC::computeSolution() {
     
 }
 

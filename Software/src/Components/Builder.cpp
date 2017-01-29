@@ -48,7 +48,7 @@ void Builder::buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse
     }
     
     createHeader((sizeof(long) + 3*sizeof(int)), msg.iden, msg.timeStamp);
-    buf.putInt((int) msg.p_ID);
+   // buf.putInt((int) msg.p_ID);
     std::cout << "Builder: buildResponseMessage, printing buffer:" << std::endl;
     buf.printBuffer();
 }
@@ -69,7 +69,7 @@ void Builder::buildCaptureImageRequest(CaptureImageRequest &msg) {
     createHeader(sizeof(CaptureImageRequest), msg.iden, msg.timeStamp);
 }
 
-void Builder::buildEphemerisMessage(EphemerisMessage &msg) {
+void Builder::buildDataMessage(DataMessage &msg) {
     
 }
 

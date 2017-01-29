@@ -185,7 +185,7 @@ void ServiceInternal::sendStatusResponseMessage(std::vector<ProcessError> status
     }
     
     // Create Message
-    ProcessHealthAndStatusResponse* msg = new ProcessHealthAndStatusResponse(p_ID);
+    ProcessHealthAndStatusResponse* msg = new ProcessHealthAndStatusResponse(status);
     // Put Message in Write Buffer
     build.buildProcessHealthAndStatusResponse(*msg);
     // Register Intrest in Write

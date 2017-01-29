@@ -24,7 +24,7 @@ enum MessageID {
     E_OSPREStatus = 11,
     E_PointingRequest = 12,
     E_SolutionMessage = 13,
-    E_SpacecraftStatus = 14
+    E_SpacecraftDataMessage = 14
 };
 
 #endif

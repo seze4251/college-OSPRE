@@ -10,12 +10,9 @@
 #ifndef EXTERNAL_POINTINGREQUEST_H
 #define EXTERNAL_POINTINGREQUEST_H
 
-#include "Message.h"
-
-class External_PointingRequest : public Message {
+class External_PointingRequest {
 public:
-    External_PointingRequest() : Message(getMessageID(), time(0)) {}
+    External_PointingRequest() {}
     
-    MessageID getMessageID() { return E_PointingRequest; }
 };
 #endif

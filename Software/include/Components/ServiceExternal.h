@@ -20,12 +20,26 @@
 
 class ServiceExternal : public Service {
 public:
+    // Constructor
+    ServiceExternal(Selector& sel, int fd = -1, int buffSize = 1024*1024);
+    
+    // Destructor
+    ~ServiceExternal();
     // Service Virtual Methods
     virtual void handleRead();
     virtual void handleWrite();
-    virtual bool isConnected();
-    virtual void closeConnection() { return fd != -1 ? true : false; }
+    virtual bool isConnected() { return fd != -1 ? true : false; }
+    virtual void closeConnection();
     
+    // Open Methods
+    bool open(int fd);
+    bool open(std::string hostName, int portNumber);
+    
+    // Send Message Funcitons
+    void sendDataMessage();
+    void sendSolutionMessage();
+
+
 protected:
     
 private:

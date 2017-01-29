@@ -34,7 +34,7 @@ private:
     
     // Messages
     CaptureImageRequest* capture;
-    EphemerisMessage* ephem;
+    DataMessage* data;
     ImageAdjustment* adjustment;
     ImageMessage* image;
     OSPREStatus* status;
@@ -46,8 +46,7 @@ private:
     
     // Message Parser Methods
     Message* parseCaptureImageRequest();
-    Message* parseDataRequest();
-    Message* parseEphemerisMessage();
+    Message* parseDataMessage();
     Message* parseImageAdjustment();
     Message* parseImageMessage();
     Message* parseOSPREStatus();

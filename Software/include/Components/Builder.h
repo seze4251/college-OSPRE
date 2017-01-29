@@ -26,7 +26,7 @@ public:
     
     // Public Methods
     void buildCaptureImageRequest(CaptureImageRequest &msg);
-    void buildEphemerisMessage(EphemerisMessage &msg);
+    void buildDataMessage(DataMessage &msg);
     void buildImageAdjustment(ImageAdjustment &msg);
     void buildImageMessage(ImageMessage &msg);
     void buildOSPREStatus(OSPREStatus &msg);

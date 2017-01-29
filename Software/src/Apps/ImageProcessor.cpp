@@ -71,7 +71,7 @@ void ImageProcessor::processImage(ImageMessage* msg) {
  Determine Process Status
  Send Status to WatchDog
  */
-void ImageProcessor::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
+void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
     service->sendStatusResponseMessage(status);
     // Clear Status
@@ -107,7 +107,7 @@ void ImageProcessor::handleCaptureImageRequest(CaptureImageRequest* msg, Service
     service->closeConnection();
 }
 
-void ImageProcessor::handleEphemerisMessage(EphemerisMessage* msg, ServiceInternal* service) {
+void ImageProcessor::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handleDataMessage() Not Supported for ImageProcessor" << std::endl;
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();

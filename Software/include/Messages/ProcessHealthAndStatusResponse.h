@@ -18,15 +18,14 @@
 
 class ProcessHealthAndStatusResponse : public Message {
 public:
-    //TODO:
-    //Implement this constructor later!
-//        ProcessHealthAndStatusResponse(ProcessID p_ID, std::vector<ProcessError> error) : Message(getMessageID(), time(0)), p_ID(p_ID), error(error) {}
+    //Constructors:
+    ProcessHealthAndStatusResponse() : Message(getMessageID(), time(0)) {}
     
-    ProcessHealthAndStatusResponse(ProcessID p_ID) : Message(getMessageID(), time(0)), p_ID(p_ID) {}
+    ProcessHealthAndStatusResponse(std::vector<ProcessError> error) : Message(getMessageID(), time(0)), error(error) {}
+    
     MessageID getMessageID() {return I_ProcessHealthAndStatusResponse; }
     
     // Specific Data Members
-    ProcessID p_ID;
     std::vector<ProcessError> error;
 };
 
