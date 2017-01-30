@@ -34,7 +34,7 @@ public:
     void buildProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest &msg);
     void buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse &msg);
     void buildSolutionMessage(SolutionMessage &msg);
-    
+    void buildProcessedImageMessage(ProcessedImage &msg);
 private:
     //Members
     ByteBuffer& buf;

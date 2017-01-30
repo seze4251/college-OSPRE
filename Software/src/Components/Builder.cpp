@@ -94,6 +94,10 @@ void Builder::buildSolutionMessage(SolutionMessage &msg) {
     
 }
 
+void Builder::buildProcessedImageMessage(ProcessedImage &msg) {
+    
+}
+
 
 
 

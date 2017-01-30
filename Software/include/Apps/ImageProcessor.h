@@ -49,10 +49,12 @@ private:
     time_t pollTime;
     ServiceInternal* gnc;
     
-    
+    // Contain Application Status
     std::vector<ProcessError> status;
 
-
+    // Pointer To Hold Messages that Are being sent
+    ProcessedImageMessage* processedImageMessage;
+    ProcessHealthAndStatusResponse* processHealthMessage;
 };
 
 #endif

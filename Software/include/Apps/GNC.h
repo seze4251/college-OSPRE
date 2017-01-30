@@ -17,6 +17,7 @@
 
 #include "ServerInternal.h"
 #include "ProcessID.h"
+#include "PointEarthMoon.h"
 
 class GNC : public ServerInternal {
 public:
@@ -52,6 +53,12 @@ private:
     ServiceInternal* cameraController;
     
     std::vector<ProcessError> status;
+    PointEarthMoon point;
+    
+    // Pointer To Hold Messages that Are being sent
+    ProcessHealthAndStatusResponse* processHealthMessage;
+    CaptureImageRequest* captureImageMessage;
+    SolutionMessage* solutionMessage;
 };
 
 #endif

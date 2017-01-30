@@ -14,10 +14,16 @@ ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInte
     std::cout<< "ImageProcessor Constructor called" << std::endl;
     setAppl(this);
     gnc = nullptr;
+    
+    // Allocate Memory for Messages to Send
+    processedImageMessage = new ProcessedImageMessage;
+    processHealthMessage = new ProcessHealthAndStatusResponse();
 }
 
 ImageProcessor::~ImageProcessor() {
-    
+    //Free Messages from Memory
+    delete ProcessedImageMessage;
+    delete processHealthMessage;
 }
 
 // *******************************
@@ -73,8 +79,17 @@ void ImageProcessor::processImage(ImageMessage* msg) {
  */
 void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    service->sendStatusResponseMessage(status);
-    // Clear Status
+    
+    // Update Status
+    // TODO: Implement Status Update HERE
+    
+    // Update ProcessHealthAndStatusResponse Message
+    processHealthMessage.update(status);
+    
+    // Send Status Message
+    service->sendMessage(processHealthMessage);
+    
+    // Reset Status
     status.clear();
 }
 
@@ -86,9 +101,16 @@ void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusR
 */
 void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
     std::cerr << "ImageProcessor::handleImageMessage() Image Message Recived" << std::endl;
-    //Check Message Integrity
     
-    processImage(msg);
+    //TODO: Do Something Here
+    // Process the Image
+    proccesedImage = processImage(msg);
+    
+    // Update ProcessedImageMessage
+    processedImageMessage.update();
+    
+    // Send Processed Image Message to GNC
+    gnc->sendMessage(processedImageMessage);
 }
 
 // *******************************

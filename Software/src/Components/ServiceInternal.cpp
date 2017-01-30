@@ -164,56 +164,61 @@ void ServiceInternal::closeConnection() {
     writebuf.clear();
 }
 
-//Send Message Functions
-void ServiceInternal::sendStatusRequestMessage() {
+
+
+
+void ServiceInternal::sendMessage(Message* msg) {
     if (isConnected() == false) {
         return;
     }
     
-    // Create Message
-    ProcessHealthAndStatusRequest* msg = new ProcessHealthAndStatusRequest();
-    // Put Message in Write Buffer
-    build.buildProcessHealthAndStatusRequest(*msg);
-    // Register Intrest in Write
-    getSelector().interestInWrite(fd);
-}
+    switch (msg->iden) {
+        case I_CaptureImageRequest:
+            build.buildCaptureImageRequest((CaptureImageRequest) *msg);
+            break;
+            
+        case I_DataMessage:
+            build.buildDataMessage((DataMessage) *msg);
+            break;
+            
+        case I_ImageAdjustment:
+            build.buildImageAdjustment((ImageAdjustment) *msg);
+            break;
+            
+        case I_ImageMessage:
+            buildImageMessage((ImageMessage) *msg);
+            break;
+            
+        case I_OSPREStatus:
+            build.buildOSPREStatus((OSPREStatus) *msg);
+            break;
+            
+        case I_PointingRequest:
+            build.buildPointingRequest((PointingRequest) *msg);
+            break;
+            
+        case I_ProcessHealthAndStatusRequest:
+            build.buildProcessHealthAndStatusRequest((ProcessHealthAndStatusRequest) *msg);
+            break;
+            
+        case I_ProcessHealthAndStatusResponse:
+            build.buildProcessHealthAndStatusResponse((ProcessHealthAndStatusResponse) *msg);
+            break;
+        case I_SolutionMessage:
+            build.buildSolutionMessage((SolutionMessage) *msg);
 
-
-void ServiceInternal::sendStatusResponseMessage(std::vector<ProcessError> status) {
-    if (isConnected() == false) {
-        return;
+            break;
+        case I_ProcessedImageMessage:
+            build.buildProcessedImageMessage((ProcessedImage) *msg);
+            break;
+        default:
+            std::cout << "ServiceInternal::sendMessage() msgID unknown" << std::endl;
+            return;
     }
     
-    // Create Message
-    ProcessHealthAndStatusResponse* msg = new ProcessHealthAndStatusResponse(status);
-    // Put Message in Write Buffer
-    build.buildProcessHealthAndStatusResponse(*msg);
     // Register Intrest in Write
     getSelector().interestInWrite(fd);
 }
-
-void ServiceInternal::sendImageMessage(char* image) {
-    
-}
-
-void ServiceInternal::sendProcessedImageMessage() {
-    
-}
-
-void ServiceInternal::sendCaptureImageRequestMessage() {
-    
-}
-
-void ServiceInternal::sendPointingRequestMessage() {
-    
-}
-
-void ServiceInternal::sendSolutionMessage() {
-    
-}
-
-
-
 
 
 

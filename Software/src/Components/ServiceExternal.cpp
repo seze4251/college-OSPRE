@@ -176,14 +176,48 @@ void ServiceExternal::closeConnection() {
 }
 
 //Send Message Functions
-
-void ServiceExternal::sendDataMessage() {
+void ServiceExternal::sendExternalDataMessage(External_DataMessage* msg){
     
+    if (isConnected() == false) {
+        std::cout << "Service is no longer connected" << std::endl;
+        return;
+    }
+    
+    buildExternal_DataMessage(*msg);
+    getSelector().interestInWrite(fd);
 }
 
-void ServiceExternal::sendSolutionMessage() {
+void ServiceExternal::sendExternalSolutionMessage(External_SolutionMessage* msg) {
+    if (isConnected() == false) {
+        std::cout << "Service is no longer connected" << std::endl;
+        return;
+    }
     
+    buildExternal_SolutionMessage(*msg);
+    getSelector().interestInWrite(fd);
 }
+
+void ServiceExternal::sendExternalOSPREStatusMessage(External_OSPREStatus* msg) {
+    if (isConnected() == false) {
+        std::cout << "Service is no longer connected" << std::endl;
+        return;
+    }
+    
+    buildExternal_OSPREStatus(*msg);
+    getSelector().interestInWrite(fd);
+}
+
+void ServiceExternal::sendExternalPointingRequestMessage(External_PointingRequest* msg) {
+    if (isConnected() == false) {
+        std::cout << "Service is no longer connected" << std::endl;
+        return;
+    }
+    
+    buildExternal_PointingRequest(*msg);
+    getSelector().interestInWrite(fd);
+}
+
+
 
 
 

@@ -36,8 +36,10 @@ public:
     bool open(std::string hostName, int portNumber);
     
     // Send Message Funcitons
-    void sendDataMessage();
-    void sendSolutionMessage();
+    void sendExternalDataMessage(External_DataMessage* msg);
+    void sendExternalSolutionMessage(External_SolutionMessage* msg);
+    void sendExternalOSPREStatusMessage(External_OSPREStatus* msg);
+    void sendExternalPointingRequestMessage(External_PointingRequest* msg);
 
 
 protected:

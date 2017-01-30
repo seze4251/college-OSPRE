@@ -57,6 +57,14 @@ private:
     int externalPort;
     
     ServiceExternal* spacecraft;
+    
+    // Pointer To Hold Messages that Are being sent
+    ProcessHealthAndStatusResponse* processHealthMessage;
+    DataMessage*  dataMessage;
+    External_OSPREStatus* externalOspreStatusMessage;
+    External_PointingRequest* externalPointingMessage
+    External_SolutionMessage* externalSolutionMessage;
+   
 
 };
 

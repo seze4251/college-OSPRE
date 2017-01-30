@@ -38,14 +38,8 @@ public:
     virtual bool isConnected() { return fd != -1 ? true : false; }
     virtual void closeConnection();
 
-    //Send Message Functions
-    void sendStatusRequestMessage();
-    void sendStatusResponseMessage(std::vector<ProcessError> status);
-    void sendImageMessage(char* image);
-    void sendProcessedImageMessage();
-    void sendCaptureImageRequestMessage();
-    void sendPointingRequestMessage();
-    void sendSolutionMessage();
+    //Send Message Function
+    void sendMessage(Message* msg);
     
 protected:
     int fd;

@@ -17,7 +17,14 @@ public:
     ImageMessage() : Message(getMessageID(), time(0)), point(PEM_NA), image(nullptr) {}
     MessageID getMessageID() { return I_ImageMessage; }
     
-    //Specific Data Members
+    // Member Functions
+    void update(char* image, PointEarthMoon point) {
+        timeStamp = time(0);
+        this->point = point;
+        this->image = image;
+    }
+    
+    // Specific Data Members
     PointEarthMoon point;
     char* image;
 };

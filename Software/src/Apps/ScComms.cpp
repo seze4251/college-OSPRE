@@ -15,10 +15,22 @@ ScComms::ScComms( std::string hostName, int localPort, int externalPort) : Serve
     setAppl(this);
     external_accept.registerCallback(handleExternalConnection);
     spacecraft = nullptr;
+    
+    // Allocate Memory for Messages to Send
+    processHealthMessage = new ProcessHealthAndStatusResponse();
+    dataMessage = new DataMessage();
+    externalOspreStatusMessage = new External_OSPREStatus();
+    externalPointingMessage = new External_PointingRequest();
+    externalSolutionMessage = new External_SolutionMessage();
 }
 
 ScComms::~ScComms() {
-    
+    //Free Messages from Memory
+    delete processHealthMessage;
+    delete dataMessage;
+    delete externalOspreStatusMessage;
+    delete externalPointingMessage;
+    delete externalSolutionMessage;
 }
 
 // *******************************
@@ -77,36 +89,56 @@ void ScComms::handleExternalConnection(int fd) {
  */
 void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    service->sendStatusResponseMessage(status);
-    // Clear Status
+    
+    // Update Status
+    // TODO: Implement Status Update HERE
+    
+    // Update ProcessHealthAndStatusResponse Message
+    processHealthMessage.update(status);
+    
+    // Send Status Message
+    service->sendMessage(processHealthMessage);
+    
+    // Reset Status
     status.clear();
 }
 
 /*
- 1. Foward Data Message to all Subscribers? or everybody?
+ 1. Foward Data Message to everyone 
  */
-void ScComms::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleDataMessage() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
+void ScComms::handleExternalDataMessage(External_DataMessage* msg) {
+    std::cerr << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
+    
+    // TODO: Convert External Data Message to Data Message
+    
+    //Send Data Message
+    for (int i = 1; i < MaxClients; i++) {
+        if ((connections[i] != nullptr) && (connections[i]->isConnected())) {
+            connections[i]->sendMessage(dataMessage);
+        }
+    }
 }
 
 /*
  1. Send OSPRE Status to S/C
  */
 void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleOSPREStatus() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
+    std::cerr << "ScComms::handleOSPREStatus() OSPRE Status Message Recived" << std::endl;
+    
+    // TODO: Convert OSPRE Status Message to External OSPRE Status Message
+    
+    spacecraft->sendMessage(externalOspreStatusMessage)
 }
 
 /*
  1. Send Pointing Request to S/C
  */
 void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handlePointingRequest() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
+    std::cerr << "ScComms::handlePointingRequest() Pointing Request Received" << std::endl;
+    
+    // TODO: Convert Pointing Request Message to External Pointing Request Message
+    
+    spacecraft->sendMessage(externalPointingMessage)
 }
 
 /*
@@ -114,8 +146,10 @@ void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* servi
  */
 void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
     std::cerr << "ScComms::handleSolutionMessage() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
+    
+    // TODO: Convert Solution Message to External Solution Message
+    
+    spacecraft->sendMessage(externalSolutionMessage)
 }
 
 
@@ -155,7 +189,11 @@ void ScComms::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInt
     service->closeConnection();
 }
 
-
+void ScComms::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
+    std::cerr << "ScComms::handleDataMessage() Not Supported for ScComms" << std::endl;
+    std::cerr << "Closing Connection" << std::endl;
+    service->closeConnection();
+}
 
 
 

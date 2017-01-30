@@ -13,12 +13,25 @@
 GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_GNC), pollTime(0) {
     std::cout<< "GNC Constructor called" << std::endl;
     setAppl(this);
+    
+    // Set pointers to services to NULL
     scComms = nullptr;
     cameraController = nullptr;
+    
+    // Initialize Pointing Destination
+    point = PEM_NA;
+    
+    // Allocate Memory for Messages to Send
+    processHealthMessage = new ProcessHealthAndStatusResponse();
+    captureImageMessage = new CaptureImageRequest();
+    solutionMessage = new SolutionMessage();
 }
 
 GNC::~GNC() {
-    
+    //Free Messages from Memory
+    delete processHealthMessage;
+    delete captureImageMessage;
+    delete solutionMessage;
 }
 
 // *******************************
@@ -58,20 +71,30 @@ void GNC::open() {
  3. Need to Send Timed Capture Image Requests to the Camera
  */
 void GNC::handleTimeout() {
+    // Check all connections are still open
     this->open();
     
-    // Send Timed Pointing Requests to Spacecraft
     // Send Timed Capture Image Requests to Camera
     time_t currentTime = time(NULL);
     
     if (currentTime > pollTime) {
         // Send Poll
-        scComms -> sendPointingRequestMessage();
-        cameraController -> sendCaptureImageRequestMessage();
-
+        if (scComms -> isConnected()) {
+            if (point == PEM_NA) {
+                point = PEM_Earth;
+            } else if (point == PEM_Earth) {
+                point = PEM_Moon;
+            } else {
+                point = PEM_Earth;
+            }
+            
+            scComms -> sendPointingRequestMessage();
+        }
+        if (cameraController->isConnected()) {
+            cameraController -> sendCaptureImageRequestMessage();
+        }
         pollTime = currentTime + 2*60;
     }
-
 }
 
 // *******************************
@@ -102,8 +125,17 @@ void GNC::computeSolution() {
  */
 void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    service->sendStatusResponseMessage(status);
-    // Clear Status
+    
+    // Update Status
+    // TODO: Implement Status Update HERE
+    
+    // Update ProcessHealthAndStatusResponse Message
+    processHealthMessage.update(status);
+    
+    // Send Status Message
+    service->sendMessage(processHealthMessage);
+    
+    // Reset Status
     status.clear();
 }
 
@@ -111,7 +143,7 @@ void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg
  1. Store the Data Message
  2. Check to see if there is enough data to call compute
  3. Call Compute and register for Writing
-*/
+ */
 void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleDataMessage() Data Message Recived" << std::endl;
     // TODO:
@@ -119,7 +151,11 @@ void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     // Check to See if there is enough data to compute
     if (hasAllDataNeededForCompute() == true) {
         computeSolution();
-        scComms -> sendSolutionMessage();
+        
+        // Update Solution Message
+        solutionMessage.update();
+        
+        scComms -> sendMessage(solutionMessage);
     }
 }
 
@@ -129,13 +165,16 @@ void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
  if there is enough data to compute:
  3a. Call Compute
  4a. Send a Solution Message
- 
  */
 void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleProcessedImageMessage() Processed Image Message Recieved" << std::endl;
     if (hasAllDataNeededForCompute() == true) {
         computeSolution();
-        scComms -> sendSolutionMessage();
+        
+        // Update Solution Message
+        solutionMessage.update();
+        
+        scComms -> sendMessage(solutionMessage);
     }
 }
 

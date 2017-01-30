@@ -20,6 +20,11 @@ public:
     OSPREStatus() : Message(getMessageID(), time(0)) {}
     MessageID getMessageID() { return I_OSPREStatus; }
     
+    // Specific Data Members
+    void update( std::vector<ProcessError> error) {
+        this->error = error;
+    }
+    
     //Specific Data Members
     std::vector<ProcessError> error;
 };

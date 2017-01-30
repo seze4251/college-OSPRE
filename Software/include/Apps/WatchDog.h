@@ -43,12 +43,22 @@ public:
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
 private:
-    time_t pollTime;
+    // Poll Times
+    time_t pollProcess;
+    time_t pollStatus;
+    
+    // Connected Services
     ServiceInternal* scComms;
     ServiceInternal* gnc;
     ServiceInternal* imageProc;
     ServiceInternal* cameraControl;
     
+    // Pointer To Hold Messages that Are being sent
+    ProcessHealthAndStatusRequest* processHealthRequestMessage;
+    OSPREStatus* ospreStatusMessage;
+    
+    //Error Vector
+    std::vector<ProcessError> error;
 
     
 };

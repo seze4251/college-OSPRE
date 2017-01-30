@@ -13,12 +13,23 @@
 CameraController::CameraController(std::string hostName, int localPort, bool readImageFile) : ServerInternal(hostName, localPort, P_CameraController), pollTime(0), readImageFile(readImageFile) {
     std::cout<< "CameraController Constructor called" << std::endl;
     setAppl(this);
+    
+    // Set pointers to services to NULL
     imageProc = nullptr;
     scComms = nullptr;
+    
+    // Allocate size of image
+    image = new char[1024*1024];
+    
+    // Allocate Memory for Messages to Send
+    imageMessage = new ImageMessage();
+    processHealthMessage = new ProcessHealthAndStatusResponse();
 }
 
 CameraController::~CameraController() {
-    
+    //Free Messages from Memory
+    delete imageMessage;
+    delete processHealthMessage;
 }
 
 // *******************************
@@ -108,8 +119,17 @@ void CameraController::adjustCameraSettings(ImageAdjustment* msg) {
  */
 void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    service->sendStatusResponseMessage(status);
-    // Clear Status
+    
+    // Update Status
+    // TODO: Implement Status Update HERE
+    
+    // Update ProcessHealthAndStatusResponse Message
+    processHealthMessage.update(status);
+    
+    // Send Status Message
+    service->sendMessage(processHealthMessage);
+    
+    // Reset Status
     status.clear();
 }
 
@@ -129,14 +149,18 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     
     // Decide if Camera Controller can Capture Image or if it can read an image
     if (canCaptureImage(msg) == true || readImageFile) {
-        char* image;
+        
         if (readImageFile == true) {
             image = readImage();
         } else {
             image = captureImage();
         }
         
-        imageProc->sendImageMessage(image);
+        // Update Image Message
+        imageMessage.update(image, msg->point);
+        
+        // Send Image Message to Image Processor
+        imageProc->sendMessage(imageMessage);
         
     } else {
         // Update Process Status, potenially do this in canCaptureImage()
@@ -144,8 +168,7 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     }
 }
 
-
-//Is this Needed?
+// TODO: Decide is this Needed?
 void CameraController::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
     std::cerr << "ScCoCameraControllermms::handleImageAdjustment(): Recived Image Adjustment Message" << std::endl;
     adjustCameraSettings(msg);

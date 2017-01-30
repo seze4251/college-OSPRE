@@ -14,7 +14,12 @@ Spacecraft::Spacecraft(std::string hostName, int localPort) : pollTime(0) {
     std::cout<< " Spacecraft Constructor called" << std::endl;
     setAppl(this);
     scComms = nullptr;
+    
+    // Allocate Memory for Messages to Send
+    dataMessage = new External_DataMessage();
+    
 }
+
 
 // *******************************
 //
@@ -24,7 +29,8 @@ Spacecraft::Spacecraft(std::string hostName, int localPort) : pollTime(0) {
 
 
 Spacecraft::~Spacecraft() {
-    
+    //Free Messages from Memory
+    delete dataMessage;
 }
 
 // Connect to ScComms

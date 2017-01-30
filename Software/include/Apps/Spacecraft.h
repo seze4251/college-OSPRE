@@ -32,6 +32,8 @@ private:
     time_t pollTime;
     ServiceExternal* scComms;
     
+    // Pointer To Hold Messages that Are being sent
+    External_DataMessage* dataMessage;
 };
 
 #endif

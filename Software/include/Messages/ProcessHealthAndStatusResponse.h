@@ -25,8 +25,16 @@ public:
     
     MessageID getMessageID() {return I_ProcessHealthAndStatusResponse; }
     
+    //Member Functions
+    void update(std::vector<ProcessError> error) {
+        timeStamp = time(0);
+        this->error = error;
+    }
+    
     // Specific Data Members
     std::vector<ProcessError> error;
+    
+    
 };
 
 #endif

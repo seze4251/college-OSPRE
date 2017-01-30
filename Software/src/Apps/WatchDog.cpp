@@ -10,19 +10,27 @@
 
 #include "WatchDog.h"
 
-WatchDog::WatchDog(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_WatchDog), pollTime(0) {
+WatchDog::WatchDog(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_WatchDog), pollProcess(0), pollStatus(0) {
     std::cout<< " WatchDog Constructor called" << std::endl;
     setAppl(this);
     scComms = nullptr;
     gnc = nullptr;
     imageProc = nullptr;
     cameraControl = nullptr;
+    
+    // Allocate Memory for Messages to Send
+    processHealthRequestMessage = new ProcessHealthAndStatusRequest();
+    ospreStatusMessage = new OSPREStatus();
 }
 
 WatchDog::~WatchDog() {
+    //Free Messages from Memory
+    delete processHealthRequestMessage;
+    delete ospreStatusMessage;
     
 }
 
+// TODO: Update error vector based on what processes aren't connected
 void WatchDog::open() {
     //Acceptor
     if (accept.isConnected() == false) {
@@ -62,6 +70,7 @@ void WatchDog::open() {
     }
 }
 
+// TODO: Need to Scatter Poll time and OSPRE Status
 /*
  1. Need to send out a poll at timed intervals
  2. Need to check that all processes have responded to the poll
@@ -71,16 +80,56 @@ void WatchDog::open() {
 void WatchDog::handleTimeout() {
     time_t currentTime = time(NULL);
     
-    if (currentTime > pollTime) {
-        // Send Poll
-        for (int i = 0; i < MaxClients; i++) {
-            if ( (connections[i] != nullptr) && (connections[i]->isConnected() == true)) {
-                std::cout << "Attempting to send status request to client " << i << std::endl;
-                connections[i]->sendStatusRequestMessage();
-            }
-            
+    if (currentTime > pollProcess) {
+        // Send ScComms Health and Status Message
+        if ((scComms != nullptr) && (scComms->isConnected())) {
+            scComms -> sendMessage(processHealthRequestMessage);
+
+        } else {
+            // Update error vector
+            error.push_back(PE_ScC_notConnected);
         }
-        pollTime = currentTime + 5;
+        
+        // Send GNC Health and Status Message
+        if ((gnc != nullptr) && (gnc->isConnected())) {
+            gnc -> sendMessage(processHealthRequestMessage);
+            
+        } else {
+            // Update error vector
+            error.push_back(PE_GNC_notConnected);
+        }
+        
+        // Send Image Processor Health and Status Message
+        if ((imageProc != nullptr) && (imageProc->isConnected())) {
+            imageProc -> sendMessage(processHealthRequestMessage);
+            
+        } else {
+            // Update error vector
+            error.push_back(PE_IP_notConnected);
+        }
+        
+        // Send Camera Controller Health and Status Message
+        if ((cameraControl != nullptr) && (cameraControl->isConnected())) {
+            cameraControl -> sendMessage(processHealthRequestMessage);
+            
+        } else {
+            // Update error vector
+            error.push_back(PE_CC_notConnected);
+        }
+    }
+    
+    if (currentTime > pollStatus) {
+        // Update OSPRE Status Message
+        ospreStatusMessage.update(error);
+        
+        // Send OSPRE Status Message
+        scComms->sendMessage(ospreStatusMessage);
+        
+        // Clear OSPRE Status
+        error.clear();
+        
+        // Update Poll Time
+        pollTime = currentTime + 15;
     }
 }
 
@@ -103,14 +152,15 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
     } else if(service == gnc) {
         std::cout << "WatchDog: Health and Status Response Recived from GNC" << std::endl;
     } else if(service == imageProc) {
-        
         std::cout << "WatchDog: Health and Status Response Recived from ImageProcessor" << std::endl;
-        
     } else {
         std::cerr << "WatchDogClientHandler::handleProcessHealthAndStatusResponse: Client Response Message Not Expected" << std::endl;
         std::cerr << "Closing Connection" << std::endl;
         service->closeConnection();
     }
+    
+    // Insert Error into Error Vectors
+    error.insert(error.end(), msg->error.begin(), msg->error.end());
 }
 
 // *******************************
