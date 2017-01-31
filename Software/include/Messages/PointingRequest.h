@@ -17,6 +17,10 @@ public:
     PointingRequest() : Message(getMessageID(), time(0)), point(PEM_NA) {}
     MessageID getMessageID() { return I_PointingRequest; }
     
+    void update(PointEarthMoon point) {
+        this->point = point;
+    }
+    
     // Specific Data Members
     PointEarthMoon point;
 };

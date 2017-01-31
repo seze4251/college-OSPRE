@@ -124,7 +124,7 @@ void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatu
     // TODO: Implement Status Update HERE
     
     // Update ProcessHealthAndStatusResponse Message
-    processHealthMessage.update(status);
+    processHealthMessage->update(status);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
@@ -157,7 +157,7 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         }
         
         // Update Image Message
-        imageMessage.update(image, msg->point);
+        imageMessage->update(image, msg->point);
         
         // Send Image Message to Image Processor
         imageProc->sendMessage(imageMessage);

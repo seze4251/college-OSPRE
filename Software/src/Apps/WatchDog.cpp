@@ -120,7 +120,7 @@ void WatchDog::handleTimeout() {
     
     if (currentTime > pollStatus) {
         // Update OSPRE Status Message
-        ospreStatusMessage.update(error);
+        ospreStatusMessage->update(error);
         
         // Send OSPRE Status Message
         scComms->sendMessage(ospreStatusMessage);

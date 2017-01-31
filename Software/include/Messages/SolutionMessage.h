@@ -16,12 +16,22 @@
 
 class SolutionMessage : public Message {
 public:
-    SolutionMessage(PointEarthMoon point, std::vector<long> position, std::vector<long> positionError, std::vector<long> velocity, std::vector<long> velocityError) : Message(getMessageID(), time(0)), point(point), position(position), positionError(positionError), velocity(velocity), velocityError(velocityError) {}
+    // Constructors
+    SolutionMessage() : Message(getMessageID(), time(0)) {}
+    
+    SolutionMessage(PointEarthMoon point, std::vector<long> position, std::vector<long> positionError, std::vector<long> velocity, std::vector<long> velocityError) : Message(getMessageID(), time(0)), position(position), positionError(positionError), velocity(velocity), velocityError(velocityError) {}
     
     MessageID getMessageID() {return I_SolutionMessage;}
     
+    void update(std::vector<long> position, std::vector<long> positionError, std::vector<long> velocity, std::vector<long> velocityError, long earthScMoonAngle) {
+        this->position = position;
+        this->positionError = positionError;
+        this->velocity = velocity;
+        this->velocityError = velocityError;
+        this->earthScMoonAngle = earthScMoonAngle;
+    }
+    
     // Specific Data Members
-    PointEarthMoon point;
     std::vector<long> position;
     std::vector<long> positionError;
     std::vector<long> velocity;

@@ -25,6 +25,7 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     processHealthMessage = new ProcessHealthAndStatusResponse();
     captureImageMessage = new CaptureImageRequest();
     solutionMessage = new SolutionMessage();
+    pointRequest = new PointingRequest();
 }
 
 GNC::~GNC() {
@@ -88,10 +89,12 @@ void GNC::handleTimeout() {
                 point = PEM_Earth;
             }
             
-            scComms -> sendPointingRequestMessage();
+            pointRequest->update(point);
+            scComms -> sendMessage(pointRequest);
         }
         if (cameraController->isConnected()) {
-            cameraController -> sendCaptureImageRequestMessage();
+            captureImageMessage->update(point);
+            cameraController -> sendMessage(captureImageMessage);
         }
         pollTime = currentTime + 2*60;
     }
@@ -130,7 +133,7 @@ void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg
     // TODO: Implement Status Update HERE
     
     // Update ProcessHealthAndStatusResponse Message
-    processHealthMessage.update(status);
+    processHealthMessage->update(status);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
@@ -153,7 +156,7 @@ void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
         computeSolution();
         
         // Update Solution Message
-        solutionMessage.update();
+        solutionMessage->update();
         
         scComms -> sendMessage(solutionMessage);
     }
@@ -172,7 +175,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
         computeSolution();
         
         // Update Solution Message
-        solutionMessage.update();
+        solutionMessage->update();
         
         scComms -> sendMessage(solutionMessage);
     }

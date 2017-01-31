@@ -33,8 +33,6 @@ Spacecraft::~Spacecraft() {
     delete dataMessage;
 }
 
-// Connect to ScComms
-
 void Spacecraft::handleTimeout() {
     
 }
@@ -42,3 +40,15 @@ void Spacecraft::handleTimeout() {
 void Spacecraft::open() {
     
 }
+
+
+
+
+
+
+
+
+
+
+
+

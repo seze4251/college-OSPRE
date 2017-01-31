@@ -20,7 +20,12 @@ public:
     
     MessageID getMessageID() {return I_ProcessedImageMessage;}
     
+    void update(std::vector<long> data) {
+        this->data = data;
+    }
+    
     // Specific Data Members
+    std::vector<long> data;
 };
 
 #endif

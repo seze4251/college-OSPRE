@@ -14,5 +14,9 @@ class External_PointingRequest {
 public:
     External_PointingRequest() {}
     
+    // Specific Data Members
+    PointEarthMoon point;
+    
+    
 };
 #endif

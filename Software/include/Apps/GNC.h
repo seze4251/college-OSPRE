@@ -48,17 +48,24 @@ public:
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
 private:
+    //Internal Members  for System Architecture
     time_t pollTime;
     ServiceInternal* scComms;
     ServiceInternal* cameraController;
-    
     std::vector<ProcessError> status;
+    
+    // Where Spacecraft is currently pointing
     PointEarthMoon point;
     
     // Pointer To Hold Messages that Are being sent
     ProcessHealthAndStatusResponse* processHealthMessage;
+    PointingRequest* pointRequest;
     CaptureImageRequest* captureImageMessage;
     SolutionMessage* solutionMessage;
+    
+    // Current Solution Message
+    
+    
 };
 
 #endif
