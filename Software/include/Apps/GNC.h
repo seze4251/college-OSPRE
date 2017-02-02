@@ -18,6 +18,7 @@
 #include "ServerInternal.h"
 #include "ProcessID.h"
 #include "PointEarthMoon.h"
+#include "CircularBuffer.h"
 
 class GNC : public ServerInternal {
 public:
@@ -33,8 +34,7 @@ public:
     virtual void handleTimeout();
     
     // Applicaiton Functionality
-    bool hasAllDataNeededForCompute();
-    void computeSolution();
+    void computeSolution(DataMessage*, ProcessedImageMessage*);
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
@@ -48,14 +48,11 @@ public:
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
 private:
-    //Internal Members  for System Architecture
+    // Internal Members  for System Architecture
     time_t pollTime;
     ServiceInternal* scComms;
     ServiceInternal* cameraController;
     std::vector<ProcessError> status;
-    
-    // Where Spacecraft is currently pointing
-    PointEarthMoon point;
     
     // Pointer To Hold Messages that Are being sent
     ProcessHealthAndStatusResponse* processHealthMessage;
@@ -63,8 +60,17 @@ private:
     CaptureImageRequest* captureImageMessage;
     SolutionMessage* solutionMessage;
     
-    // Current Solution Message
+    // Buffer to hold Data Messages
+    CircularBuffer circBuf;
     
+    // Where Spacecraft is currently pointing (Earth or Moon)
+    PointEarthMoon point;
+    
+    // Spacecraft Position
+    double latestPosition[3];
+    
+
+
     
 };
 

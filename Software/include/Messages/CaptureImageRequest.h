@@ -19,14 +19,14 @@ public:
     
     virtual MessageID getMessageID() { return I_CaptureImageRequest; }
     
-    void update(PointEarthMoon point, std::vector<long> estimatedPosition) {
+    void update(PointEarthMoon point, double* estimatedPosition) {
         this->point = point;
-        this->estimatedPosition = estimatedPosition;
+        memcpy(this->estimatedPosition, estimatedPosition, 3 * sizeof(double));
     }
     
     // Specific Data Members
     PointEarthMoon point;
-    std::vector<long> estimatedPosition;
+    double estimatedPosition[3];
 };
 
 #endif

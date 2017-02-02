@@ -19,24 +19,23 @@ public:
     // Constructors
     SolutionMessage() : Message(getMessageID(), time(0)) {}
     
-    SolutionMessage(PointEarthMoon point, std::vector<long> position, std::vector<long> positionError, std::vector<long> velocity, std::vector<long> velocityError) : Message(getMessageID(), time(0)), position(position), positionError(positionError), velocity(velocity), velocityError(velocityError) {}
-    
     MessageID getMessageID() {return I_SolutionMessage;}
+
     
-    void update(std::vector<long> position, std::vector<long> positionError, std::vector<long> velocity, std::vector<long> velocityError, long earthScMoonAngle) {
-        this->position = position;
-        this->positionError = positionError;
-        this->velocity = velocity;
-        this->velocityError = velocityError;
+    void update(double* position, double* positionError, double* velocity, double* velocityError, double earthScMoonAngle) {
+        memcpy(this->position, position, 3 * sizeof(double));
+        memcpy(this->positionError, positionError, 3 * sizeof(double));
+        memcpy(this->velocity, velocity, 3 * sizeof(double));
+        memcpy(this->velocityError, velocityError, 3 * sizeof(double));
         this->earthScMoonAngle = earthScMoonAngle;
     }
     
     // Specific Data Members
-    std::vector<long> position;
-    std::vector<long> positionError;
-    std::vector<long> velocity;
-    std::vector<long> velocityError;
-    long earthScMoonAngle;
+    double position[3];
+    double positionError[3];
+    double velocity[3];
+    double velocityError[3];
+    double earthScMoonAngle;
 };
 
 #endif

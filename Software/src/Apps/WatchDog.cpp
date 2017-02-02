@@ -116,6 +116,9 @@ void WatchDog::handleTimeout() {
             // Update error vector
             error.push_back(PE_CC_notConnected);
         }
+        
+        // Update Poll Process Time
+        pollStatus = pollProcess + 5;
     }
     
     if (currentTime > pollStatus) {
@@ -128,8 +131,8 @@ void WatchDog::handleTimeout() {
         // Clear OSPRE Status
         error.clear();
         
-        // Update Poll Time
-        pollTime = currentTime + 15;
+        // Update Poll OSPRE Status Message Time
+        pollStatus = currentTime + 15;
     }
 }
 

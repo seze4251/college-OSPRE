@@ -22,7 +22,7 @@ ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInte
 
 ImageProcessor::~ImageProcessor() {
     //Free Messages from Memory
-    delete ProcessedImageMessage;
+    delete processedImageMessage;
     delete processHealthMessage;
 }
 
@@ -64,6 +64,13 @@ void ImageProcessor::handleTimeout() {
 // TODO: Anthony to complete
 void ImageProcessor::processImage(ImageMessage* msg) {
     
+    //TODO: ANTHONY's Code HERE!!!!
+    
+    double distance;
+    double error;
+    
+    // Update ProcessedImageMessage
+    processedImageMessage->update(distance, error, msg->point);
 }
 
 
@@ -84,7 +91,7 @@ void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusR
     // TODO: Implement Status Update HERE
     
     // Update ProcessHealthAndStatusResponse Message
-    processHealthMessage.update(status);
+    processHealthMessage->update(status);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
@@ -104,10 +111,9 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     
     //TODO: Do Something Here
     // Process the Image
-    proccesedImage = processImage(msg);
+    processImage(msg);
     
-    // Update ProcessedImageMessage
-    processedImageMessage.update();
+
     
     // Send Processed Image Message to GNC
     gnc->sendMessage(processedImageMessage);

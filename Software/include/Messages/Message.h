@@ -11,6 +11,7 @@
 #define MESSAGE_H
 
 #include <ctime>
+#include <string.h>
 
 #include "PointEarthMoon.h"
 #include "MessageID.h"

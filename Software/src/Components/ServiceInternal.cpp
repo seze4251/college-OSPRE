@@ -174,7 +174,9 @@ void ServiceInternal::sendMessage(Message* msg) {
     
     switch (msg->iden) {
         case I_CaptureImageRequest:
-            build.buildCaptureImageRequest((CaptureImageRequest) *msg);
+            CaptureImageRequest bla = (CaptureImageRequest) *msg;
+            build.buildCaptureImageRequest(bla);
+            //build.buildCaptureImageRequest((CaptureImageRequest) *msg);
             break;
             
         case I_DataMessage:

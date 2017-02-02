@@ -15,7 +15,7 @@ public:
     External_PointingRequest() {}
     
     // Specific Data Members
-    PointEarthMoon point;
+    //PointEarthMoon point;
     
     
 };

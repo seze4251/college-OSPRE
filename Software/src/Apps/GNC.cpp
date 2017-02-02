@@ -93,7 +93,7 @@ void GNC::handleTimeout() {
             scComms -> sendMessage(pointRequest);
         }
         if (cameraController->isConnected()) {
-            captureImageMessage->update(point);
+            captureImageMessage->update(point, latestPosition);
             cameraController -> sendMessage(captureImageMessage);
         }
         pollTime = currentTime + 2*60;
@@ -105,15 +105,25 @@ void GNC::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
-// TODO: Seth will complete
-bool GNC::hasAllDataNeededForCompute() {
-    return false;
-}
-
 
 // TODO: Waiting On Cameron to Complete
-void GNC::computeSolution() {
+void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procMessage) {
+    // Check Inputs <- unecessary if Cameron does it
     
+    // Call Camerons Code Here
+    // Compute Solution
+    // YAY HAVE SOLUTION!!!
+    
+    // TEMPORARY FIX:
+    // LETS CODE COMPILE
+    double position[3];
+    double positionError[3];
+    double velocity[3];
+    double velocityError[3];
+    double earthScMoonAngle;
+    
+    // Update Solution Message
+    solutionMessage->update(position, positionError, velocity, velocityError, earthScMoonAngle);
 }
 
 
@@ -143,42 +153,37 @@ void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg
 }
 
 /*
- 1. Store the Data Message
- 2. Check to see if there is enough data to call compute
- 3. Call Compute and register for Writing
+ 1. Store the Data Message in circular buffer
  */
 void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleDataMessage() Data Message Recived" << std::endl;
-    // TODO:
-    // Store Ephemeris
-    // Check to See if there is enough data to compute
-    if (hasAllDataNeededForCompute() == true) {
-        computeSolution();
-        
-        // Update Solution Message
-        solutionMessage->update();
-        
-        scComms -> sendMessage(solutionMessage);
-    }
+    
+    // Put Data Into Circular Buffer
+    circBuf.put(msg);
 }
 
 /*
- 1. Store Data
- 2. Check to see if there is enough data to call compute
- if there is enough data to compute:
- 3a. Call Compute
- 4a. Send a Solution Message
+ 1. Get Spacecraft Data Message
+ 2. Call Compute
+ 3. Send a Solution Message
  */
 void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
     std::cerr << "GNC::handleProcessedImageMessage() Processed Image Message Recieved" << std::endl;
-    if (hasAllDataNeededForCompute() == true) {
-        computeSolution();
-        
-        // Update Solution Message
-        solutionMessage->update();
-        
-        scComms -> sendMessage(solutionMessage);
+    
+    DataMessage* scData = circBuf.get(msg->timeStamp);
+    
+    // Should this move into computeSolution or get rid of completly?
+    if (scData == nullptr) {
+        std::cout << "Data Message == nullptr, circular buffer broken, or Data Message not found!" << std::endl;
+        //TODO: Throw exception here
+        return;
     }
+    
+    // Compute Solution and Update Solution Message
+    computeSolution(scData, msg);
+    
+    // Send Solution Message
+    scComms -> sendMessage(solutionMessage);
 }
 
 

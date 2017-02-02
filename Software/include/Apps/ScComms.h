@@ -36,6 +36,9 @@ public:
     //Acceptor function for External Connections
     static void handleExternalConnection(int fd);
     
+    // Additional Message Handler for ScComms
+    void handleExternalDataMessage(External_DataMessage* msg);
+    
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
     virtual void handleDataMessage(DataMessage* msg, ServiceInternal* service);
@@ -56,18 +59,18 @@ private:
     Acceptor external_accept;
     int externalPort;
     
-    ServiceExternal* spacecraft;
+   static ServiceExternal* spacecraft;
     
     // Pointer To Hold Messages that Are being sent
     ProcessHealthAndStatusResponse* processHealthMessage;
     DataMessage*  dataMessage;
     External_OSPREStatus* externalOspreStatusMessage;
-    External_PointingRequest* externalPointingMessage
+    External_PointingRequest* externalPointingMessage;
     External_SolutionMessage* externalSolutionMessage;
-   
-
+    
+    
 };
 
 #endif
 
-// Connect to WatchDog
+

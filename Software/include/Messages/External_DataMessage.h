@@ -10,6 +10,8 @@
 #ifndef EXTERNALDATAMESSAGE_H
 #define EXTERNALDATAMESSAGE_H
 
+#include <ctime>
+
 class External_DataMessage {
 public:
     External_DataMessage() {}
@@ -17,13 +19,13 @@ public:
     
     // Specific Data Members
     // Ephemeris
-    std::vector<long> ephem;
+    double ephem[3];
     
     // Quaternion
-    std::vector<long> quat;
+    double quat[4];
     
     // Angular Velocity
-    std::vector<long> angularVelocity;
+    double angularVelocity[3];
     
     // Time
     time_t time;

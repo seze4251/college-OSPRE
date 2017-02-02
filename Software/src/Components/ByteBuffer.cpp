@@ -155,15 +155,35 @@ long ByteBuffer::getLong() {
     return i;
 }
 
-// *******************************
-//
-// TODO: IMPLEMENT METHODS BELOW
-//
-// ********************************
+// Keeps 6 decimals of percision
+double ByteBuffer::getDouble() {
+    long i = getLong();
+    double d = (double) i / 1000000;
+    return d;
+}
 
+// Keeps 6 decimals of percision
+void ByteBuffer::putdouble(double d) {
+    long i = (long) d * 1000000;
+    putLong(i);
+}
 
 void ByteBuffer::put(char * c, int length) {
+    if (length < 0) {
+        std::cout << "Can not add length of 0" << std::endl;
+        //TODO: Throw Exception
+        return;
+    }
     
+    if ((size + length) > capacity) {
+        // TODO: add throw of Exception
+        std::cout << "Should Throw Exception in putLong" << std::endl;
+        return;
+    }
+    
+    memcpy(currentPos, c, length);
+    currentPos += length;
+    size += length;
 }
 
 void ByteBuffer::printBuffer() {

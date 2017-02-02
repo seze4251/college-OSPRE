@@ -10,6 +10,8 @@
 #include "ScComms.h"
 #include "Service.h"
 
+ServiceExternal* ScComms::spacecraft;
+
 ScComms::ScComms( std::string hostName, int localPort, int externalPort) : ServerInternal(hostName, localPort, P_ScComms), external_accept(getSelector()), externalPort(externalPort), pollTime(0) {
     std::cout<< " ScComms Constructor called" << std::endl;
     setAppl(this);
@@ -31,6 +33,10 @@ ScComms::~ScComms() {
     delete externalOspreStatusMessage;
     delete externalPointingMessage;
     delete externalSolutionMessage;
+    
+    if (spacecraft != nullptr) {
+        delete spacecraft;
+    }
 }
 
 // *******************************
@@ -56,7 +62,7 @@ void ScComms::open() {
         }
         std::cout << "ScComms External Server Socket Opened" << std::endl;
     }
-
+    
 }
 
 /*
@@ -71,9 +77,24 @@ void ScComms::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
-// TODO: Seth to complete
 void ScComms::handleExternalConnection(int fd) {
+    // File Descriptors less than 0 are invalid
+    if (fd < 0) {
+        std::cout << "ScComms::handleExternalConnection() Invalid File Descriptor" << std::endl;
+        return;
+    }
     
+    // If spacecraft hasn't connected before, allocate memory for Service External
+    if (spacecraft == nullptr) {
+        spacecraft = new ServiceExternal(appl->getSelector());
+    }
+    
+    // If the spacecraft is already connected, close current connection only one instance of client (spacecraft) is allowed
+    if (spacecraft->isConnected()) {
+        spacecraft->closeConnection();
+    }
+    
+    spacecraft->open(fd);
 }
 
 
@@ -94,7 +115,7 @@ void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest*
     // TODO: Implement Status Update HERE
     
     // Update ProcessHealthAndStatusResponse Message
-    processHealthMessage.update(status);
+    processHealthMessage->update(status);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
@@ -104,7 +125,7 @@ void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest*
 }
 
 /*
- 1. Foward Data Message to everyone 
+ 1. Foward Data Message to everyone
  */
 void ScComms::handleExternalDataMessage(External_DataMessage* msg) {
     std::cerr << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
@@ -127,7 +148,7 @@ void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
     
     // TODO: Convert OSPRE Status Message to External OSPRE Status Message
     
-    spacecraft->sendMessage(externalOspreStatusMessage)
+    spacecraft->sendExternalOSPREStatusMessage(externalOspreStatusMessage);
 }
 
 /*
@@ -138,7 +159,7 @@ void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* servi
     
     // TODO: Convert Pointing Request Message to External Pointing Request Message
     
-    spacecraft->sendMessage(externalPointingMessage)
+    spacecraft->sendExternalPointingRequestMessage(externalPointingMessage);
 }
 
 /*
@@ -149,7 +170,7 @@ void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* servi
     
     // TODO: Convert Solution Message to External Solution Message
     
-    spacecraft->sendMessage(externalSolutionMessage)
+    spacecraft->sendExternalSolutionMessage(externalSolutionMessage);
 }
 
 

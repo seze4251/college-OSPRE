@@ -183,7 +183,7 @@ void ServiceExternal::sendExternalDataMessage(External_DataMessage* msg){
         return;
     }
     
-    buildExternal_DataMessage(*msg);
+    build.buildExternal_DataMessage(*msg);
     getSelector().interestInWrite(fd);
 }
 
@@ -193,7 +193,7 @@ void ServiceExternal::sendExternalSolutionMessage(External_SolutionMessage* msg)
         return;
     }
     
-    buildExternal_SolutionMessage(*msg);
+    build.buildExternal_SolutionMessage(*msg);
     getSelector().interestInWrite(fd);
 }
 
@@ -203,7 +203,7 @@ void ServiceExternal::sendExternalOSPREStatusMessage(External_OSPREStatus* msg) 
         return;
     }
     
-    buildExternal_OSPREStatus(*msg);
+    build.buildExternal_OSPREStatus(*msg);
     getSelector().interestInWrite(fd);
 }
 
@@ -213,7 +213,7 @@ void ServiceExternal::sendExternalPointingRequestMessage(External_PointingReques
         return;
     }
     
-    buildExternal_PointingRequest(*msg);
+    build.buildExternal_PointingRequest(*msg);
     getSelector().interestInWrite(fd);
 }
 

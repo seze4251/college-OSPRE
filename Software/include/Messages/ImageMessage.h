@@ -18,6 +18,7 @@ public:
     MessageID getMessageID() { return I_ImageMessage; }
     
     // Member Functions
+    // I AM NOT DOING A MEMCPY here<------- because the image is already in the HEAP and will hopefully be fully sent? before the next one is put on here???
     void update(char* image, PointEarthMoon point) {
         timeStamp = time(0);
         this->point = point;

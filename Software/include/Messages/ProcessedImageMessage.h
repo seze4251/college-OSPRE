@@ -20,12 +20,16 @@ public:
     
     MessageID getMessageID() {return I_ProcessedImageMessage;}
     
-    void update(std::vector<long> data) {
-        this->data = data;
+    void update(double distance, double error, PointEarthMoon point) {
+        this->distance = distance;
+        this->error = error;
+        this->point = point;
     }
     
     // Specific Data Members
-    std::vector<long> data;
+    double distance;
+    double error;
+    PointEarthMoon point;
 };
 
 #endif

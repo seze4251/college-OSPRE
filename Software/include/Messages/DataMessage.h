@@ -10,8 +10,6 @@
 #ifndef DATAMESSAGE_H
 #define DATAMESSAGE_H
 
-#include <vector>
-
 #include "Message.h"
 
 // Not quite sure how ephemris is going to be passed to us!
@@ -21,29 +19,29 @@ public:
     
     MessageID getMessageID() { return I_DataMessage; }
     
-    void update(std::vector<long> ephem, std::vector<long> quat, std::vector<long> angularVelocity, time_t satTime, long sunAngle) {
-        this->ephem = ephem;
-        this->quat = quat;
-        this->angularVelocity = angularVelocity;
+    void update(double* ephem, double* quat, double* angularVelocity, time_t satTime, double sunAngle) {
+        memcpy(this->ephem, ephem, 3 * sizeof(double));
+        memcpy(this->quat, quat, 4 * sizeof(double));
+        memcpy(this->angularVelocity, angularVelocity, 3 * sizeof(double));
         this->satTime = satTime;
         this->sunAngle = sunAngle;
     }
     
     // Specific Data Members
     // Ephemeris
-    std::vector<long> ephem;
+    double ephem[3];
     
     // Quaternion
-    std::vector<long> quat;
+    double quat[4];
     
     // Angular Velocity
-    std::vector<long> angularVelocity;
+    double angularVelocity[3];
     
     // Time
     time_t satTime;
     
     // Sun Angle
-    long sunAngle;
+    double sunAngle;
     
 };
 
