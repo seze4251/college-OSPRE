@@ -174,44 +174,42 @@ void ServiceInternal::sendMessage(Message* msg) {
     
     switch (msg->iden) {
         case I_CaptureImageRequest:
-            CaptureImageRequest bla = (CaptureImageRequest) *msg;
-            build.buildCaptureImageRequest(bla);
-            //build.buildCaptureImageRequest((CaptureImageRequest) *msg);
+            build.buildCaptureImageRequest(*((CaptureImageRequest*) msg));
             break;
             
         case I_DataMessage:
-            build.buildDataMessage((DataMessage) *msg);
+            build.buildDataMessage(*((DataMessage*) msg));
             break;
             
         case I_ImageAdjustment:
-            build.buildImageAdjustment((ImageAdjustment) *msg);
+            build.buildImageAdjustment(*((ImageAdjustment*) msg));
             break;
             
         case I_ImageMessage:
-            buildImageMessage((ImageMessage) *msg);
+            build.buildImageMessage(*((ImageMessage*) msg));
             break;
             
         case I_OSPREStatus:
-            build.buildOSPREStatus((OSPREStatus) *msg);
+            build.buildOSPREStatus(*((OSPREStatus*) msg));
             break;
             
         case I_PointingRequest:
-            build.buildPointingRequest((PointingRequest) *msg);
+            build.buildPointingRequest(*((PointingRequest*) msg));
             break;
             
         case I_ProcessHealthAndStatusRequest:
-            build.buildProcessHealthAndStatusRequest((ProcessHealthAndStatusRequest) *msg);
+            build.buildProcessHealthAndStatusRequest(*((ProcessHealthAndStatusRequest*) msg));
             break;
             
         case I_ProcessHealthAndStatusResponse:
-            build.buildProcessHealthAndStatusResponse((ProcessHealthAndStatusResponse) *msg);
+            build.buildProcessHealthAndStatusResponse(*((ProcessHealthAndStatusResponse*) msg));
             break;
         case I_SolutionMessage:
-            build.buildSolutionMessage((SolutionMessage) *msg);
+            build.buildSolutionMessage(*((SolutionMessage*) msg));
 
             break;
         case I_ProcessedImageMessage:
-            build.buildProcessedImageMessage((ProcessedImage) *msg);
+            build.buildProcessedImageMessage(*((ProcessedImageMessage*) msg));
             break;
         default:
             std::cout << "ServiceInternal::sendMessage() msgID unknown" << std::endl;

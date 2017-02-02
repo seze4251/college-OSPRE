@@ -35,6 +35,7 @@ public:
     void buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse &msg);
     void buildSolutionMessage(SolutionMessage &msg);
     void buildProcessedImageMessage(ProcessedImageMessage &msg);
+    
 private:
     //Members
     ByteBuffer& buf;
