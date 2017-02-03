@@ -29,6 +29,11 @@ public:
     void open();
     
 private:
+    // Connect to OSPRE
+    std::string ospreHostName;
+    int osprePort;
+    
+    // System Architecture
     time_t pollTime;
     ServiceExternal* scComms;
     

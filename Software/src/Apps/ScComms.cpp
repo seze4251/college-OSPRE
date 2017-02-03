@@ -70,6 +70,33 @@ void ScComms::open() {
  */
 void ScComms::handleTimeout() {
     this->open();
+    
+    // TEMP TEMP
+    time_t currentTime = time(NULL);
+    if (currentTime > pollTime) {
+        // Send Poll
+        
+        //TODO: Update Data Message
+        
+        // TEMP
+        double ephem[3]{1,1,1};
+        double quat[4]{2,2,2,2};
+        double angularVelocity[3]{3,3,3};
+        time_t satTime{time(0)};
+        double sunAngle{4};
+        
+        dataMessage->update(ephem, quat, angularVelocity, satTime, sunAngle);
+        
+        for (int i = 1; i < MaxClients; i++) {
+            if ((connections[i] != nullptr) && (connections[i]->isConnected())) {
+                connections[i]->sendMessage(dataMessage);
+            }
+        }
+        
+        pollTime = currentTime + 1;
+        
+    }
+    // TEMP TEMP
 }
 
 // *******************************

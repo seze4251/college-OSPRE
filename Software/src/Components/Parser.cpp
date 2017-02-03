@@ -144,10 +144,6 @@ Message* Parser::parseProcessHealthAndStatusRequest() {
     if (request == nullptr) {
         request = new ProcessHealthAndStatusRequest();
     }
-    if (messageLength != (2 * sizeof(int) + sizeof(time_t) ) ) {
-        std::cerr << "Parser::parseProcessHealthAndStatusRequest(): Message Length Incorrect, length = " << messageLength << std::endl;
-        return nullptr;
-    }
     
     request->timeStamp = timeStamp;
     request->iden = messageID;
@@ -159,59 +155,168 @@ Message* Parser::parseProcessHealthAndStatusResponse() {
     if (response == nullptr) {
         response = new ProcessHealthAndStatusResponse();
     }
-    // *******************************
-    //
-    // TODO: Change Size check when message gets completed
-    //
-    // ********************************
-    if (messageLength != (3 * sizeof(int) + sizeof(time_t) ) ) {
-        std::cerr << "Parser::parseProcessHealthAndStatusRequest(): Message Length Incorrect, length = " << messageLength << std::endl;
-        return nullptr;
-    }
+    
+    int messageHeader = 2 * sizeof(int) + sizeof(time_t);
+    int messageBody = (messageLength - messageHeader) / sizeof(int);
     
     response->timeStamp = timeStamp;
     response->iden = messageID;
-    //response->p_ID = (ProcessID) buf.getInt();
+    
+    for (int i = 0; i < messageBody; i++) {
+        response->error.push_back((ProcessError) buf.getInt());
+    }
+    
     return response;
 }
 
-// *******************************
-//
-// TODO: IMPLEMENT METHODS BELOW
-//
-// ********************************
 Message* Parser::parseProcessedImageMessage() {
-    return nullptr;
+    if (processed == nullptr) {
+        processed = new ProcessedImageMessage();
+    }
+    
+    processed->timeStamp = timeStamp;
+    processed->iden = messageID;
+    
+    // Specific Data Members
+    processed->distance = buf.getDouble();
+    processed->error = buf.getDouble();
+    processed->point = (PointEarthMoon) buf.getInt();
+    
+    return processed;
 }
 
 Message* Parser::parseCaptureImageRequest() {
     if (capture == nullptr) {
         capture = new CaptureImageRequest();
     }
-    capture->timeStamp = buf.getLong();
+    
+    capture->timeStamp = timeStamp;
+    capture->iden = messageID;
+    
+    // Specific Data Members
+    capture->point = (PointEarthMoon) buf.getInt();
+    for (int i = 0; i < 3; i++) {
+        capture->estimatedPosition[i] = buf.getDouble();
+    }
+    
     return capture;
 }
 
 Message* Parser::parseDataMessage() {
-    return nullptr;
+    if (data == nullptr) {
+        data = new DataMessage();
+    }
+
+    data->timeStamp = timeStamp;
+    data->iden = messageID;
+    
+    // Specific Data Members ephem quat angularVelocity satTime sunAngle
+    for (int i = 0; i < 3; i++) {
+        data->ephem[i] = buf.getDouble();
+    }
+    
+    for (int i = 0; i < 4; i++) {
+        data->quat[i] = buf.getDouble();
+    }
+    
+    for (int i = 0; i < 3; i++) {
+        data->angularVelocity[i] = buf.getDouble();
+    }
+    
+    data->satTime = buf.getLong();
+    data->sunAngle = buf.getDouble();
+    
+    return data;
 }
 
 Message* Parser::parseImageAdjustment() {
-    return nullptr;
+    if (adjustment == nullptr) {
+        adjustment = new ImageAdjustment();
+    }
+  
+    adjustment->timeStamp = timeStamp;
+    adjustment->iden = messageID;
+    return adjustment;
 }
 
-Message* Parser::parseImageMessage() {
-    return nullptr;
-}
+
 
 Message* Parser::parseOSPREStatus() {
-    return nullptr;
+    if (status == nullptr) {
+        status = new OSPREStatus();
+    }
+    
+    int messageHeader = 2 * sizeof(int) + sizeof(time_t);
+    int messageBody = (messageLength - messageHeader) / sizeof(int);
+    
+    status->timeStamp = timeStamp;
+    status->iden = messageID;
+    
+    for (int i = 0; i < messageBody; i++) {
+        status->error.push_back((ProcessError) buf.getInt());
+    }
+    
+    return status;
 }
 
 Message* Parser::parsePointingRequest() {
-    return nullptr;
+    if (pointing == nullptr) {
+        pointing = new PointingRequest();
+    }
+    
+    pointing->timeStamp = timeStamp;
+    pointing->iden = messageID;
+    
+    // Specific Data Members
+    pointing->point = (PointEarthMoon) buf.getInt();
+    
+    return pointing;
 }
 
 Message* Parser::parseSolutionMessage() {
-    return nullptr;
+    if (solution == nullptr) {
+        solution = new SolutionMessage();
+    }
+    
+    solution->timeStamp = timeStamp;
+    solution->iden = messageID;
+    
+    for (int i = 0; i < 3; i++) {
+        solution->position[i] = buf.getDouble();
+    }
+    
+    for (int i = 0; i < 3; i++) {
+        solution->positionError[i] = buf.getDouble();
+    }
+    
+    for (int i = 0; i < 3; i++) {
+        solution->velocity[i] = buf.getDouble();
+    }
+    
+    for (int i = 0; i < 3; i++) {
+        solution->velocityError[i] = buf.getDouble();
+    }
+    
+    solution->earthScMoonAngle = buf.getDouble();
+    
+    return solution;
 }
+
+//**************************
+//TODO: COmplete This
+Message* Parser::parseImageMessage() {
+    if (image == nullptr) {
+        image = new ImageMessage();
+    }
+    
+    image->timeStamp = timeStamp;
+    image->iden = messageID;
+    image->point = (PointEarthMoon) buf.getInt();
+    
+    //image->image =
+    
+    return image;
+}
+
+
+

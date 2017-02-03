@@ -38,10 +38,13 @@ public:
     void putLong(long d);
     
     double getDouble();
-    void putdouble(double d);
+    void putDouble(double d);
     
     char* getBuffer() {return currentPos;}
+    
     void put(char* c, int length);
+    //void get(int length);
+    
     void printBuffer();
     
 private:

@@ -24,22 +24,19 @@ ServiceExternal::~ServiceExternal() {
     
 }
 
+// TODO: Decide if this needs to change!
 //Initialize InternalService Methods
 bool ServiceExternal::open(int fd) {
-  // ServiceInternal Code, Need to implement for ServiceExternal
-    /*
     std::cout << "Service Internal Open(int fd)" << std::endl;
     this->fd = fd;
     getSelector().registerService(fd, this);
     getSelector().interestInRead(fd);
     return true;
-     */
-    return false;
+
 }
 
+// TODO: Decide if this needs to change
 bool ServiceExternal::open(std::string hostName, int portNumber) {
-    // Service Internal Code, Need to implement for ServiceExternal
-  /*
     fd = Service::connectToServer(hostName.c_str(), portNumber);
     
     if (fd == -1) {
@@ -49,8 +46,6 @@ bool ServiceExternal::open(std::string hostName, int portNumber) {
     getSelector().registerService(fd, this);
     getSelector().interestInRead(fd);
     return true;
-   */
-    return false;
 }
 
 

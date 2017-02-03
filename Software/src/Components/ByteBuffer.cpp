@@ -163,7 +163,7 @@ double ByteBuffer::getDouble() {
 }
 
 // Keeps 6 decimals of percision
-void ByteBuffer::putdouble(double d) {
+void ByteBuffer::putDouble(double d) {
     long i = (long) d * 1000000;
     putLong(i);
 }
