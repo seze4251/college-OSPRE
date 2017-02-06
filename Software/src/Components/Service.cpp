@@ -109,7 +109,7 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
     
     int fd = -1;
     
-    for (int i =0; i < 5; i++) {
+    for (int i =0; i < 1; i++) {
         for (rp = result; rp != NULL; rp = rp->ai_next) {
             fd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
             
@@ -120,7 +120,7 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
             
             // Attempt to connect socket
             if (connect(fd, rp->ai_addr, rp->ai_addrlen) != -1) {
-                std::cout<< "CONNECTED\n" << std::endl;
+              //  std::cout<< "CONNECTED\n" << std::endl;
                 break;
             }
             
@@ -132,8 +132,8 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
             break;
         }
         
-        std::cout << "Service::connectToServer(): Failed to connect on " << i << "/5 tries, Sleeping for 2 seconds" << std::endl;
-        sleep(2);
+      //  std::cout << "Service::connectToServer(): Failed to connect on " << i+1 << "/1 tries, Sleeping for 1 seconds" << std::endl;
+        //sleep(1);
     }
     
     if (fd == -1) {

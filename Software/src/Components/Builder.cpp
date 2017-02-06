@@ -76,7 +76,7 @@ void Builder::buildCaptureImageRequest(CaptureImageRequest &msg) {
 }
 
 void Builder::buildDataMessage(DataMessage &msg) {
-    int messageSize = 13*sizeof(long) + 3*sizeof(int);
+    int messageSize = 13*sizeof(long) + 2*sizeof(int);
     // Check Buffer Has Enough Room
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
@@ -209,8 +209,8 @@ void Builder::buildImageAdjustment(ImageAdjustment &msg) {
 
 // TODO: Find size of Image Message
 void Builder::buildImageMessage(ImageMessage &msg) {
-    int imageSize = 0;
-    int messageSize = imageSize + sizeof(long) + 3*sizeof(int);
+    int messageSize = IMAGE_SIZE + sizeof(long) + 3*sizeof(int);
+    
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
         std::cout << "Builder::buildImageMessage Should Throw Exception here!, need to implement" << std::endl;
@@ -219,8 +219,9 @@ void Builder::buildImageMessage(ImageMessage &msg) {
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
     buf.putInt((int) msg.point);
-    buf.put(msg.image, imageSize);
-    
+    std::cout << "made it here" << std::endl;
+    buf.put(msg.image, IMAGE_SIZE);
+    std::cout<< "Made it here 2" << std::endl;
 }
 
 

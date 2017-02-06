@@ -18,9 +18,6 @@ CameraController::CameraController(std::string hostName, int localPort, bool rea
     imageProc = nullptr;
     scComms = nullptr;
     
-    // Allocate size of image
-    image = new char[1024*1024];
-    
     // Allocate Memory for Messages to Send
     imageMessage = new ImageMessage();
     processHealthMessage = new ProcessHealthAndStatusResponse();
@@ -86,17 +83,13 @@ bool CameraController::canCaptureImage(CaptureImageRequest* msg) {
 }
 
 // TODO: Waiting on Dylan for Implementation
-char* CameraController::captureImage() {
+void CameraController::captureImage() {
     std::cout << "CameraController::captureImage(): Not Implemented yet" << std::endl;
-    char* image = nullptr;
-    return image;
 }
 
 // TODO: Seth Implement
-char* CameraController::readImage() {
+void CameraController::readImage() {
     std::cout << "CameraController::readImage(): Not Implemented yet" << std::endl;
-    char* image = nullptr;
-    return image;
 }
 
 //TODO: Waiting on Dylan for how to implement, might not need
@@ -145,19 +138,22 @@ void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatu
  */
 
 void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-    std::cerr << "CameraController::handleCaptureImageRequest() Capture Image Request Message Recived" << std::endl;
+    std::cerr << "\n\nCameraController::handleCaptureImageRequest() Capture Image Request Message Recived\n\n" << std::endl;
+    
+    // Print Message
+    msg->print();
     
     // Decide if Camera Controller can Capture Image or if it can read an image
     if (canCaptureImage(msg) == true || readImageFile) {
         
         if (readImageFile == true) {
-            image = readImage();
+            readImage();
         } else {
-            image = captureImage();
+            captureImage();
         }
         
         // Update Image Message
-        imageMessage->update(image, msg->point);
+        //imageMessage->update(image, msg->point);
         
         // Send Image Message to Image Processor
         imageProc->sendMessage(imageMessage);

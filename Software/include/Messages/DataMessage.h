@@ -9,6 +9,7 @@
 
 #ifndef DATAMESSAGE_H
 #define DATAMESSAGE_H
+#include <iostream>
 
 #include "Message.h"
 
@@ -25,6 +26,29 @@ public:
         memcpy(this->angularVelocity, angularVelocity, 3 * sizeof(double));
         this->satTime = satTime;
         this->sunAngle = sunAngle;
+    }
+    
+    void print() {
+        std::cout<< "Printing Data Message" << std::endl;
+        std::cout << "Ephem = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << ephem[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "quat = ";
+        for (int i = 0; i < 4; i++) {
+            std::cout << quat[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Angular Velocity = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << angularVelocity[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Sun Angle = " << sunAngle << " satTime = " << satTime << std::endl;
     }
     
     // Specific Data Members

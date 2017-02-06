@@ -17,5 +17,9 @@ class ProcessHealthAndStatusRequest : public Message {
 public:
     ProcessHealthAndStatusRequest() : Message(getMessageID(), time(0)) {}
     MessageID getMessageID() { return I_ProcessHealthAndStatusRequest; }
+   
+    void update() {
+        timeStamp = time(0);
+    }
 };
 #endif

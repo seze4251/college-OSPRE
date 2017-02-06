@@ -74,8 +74,8 @@ Message* Parser::parseMessage() {
     messageID = (MessageID) buf.getInt();
     messageLength = buf.getInt();
     
-    std::cout << "Parser::parseMessage: messageID: " << messageID << " messageLength: " << messageLength << std::endl;
-    std::cout << "buf.used: " << buf.used() << std::endl;
+ //   std::cout << "Parser::parseMessage: messageID: " << messageID << " messageLength: " << messageLength << std::endl;
+    std::cout << "Message Length: " << messageLength << "  buf.used: " << buf.used() << std::endl;
     
     // If there is a partial Message, rewind buffer and return null ptr
     if (buf.used() < (messageLength - 2 * sizeof(int)) ) {
@@ -312,8 +312,7 @@ Message* Parser::parseImageMessage() {
     image->timeStamp = timeStamp;
     image->iden = messageID;
     image->point = (PointEarthMoon) buf.getInt();
-    
-    //image->image =
+    buf.get(image->image, IMAGE_SIZE);
     
     return image;
 }

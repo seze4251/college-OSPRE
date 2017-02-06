@@ -10,15 +10,23 @@
 #ifndef IMAGEMESSAGE_H
 #define IMAGEMESSAGE_H
 
+#define IMAGE_SIZE 6480000
+
 #include "Message.h"
 
 class ImageMessage : public Message {
 public:
-    ImageMessage() : Message(getMessageID(), time(0)), point(PEM_NA), image(nullptr) {}
+    ImageMessage() : Message(getMessageID(), time(0)), point(PEM_NA){
+        image = new char[IMAGE_SIZE];
+    }
+    
+    ~ImageMessage() {
+        delete image;
+    }
+    
     MessageID getMessageID() { return I_ImageMessage; }
     
-    // Member Functions
-    // I AM NOT DOING A MEMCPY here<------- because the image is already in the HEAP and will hopefully be fully sent? before the next one is put on here???
+
     void update(char* image, PointEarthMoon point) {
         timeStamp = time(0);
         this->point = point;

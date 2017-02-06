@@ -43,9 +43,9 @@ void ImageProcessor::open() {
     
     //Connect to GNC
     if(connectToAppl(hostName, 9000, &gnc) == true) {
-        std::cout << "ImageProcessor: Connected to WatchDog" << std::endl;
+        std::cout << "ImageProcessor: Connected to GNC" << std::endl;
     } else {
-        std::cout << "ImageProcessor: Failure to Connect to WatchDog" << std::endl;
+        std::cout << "ImageProcessor: Failure to Connect to GNC" << std::endl;
     }
 }
 
@@ -107,7 +107,7 @@ void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusR
  4. Send Image Adjustment to Camera Controller
 */
 void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handleImageMessage() Image Message Recived" << std::endl;
+    std::cerr << "\n\nImageProcessor::handleImageMessage() Image Message Recived\n\n" << std::endl;
     
     //TODO: Do Something Here
     // Process the Image

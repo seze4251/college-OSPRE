@@ -11,6 +11,7 @@
 #define PROCESSEDIMAGEMESSAGE_H
 
 #include <vector>
+#include <iostream>
 
 #include "Message.h"
 
@@ -24,6 +25,10 @@ public:
         this->distance = distance;
         this->error = error;
         this->point = point;
+    }
+    
+    void print() {
+        std::cout<< "Distance = " << distance << " Error = " << error << " point = " << point << std::endl;
     }
     
     // Specific Data Members

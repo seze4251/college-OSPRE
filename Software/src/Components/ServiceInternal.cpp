@@ -86,7 +86,7 @@ void ServiceInternal::handleRead() {
     
     ///**************
     //TEMP
-    readbuf.printBuffer();
+   // readbuf.printBuffer();
     //TEMP
     //********************
     
@@ -124,7 +124,7 @@ void ServiceInternal::handleRead() {
 void ServiceInternal::handleWrite() {
     std::cout << "Entering ServiceInternal::handleWrite()" << std::endl;
     int length = writebuf.used();
-    std::cout << "handleWrite int length: " << length << std::endl;
+    std::cout << "handleWrite writebuf.used: " << length << std::endl;
     
     if (length == 0) {
         std::cout << "Nothing Left to Write to Socket" << std::endl;
@@ -133,8 +133,8 @@ void ServiceInternal::handleWrite() {
     }
     
 
-    std::cout << "ServiceInternal::handleWrite(): Printing Write Buffer" << std::endl;
-    writebuf.printBuffer();
+    //std::cout << "ServiceInternal::handleWrite(): Printing Write Buffer" << std::endl;
+    //writebuf.printBuffer();
     
     
     writebuf.flip();
@@ -169,8 +169,11 @@ void ServiceInternal::closeConnection() {
 
 void ServiceInternal::sendMessage(Message* msg) {
     if (isConnected() == false) {
+        std::cout << "ServiceInternal::sendMessage Service is not Connected, returning" << std::endl;
         return;
     }
+    
+    std::cout << "ServiceInternal::sendMessage() Sending Message" << std::endl;
     
     switch (msg->iden) {
         case I_CaptureImageRequest:

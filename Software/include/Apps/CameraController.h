@@ -33,8 +33,8 @@ public:
     
     // Applicaiton Functionality
     bool canCaptureImage(CaptureImageRequest* msg);
-    char* captureImage();
-    char* readImage();
+    void captureImage();
+    void readImage();
     void adjustCameraSettings(ImageAdjustment* msg);
     
     // Message Handlers

@@ -11,6 +11,7 @@
 #define PROCESSHEALTHANDSTATUSRESPONSE_H
 
 #include <vector>
+#include <iostream> 
 
 #include "Message.h"
 #include "ProcessID.h"
@@ -29,6 +30,12 @@ public:
     void update(std::vector<ProcessError> error) {
         timeStamp = time(0);
         this->error = error;
+    }
+    
+    void print() {
+        std::cout<< "Printing OSPREStatus Message" << std::endl;
+        for (auto i = error.begin(); i != error.end(); ++i)
+            std::cout << *i << ' ';
     }
     
     // Specific Data Members

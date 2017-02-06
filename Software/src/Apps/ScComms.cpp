@@ -72,10 +72,11 @@ void ScComms::handleTimeout() {
     this->open();
     
     // TEMP TEMP
+    std::cout << "\n\nScComms::handleTimeOut\n\n" << std::endl;
     time_t currentTime = time(NULL);
     if (currentTime > pollTime) {
         // Send Poll
-        
+        std::cout << "\n Made it to Poll Time \n" << std::endl;
         //TODO: Update Data Message
         
         // TEMP
@@ -87,8 +88,9 @@ void ScComms::handleTimeout() {
         
         dataMessage->update(ephem, quat, angularVelocity, satTime, sunAngle);
         
-        for (int i = 1; i < MaxClients; i++) {
+        for (int i = 0; i < MaxClients; i++) {
             if ((connections[i] != nullptr) && (connections[i]->isConnected())) {
+                std::cout << "\n\nSending Temp Data Message to client: " << i << std::endl << std::endl;
                 connections[i]->sendMessage(dataMessage);
             }
         }
@@ -136,7 +138,8 @@ void ScComms::handleExternalConnection(int fd) {
  Send Status to WatchDog
  */
 void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
-    std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+    
+    std::cout << "ScComms::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
     
     // Update Status
     // TODO: Implement Status Update HERE
@@ -155,7 +158,7 @@ void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest*
  1. Foward Data Message to everyone
  */
 void ScComms::handleExternalDataMessage(External_DataMessage* msg) {
-    std::cerr << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
+    std::cout << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
     
     // TODO: Convert External Data Message to Data Message
     
@@ -171,33 +174,47 @@ void ScComms::handleExternalDataMessage(External_DataMessage* msg) {
  1. Send OSPRE Status to S/C
  */
 void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleOSPREStatus() OSPRE Status Message Recived" << std::endl;
-    
+    std::cout << "ScComms::handleOSPREStatus() OSPRE Status Message Recived" << std::endl;
+    std::cout << " Returning, once SC is implemented, will do more!" << std::endl;
     // TODO: Convert OSPRE Status Message to External OSPRE Status Message
     
-    spacecraft->sendExternalOSPREStatusMessage(externalOspreStatusMessage);
+    if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
+        spacecraft->sendExternalOSPREStatusMessage(externalOspreStatusMessage);
+    }
+    
+    // Print Message
+    msg->print();
 }
 
 /*
  1. Send Pointing Request to S/C
  */
 void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handlePointingRequest() Pointing Request Received" << std::endl;
-    
+    std::cout << "ScComms::handlePointingRequest() Pointing Request Received" << std::endl;
+    std::cout << "Pointing Request: 1-E, 2-M:  " << (int) msg->point << std::endl;
     // TODO: Convert Pointing Request Message to External Pointing Request Message
     
-    spacecraft->sendExternalPointingRequestMessage(externalPointingMessage);
+    if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
+        spacecraft->sendExternalPointingRequestMessage(externalPointingMessage);
+    }
+    
+    // Print Message
+    msg->print();
 }
 
 /*
  1. Send Solution Message to S/C
  */
 void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
-    std::cerr << "ScComms::handleSolutionMessage() Not Supported for ScComms" << std::endl;
+    std::cout << "ScComms::handleSolutionMessage() Solution message Recived" << std::endl;
     
     // TODO: Convert Solution Message to External Solution Message
+    if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
+        spacecraft->sendExternalSolutionMessage(externalSolutionMessage);
+    }
     
-    spacecraft->sendExternalSolutionMessage(externalSolutionMessage);
+    // Print Message
+    msg->print();
 }
 
 

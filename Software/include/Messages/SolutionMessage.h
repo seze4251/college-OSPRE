@@ -11,6 +11,7 @@
 #define SOLUTIONMESSAGE_H
 
 #include <vector>
+#include <iostream>
 
 #include "Message.h"
 
@@ -28,6 +29,42 @@ public:
         memcpy(this->velocity, velocity, 3 * sizeof(double));
         memcpy(this->velocityError, velocityError, 3 * sizeof(double));
         this->earthScMoonAngle = earthScMoonAngle;
+    }
+    
+    void print() {
+        std::cout<< "Printing Solution Message" << std::endl;
+        std::cout << "Position = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << position[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Position = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << position[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Position Error = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << positionError[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Velocity = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << velocity[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Velocity Error = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << velocityError[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Earth-SC-Moon Angle = " << earthScMoonAngle << std::endl;
+        
     }
     
     // Specific Data Members

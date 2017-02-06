@@ -168,7 +168,7 @@ void ByteBuffer::putDouble(double d) {
     putLong(i);
 }
 
-void ByteBuffer::put(char * c, int length) {
+void ByteBuffer::put(char* c, int length) {
     if (length < 0) {
         std::cout << "Can not add length of 0" << std::endl;
         //TODO: Throw Exception
@@ -182,8 +182,23 @@ void ByteBuffer::put(char * c, int length) {
     }
     
     memcpy(currentPos, c, length);
+    
     currentPos += length;
     size += length;
+    std::cout << "Writebuf Size : " << size << std::endl;
+}
+
+void ByteBuffer::get(char* location, int length) {
+    if (size < length) {
+        // TODO: add throw of exception
+        std::cout << "Should Throw Exception in get(char*, int)" << std::endl;
+        return;
+    }
+    
+    
+    memcpy(location, currentPos, length);
+    size -= length;
+    currentPos += length;
 }
 
 void ByteBuffer::printBuffer() {

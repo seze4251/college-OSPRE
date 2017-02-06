@@ -21,6 +21,10 @@ public:
         this->point = point;
     }
     
+    void print() {
+        std::cout << "Point = " << point << std::endl;
+    }
+    
     // Specific Data Members
     PointEarthMoon point;
 };

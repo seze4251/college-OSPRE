@@ -43,7 +43,7 @@ public:
     char* getBuffer() {return currentPos;}
     
     void put(char* c, int length);
-    //void get(int length);
+    void get(char* location, int length);
     
     void printBuffer();
     

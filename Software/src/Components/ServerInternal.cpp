@@ -77,7 +77,7 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
     // Check to see if Client is already Connected
     if (*service != nullptr) {
         if ((*service)->isConnected() == true) {
-            std::cout << "ServerInternal::connectToAppl(): Service is already connected" << std::endl;
+        //    std::cout << "ServerInternal::connectToAppl(): Service is already connected" << std::endl;
             return true;
         }
     }
@@ -115,7 +115,7 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
     if (connections[avail]->open(host, port) == true) {
         // Register CallBack
         connections[avail]->registerCallback(handleMessage);
-        std::cout << "ServerInternal::connectToAppl(): New Client Added" << std::endl;
+      //  std::cout << "ServerInternal::connectToAppl(): New Client Added" << std::endl;
         
         if (service != nullptr) {
             *service = connections[avail];
@@ -123,14 +123,14 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
         return true;
         
     } else {
-        std::cout << "ServerInternal::connectToAppl(): New Client Addition Failed" << std::endl;
+    //    std::cout << "ServerInternal::connectToAppl(): New Client Addition Failed" << std::endl;
         *service = nullptr;
         return false;
     }
 }
 
 void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
-    switch (msg->iden) {
+     switch (msg->iden) {
         case I_CaptureImageRequest:
             ((ServerInternal*) getAppl())->handleCaptureImageRequest((CaptureImageRequest*) msg, service);
             break;
@@ -160,7 +160,6 @@ void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
             break;
             
         case I_ProcessHealthAndStatusRequest:
-            std::cout << "Entering handleProcessHealthAndStatusRequest" << std::endl;
             ((ServerInternal*) getAppl())->handleProcessHealthAndStatusRequest((ProcessHealthAndStatusRequest*) msg, service);
             break;
             
@@ -178,7 +177,7 @@ void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
             std::cerr << "Fatal Error: Closing Connection" << std::endl;
             service->closeConnection();
     }
-    std::cout << "Leaving ServerInternal::handleMessage, back to ServiceInternal::handleRead()" << std::endl;
+  //  std::cout << "Leaving ServerInternal::handleMessage, back to ServiceInternal::handleRead()" << std::endl;
 }
 
 

@@ -13,24 +13,24 @@ enum ProcessError {
     PE_NA = -1,
     
     // CameraController
-    PE_CC_requestTimeOut,
-    PE_CC_notConnected,
+    PE_CC_requestTimeOut = 1,
+    PE_CC_notConnected = 2,
     
     // ImageProcessor
-    PE_IP_requestTimeOut,
-    PE_IP_notConnected,
+    PE_IP_requestTimeOut = 3,
+    PE_IP_notConnected= 4,
     
     // GNC
-    PE_GNC_requestTimeOut,
-    PE_GNC_notConnected,
+    PE_GNC_requestTimeOut = 5,
+    PE_GNC_notConnected = 6,
     
     // SC_Comms
-    PE_ScC_requestTimeOut,
-    PE_ScC_notConnected,
+    PE_ScC_requestTimeOut = 7,
+    PE_ScC_notConnected = 8,
     
     // WatchDog
-    PE_WD_requestTimeOut,
-    PE_WD_notConnected,
+    PE_WD_requestTimeOut = 9,
+    PE_WD_notConnected = 10,
 };
 
 #endif
