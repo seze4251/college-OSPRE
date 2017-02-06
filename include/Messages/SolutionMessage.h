@@ -29,6 +29,7 @@ public:
         memcpy(this->velocity, velocity, 3 * sizeof(double));
         memcpy(this->velocityError, velocityError, 3 * sizeof(double));
         this->earthScMoonAngle = earthScMoonAngle;
+        this->timeStamp = time(0);
     }
     
     void print() {

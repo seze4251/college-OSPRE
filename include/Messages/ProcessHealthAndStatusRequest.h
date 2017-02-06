@@ -19,7 +19,7 @@ public:
     MessageID getMessageID() { return I_ProcessHealthAndStatusRequest; }
    
     void update() {
-        timeStamp = time(0);
+        this->timeStamp = time(0);
     }
 };
 #endif

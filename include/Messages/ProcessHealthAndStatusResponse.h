@@ -11,7 +11,7 @@
 #define PROCESSHEALTHANDSTATUSRESPONSE_H
 
 #include <vector>
-#include <iostream> 
+#include <iostream>
 
 #include "Message.h"
 #include "ProcessID.h"
@@ -28,7 +28,7 @@ public:
     
     //Member Functions
     void update(std::vector<ProcessError> error) {
-        timeStamp = time(0);
+        this->timeStamp = time(0);
         this->error = error;
     }
     

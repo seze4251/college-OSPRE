@@ -66,7 +66,7 @@ Parser::~Parser() {
 
 Message* Parser::parseMessage(bool* partialMessage) {
     // If there is not a full header, do not parse header
-    if (buf.used() < (2 * sizeof(int) + sizeof(long)) ) {
+    if (buf.used() < HEADER_MESSAGE_SIZE ) {
         std::cout << "Parser::parseMessage no header left in buffer" << std::endl;
         *partialMessage = false;
         return nullptr;
@@ -76,7 +76,7 @@ Message* Parser::parseMessage(bool* partialMessage) {
     messageLength = buf.getInt();
     
  //   std::cout << "Parser::parseMessage: messageID: " << messageID << " messageLength: " << messageLength << std::endl;
-    std::cout << "Message Length: " << messageLength << "  buf.used: " << buf.used() << std::endl;
+    std::cout << "Message Length: " << messageLength - 2 * sizeof(int) << "  buf.used: " << buf.used() << std::endl;
     
     // If there is a partial Message, rewind buffer and return null ptr
     if (buf.used() < (messageLength - 2 * sizeof(int)) ) {
@@ -158,8 +158,8 @@ Message* Parser::parseProcessHealthAndStatusResponse() {
         response = new ProcessHealthAndStatusResponse();
     }
     
-    int messageHeader = 2 * sizeof(int) + sizeof(time_t);
-    int messageBody = (messageLength - messageHeader) / sizeof(int);
+    //int messageHeader = 2 * sizeof(int) + sizeof(time_t);
+    int messageBody = (messageLength - HEADER_MESSAGE_SIZE) / sizeof(int);
     
     response->timeStamp = timeStamp;
     response->iden = messageID;
@@ -248,8 +248,8 @@ Message* Parser::parseOSPREStatus() {
         status = new OSPREStatus();
     }
     
-    int messageHeader = 2 * sizeof(int) + sizeof(time_t);
-    int messageBody = (messageLength - messageHeader) / sizeof(int);
+    //int messageHeader = 2 * sizeof(int) + sizeof(time_t);
+    int messageBody = (messageLength - HEADER_MESSAGE_SIZE) / sizeof(int);
     
     status->timeStamp = timeStamp;
     status->iden = messageID;
@@ -314,7 +314,17 @@ Message* Parser::parseImageMessage() {
     image->timeStamp = timeStamp;
     image->iden = messageID;
     image->point = (PointEarthMoon) buf.getInt();
-    buf.get(image->image, IMAGE_SIZE);
+    
+    int imageLength = messageLength - (HEADER_MESSAGE_SIZE + sizeof(int));
+    
+    std::cout << "Image Length Recivied: " << imageLength << " Image Buffer Size: " << image->imageBufferSize << std::endl;
+    
+    if( imageLength > image->imageBufferSize) {
+        image->resizeImageArray(2*buf.used());
+    }
+    
+    image->currentImageSize = imageLength;
+    buf.get(image->image, imageLength);
     
     return image;
 }

@@ -21,6 +21,7 @@ public:
     virtual MessageID getMessageID() { return I_CaptureImageRequest; }
     
     void update(PointEarthMoon point, double* estimatedPosition) {
+        this->timeStamp = time(0);
         this->point = point;
         memcpy(this->estimatedPosition, estimatedPosition, 3 * sizeof(double));
     }

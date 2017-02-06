@@ -13,6 +13,7 @@
 #include "ByteBuffer.h"
 #include "MessageID.h"
 #include "Internal_Messages.h"
+#include "MessageSizes.h"
 
 class Parser {
 public:

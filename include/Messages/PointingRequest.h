@@ -18,6 +18,7 @@ public:
     MessageID getMessageID() { return I_PointingRequest; }
     
     void update(PointEarthMoon point) {
+        this->timeStamp = time(0);
         this->point = point;
     }
     

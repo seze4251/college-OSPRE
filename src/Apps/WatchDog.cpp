@@ -183,6 +183,10 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
     error.insert(error.end(), msg->error.begin(), msg->error.end());
 }
 
+void WatchDog::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
+    std::cerr << "WatchDog::handleDataMessage() Ignoring Data Message" << std::endl;
+}
+
 // *******************************
 //
 // Message Handlers: Not Supported By WatchDog
@@ -199,11 +203,7 @@ void WatchDog::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceIntern
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }
-void WatchDog::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-    std::cerr << "WatchDog::handleDataMessage() Not Supported for WatchDog" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
-}
+
 void WatchDog::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
     std::cerr << "WatchDog::handleImageAdjustment() Not Supported for WatchDog" << std::endl;
     std::cerr << "Closing Connection" << std::endl;

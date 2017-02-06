@@ -22,7 +22,7 @@
 class ServiceInternal : public Service {
 public:
     // Constructor
-    ServiceInternal(Selector& sel, int fd = -1,  int buffSize = 6480000 *2);
+    ServiceInternal(Selector& sel, int fd = -1,  int buffSize = 1024*1024);
     
     // Destructor
     ~ServiceInternal();

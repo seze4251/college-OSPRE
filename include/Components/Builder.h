@@ -14,6 +14,7 @@
 #include "Internal_Messages.h"
 #include "MessageID.h"
 #include "ByteBuffer.h"
+#include "MessageSizes.h"
 
 class Builder {
 public:

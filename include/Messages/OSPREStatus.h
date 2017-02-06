@@ -23,6 +23,7 @@ public:
     
     // Specific Data Members
     void update( std::vector<ProcessError> error) {
+        this->timeStamp = time(0);
         this->error = error;
     }
     

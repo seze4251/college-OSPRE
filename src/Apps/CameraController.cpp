@@ -153,7 +153,11 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         }
         
         // Update Image Message
-        //imageMessage->update(image, msg->point);
+        //********************************
+        //TEMP TEMP Need to fix when Image Size is Known
+        imageMessage->update(msg->point, IMAGE_SIZE);
+        //TEMP TEMP Need to fix when Image Size is Known
+        //******************************
         
         // Send Image Message to Image Processor
         if (imageProc != nullptr) {

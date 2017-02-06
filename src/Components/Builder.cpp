@@ -31,7 +31,7 @@ void Builder::createHeader(int length, MessageID msgID, time_t timeStamp) {
 }
 
 void Builder::buildProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest &msg) {
-    int messageSize = sizeof(long) + 2*sizeof(int);
+    int messageSize = HEADER_MESSAGE_SIZE;
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
         std::cout << "Builder::buildProcessHealthAndStatusRequest Should Throw Exception here!, need to implement" << std::endl;
@@ -44,7 +44,7 @@ void Builder::buildProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest &
 void Builder::buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse &msg) {
     int errorSize = msg.error.size();
     
-    int messageSize = errorSize * sizeof(int) + sizeof(long) + 2*sizeof(int);
+    int messageSize = errorSize * sizeof(int) + HEADER_MESSAGE_SIZE;
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
         std::cout << "Builder::buildProcessHealthAndStatusResponse: Should Throw Exception here!, need to implement" << std::endl;
@@ -58,7 +58,7 @@ void Builder::buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse
 }
 
 void Builder::buildCaptureImageRequest(CaptureImageRequest &msg) {
-    int messageSize = 4*sizeof(long) + 3*sizeof(int);
+    int messageSize = HEADER_MESSAGE_SIZE + 3*sizeof(long) + sizeof(int);
     // Check Buffer Has Enough Room
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
@@ -76,7 +76,7 @@ void Builder::buildCaptureImageRequest(CaptureImageRequest &msg) {
 }
 
 void Builder::buildDataMessage(DataMessage &msg) {
-    int messageSize = 13*sizeof(long) + 2*sizeof(int);
+    int messageSize = HEADER_MESSAGE_SIZE + 12*sizeof(long);
     // Check Buffer Has Enough Room
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
@@ -112,7 +112,7 @@ void Builder::buildDataMessage(DataMessage &msg) {
 void Builder::buildOSPREStatus(OSPREStatus &msg) {
     int errorSize = msg.error.size();
     
-    int messageSize = errorSize * sizeof(int) + (sizeof(long) + 2*sizeof(int));
+    int messageSize = errorSize * sizeof(int) + HEADER_MESSAGE_SIZE;
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
         std::cout << "Builder::buildOSPREStatus Should Throw Exception here!, need to implement" << std::endl;
@@ -128,7 +128,7 @@ void Builder::buildOSPREStatus(OSPREStatus &msg) {
 }
 
 void Builder::buildPointingRequest(PointingRequest &msg) {
-    int messageSize = sizeof(long) + 3*sizeof(int);
+    int messageSize = HEADER_MESSAGE_SIZE + sizeof(int);
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
         std::cout << "Builder::buildPointingRequest Should Throw Exception here!, need to implement" << std::endl;
@@ -141,7 +141,7 @@ void Builder::buildPointingRequest(PointingRequest &msg) {
 
 
 void Builder::buildSolutionMessage(SolutionMessage &msg) {
-    int messageSize = 14*sizeof(long) + 2*sizeof(int);
+    int messageSize =HEADER_MESSAGE_SIZE +  13*sizeof(long);
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
         std::cout << "Builder::buildSolutionMessage Should Throw Exception here!, need to implement" << std::endl;
@@ -176,7 +176,7 @@ void Builder::buildSolutionMessage(SolutionMessage &msg) {
 }
 
 void Builder::buildProcessedImageMessage(ProcessedImageMessage &msg) {
-    int messageSize = 3*sizeof(long) + 3*sizeof(int);
+    int messageSize = HEADER_MESSAGE_SIZE + 2*sizeof(long) + sizeof(int);
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
         std::cout << "Builder::buildProcessedImageMessage Should Throw Exception here!, need to implement" << std::endl;
@@ -196,7 +196,7 @@ void Builder::buildProcessedImageMessage(ProcessedImageMessage &msg) {
 //
 // ********************************
 void Builder::buildImageAdjustment(ImageAdjustment &msg) {
-    int messageSize = sizeof(long) + 2*sizeof(int);
+    int messageSize = HEADER_MESSAGE_SIZE;
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
         std::cout << "Builder::buildImageAdjustment Should Throw Exception here!, need to implement" << std::endl;
@@ -209,7 +209,7 @@ void Builder::buildImageAdjustment(ImageAdjustment &msg) {
 
 // TODO: Find size of Image Message
 void Builder::buildImageMessage(ImageMessage &msg) {
-    int messageSize = IMAGE_SIZE + sizeof(long) + 3*sizeof(int);
+    int messageSize = msg.currentImageSize + HEADER_MESSAGE_SIZE + sizeof(int);
     
     if (buf.remaining() < messageSize) {
         //TODO: Throw Exception Here
@@ -219,7 +219,7 @@ void Builder::buildImageMessage(ImageMessage &msg) {
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
     buf.putInt((int) msg.point);
-    buf.put(msg.image, IMAGE_SIZE);
+    buf.put(msg.image, msg.currentImageSize);
 }
 
 

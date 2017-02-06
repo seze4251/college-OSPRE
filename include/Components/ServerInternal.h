@@ -52,6 +52,7 @@ public:
     
     // Process ID object, temporary
     ProcessID p_ID;
+    static ProcessID p_ID_Static;
     
 protected:
     Acceptor accept;

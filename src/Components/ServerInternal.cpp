@@ -11,6 +11,7 @@
 #include "ServerInternal.h"
 
 ServiceInternal* ServerInternal::connections[ServerInternal::MaxClients];
+ProcessID ServerInternal::p_ID_Static;
 
 // Constructors
 ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_ID) : accept(getSelector()), hostName(hostName), localPort(localPort), p_ID(p_ID) {
@@ -21,6 +22,7 @@ ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_
     for (int i = 0; i < MaxClients; i++) {
         connections[i] = nullptr;
     }
+    p_ID_Static = p_ID;
 }
 
 //Destructor
@@ -53,7 +55,11 @@ void ServerInternal::handleConnectionRequest(int fd) {
     
     // if memory for ServiceInternal has not been created, allocate it
     if (connections[avail] == nullptr) {
-        connections[avail] = new ServiceInternal(getAppl()->getSelector());
+        if ((p_ID_Static == P_CameraController) || (p_ID_Static == P_ImageProcessor)) {
+            connections[avail] = new ServiceInternal(getAppl()->getSelector(), -1, IMAGE_SIZE * 4);
+        } else {
+            connections[avail] = new ServiceInternal(getAppl()->getSelector());
+        }
     }
     
     if (connections[avail]->open(fd) == true) {
@@ -77,7 +83,7 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
     // Check to see if Client is already Connected
     if (*service != nullptr) {
         if ((*service)->isConnected() == true) {
-        //    std::cout << "ServerInternal::connectToAppl(): Service is already connected" << std::endl;
+            //    std::cout << "ServerInternal::connectToAppl(): Service is already connected" << std::endl;
             return true;
         }
     }
@@ -109,13 +115,18 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
     
     // if memory for ServiceInternal has not been created, allocate it
     if (connections[avail] == nullptr) {
-        connections[avail] = new ServiceInternal(getAppl()->getSelector());
+        if ((p_ID == P_CameraController) || (p_ID == P_ImageProcessor)) {
+            connections[avail] = new ServiceInternal(getAppl()->getSelector(), -1, IMAGE_SIZE * 4);
+            
+        } else {
+            connections[avail] = new ServiceInternal(getAppl()->getSelector());
+        }
     }
     
     if (connections[avail]->open(host, port) == true) {
         // Register CallBack
         connections[avail]->registerCallback(handleMessage);
-      //  std::cout << "ServerInternal::connectToAppl(): New Client Added" << std::endl;
+        //  std::cout << "ServerInternal::connectToAppl(): New Client Added" << std::endl;
         
         if (service != nullptr) {
             *service = connections[avail];
@@ -123,14 +134,14 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
         return true;
         
     } else {
-    //    std::cout << "ServerInternal::connectToAppl(): New Client Addition Failed" << std::endl;
+        //    std::cout << "ServerInternal::connectToAppl(): New Client Addition Failed" << std::endl;
         *service = nullptr;
         return false;
     }
 }
 
 void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
-     switch (msg->iden) {
+    switch (msg->iden) {
         case I_CaptureImageRequest:
             ((ServerInternal*) getAppl())->handleCaptureImageRequest((CaptureImageRequest*) msg, service);
             break;
@@ -177,7 +188,7 @@ void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
             std::cerr << "Fatal Error: Closing Connection" << std::endl;
             service->closeConnection();
     }
-  //  std::cout << "Leaving ServerInternal::handleMessage, back to ServiceInternal::handleRead()" << std::endl;
+    //  std::cout << "Leaving ServerInternal::handleMessage, back to ServiceInternal::handleRead()" << std::endl;
 }
 
 

@@ -21,6 +21,7 @@ public:
     MessageID getMessageID() { return I_DataMessage; }
     
     void update(double* ephem, double* quat, double* angularVelocity, time_t satTime, double sunAngle) {
+        this->timeStamp = time(0);
         memcpy(this->ephem, ephem, 3 * sizeof(double));
         memcpy(this->quat, quat, 4 * sizeof(double));
         memcpy(this->angularVelocity, angularVelocity, 3 * sizeof(double));

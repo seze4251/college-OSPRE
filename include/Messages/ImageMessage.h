@@ -18,6 +18,7 @@ class ImageMessage : public Message {
 public:
     ImageMessage() : Message(getMessageID(), time(0)), point(PEM_NA){
         image = new char[IMAGE_SIZE];
+        imageBufferSize = IMAGE_SIZE;
     }
     
     ~ImageMessage() {
@@ -26,16 +27,32 @@ public:
     
     MessageID getMessageID() { return I_ImageMessage; }
     
-
-    void update(char* image, PointEarthMoon point) {
-        timeStamp = time(0);
+    
+    void update(PointEarthMoon point, int currentImageSize) {
+        this->timeStamp = time(0);
         this->point = point;
-        this->image = image;
+        this->currentImageSize = currentImageSize;
     }
+    
+    void resizeImageArray(int newSize) {
+        if (currentImageSize > newSize) {
+            return;
+        }
+        
+        delete image;
+        image = new char[newSize];
+        imageBufferSize = newSize;
+        std::cout << "\n\n\n Resizing Image Message b/c it is bigger than expected \n\n\n";
+    }
+    
     
     // Specific Data Members
     PointEarthMoon point;
     char* image;
+    
+    // Do not send these variable below
+    int currentImageSize;
+    int imageBufferSize;
 };
 
 #endif
