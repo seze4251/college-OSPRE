@@ -50,7 +50,7 @@ void Selector::interestInRead(int fd) {
 }
 
 void Selector::interestInWrite(int fd) {
-     printf("Selector:: Interest in Write fd: %d\n",fd);
+    printf("Selector:: Interest in Write fd: %d\n",fd);
     FD_SET(fd, &writeFds);
 }
 
@@ -106,11 +106,12 @@ int Selector::select(timeval *timeout) {
                 if (services[i] != NULL) {
                     services[i]->handleWrite();
                 } else {
-                    std::cerr << "Error, attempt to write() on FD with no associated service" << std::endl;
-                    return -1;
+                    if (FD_ISSET(i, &writeFds)) {
+                        std::cerr << "Error, attempt to write() on FD with no associated service" << std::endl;
+                        return -1;
+                    }
                 }
                 count++;
-                
             }
         }
         

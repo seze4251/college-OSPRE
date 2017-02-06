@@ -196,7 +196,9 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     computeSolution(scData, msg);
     
     // Send Solution Message
-    scComms -> sendMessage(solutionMessage);
+    if (scComms != nullptr) {
+        scComms -> sendMessage(solutionMessage);
+    }
 }
 
 

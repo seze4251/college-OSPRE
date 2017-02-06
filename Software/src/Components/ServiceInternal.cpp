@@ -14,7 +14,7 @@
 #include "ServiceInternal.h"
 
 // Constructor
-ServiceInternal::ServiceInternal(Selector& sel, int fd, int buffSize) : Service(sel), fd(fd), readbuf(buffSize), writebuf(buffSize), build(writebuf), parse(readbuf) {
+ServiceInternal::ServiceInternal(Selector& sel, int fd, int buffSize) : Service(sel), fd(fd), readbuf(buffSize), writebuf(buffSize), build(writebuf), parse(readbuf), partialMessage(false) {
     std::cout << "ServiceInternal Constructor Called" << std::endl;
 }
 
@@ -97,7 +97,7 @@ void ServiceInternal::handleRead() {
     readbuf.flip();
     
     while (true) {
-        msg = parse.parseMessage();
+        msg = parse.parseMessage(&partialMessage);
         if (msg == nullptr) {
             break;
         }
@@ -110,7 +110,7 @@ void ServiceInternal::handleRead() {
     readbuf.compact();
     readbuf.flip();
     
-    if (count == 0) {
+    if ((count == 0) && (partialMessage = false)) {
         std::cerr << "ServiceInternal::handleRead(): Message is big for buffer" << std::endl;
         closeConnection();
         return;
@@ -142,6 +142,10 @@ void ServiceInternal::handleWrite() {
     char* buf = writebuf.getBuffer();
     
     int amountWritten = write(fd, buf, length);
+    if (amountWritten == -1) {
+        perror("Write Error: ");
+    }
+    
     std::cout << "Wrote " << amountWritten << " Bytes" << std::endl;
     if (amountWritten == length) {
         writebuf.clear();
@@ -189,6 +193,7 @@ void ServiceInternal::sendMessage(Message* msg) {
             break;
             
         case I_ImageMessage:
+            std::cout << "SendMessage() calling buildImageMessage" <<std::endl;
             build.buildImageMessage(*((ImageMessage*) msg));
             break;
             

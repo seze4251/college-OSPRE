@@ -64,10 +64,11 @@ Parser::~Parser() {
     }
 }
 
-Message* Parser::parseMessage() {
+Message* Parser::parseMessage(bool* partialMessage) {
     // If there is not a full header, do not parse header
     if (buf.used() < (2 * sizeof(int) + sizeof(long)) ) {
-        std::cout << "Parser::parseMessage is bailing in first check" << std::endl;
+        std::cout << "Parser::parseMessage no header left in buffer" << std::endl;
+        *partialMessage = false;
         return nullptr;
     }
     
@@ -81,6 +82,7 @@ Message* Parser::parseMessage() {
     if (buf.used() < (messageLength - 2 * sizeof(int)) ) {
         std::cout << "Parser::parseMessage: Partial Message, Rewinding Buffer" << std::endl;
         buf.rewind((2 * sizeof(int) ));
+        *partialMessage = true;
         return nullptr;
     }
     

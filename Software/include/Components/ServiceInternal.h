@@ -51,6 +51,7 @@ protected:
 private:
     // Callback Function
     void (*messageCallBack)(Message*, ServiceInternal*);
+    bool partialMessage;
 
     
 };

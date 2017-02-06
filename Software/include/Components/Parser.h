@@ -22,7 +22,7 @@ public:
     //Destructor
     ~Parser();
     
-    Message* parseMessage();
+    Message* parseMessage(bool* partialMessage);
 
 private:
     ByteBuffer &buf;

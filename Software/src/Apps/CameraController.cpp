@@ -156,7 +156,10 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         //imageMessage->update(image, msg->point);
         
         // Send Image Message to Image Processor
-        imageProc->sendMessage(imageMessage);
+        if (imageProc != nullptr) {
+            std::cout << "Sending Image Message" << std::endl;
+            imageProc->sendMessage(imageMessage);
+        }
         
     } else {
         // Update Process Status, potenially do this in canCaptureImage()

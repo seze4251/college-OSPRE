@@ -219,9 +219,7 @@ void Builder::buildImageMessage(ImageMessage &msg) {
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
     buf.putInt((int) msg.point);
-    std::cout << "made it here" << std::endl;
     buf.put(msg.image, IMAGE_SIZE);
-    std::cout<< "Made it here 2" << std::endl;
 }
 
 

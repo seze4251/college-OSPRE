@@ -105,7 +105,7 @@ void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusR
  2. Process Image
  3. Send Processed Image Message to GNC
  4. Send Image Adjustment to Camera Controller
-*/
+ */
 void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
     std::cerr << "\n\nImageProcessor::handleImageMessage() Image Message Recived\n\n" << std::endl;
     
@@ -113,10 +113,12 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     // Process the Image
     processImage(msg);
     
-
+    
     
     // Send Processed Image Message to GNC
-    gnc->sendMessage(processedImageMessage);
+    if (gnc != nullptr) {
+        gnc->sendMessage(processedImageMessage);
+    }
 }
 
 // *******************************
