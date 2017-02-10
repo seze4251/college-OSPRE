@@ -10,24 +10,21 @@
 #ifndef EXTERNALDATAMESSAGE_H
 #define EXTERNALDATAMESSAGE_H
 
+#include <ctime>
+
 #include "Message_External.h"
-#include "MessageID.h"
 
 class External_DataMessage : public Message_External {
 public:
     
-    External_DataMessage(unsigned int applicationProcessID) :  Messege_External(applicationProcessID) {
-        packetType = 0;
-        sequenceFlags = 3;
-        packetSequence = 0;
-        packetDataLength = (8 * 12 + 5) - 1;
-        iden = E_SpacecraftDataMessage;
+    External_DataMessage(unsigned int applicationProcessID) :  Message_External(applicationProcessID, E_SpacecraftDataMessage) {
+        header.header_struct.packetType = 0;
+        header.header_struct.sequenceFlags = 3;
+        header.header_struct.packetSequence = 0;
+        header.header_struct.packetDataLength = (8 * 12 + 5) - 1;
     }
     
     // Specific Data Members
-    
-    // Message ID
-    MessageID iden;
     
     // Ephemeris
     double ephem[3];

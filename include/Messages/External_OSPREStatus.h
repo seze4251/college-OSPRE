@@ -9,27 +9,25 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
 
+#include <vector>
+
 #include "Message_External.h"
-#include "MessageID.h"
+#include "ProcessError.h"
 
 class External_OSPREStatus : public Message_External {
 public:
     
     // Need to set: packetType, sequenceFlags, packetDataLength
-    External_OSPREStatus(unsigned int applicationProcessID) : Messege_External(applicationProcessID) {
-        packetType = 0;
-        sequenceFlags = 3;
-        packetSequence = 0;
-        packetDataLength = 0;
-        iden = E_OSPREStatus;
+    External_OSPREStatus(unsigned int applicationProcessID) : Message_External(applicationProcessID, E_OSPREStatus) {
+        header.header_struct.packetType = 0;
+        header.header_struct.sequenceFlags = 3;
+        header.header_struct.packetSequence = 0;
+        header.header_struct.packetDataLength = 0;
     }
     
     void updatePacketDataLength() {
-        packetDataLength = (4 * error.size() + 4) - 1;
+        header.header_struct.packetDataLength = (4 * error.size() + 4) - 1;
     }
-    
-    // Message ID
-    MessageID iden;
     
     //Specific Data Members
     std::vector<ProcessError> error;

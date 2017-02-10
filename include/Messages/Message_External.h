@@ -10,19 +10,13 @@
 #ifndef MESSAGE_EXTERNAL
 #define MESSAGE_EXTERNAL
 
+#include "MessageID.h"
+
 class Message_External {
 public:
     
-
-    
-    Messege_External(unsigned int applicationProcessID) : applicationProcessID(applicationProcessID) {
-        packetVersionNumber = 0;
-        secondaryHeader = 0;
-        sequenceFlags = 3;
-    }
-    
-    union foo{
-        struct Header {
+    union Header_Union {
+        struct Header_Struct {
             unsigned int packetVersionNumber : 3; //Always 0
             unsigned int packetType : 1;  // Reporting 0, Requesting 1
             unsigned int secondaryHeader : 1; // 0
@@ -37,9 +31,26 @@ public:
             
             unsigned int packetDataLength : 16;
             // C = (Total Number of Octets in the Packet Data Field) – 1
-        };
+        } header_struct;
         char bytes[6];
     };
+
+    // Constructor
+    Message_External(unsigned int applicationProcessID, MessageID iden) {
+        header.header_struct.applicationProcessID = applicationProcessID;
+        header.header_struct.packetVersionNumber = 0;
+        header.header_struct.secondaryHeader = 0;
+        header.header_struct.sequenceFlags = 3;
+        this->iden = iden;
+    }
+    
+    // Data Members
+    Header_Union header;
+    
+    // Message ID
+    MessageID iden;
+
+    
 };
 
 

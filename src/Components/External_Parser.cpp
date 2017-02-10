@@ -45,7 +45,7 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
         return nullptr;
     }
     
-    buf.getget(messageHeader.bytes, 6);
+    buf.get(messageHeader.header.bytes, 6);
     messageID = (MessageID) buf.getInt();
     
     
@@ -95,7 +95,7 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
 
 Message_External* External_Parser::parseExternal_DataMessage() {
     if (data == nullptr) {
-        data = new DataMessage();
+        data = new External_DataMessage();
     }
     
     // Transfer Header and Message ID
@@ -123,7 +123,7 @@ Message_External* External_Parser::parseExternal_DataMessage() {
 
 Message_External* External_Parser::parseExternal_OSPREStatus() {
     if (status == nullptr) {
-        status = new OSPREStatus();
+        status = new External_OSPREStatus();
     }
     
     // Transfer Header and Message ID
@@ -142,7 +142,7 @@ Message_External* External_Parser::parseExternal_OSPREStatus() {
 
 Message_External* External_Parser::parseExternal_PointingRequest() {
     if (pointing == nullptr) {
-        pointing = new PointingRequest();
+        pointing = new External_PointingRequest();
     }
     
     // Transfer Header and Message ID
@@ -157,7 +157,7 @@ Message_External* External_Parser::parseExternal_PointingRequest() {
 
 Message_External* External_Parser::parseExternal_SolutionMessage() {
     if (solution == nullptr) {
-        solution = new SolutionMessage();
+        solution = new External_SolutionMessage();
     }
     
     // Transfer Header and Message ID

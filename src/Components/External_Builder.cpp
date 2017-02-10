@@ -6,10 +6,10 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-#include "External_Builder.h"
 #include <iostream>
 
-unsigned int External_Builder::sequence : 14;
+#include "External_Builder.h"
+#include "MessageSizes.h"
 
 External_Builder::External_Builder(ByteBuffer& bufParam) : buf(bufParam) {
     std::cout << "External_Builder Constructor" << std::endl;
@@ -23,16 +23,16 @@ External_Builder::~External_Builder() {
 void External_Builder::buildExternal_DataMessage(External_DataMessage&msg) {
     
     // Purposefully overflow at around 65,000
-    msg.packetSequence = sequence++;
+    msg.header.header_struct.packetSequence = sequence++;
     
-    if (buf.remaining() < 7 + msg.packetDataLength) {
+    if (buf.remaining() < 7 + msg.header.header_struct.packetDataLength) {
         //TODO: Throw Exception Here
         std::cout << "External_Builder::buildExternal_DataMessage Should Throw Exception here!, need to implement" << std::endl;
         return;
     }
     
     // Put Header
-    buf.put(msg.bytes, 6);
+    buf.put(msg.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     
     // Put Message ID
     buf.putInt((int) msg.iden);
@@ -66,19 +66,19 @@ void External_Builder::buildExternal_DataMessage(External_DataMessage&msg) {
 void External_Builder::buildExternal_OSPREStatus(External_OSPREStatus&msg) {
     
     // Purposefully overflow at around 65,000
-    msg.packetSequence = sequence++;
+    msg.header.header_struct.packetSequence = sequence++;
     
     // Update Message Length because Status Message has Varible length
     msg.updatePacketDataLength();
     
-    if (buf.remaining() < 7 + msg.packetDataLength) {
+    if (buf.remaining() < 7 + msg.header.header_struct.packetDataLength) {
         //TODO: Throw Exception Here
         std::cout << "External_Builder::buildExternal_DataMessage Should Throw Exception here!, need to implement" << std::endl;
         return;
     }
     
     // Put Header
-    buf.put(msg.bytes, 6);
+    buf.put(msg.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     
     // Put Message ID
     buf.putInt((int) msg.iden);
@@ -94,16 +94,16 @@ void External_Builder::buildExternal_OSPREStatus(External_OSPREStatus&msg) {
 void External_Builder::buildExternal_PointingRequest(External_PointingRequest& msg) {
     
     // Purposefully overflow at around 65,000
-    msg.packetSequence = sequence++;
+    msg.header.header_struct.packetSequence = sequence++;
     
-    if (buf.remaining() < 7 + msg.packetDataLength) {
+    if (buf.remaining() < 7 + msg.header.header_struct.packetDataLength) {
         //TODO: Throw Exception Here
         std::cout << "External_Builder::buildExternal_DataMessage Should Throw Exception here!, need to implement" << std::endl;
         return;
     }
     
     // Put Header
-    buf.put(msg.bytes, 6);
+    buf.put(msg.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     
     // Put Message ID
     buf.putInt((int) msg.iden);
@@ -117,16 +117,16 @@ void External_Builder::buildExternal_PointingRequest(External_PointingRequest& m
 void External_Builder::buildExternal_SolutionMessage(External_SolutionMessage& msg) {
     
     // Purposefully overflow at around 65,000
-    msg.packetSequence = sequence++;
+    msg.header.header_struct.packetSequence = sequence++;
     
-    if (buf.remaining() < 7 + msg.packetDataLength) {
+    if (buf.remaining() < 7 + msg.header.header_struct.packetDataLength) {
         //TODO: Throw Exception Here
         std::cout << "External_Builder::buildExternal_DataMessage Should Throw Exception here!, need to implement" << std::endl;
         return;
     }
     
     // Put Header
-    buf.put(msg.bytes, 6);
+    buf.put(msg.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     
     // Put Message ID
     buf.putInt((int) msg.iden);

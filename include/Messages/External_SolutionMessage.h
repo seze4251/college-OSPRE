@@ -11,22 +11,17 @@
 #define EXTERNAL_SOLUTIONMESSAGE_H
 
 #include "Message_External.h"
-#include "MessageID.h"
 
 class External_SolutionMessage : public Message_External {
 public:
     
     // Need to set: packetType, sequenceFlags, packetDataLength
-    External_SolutionMessage(unsigned int applicationProcessID) : Messege_External(applicationProcessID) {
-        packetType = 0;
-        sequenceFlags = 3;
-        packetSequence = 0;
-        packetDataLength = (8 * 13 + 4)  - 1;
-        iden = E_SolutionMessage;
+    External_SolutionMessage(unsigned int applicationProcessID) : Message_External(applicationProcessID, E_SolutionMessage) {
+        header.header_struct.packetType = 0;
+        header.header_struct.sequenceFlags = 3;
+        header.header_struct.packetSequence = 0;
+        header.header_struct.packetDataLength = (8 * 13 + 4)  - 1;
     }
-    
-    // Message ID
-    MessageID iden;
     
     // Specific Data Members
     double position[3];

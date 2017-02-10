@@ -29,7 +29,7 @@ public:
     // Open Methods
     bool open(int fd);
     bool open(std::string hostName, int portNumber);
-    void registerCallback(void (*messageCallBackFunc)(Message*, ServiceInternal*));
+    void registerCallback(void (*messageCallBackFunc)(Message_External*, ServiceExternal*));
     
     // Service Virtual Methods
     virtual void handleRead();

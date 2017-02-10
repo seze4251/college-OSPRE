@@ -135,7 +135,7 @@ void ServiceExternal::handleWrite() {
     }
     
     
-    //std::cout << "ServiceInternal::handleWrite(): Printing Write Buffer" << std::endl;
+    //std::cout << "ServiceExternal::handleWrite(): Printing Write Buffer" << std::endl;
     //writebuf.printBuffer();
     
     
@@ -172,7 +172,7 @@ void ServiceExternal::closeConnection() {
 }
 
 //Send Message
-void ServiceInternal::sendMessage(Message_External* msg) {
+void ServiceExternal::sendMessage(Message_External* msg) {
     if (isConnected() == false) {
         std::cout << "ServiceExternal::sendMessage Service is not Connected, returning" << std::endl;
         return;

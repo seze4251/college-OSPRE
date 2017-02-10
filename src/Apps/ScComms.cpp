@@ -85,7 +85,7 @@ void ScComms::handleExternalConnection(int fd) {
     // If spacecraft hasn't connected before, allocate memory for Service External
     if (spacecraft == nullptr) {
         spacecraft = new ServiceExternal(appl->getSelector());
-        spacecraft.registerCallback(handleExternalMessage);
+        spacecraft->registerCallback(handleExternalMessage);
     }
     
     // If the spacecraft is already connected, close current connection only one instance of client (spacecraft) is allowed
@@ -99,19 +99,19 @@ void ScComms::handleExternalConnection(int fd) {
 void ScComms::handleExternalMessage(Message_External* msg, ServiceExternal* service) {
     switch (msg->iden) {
         case E_OSPREStatus:
-            handleExternalOSPREStatusMessage((External_OSPREStatus*) msg, service);
+            ((ScComms*) getAppl())->handleExternalOSPREStatusMessage((External_OSPREStatus*) msg, service);
             break;
             
         case E_PointingRequest:
-            handleExternalPointingMessage((External_PointingRequest*) msg, service);
+            ((ScComms*) getAppl())->handleExternalPointingMessage((External_PointingRequest*) msg, service);
             break;
             
         case E_SolutionMessage:
-            handleExternalSolutionMessage((External_SolutionMessage*) msg, service);
+            ((ScComms*) getAppl())->handleExternalSolutionMessage((External_SolutionMessage*) msg, service);
             break;
             
         case E_SpacecraftDataMessage:
-            handleExternalDataMessage((External_DataMessage*) msg, service);
+            ((ScComms*) getAppl())->handleExternalDataMessage((External_DataMessage*) msg, service);
             break;
             
         default:
@@ -156,7 +156,7 @@ void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
     // TODO: Convert OSPRE Status Message to External OSPRE Status Message
     
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
-        spacecraft->sendExternalOSPREStatusMessage(externalOspreStatusMessage);
+        spacecraft->sendMessage(externalOspreStatusMessage);
     }
     
     // Print Message
@@ -172,7 +172,7 @@ void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* servi
     // TODO: Convert Pointing Request Message to External Pointing Request Message
     
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
-        spacecraft->sendExternalPointingRequestMessage(externalPointingMessage);
+        spacecraft->sendMessage(externalPointingMessage);
     }
     
     // Print Message
@@ -187,7 +187,7 @@ void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* servi
     
     // TODO: Convert Solution Message to External Solution Message
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
-        spacecraft->sendExternalSolutionMessage(externalSolutionMessage);
+        spacecraft->sendMessage(externalSolutionMessage);
     }
     
     // Print Message
@@ -203,7 +203,7 @@ void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* servi
 /*
  1. Foward Data Message to everyone
  */
-void ScComms::handleExternalDataMessage(External_DataMessage* msg) {
+void ScComms::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
     std::cout << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
     
     // TODO: Convert External Data Message to Data Message
@@ -216,7 +216,7 @@ void ScComms::handleExternalDataMessage(External_DataMessage* msg) {
     }
 }
 
-void ScComms::handleExternalOSPREStatusMessage(External_DataMessage* msg, ServiceExternal* service) {
+void ScComms::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {
     std::cout << "ScComms::handleExternalOSPREStatusMessage() not implemented, exiting process..." << std::endl;
     exit(-1);
 }

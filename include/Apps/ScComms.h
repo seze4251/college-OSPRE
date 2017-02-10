@@ -37,11 +37,11 @@ public:
     static void handleExternalConnection(int fd);
     
     // Generic Message Handler for External Messages
-    void handleExternalMessage(Message_External* msg, ServiceExternal* service);
+    static void handleExternalMessage(Message_External* msg, ServiceExternal* service);
     
     // Additional Message Handler for ScComms
     void handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service);
-    void handleExternalOSPREStatusMessage(External_DataMessage* msg, ServiceExternal* service);
+    void handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service);
     void handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service);
     void handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service);
     

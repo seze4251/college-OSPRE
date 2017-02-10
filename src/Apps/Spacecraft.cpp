@@ -41,7 +41,7 @@ void Spacecraft::handleTimeout() {
         // Send Poll
         if (scComms -> isConnected()) {
             //TODO: Update Data Message
-            scComms->sendExternalDataMessage(dataMessage);
+            scComms->sendMessage(dataMessage);
             pollTime = currentTime + 1;
         }
     }
@@ -67,19 +67,19 @@ void Spacecraft::open() {
 void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* service) {
     switch (msg->iden) {
         case E_OSPREStatus:
-            handleExternalOSPREStatusMessage((External_OSPREStatus*) msg, service);
+            ((Spacecraft*) getAppl())->handleExternalOSPREStatusMessage((External_OSPREStatus*) msg, service);
             break;
             
         case E_PointingRequest:
-            handleExternalPointingMessage((External_PointingRequest*) msg, service);
+            ((Spacecraft*) getAppl())->handleExternalPointingMessage((External_PointingRequest*) msg, service);
             break;
             
         case E_SolutionMessage:
-            handleExternalSolutionMessage((External_SolutionMessage*) msg, service);
+            ((Spacecraft*) getAppl())->handleExternalSolutionMessage((External_SolutionMessage*) msg, service);
             break;
             
         case E_SpacecraftDataMessage:
-            handleExternalDataMessage((External_DataMessage*) msg, service);
+            ((Spacecraft*) getAppl())->handleExternalDataMessage((External_DataMessage*) msg, service);
             break;
             
         default:

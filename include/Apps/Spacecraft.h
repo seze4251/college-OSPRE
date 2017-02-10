@@ -33,7 +33,7 @@ public:
     
     // Additional Message Handler for Spacecraft
     void handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service);
-    void handleExternalOSPREStatusMessage(External_DataMessage* msg, ServiceExternal* service);
+    void handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service);
     void handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service);
     void handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service);
     

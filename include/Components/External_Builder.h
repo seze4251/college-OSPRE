@@ -34,7 +34,7 @@ private:
     
     void buildMessageHeader();
     
-    static unsigned int sequence : 14;
+    unsigned int sequence : 14;
     
 };
 
