@@ -11,7 +11,6 @@
 #define EXTERNALBUILDER_H
 
 #include "External_Messages.h"
-#include "MessageID.h"
 #include "ByteBuffer.h"
 
 class External_Builder {
@@ -32,6 +31,10 @@ public:
 private:
     //Members
     ByteBuffer& buf;
+    
+    void buildMessageHeader();
+    
+    static unsigned int sequence : 14;
     
 };
 

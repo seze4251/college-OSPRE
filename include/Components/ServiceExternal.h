@@ -25,21 +25,20 @@ public:
     
     // Destructor
     ~ServiceExternal();
+    
+    // Open Methods
+    bool open(int fd);
+    bool open(std::string hostName, int portNumber);
+    void registerCallback(void (*messageCallBackFunc)(Message*, ServiceInternal*));
+    
     // Service Virtual Methods
     virtual void handleRead();
     virtual void handleWrite();
     virtual bool isConnected() { return fd != -1 ? true : false; }
     virtual void closeConnection();
     
-    // Open Methods
-    bool open(int fd);
-    bool open(std::string hostName, int portNumber);
-    
     // Send Message Funcitons
-    void sendExternalDataMessage(External_DataMessage* msg);
-    void sendExternalSolutionMessage(External_SolutionMessage* msg);
-    void sendExternalOSPREStatusMessage(External_OSPREStatus* msg);
-    void sendExternalPointingRequestMessage(External_PointingRequest* msg);
+    void sendMessage(Message_External* msg);
 
 
 protected:
@@ -51,7 +50,13 @@ private:
     External_Builder build;
     External_Parser parse;
     
+    // Callback Function
+    void (*messageCallBack)(Message_External*, ServiceExternal*);
+    bool partialMessage;
     
 };
 
 #endif
+
+
+

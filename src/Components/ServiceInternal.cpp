@@ -220,8 +220,8 @@ void ServiceInternal::sendMessage(Message* msg) {
             build.buildProcessedImageMessage(*((ProcessedImageMessage*) msg));
             break;
         default:
-            std::cout << "ServiceInternal::sendMessage() msgID unknown" << std::endl;
-            return;
+            std::cout << "ServiceInternal::sendMessage() msgID unknown, process exiting ..." << std::endl;
+            exit(-1);
     }
     
     // Register Intrest in Write

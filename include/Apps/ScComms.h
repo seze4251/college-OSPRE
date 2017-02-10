@@ -36,8 +36,15 @@ public:
     //Acceptor function for External Connections
     static void handleExternalConnection(int fd);
     
+    // Generic Message Handler for External Messages
+    void handleExternalMessage(Message_External* msg, ServiceExternal* service);
+    
     // Additional Message Handler for ScComms
-    void handleExternalDataMessage(External_DataMessage* msg);
+    void handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service);
+    void handleExternalOSPREStatusMessage(External_DataMessage* msg, ServiceExternal* service);
+    void handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service);
+    void handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service);
+    
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
@@ -59,7 +66,7 @@ private:
     Acceptor external_accept;
     int externalPort;
     
-   static ServiceExternal* spacecraft;
+    static ServiceExternal* spacecraft;
     
     // Pointer To Hold Messages that Are being sent
     ProcessHealthAndStatusResponse* processHealthMessage;

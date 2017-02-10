@@ -41,14 +41,13 @@ public:
     //Send Message Function
     void sendMessage(Message* msg);
     
-protected:
+private:
     int fd;
     ByteBuffer readbuf;
     ByteBuffer writebuf;
     Builder build;
     Parser parse;
 
-private:
     // Callback Function
     void (*messageCallBack)(Message*, ServiceInternal*);
     bool partialMessage;

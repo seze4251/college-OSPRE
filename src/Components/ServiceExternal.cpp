@@ -15,7 +15,7 @@
 
 
 // Constructor
-ServiceExternal::ServiceExternal(Selector& sel, int fd, int buffSize) : Service(sel), fd(fd), readbuf(buffSize), writebuf(buffSize), build(writebuf), parse(readbuf) {
+ServiceExternal::ServiceExternal(Selector& sel, int fd, int buffSize) : Service(sel), fd(fd), readbuf(buffSize), writebuf(buffSize), build(writebuf), parse(readbuf),  partialMessage(false)  {
     std::cout << "ServiceExternal Constructor Called" << std::endl;
 }
 
@@ -24,10 +24,13 @@ ServiceExternal::~ServiceExternal() {
     
 }
 
-// TODO: Decide if this needs to change!
-//Initialize InternalService Methods
+void ServiceExternal::registerCallback(void (*messageCallBackFunc)(Message_External*, ServiceExternal*)) {
+    std::cout << "ServiceExternal::registerCallback()" << std::endl;
+    messageCallBack = messageCallBackFunc;
+}
+
 bool ServiceExternal::open(int fd) {
-    std::cout << "Service Internal Open(int fd)" << std::endl;
+    std::cout << "Service External Open(int fd)" << std::endl;
     this->fd = fd;
     getSelector().registerService(fd, this);
     getSelector().interestInRead(fd);
@@ -35,7 +38,6 @@ bool ServiceExternal::open(int fd) {
 
 }
 
-// TODO: Decide if this needs to change
 bool ServiceExternal::open(std::string hostName, int portNumber) {
     fd = Service::connectToServer(hostName.c_str(), portNumber);
     
@@ -51,13 +53,11 @@ bool ServiceExternal::open(std::string hostName, int portNumber) {
 
 // Virtual Methods from Server
 void ServiceExternal::handleRead() {
-    // Service Internal Code, need to implement for Service External
-    /*
-    std::cout << "Entering ServiceInternal::handleRead()" << std::endl;
+    std::cout << "Entering ServiceExternal::handleRead()" << std::endl;
     int length = readbuf.remaining();
     
     if (length == 0) {
-        std::cout << "ServiceInternal::handleRead(): No room to read into buffer" << std::endl;
+        std::cout << "ServiceExternal::handleRead(): No room to read into buffer" << std::endl;
     }
     
     char* buf = readbuf.getBuffer();
@@ -65,11 +65,11 @@ void ServiceExternal::handleRead() {
     
     while (amountRead < 0) {
         amountRead = ::read(fd, buf, length);
-        std::cout << "handleRead(): Amount Read: " << amountRead << std::endl;
+        std::cout << "ServiceExternal::handleRead(): Amount Read: " << amountRead << std::endl;
         
         // ToDo: Revisit code confiriming MANPAGE on read error conditions
         if (amountRead == 0) {
-            std::cerr << "ServiceInternal::handleRead(): read() returned 0, closing connection" << std::endl;
+            std::cerr << "ServiceExternal::handleRead(): read() returned 0, closing connection" << std::endl;
             closeConnection();
             return;
             
@@ -86,11 +86,11 @@ void ServiceExternal::handleRead() {
     
     readbuf.positionRead(amountRead);
     
-    ///-**************
+    ///**************
     //TEMP
-    readbuf.printBuffer();
+    // readbuf.printBuffer();
     //TEMP
-    //-********************
+    //********************
     
     Message* msg = nullptr;
     int count = 0;
@@ -99,7 +99,7 @@ void ServiceExternal::handleRead() {
     readbuf.flip();
     
     while (true) {
-        msg = parse.parseMessage();
+        msg = parse.parseMessage(&partialMessage);
         if (msg == nullptr) {
             break;
         }
@@ -112,24 +112,21 @@ void ServiceExternal::handleRead() {
     readbuf.compact();
     readbuf.flip();
     
-    if (count == 0) {
-        std::cerr << "ServiceInternal::handleRead(): Message is big for buffer" << std::endl;
+    if ((count == 0) && (partialMessage = false)) {
+        std::cerr << "ServiceExternal::handleRead(): Message is big for buffer" << std::endl;
         closeConnection();
         return;
     }
     
-    std::cout << "ServiceInternal::handleRead(): messagesParsed: " << count << std::endl;
-    */
+    std::cout << "ServiceExternal::handleRead(): messagesParsed: " << count << std::endl;
 }
 
 
 
 void ServiceExternal::handleWrite() {
-    // ServiceInternalCode, need to implement for ServiceExternal
- /*
-  std::cout << "Entering ServiceInternal::handleWrite()" << std::endl;
+    std::cout << "Entering ServiceExternal::handleWrite()" << std::endl;
     int length = writebuf.used();
-    std::cout << "handleWrite int length: " << length << std::endl;
+    std::cout << "ServiceExternal::handleWrite() writebuf.used: " << length << std::endl;
     
     if (length == 0) {
         std::cout << "Nothing Left to Write to Socket" << std::endl;
@@ -138,8 +135,8 @@ void ServiceExternal::handleWrite() {
     }
     
     
-    std::cout << "ServiceInternal::handleWrite(): Printing Write Buffer" << std::endl;
-    writebuf.printBuffer();
+    //std::cout << "ServiceInternal::handleWrite(): Printing Write Buffer" << std::endl;
+    //writebuf.printBuffer();
     
     
     writebuf.flip();
@@ -147,6 +144,10 @@ void ServiceExternal::handleWrite() {
     char* buf = writebuf.getBuffer();
     
     int amountWritten = write(fd, buf, length);
+    if (amountWritten == -1) {
+        perror("Write Error: ");
+    }
+    
     std::cout << "Wrote " << amountWritten << " Bytes" << std::endl;
     if (amountWritten == length) {
         writebuf.clear();
@@ -157,7 +158,7 @@ void ServiceExternal::handleWrite() {
         writebuf.compact();
         writebuf.flip();
     }
-  */
+    
 }
 
 void ServiceExternal::closeConnection() {
@@ -170,50 +171,40 @@ void ServiceExternal::closeConnection() {
     writebuf.clear();
 }
 
-//Send Message Functions
-void ServiceExternal::sendExternalDataMessage(External_DataMessage* msg){
-    
+//Send Message
+void ServiceInternal::sendMessage(Message_External* msg) {
     if (isConnected() == false) {
-        std::cout << "Service is no longer connected" << std::endl;
+        std::cout << "ServiceExternal::sendMessage Service is not Connected, returning" << std::endl;
         return;
     }
     
-    build.buildExternal_DataMessage(*msg);
-    getSelector().interestInWrite(fd);
-}
-
-void ServiceExternal::sendExternalSolutionMessage(External_SolutionMessage* msg) {
-    if (isConnected() == false) {
-        std::cout << "Service is no longer connected" << std::endl;
-        return;
+    std::cout << "ServiceExternal::sendMessage() Sending Message" << std::endl;
+    
+    switch (msg->iden) {
+        case E_OSPREStatus:
+            build.buildExternal_OSPREStatus(*((External_OSPREStatus*) msg));
+            break;
+            
+        case E_PointingRequest:
+            build.buildExternal_PointingRequest(*((External_PointingRequest*) msg));
+            break;
+            
+        case E_SpacecraftDataMessage:
+            build.buildExternal_DataMessage(*((External_DataMessage*) msg));
+            break;
+            
+        case E_SolutionMessage:
+            build.buildExternal_SolutionMessage(*((External_SolutionMessage*) msg));
+            break;
+            
+        default:
+            std::cout << "ServiceExternal::sendMessage() msgID unknown, process exiting" << std::endl;
+            exit(-1);
     }
     
-    build.buildExternal_SolutionMessage(*msg);
+    // Register Intrest in Write
     getSelector().interestInWrite(fd);
 }
-
-void ServiceExternal::sendExternalOSPREStatusMessage(External_OSPREStatus* msg) {
-    if (isConnected() == false) {
-        std::cout << "Service is no longer connected" << std::endl;
-        return;
-    }
-    
-    build.buildExternal_OSPREStatus(*msg);
-    getSelector().interestInWrite(fd);
-}
-
-void ServiceExternal::sendExternalPointingRequestMessage(External_PointingRequest* msg) {
-    if (isConnected() == false) {
-        std::cout << "Service is no longer connected" << std::endl;
-        return;
-    }
-    
-    build.buildExternal_PointingRequest(*msg);
-    getSelector().interestInWrite(fd);
-}
-
-
-
 
 
 

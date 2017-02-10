@@ -7,8 +7,9 @@
 //
 #include <iostream>
 
-
 #include "Spacecraft.h"
+
+#define Spacecraft_APPL_ID 2
 
 Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : pollTime(0), ospreHostName(ospreHostName), osprePort(osprePort) {
     std::cout<< " Spacecraft Constructor called" << std::endl;
@@ -18,16 +19,8 @@ Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : pollTime(0), 
     scComms = nullptr;
     
     // Allocate Memory for Messages to Send
-    dataMessage = new External_DataMessage();
+    dataMessage = new External_DataMessage(Spacecraft_APPL_ID);
 }
-
-
-// *******************************
-//
-// TODO: IMPLEMENT METHODS BELOW
-//
-// ********************************
-
 
 Spacecraft::~Spacecraft() {
     //Free Messages from Memory
@@ -41,7 +34,6 @@ void Spacecraft::handleTimeout() {
     // Make sure connections are still connected
     open();
     
-    /*
     // Send Timed Capture Image Requests to Camera
     time_t currentTime = time(NULL);
     
@@ -53,7 +45,7 @@ void Spacecraft::handleTimeout() {
             pollTime = currentTime + 1;
         }
     }
-    */
+    
 }
 
 void Spacecraft::open() {
@@ -71,6 +63,60 @@ void Spacecraft::open() {
     }
     
 }
+
+void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* service) {
+    switch (msg->iden) {
+        case E_OSPREStatus:
+            handleExternalOSPREStatusMessage((External_OSPREStatus*) msg, service);
+            break;
+            
+        case E_PointingRequest:
+            handleExternalPointingMessage((External_PointingRequest*) msg, service);
+            break;
+            
+        case E_SolutionMessage:
+            handleExternalSolutionMessage((External_SolutionMessage*) msg, service);
+            break;
+            
+        case E_SpacecraftDataMessage:
+            handleExternalDataMessage((External_DataMessage*) msg, service);
+            break;
+            
+        default:
+            std::cerr << "ScComms::handleExternalMessage(): Unknown Message Type Recived: " << msg->iden << std::endl;
+            std::cerr << "Closing Connection" << std::endl;
+            service->closeConnection();
+    }
+}
+
+
+// *******************************
+//
+// Message Handlers: Supported on Spacecraft
+//  External Messages
+//
+// ********************************
+
+
+void handleExternalOSPREStatusMessage(External_DataMessage* msg, ServiceExternal* service) {
+    
+}
+
+void handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
+    
+}
+
+void handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
+    
+}
+
+void handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
+    
+}
+
+
+
+
 
 
 

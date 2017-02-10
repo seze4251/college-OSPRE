@@ -10,6 +10,8 @@
 #include "ScComms.h"
 #include "Service.h"
 
+#define SCCOMMS_APPL_ID 1
+
 ServiceExternal* ScComms::spacecraft;
 
 ScComms::ScComms( std::string hostName, int localPort, int externalPort) : ServerInternal(hostName, localPort, P_ScComms), external_accept(getSelector()), externalPort(externalPort), pollTime(0) {
@@ -21,9 +23,9 @@ ScComms::ScComms( std::string hostName, int localPort, int externalPort) : Serve
     // Allocate Memory for Messages to Send
     processHealthMessage = new ProcessHealthAndStatusResponse();
     dataMessage = new DataMessage();
-    externalOspreStatusMessage = new External_OSPREStatus();
-    externalPointingMessage = new External_PointingRequest();
-    externalSolutionMessage = new External_SolutionMessage();
+    externalOspreStatusMessage = new External_OSPREStatus(SCCOMMS_APPL_ID);
+    externalPointingMessage = new External_PointingRequest(SCCOMMS_APPL_ID);
+    externalSolutionMessage = new External_SolutionMessage(SCCOMMS_APPL_ID);
 }
 
 ScComms::~ScComms() {
@@ -39,11 +41,6 @@ ScComms::~ScComms() {
     }
 }
 
-// *******************************
-//
-// TODO: IMPLEMENT METHODS BELOW
-//
-// ********************************
 void ScComms::open() {
     //Internal Acceptor
     if (accept.isConnected() == false) {
@@ -70,35 +67,6 @@ void ScComms::open() {
  */
 void ScComms::handleTimeout() {
     this->open();
-    
-    // TEMP TEMP
-    std::cout << "\n\nScComms::handleTimeOut\n\n" << std::endl;
-    time_t currentTime = time(NULL);
-    if (currentTime > pollTime) {
-        // Send Poll
-        std::cout << "\n Made it to Poll Time \n" << std::endl;
-        //TODO: Update Data Message
-        
-        // TEMP
-        double ephem[3]{1,1,1};
-        double quat[4]{2,2,2,2};
-        double angularVelocity[3]{3,3,3};
-        time_t satTime{time(0)};
-        double sunAngle{4};
-        
-        dataMessage->update(ephem, quat, angularVelocity, satTime, sunAngle);
-        
-        for (int i = 0; i < MaxClients; i++) {
-            if ((connections[i] != nullptr) && (connections[i]->isConnected())) {
-                std::cout << "\n\nSending Temp Data Message to client: " << i << std::endl << std::endl;
-                connections[i]->sendMessage(dataMessage);
-            }
-        }
-        
-        pollTime = currentTime + 1;
-        
-    }
-    // TEMP TEMP
 }
 
 // *******************************
@@ -106,6 +74,7 @@ void ScComms::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
+
 void ScComms::handleExternalConnection(int fd) {
     // File Descriptors less than 0 are invalid
     if (fd < 0) {
@@ -116,6 +85,7 @@ void ScComms::handleExternalConnection(int fd) {
     // If spacecraft hasn't connected before, allocate memory for Service External
     if (spacecraft == nullptr) {
         spacecraft = new ServiceExternal(appl->getSelector());
+        spacecraft.registerCallback(handleExternalMessage);
     }
     
     // If the spacecraft is already connected, close current connection only one instance of client (spacecraft) is allowed
@@ -126,17 +96,39 @@ void ScComms::handleExternalConnection(int fd) {
     spacecraft->open(fd);
 }
 
+void ScComms::handleExternalMessage(Message_External* msg, ServiceExternal* service) {
+    switch (msg->iden) {
+        case E_OSPREStatus:
+            handleExternalOSPREStatusMessage((External_OSPREStatus*) msg, service);
+            break;
+            
+        case E_PointingRequest:
+            handleExternalPointingMessage((External_PointingRequest*) msg, service);
+            break;
+            
+        case E_SolutionMessage:
+            handleExternalSolutionMessage((External_SolutionMessage*) msg, service);
+            break;
+            
+        case E_SpacecraftDataMessage:
+            handleExternalDataMessage((External_DataMessage*) msg, service);
+            break;
+            
+        default:
+            std::cerr << "ScComms::handleExternalMessage(): Unknown Message Type Recived: " << msg->iden << std::endl;
+            std::cerr << "Closing Connection" << std::endl;
+            service->closeConnection();
+    }
+}
+
 
 // *******************************
 //
 // Message Handlers: Supported on ScComms
+//  INTERNAL MESSAGES
 //
 // ********************************
 
-/*
- Determine Process Status
- Send Status to WatchDog
- */
 void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     
     std::cout << "ScComms::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
@@ -154,21 +146,6 @@ void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest*
     status.clear();
 }
 
-/*
- 1. Foward Data Message to everyone
- */
-void ScComms::handleExternalDataMessage(External_DataMessage* msg) {
-    std::cout << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
-    
-    // TODO: Convert External Data Message to Data Message
-    
-    //Send Data Message
-    for (int i = 1; i < MaxClients; i++) {
-        if ((connections[i] != nullptr) && (connections[i]->isConnected())) {
-            connections[i]->sendMessage(dataMessage);
-        }
-    }
-}
 
 /*
  1. Send OSPRE Status to S/C
@@ -217,7 +194,40 @@ void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* servi
     msg->print();
 }
 
+// *******************************
+//
+// Message Handlers: Supported on ScComms
+//  External Messages
+//
+// ********************************
+/*
+ 1. Foward Data Message to everyone
+ */
+void ScComms::handleExternalDataMessage(External_DataMessage* msg) {
+    std::cout << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
+    
+    // TODO: Convert External Data Message to Data Message
+    
+    //Send Data Message
+    for (int i = 1; i < MaxClients; i++) {
+        if ((connections[i] != nullptr) && (connections[i]->isConnected())) {
+            connections[i]->sendMessage(dataMessage);
+        }
+    }
+}
 
+void ScComms::handleExternalOSPREStatusMessage(External_DataMessage* msg, ServiceExternal* service) {
+    std::cout << "ScComms::handleExternalOSPREStatusMessage() not implemented, exiting process..." << std::endl;
+    exit(-1);
+}
+void ScComms::handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
+    std::cout << "ScComms::handleExternalPointingMessage() not implemented, exiting process..." << std::endl;
+    exit(-1);
+}
+void ScComms::handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
+    std::cout << "ScComms::handleExternalSolutionMessage() not implemented, exiting process..." << std::endl;
+    exit(-1);
+}
 
 // *******************************
 //

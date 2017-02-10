@@ -22,10 +22,13 @@ public:
     //Destructor
     ~External_Parser();
     
-    Message* parseMessage();
+    Message_External* parseMessage(bool* partialMessage);
     
 private:
     ByteBuffer &buf;
+    
+    Message_External messageHeader;
+    MessageID messageID;
     
     // Messages
     External_DataMessage* data;
@@ -34,10 +37,10 @@ private:
     External_SolutionMessage* solution;
 
     // Message Parser Methods
-    Message* parseExternal_DataMessage();
-    Message* parseExternal_OSPREStatus();
-    Message* parseExternal_PointingRequest();
-    Message* parseExternal_SolutionMessage();
+    Message_External* parseExternal_DataMessage();
+    Message_External* parseExternal_OSPREStatus();
+    Message_External* parseExternal_PointingRequest();
+    Message_External* parseExternal_SolutionMessage();
 };
 
 
