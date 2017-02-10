@@ -98,19 +98,19 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
 // ********************************
 
 
-void handleExternalOSPREStatusMessage(External_DataMessage* msg, ServiceExternal* service) {
+void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service)g {
     
 }
 
-void handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
+void Spacecraft::handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
     
 }
 
-void handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
+void Spacecraft::handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
     
 }
 
-void handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
+void Spacecraft::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
     
 }
 

@@ -92,7 +92,7 @@ void ServiceExternal::handleRead() {
     //TEMP
     //********************
     
-    Message* msg = nullptr;
+    Message_External* msg = nullptr;
     int count = 0;
     
     // Flip Buffer

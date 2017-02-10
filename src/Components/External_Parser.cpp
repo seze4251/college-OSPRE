@@ -7,9 +7,11 @@
 //
 
 #include <iostream>
+
+#include "MessageSizes.h"
 #include "External_Parser.h"
 
-External_Parser::External_Parser(ByteBuffer &bufParam) : buf(bufParam) {
+External_Parser::External_Parser(ByteBuffer &bufParam) : buf(bufParam), messageHeader(0, NA) {
     std::cout << "External_Parser Constructor" << std::endl;
     data = nullptr;
     status = nullptr;
@@ -45,13 +47,11 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
         return nullptr;
     }
     
-    buf.get(messageHeader.header.bytes, 6);
+    buf.get(messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     messageID = (MessageID) buf.getInt();
     
-    
-    
     // If there is a partial Message, rewind buffer and return null ptr
-    if (buf.used() < (messageLength - 2 * sizeof(int)) ) {
+    if (buf.used() < (1 + messageHeader.header.header_struct.packetDataLength) ) {
         std::cout << "External_Parser::parseMessage: Partial Message, Rewinding Buffer" << std::endl;
         buf.rewind(10);
         *partialMessage = true;
@@ -95,11 +95,11 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
 
 Message_External* External_Parser::parseExternal_DataMessage() {
     if (data == nullptr) {
-        data = new External_DataMessage();
+        data = new External_DataMessage(0);
     }
     
     // Transfer Header and Message ID
-    data->bytes = messageHeader.bytes;
+    memcpy(data->header.bytes, messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     data->iden = messageID;
     
     // Specific Data Members ephem quat angularVelocity satTime sunAngle
@@ -123,14 +123,14 @@ Message_External* External_Parser::parseExternal_DataMessage() {
 
 Message_External* External_Parser::parseExternal_OSPREStatus() {
     if (status == nullptr) {
-        status = new External_OSPREStatus();
+        status = new External_OSPREStatus(0);
     }
     
     // Transfer Header and Message ID
-    status->bytes = messageHeader.bytes;
+    memcpy(status->header.bytes, messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     status->iden = messageID;
     
-    int messageBody = (messageHeader.packetDataLength + 1) / 4;
+    int messageBody = (messageHeader.header.header_struct.packetDataLength + 1) / 4;
     
     for (int i = 0; i < messageBody; i++) {
         status->error.push_back((ProcessError) buf.getInt());
@@ -142,11 +142,11 @@ Message_External* External_Parser::parseExternal_OSPREStatus() {
 
 Message_External* External_Parser::parseExternal_PointingRequest() {
     if (pointing == nullptr) {
-        pointing = new External_PointingRequest();
+        pointing = new External_PointingRequest(0);
     }
     
     // Transfer Header and Message ID
-    pointing->bytes = messageHeader.bytes;
+    memcpy(pointing->header.bytes, messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     pointing->iden = messageID;
     
     // Specific Data Members
@@ -157,11 +157,11 @@ Message_External* External_Parser::parseExternal_PointingRequest() {
 
 Message_External* External_Parser::parseExternal_SolutionMessage() {
     if (solution == nullptr) {
-        solution = new External_SolutionMessage();
+        solution = new External_SolutionMessage(0);
     }
     
     // Transfer Header and Message ID
-    solution->bytes = messageHeader.bytes;
+    memcpy(solution->header.bytes, messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     solution->iden = messageID;
     
     // Position
