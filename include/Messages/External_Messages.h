@@ -14,5 +14,6 @@
 #include "External_PointingRequest.h"
 #include "External_SolutionMessage.h"
 #include "External_DataMessage.h"
+#include "Message_External.h"
 
 #endif

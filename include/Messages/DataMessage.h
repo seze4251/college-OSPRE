@@ -68,6 +68,8 @@ public:
     // Sun Angle
     double sunAngle;
     
+    bool sleepMode;
+    
 };
 
 #endif
