@@ -98,7 +98,7 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
 // ********************************
 
 
-void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service)g {
+void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {
     
 }
 
