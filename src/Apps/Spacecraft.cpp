@@ -85,18 +85,22 @@ void Spacecraft::open() {
 void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* service) {
     switch (msg->iden) {
         case E_OSPREStatus:
+            std::cout << "OSPRE Status Recivied" << std::endl;
             ((Spacecraft*) getAppl())->handleExternalOSPREStatusMessage((External_OSPREStatus*) msg, service);
             break;
             
         case E_PointingRequest:
+            std::cout << "Pointing Request Recivied" << std::endl;
             ((Spacecraft*) getAppl())->handleExternalPointingMessage((External_PointingRequest*) msg, service);
             break;
             
         case E_SolutionMessage:
+            std::cout << "Solution Message Recivied" << std::endl;
             ((Spacecraft*) getAppl())->handleExternalSolutionMessage((External_SolutionMessage*) msg, service);
             break;
             
         case E_SpacecraftDataMessage:
+            std::cout << "Spacecraft Data message Recivied" << std::endl;
             ((Spacecraft*) getAppl())->handleExternalDataMessage((External_DataMessage*) msg, service);
             break;
             

@@ -42,7 +42,7 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
     *partialMessage = false;
     
     // If there is not a full header + message ID, do not parse header
-    if (buf.used() < 20 ) {
+    if (buf.used() < 10 ) {
         std::cout << "External_Parser::parseMessage no header left in buffer" << std::endl;
         return nullptr;
     }
@@ -133,7 +133,8 @@ Message_External* External_Parser::parseExternal_OSPREStatus() {
     memcpy(status->header.bytes, messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     status->iden = messageID;
     
-    int messageBody = (messageHeader.header.header_struct.packetDataLength + 1) / 4;
+    int messageBody = (messageHeader.header.header_struct.packetDataLength + 1 - sizeof(int)) / sizeof(int);
+    std::cout << "Message Body = " << messageBody << "packetDataLength" << messageHeader.header.header_struct.packetDataLength << std::endl;
     
     for (int i = 0; i < messageBody; i++) {
         status->error.push_back((ProcessError) buf.getInt());

@@ -126,11 +126,11 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     
     // TEMPORARY FIX:
     // LETS CODE COMPILE
-    double position[3];
-    double positionError[3];
-    double velocity[3];
-    double velocityError[3];
-    double earthScMoonAngle;
+    double position[3] {1, 2, 3};
+    double positionError[3] {4, 5, 6};
+    double velocity[3] {7, 8, 9};
+    double velocityError[3] {10, 11, 12};
+    double earthScMoonAngle {180};
     
     // Update Solution Message
     solutionMessage->update(position, positionError, velocity, velocityError, earthScMoonAngle);
