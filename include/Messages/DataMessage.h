@@ -31,12 +31,13 @@ public:
     }
     
     void print() {
-        std::cout<< "Printing Data Message" << std::endl;
+        printMessageHeader();
+        
         std::cout << "Ephem = ";
         for (int i = 0; i < 3; i++) {
             std::cout << ephem[i] << " ";
         }
-        std::cout << std::endl;
+        std::cout << " (km)" << std::endl;
         
         std::cout << "quat = ";
         for (int i = 0; i < 4; i++) {
@@ -48,13 +49,17 @@ public:
         for (int i = 0; i < 3; i++) {
             std::cout << angularVelocity[i] << " ";
         }
-        std::cout << std::endl;
+        std::cout << " (rad/s)" << std::endl;
         
-        std::cout << "Sun Angle = " << sunAngle << " satTime = " << satTime << std::endl;
+        std::cout << "Sun Angle = " << sunAngle << " (degrees)" << std::endl;
+        std::cout << "satTime = " << satTime << " (s)" << std::endl;
         
-        std::cout << "satTime = " << satTime << std::endl;
+        if (sleep == true) {
+            std::cout << "Sleeping, no Capturing Data" << std::endl;
+        } else {
+            std::cout << "Can Capture Data" << std::endl;
+        }
         
-        std::cout << "Sleep = " << sleep << ", 0 = Awake, 1 = sleep" << std::endl;
     }
     
     // Specific Data Members

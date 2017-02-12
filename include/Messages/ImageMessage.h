@@ -27,6 +27,12 @@ public:
     
     MessageID getMessageID() { return I_ImageMessage; }
     
+    void print() {
+        printMessageHeader();
+        printEarthMoon(point);
+        std::cout << "Current Image Size = " << currentImageSize << std::endl;
+        std::cout << "Total Buffer Size = " << imageBufferSize << std::endl;
+    }
     
     void update(PointEarthMoon point, int currentImageSize) {
         this->timeStamp = time(0);

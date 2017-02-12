@@ -33,7 +33,7 @@ WatchDog::~WatchDog() {
 // TODO: Update error vector based on what processes aren't connected
 void WatchDog::open() {
     // Set Timeout
-    setTimeoutTime(5, 0);
+    setTimeoutTime(1, 0);
     
     //Acceptor
     if (accept.isConnected() == false) {
@@ -92,12 +92,12 @@ void WatchDog::handleTimeout() {
         processHealthRequestMessage->update();
         if ((scComms != nullptr) && (scComms->isConnected())) {
             
-            std::cout << "\nSending POLL\n" << std::endl;
+           // std::cout << "\nSending POLL\n" << std::endl;
             scComms -> sendMessage(processHealthRequestMessage);
             
         } else {
             // Update error vector
-            error.push_back(PE_ScC_notConnected);
+            error.push_back(PE_notConnected);
         }
         
         // Send GNC Health and Status Message
@@ -106,7 +106,7 @@ void WatchDog::handleTimeout() {
             
         } else {
             // Update error vector
-            error.push_back(PE_GNC_notConnected);
+            error.push_back(PE_notConnected);
         }
         
         // Send Image Processor Health and Status Message
@@ -115,7 +115,7 @@ void WatchDog::handleTimeout() {
             
         } else {
             // Update error vector
-            error.push_back(PE_IP_notConnected);
+            error.push_back(PE_notConnected);
         }
         
         // Send Camera Controller Health and Status Message
@@ -124,14 +124,13 @@ void WatchDog::handleTimeout() {
             
         } else {
             // Update error vector
-            error.push_back(PE_CC_notConnected);
+            error.push_back(PE_notConnected);
         }
         
         // Update Poll Process Time
         pollProcess = currentTime + 10;
-    }
-    
-    if (currentTime > pollStatus) {
+        pollStatus = currentTime + 5;
+    } else if (currentTime > pollStatus ) {
         // Update OSPRE Status Message
         ospreStatusMessage->update(error);
         
@@ -142,13 +141,13 @@ void WatchDog::handleTimeout() {
             std::cout << "\nSending OSPRE STATUS\n" << std::endl;
             ospreStatusMessage->print();
             scComms->sendMessage(ospreStatusMessage);
+            // Clear OSPRE status vector
+            error.clear();
         }
         
         // Update Poll OSPRE Status Message Time
-        pollStatus = currentTime + 20;
-        
-        // Clear OSPRE status vector
-        error.clear();
+        pollProcess = currentTime + 10;
+        pollStatus = pollProcess + 1;
     }
     //std::cout << "Finished WatchDog::handleTimeout()" << std::endl;
 }
@@ -164,21 +163,21 @@ void WatchDog::handleTimeout() {
  */
 void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
     //Determine which client sent the message and print that message has been recived
-    
+/*
     if (service == cameraControl) {
-        std::cout << "WatchDog: Health and Status Response Recived from Camera Controller" << std::endl;
+        std::cout << "WatchDog: Health and Status Response Received from Camera Controller" << std::endl;
     } else if(service == scComms) {
-        std::cout << "WatchDog: Health and Status Response Recived from ScComms" << std::endl;
+        std::cout << "WatchDog: Health and Status Response Received from ScComms" << std::endl;
     } else if(service == gnc) {
-        std::cout << "WatchDog: Health and Status Response Recived from GNC" << std::endl;
+        std::cout << "WatchDog: Health and Status Response Received from GNC" << std::endl;
     } else if(service == imageProc) {
-        std::cout << "WatchDog: Health and Status Response Recived from ImageProcessor" << std::endl;
+        std::cout << "WatchDog: Health and Status Response Received from ImageProcessor" << std::endl;
     } else {
         std::cerr << "WatchDogClientHandler::handleProcessHealthAndStatusResponse: Client Response Message Not Expected" << std::endl;
         std::cerr << "Closing Connection" << std::endl;
         service->closeConnection();
     }
-    
+    */
     // Print Message
     msg->print();
     
@@ -239,6 +238,8 @@ void WatchDog::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceIn
     service->closeConnection();
 }
 
-
+/*
+array of process that you expect to connect?
+*/
 
 

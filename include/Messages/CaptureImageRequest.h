@@ -27,14 +27,15 @@ public:
     }
     
     void print() {
-        std::cout<< "Printing Capture Image Request Message" << std::endl;
-        std::cout << "Estimated  = ";
+        printMessageHeader();
+        
+        std::cout << "Estimated Position = ";
         for (int i = 0; i < 3; i++) {
             std::cout << estimatedPosition[i] << " ";
         }
-        std::cout << std::endl;
+        std::cout << " (km)" << std::endl;
         
-        std::cout << "Point = " << point << std::endl;
+        printEarthMoon(point);
     }
     
     // Specific Data Members

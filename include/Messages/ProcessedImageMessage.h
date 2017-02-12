@@ -29,7 +29,9 @@ public:
     }
     
     void print() {
-        std::cout<< "Distance = " << distance << " Error = " << error << " point = " << point << std::endl;
+        printMessageHeader();
+        std::cout<< "Distance = " << distance  << " (km) Error = " << error << "(km)" << std::endl;
+        printEarthMoon(point);
     }
     
     // Specific Data Members

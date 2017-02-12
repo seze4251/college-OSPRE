@@ -45,14 +45,15 @@ public:
     }
     
     void printHeader() {
+        printMessageID(iden);
         std::cout << "Printing Message Header:" << std::endl;
         std::cout << "packetVersionNumber = " << header.header_struct.packetVersionNumber << std::endl;
-        std::cout << "packetType = " << header.header_struct.packetType << std::endl;
-        std::cout << "secondaryHeader = " << header.header_struct.secondaryHeader << std::endl;
-        std::cout << "applicationProcessID = " << header.header_struct.applicationProcessID << std::endl;
-        std::cout << "sequenceFlags = " << header.header_struct.sequenceFlags << std::endl;
-        std::cout << "packetSequence = " << header.header_struct.packetSequence << std::endl;
-        std::cout << "packetDataLength = " << header.header_struct.packetDataLength << std::endl;
+        std::cout << "PacketType = " << header.header_struct.packetType << std::endl;
+        std::cout << "SecondaryHeader = " << header.header_struct.secondaryHeader << std::endl;
+        std::cout << "ApplicationProcessID = " << header.header_struct.applicationProcessID << std::endl;
+        std::cout << "SequenceFlags = " << header.header_struct.sequenceFlags << std::endl;
+        std::cout << "PacketSequence = " << header.header_struct.packetSequence << std::endl;
+        std::cout << "PacketDataLength = " << header.header_struct.packetDataLength << std::endl;
         
         std::cout<< std::endl << std::endl;
     }

@@ -33,6 +33,7 @@ GNC::~GNC() {
     delete processHealthMessage;
     delete captureImageMessage;
     delete solutionMessage;
+    delete pointRequest;
 }
 
 // *******************************

@@ -28,9 +28,9 @@ public:
     }
     
     void print() {
-        std::cout<< "Printing OSPREStatus Message" << std::endl;
+        printMessageHeader();
         for (auto i = error.begin(); i != error.end(); ++i)
-            std::cout << *i << ' ';
+            printProcessError(*i);
     }
     
     //Specific Data Members

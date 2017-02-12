@@ -37,10 +37,9 @@ public:
     
     // Print Message
     void print() {
-        std::cout << "OSPRE Status Message: Printing Message" << std::endl;
         printHeader();
         for (auto i = error.begin(); i != error.end(); ++i)
-            std::cout << *i << ' ';
+            printProcessError(*i);
     }
     
     //Specific Data Members

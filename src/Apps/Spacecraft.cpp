@@ -29,7 +29,9 @@ Spacecraft::~Spacecraft() {
     delete dataMessage;
     
     // Free ServiceExternal
-    delete scComms;
+    if (scComms != nullptr) {
+        delete scComms;
+    }
 }
 
 void Spacecraft::handleTimeout() {
@@ -53,7 +55,7 @@ void Spacecraft::handleTimeout() {
             
             // Update Data Message
             dataMessage->update(ephem, quat, angularVelocity, satTime, sunAngle, sleep);
-           // dataMessage->print();
+            // dataMessage->print();
             scComms->sendMessage(dataMessage);
             pollTime = currentTime + 1;
         }
@@ -72,7 +74,7 @@ void Spacecraft::open() {
     
     // Check to see if Client is already Connected
     if (scComms->isConnected() == true) {
-       // std::cout << "ServerExternal::openl(): Spacecraft is already connected to ScComms" << std::endl;
+        // std::cout << "ServerExternal::openl(): Spacecraft is already connected to ScComms" << std::endl;
         return;
     } else {
         std::cout << "Spacecraft Lost connection to S/C Comms, Attempting to reconnect" << std::endl;
@@ -108,6 +110,7 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
             std::cerr << "\n\nScComms::handleExternalMessage(): Unknown Message Type Recived: " << msg->iden << std::endl;
             std::cerr << "Closing Connection\n\n" << std::endl;
             service->closeConnection();
+            break;
     }
 }
 
@@ -134,7 +137,8 @@ void Spacecraft::handleExternalSolutionMessage(External_SolutionMessage* msg, Se
 }
 
 void Spacecraft::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
-    std::cout << "\n\nData Message Recived: Invalid Message, Closing Connection\n\n" << std::endl;
+    std::cout << "\n\nData Message Recived: Invalid Message, Printing Message and Closing Connection\n\n" << std::endl;
+    msg->print();
     scComms->closeConnection();
 }
 

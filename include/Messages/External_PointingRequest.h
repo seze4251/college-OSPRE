@@ -31,9 +31,8 @@ public:
     
     // Print Message
     void print() {
-        std::cout << "Pointing Request Message: Printing Message" << std::endl;
         printHeader();
-        std::cout << "Point = " << point << ", Earth = 1, Moon = 2" << std::endl;
+        printEarthMoon(point);
     }
     
     // Specific Data Members

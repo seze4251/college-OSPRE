@@ -21,5 +21,9 @@ public:
     void update() {
         this->timeStamp = time(0);
     }
+    
+    void print() {
+        printMessageHeader();
+    }
 };
 #endif

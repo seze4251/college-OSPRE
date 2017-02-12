@@ -23,7 +23,8 @@ public:
     }
     
     void print() {
-        std::cout << "Point = " << point << std::endl;
+        printMessageHeader();
+        printEarthMoon(point);
     }
     
     // Specific Data Members

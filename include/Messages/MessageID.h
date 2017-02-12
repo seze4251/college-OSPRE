@@ -27,4 +27,68 @@ enum MessageID {
     E_SpacecraftDataMessage = 14
 };
 
+static void printMessageID(MessageID ID) {
+    switch (ID) {
+        case NA:
+            std::cout << "Message Type N/A";
+            break;
+            
+        case I_CaptureImageRequest:
+            std::cout << "Capture Image Request Message" << std::endl;
+            break;
+            
+        case I_DataMessage:
+            std::cout << "Data Message" << std::endl;
+            break;
+            
+        case I_ImageAdjustment:
+            std::cout << "Image Adjustment Message" << std::endl;
+            break;
+            
+        case I_ImageMessage:
+            std::cout << "Image Message" << std::endl;
+            break;
+            
+        case I_OSPREStatus:
+            std::cout << "OSPRE Status Message" << std::endl;
+            break;
+            
+        case I_PointingRequest:
+            std::cout << "Pointing Request Message" << std::endl;
+            break;
+            
+        case I_ProcessHealthAndStatusRequest:
+            std::cout << "Process Health and Status Request Message" << std::endl;
+            break;
+            
+        case I_ProcessHealthAndStatusResponse:
+            std::cout << "Process Health and Status Response Message";
+            break;
+            
+        case I_SolutionMessage:
+            std::cout << "Solution Message" << std::endl;
+            break;
+            
+        case E_OSPREStatus:
+            std::cout << "External OSPRE Status Message" << std::endl;
+            break;
+            
+        case E_PointingRequest:
+            std::cout << "External Pointing Request Message" << std::endl;
+            break;
+            
+        case E_SolutionMessage:
+            std::cout << "External Solution Message" << std::endl;
+            break;
+            
+        case E_SpacecraftDataMessage:
+            std::cout << "External Spacecraft Data Message" << std::endl;
+            break;
+            
+        default:
+            std::cout << "Error: Unknown Value of Message ID" << std::endl;
+            break;
+    }
+}
+
 #endif

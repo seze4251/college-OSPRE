@@ -18,6 +18,10 @@ public:
     ImageAdjustment() : Message(getMessageID(), time(0)) {}
     
     MessageID getMessageID() { return I_ImageAdjustment; }
+    
+    void print() {
+        printMessageHeader();
+    }
 };
 
 #endif

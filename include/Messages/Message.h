@@ -12,6 +12,7 @@
 
 #include <ctime>
 #include <string.h>
+#include <iostream>
 
 #include "PointEarthMoon.h"
 #include "MessageID.h"
@@ -22,6 +23,11 @@ public:
     virtual MessageID getMessageID() = 0;
     time_t timeStamp;
     MessageID iden;
+    
+    void printMessageHeader() {
+        printMessageID(iden);
+        std::cout << "Time = " << timeStamp << " (s)" << std::endl;
+    }
 };
 
 #endif
