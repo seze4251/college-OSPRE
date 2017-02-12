@@ -67,7 +67,7 @@ Parser::~Parser() {
 Message* Parser::parseMessage(bool* partialMessage) {
     // If there is not a full header, do not parse header
     if (buf.used() < HEADER_MESSAGE_SIZE ) {
-        std::cout << "Parser::parseMessage no header left in buffer" << std::endl;
+      //  std::cout << "Parser::parseMessage no header left in buffer" << std::endl;
         *partialMessage = false;
         return nullptr;
     }
@@ -75,8 +75,7 @@ Message* Parser::parseMessage(bool* partialMessage) {
     messageID = (MessageID) buf.getInt();
     messageLength = buf.getInt();
     
- //   std::cout << "Parser::parseMessage: messageID: " << messageID << " messageLength: " << messageLength << std::endl;
-    std::cout << "Message Length: " << messageLength - 2 * sizeof(int) << "  buf.used: " << buf.used() << std::endl;
+    //std::cout << "Message Length: " << messageLength - 2 * sizeof(int) << "  buf.used: " << buf.used() << std::endl;
     
     // If there is a partial Message, rewind buffer and return null ptr
     if (buf.used() < (messageLength - 2 * sizeof(int)) ) {
@@ -88,8 +87,8 @@ Message* Parser::parseMessage(bool* partialMessage) {
     
     timeStamp = (time_t) buf.getLong();
     Message* msg = nullptr;
-    std::cout << "Parser Dump: MessageID: " << messageID << " Message Length: " << messageLength << " timeStamp: " << timeStamp << std::endl;
-    std::cout << "Current Time: " << time(0) << std::endl;
+  //  std::cout << "Parser Dump: MessageID: " << messageID << " Message Length: " << messageLength << " timeStamp: " << timeStamp << std::endl;
+   // std::cout << "Current Time: " << time(0) << std::endl;
     switch (messageID) {
         case I_CaptureImageRequest:
             msg = parseCaptureImageRequest();
@@ -120,7 +119,6 @@ Message* Parser::parseMessage(bool* partialMessage) {
             break;
             
         case I_ProcessHealthAndStatusRequest:
-            std::cout << "Entering parseProcessHealthAndStatusRequest" << std::endl;
             msg = parseProcessHealthAndStatusRequest();
             break;
             
@@ -227,6 +225,7 @@ Message* Parser::parseDataMessage() {
     
     data->satTime = buf.getLong();
     data->sunAngle = buf.getDouble();
+    data->sleep = (bool) buf.get();
     
     return data;
 }
@@ -317,14 +316,14 @@ Message* Parser::parseImageMessage() {
     
     int imageLength = messageLength - (HEADER_MESSAGE_SIZE + sizeof(int));
     
-    std::cout << "Image Length Recivied: " << imageLength << " Image Buffer Size: " << image->imageBufferSize << std::endl;
+   // std::cout << "Image Length Recivied: " << imageLength << " Image Buffer Size: " << image->imageBufferSize << std::endl;
     
     if( imageLength > image->imageBufferSize) {
         image->resizeImageArray(2*buf.used());
     }
     
     image->currentImageSize = imageLength;
-    buf.get(image->image, imageLength);
+    buf.get(image->getImagePointer(), imageLength);
     
     return image;
 }

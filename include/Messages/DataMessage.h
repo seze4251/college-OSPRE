@@ -20,13 +20,14 @@ public:
     
     MessageID getMessageID() { return I_DataMessage; }
     
-    void update(double* ephem, double* quat, double* angularVelocity, time_t satTime, double sunAngle) {
+    void update(double* ephem, double* quat, double* angularVelocity, time_t satTime, double sunAngle, bool sleep) {
         this->timeStamp = time(0);
         memcpy(this->ephem, ephem, 3 * sizeof(double));
         memcpy(this->quat, quat, 4 * sizeof(double));
         memcpy(this->angularVelocity, angularVelocity, 3 * sizeof(double));
         this->satTime = satTime;
         this->sunAngle = sunAngle;
+        this->sleep = sleep;
     }
     
     void print() {
@@ -50,6 +51,10 @@ public:
         std::cout << std::endl;
         
         std::cout << "Sun Angle = " << sunAngle << " satTime = " << satTime << std::endl;
+        
+        std::cout << "satTime = " << satTime << std::endl;
+        
+        std::cout << "Sleep = " << sleep << ", 0 = Awake, 1 = sleep" << std::endl;
     }
     
     // Specific Data Members
@@ -68,7 +73,8 @@ public:
     // Sun Angle
     double sunAngle;
     
-    bool sleepMode;
+    bool sleep;
+    
     
 };
 

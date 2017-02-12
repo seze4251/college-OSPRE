@@ -31,6 +31,7 @@ protected:
     static void setAppl(Server* srv);
     static Server* appl;
     virtual void handleTimeout() = 0;
+    void setTimeoutTime(int sec, int micro);
     timeval t_val;
     
 private:

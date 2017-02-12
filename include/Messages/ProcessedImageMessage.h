@@ -21,8 +21,8 @@ public:
     
     MessageID getMessageID() {return I_ProcessedImageMessage;}
     
-    void update(double distance, double error, PointEarthMoon point) {
-        this->timeStamp = time(0);
+    void update(double distance, double error, PointEarthMoon point, time_t timeStamp) {
+        this->timeStamp = timeStamp;
         this->distance = distance;
         this->error = error;
         this->point = point;

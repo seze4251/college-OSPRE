@@ -32,6 +32,9 @@ WatchDog::~WatchDog() {
 
 // TODO: Update error vector based on what processes aren't connected
 void WatchDog::open() {
+    // Set Timeout
+    setTimeoutTime(5, 0);
+    
     //Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
@@ -43,28 +46,28 @@ void WatchDog::open() {
     
     // Connect to ScComms
     if(connectToAppl(hostName, 7000, &scComms) == true) {
-        std::cout << "WatchDog: Connected to ScComms" << std::endl;
+     //   std::cout << "WatchDog: Connected to ScComms" << std::endl;
     } else {
         std::cout << "WatchDog: Failure to Connect to ScComms" << std::endl;
     }
     
     // Connect to GNC
     if(connectToAppl(hostName, 9000, &gnc) == true) {
-        std::cout << "WatchDog: Connected to GNC" << std::endl;
+     //   std::cout << "WatchDog: Connected to GNC" << std::endl;
     } else {
         std::cout << "WatchDog: Failure to Connect to GNC" << std::endl;
     }
     
     // Connect to Image Processor
     if(connectToAppl(hostName, 8000, &imageProc) == true) {
-        std::cout << "WatchDog: Connected to Image Processor" << std::endl;
+      //  std::cout << "WatchDog: Connected to Image Processor" << std::endl;
     } else {
         std::cout << "WatchDog: Failure to Connect to Image Processor" << std::endl;
     }
     
     // Connect to Camera Controller
     if(connectToAppl(hostName, 10000, &cameraControl) == true) {
-        std::cout << "WatchDog: Connected to Camera Controller" << std::endl;
+     //   std::cout << "WatchDog: Connected to Camera Controller" << std::endl;
     } else {
         std::cout << "WatchDog: Failure to Connect to Camera Controller" << std::endl;
     }
@@ -81,7 +84,7 @@ void WatchDog::handleTimeout() {
     // Attempt to connect to all connections
     this->open();
     
-    std::cout<< "WatchDog::handleTimeout() " << std::endl;
+   // std::cout<< "WatchDog::handleTimeout() " << std::endl;
     time_t currentTime = time(NULL);
     
     if (currentTime > pollProcess) {
@@ -89,7 +92,7 @@ void WatchDog::handleTimeout() {
         processHealthRequestMessage->update();
         if ((scComms != nullptr) && (scComms->isConnected())) {
             
-            std::cout << "\n\n Sending POLL\n\n" << std::endl;
+            std::cout << "\nSending POLL\n" << std::endl;
             scComms -> sendMessage(processHealthRequestMessage);
             
         } else {
@@ -136,7 +139,7 @@ void WatchDog::handleTimeout() {
         
         // Send OSPRE Status Message
         if ((scComms != nullptr) && (scComms->isConnected())) {
-            std::cout << "\n\n Sending OSPRE STATUS\n\n" << std::endl;
+            std::cout << "\nSending OSPRE STATUS\n" << std::endl;
             ospreStatusMessage->print();
             scComms->sendMessage(ospreStatusMessage);
         }
@@ -147,7 +150,7 @@ void WatchDog::handleTimeout() {
         // Clear OSPRE status vector
         error.clear();
     }
-    std::cout << "Finished WatchDog::handleTimeout()" << std::endl;
+    //std::cout << "Finished WatchDog::handleTimeout()" << std::endl;
 }
 
 // *******************************
@@ -184,7 +187,7 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
 }
 
 void WatchDog::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-    std::cerr << "WatchDog::handleDataMessage() Ignoring Data Message" << std::endl;
+   // std::cout << "WatchDog::handleDataMessage() Ignoring Data Message" << std::endl;
 }
 
 // *******************************

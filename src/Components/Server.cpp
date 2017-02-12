@@ -52,6 +52,11 @@ void Server::handleTimeout() {
     std::cout << "Server::handleTimeout() I should do something here" << std::endl;
 }
 
+void Server::setTimeoutTime(int sec, int micro) {
+    t_val.tv_sec = sec;
+    t_val.tv_usec = micro;
+}
+
 int Server::run() {
     bool terminateFlag = false;
     timeval tempTimeVal;

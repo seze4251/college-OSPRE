@@ -44,7 +44,11 @@ void CircularBuffer::put(DataMessage* msg) {
     }
     
     // Copy the Data Message
-    memcpy(insert, msg, sizeof(DataMessage));
+    memcpy((void*) insert, (void*) msg, sizeof(DataMessage));
+    
+    //std::cout << "Circular Buffer Added Timestamp: " << msg->timeStamp << std::endl;
+    
+    insert++;
 }
 
 DataMessage* CircularBuffer::get(time_t timeStamp) {
@@ -55,6 +59,7 @@ DataMessage* CircularBuffer::get(time_t timeStamp) {
     
     for (it = bufferHead, j = 0; j < buffSize; j++, it++) {
         if (it->timeStamp == timeStamp) {
+            std::cout << "CircularBuffer::get() Found Message Timestamp: " << timeStamp << std::endl;
             foundMessage = true;
             break;
         }
@@ -62,7 +67,7 @@ DataMessage* CircularBuffer::get(time_t timeStamp) {
     
     if (foundMessage == false) {
         // TODO: Throw exception here
-        std::cout << "CircularBuffer::get() could not find Data Message" << std::endl;
+        std::cout << "\n\n\nCircularBuffer::get() could not find Data Message\n\n\n" << std::endl;
         return nullptr;
     }
     

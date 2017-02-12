@@ -24,6 +24,18 @@ public:
         header.header_struct.packetDataLength = (8) - 1;
     }
     
+    // Update Message
+    void update(PointEarthMoon point) {
+        this->point = point;
+    }
+    
+    // Print Message
+    void print() {
+        std::cout << "Pointing Request Message: Printing Message" << std::endl;
+        printHeader();
+        std::cout << "Point = " << point << ", Earth = 1, Moon = 2" << std::endl;
+    }
+    
     // Specific Data Members
     PointEarthMoon point;
     

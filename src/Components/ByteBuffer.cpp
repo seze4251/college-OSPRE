@@ -158,26 +158,24 @@ long ByteBuffer::getLong() {
 // Keeps 6 decimals of percision
 double ByteBuffer::getDouble() {
     long i = getLong();
-    double d = (double) i / 1000000;
+    double d = (double) (i / 1000000.0);
     return d;
 }
 
 // Keeps 6 decimals of percision
 void ByteBuffer::putDouble(double d) {
-    long i = (long) d * 1000000;
+    long i = (long) (d * 1000000.0);
     putLong(i);
 }
 
 void ByteBuffer::put(char* c, int length) {
     if (length < 0) {
-        std::cout << "Can not add length of 0" << std::endl;
         //TODO: Throw Exception
         return;
     }
     
     if ((size + length) > capacity) {
         // TODO: add throw of Exception
-        std::cout << "Should Throw Exception in putLong" << std::endl;
         return;
     }
     
@@ -185,7 +183,6 @@ void ByteBuffer::put(char* c, int length) {
     
     currentPos += length;
     size += length;
-    std::cout << "Writebuf Size : " << size << std::endl;
 }
 
 void ByteBuffer::get(char* location, int length) {

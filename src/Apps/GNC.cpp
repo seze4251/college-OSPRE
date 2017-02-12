@@ -42,6 +42,9 @@ GNC::~GNC() {
 // ********************************
 
 void GNC::open() {
+    // Set Timeout to 1 minute
+    setTimeoutTime(10, 0);
+    
     //Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
@@ -53,14 +56,14 @@ void GNC::open() {
     
     //Connect to ScComms
     if(connectToAppl(hostName, 7000, &scComms) == true) {
-        std::cout << "GNC: Connected to ScComms" << std::endl;
+    //    std::cout << "GNC: Connected to ScComms" << std::endl;
     } else {
         std::cout << "GNC: Failure to Connect to ScComms" << std::endl;
     }
     
     // Connect to Camera Controller
     if(connectToAppl(hostName, 10000, &cameraController) == true) {
-        std::cout << "GNC: Connected to Camera Controller" << std::endl;
+     //   std::cout << "GNC: Connected to Camera Controller" << std::endl;
     } else {
         std::cout << "GNC: Failure to Connect to Camera Controller" << std::endl;
     }
@@ -90,7 +93,7 @@ void GNC::handleTimeout() {
             }
             
             
-            std::cout << "\n\n Sending Pointing Request\n\n" << std::endl;
+            std::cout << "\nSending Pointing Request\n" << std::endl;
             
             pointRequest->update(point);
             scComms -> sendMessage(pointRequest);
@@ -99,11 +102,11 @@ void GNC::handleTimeout() {
         if ((cameraController != nullptr) && (cameraController->isConnected())) {
             captureImageMessage->update(point, latestPosition);
             
-            std::cout << "\n\n Sending Capture Image Message\n\n" << std::endl;
+            std::cout << "\nSending Capture Image Message\n" << std::endl;
             cameraController -> sendMessage(captureImageMessage);
         }
         
-        pollTime = currentTime + 10; // TODO Change back to 2 min
+        pollTime = currentTime + 20;
     }
 }
 
@@ -166,7 +169,7 @@ void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     std::cerr << "\n\nGNC::handleDataMessage() Data Message Recived\n\n" << std::endl;
     
     // Print Message
-    msg->print();
+  //  msg->print();
     
     // Put Data Into Circular Buffer
     circBuf.put(msg);
@@ -181,7 +184,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     std::cerr << "\n\nGNC::handleProcessedImageMessage() Processed Image Message Recieved\n\n" << std::endl;
     
     // Print Message
-    msg->print();
+  //  msg->print();
     
     DataMessage* scData = circBuf.get(msg->timeStamp);
     

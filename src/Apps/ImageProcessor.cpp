@@ -6,6 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 #include <iostream>
+#include <unistd.h>
 
 #include "ImageProcessor.h"
 #include "Service.h"
@@ -32,6 +33,9 @@ ImageProcessor::~ImageProcessor() {
 //
 // ********************************
 void ImageProcessor::open() {
+    // Set Timeout to 1 minute
+    setTimeoutTime(60, 0);
+    
     //Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
@@ -43,7 +47,7 @@ void ImageProcessor::open() {
     
     //Connect to GNC
     if(connectToAppl(hostName, 9000, &gnc) == true) {
-        std::cout << "ImageProcessor: Connected to GNC" << std::endl;
+    //    std::cout << "ImageProcessor: Connected to GNC" << std::endl;
     } else {
         std::cout << "ImageProcessor: Failure to Connect to GNC" << std::endl;
     }
@@ -66,11 +70,11 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     
     //TODO: ANTHONY's Code HERE!!!!
     
-    double distance;
-    double error;
-    
+    double distance = 300;
+    double error = 10;
+    sleep(10);
     // Update ProcessedImageMessage
-    processedImageMessage->update(distance, error, msg->point);
+    processedImageMessage->update(distance, error, msg->point, msg->timeStamp);
 }
 
 

@@ -44,6 +44,19 @@ public:
         this->iden = iden;
     }
     
+    void printHeader() {
+        std::cout << "Printing Message Header:" << std::endl;
+        std::cout << "packetVersionNumber = " << header.header_struct.packetVersionNumber << std::endl;
+        std::cout << "packetType = " << header.header_struct.packetType << std::endl;
+        std::cout << "secondaryHeader = " << header.header_struct.secondaryHeader << std::endl;
+        std::cout << "applicationProcessID = " << header.header_struct.applicationProcessID << std::endl;
+        std::cout << "sequenceFlags = " << header.header_struct.sequenceFlags << std::endl;
+        std::cout << "packetSequence = " << header.header_struct.packetSequence << std::endl;
+        std::cout << "packetDataLength = " << header.header_struct.packetDataLength << std::endl;
+        
+        std::cout<< std::endl << std::endl;
+    }
+    
     // Data Members
     Header_Union header;
     
@@ -56,62 +69,6 @@ public:
 
 #endif
 
-
-/*
- int c;
- 
- //c = 0;
- c = 0xFF00FF00;
- 
- 10101011 110001101010101111
- FC D# A9 32
- 
- Header hdr;
- hdr.packetVersionNUmber = 3;
- hd.packetType = 1
- 
- 
- short oct1  = 0;
- 0000 0000 0000 0000
- 
- oct1 = 0xE << 12;
- 1110 0000 0000 0000
- oct1 = 0x7;
-0000 0000 0000 0111
- oct1 <<= 13;
- 1110 0000 0000 0000
- 
- short temp = oct1 >> 13
- 0000 0000 0000 0111
- printf((%d\n, temp);
-\
- 
- 
- 
- 
- 
- oct1 = 0x7;
- oct1 <<= 13;
- 1110 0000 0000 0000
- 
- short tmep = oct1 & 0x1FFF;
- 0001 1111 1111 1111
- 
- 0000 0000 0000
- 
- short temp2 = oct1 & 0xEFFF;
- 
- 
- 
- 
- 
- 
- 
- Byte Buffer::
- (Message HEADER >> MESSAGE ID >> MESSAGE DATA)
- 
- */
- 
  
  
  

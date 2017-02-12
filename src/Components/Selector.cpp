@@ -43,14 +43,14 @@ void Selector::unregisterService(int fd) {
 }
 
 void Selector::interestInRead(int fd) {
-    printf("Selector:: Interest in Read fd: %d\n",fd);
+   // printf("Selector:: Interest in Read fd: %d\n",fd);
+    //std::cout << "Printing ReadFds" << std::endl;
+    //printFds(&readFds);
     FD_SET(fd, &readFds);
-    std::cout << "Printing ReadFds" << std::endl;
-    printFds(&readFds);
 }
 
 void Selector::interestInWrite(int fd) {
-    printf("Selector:: Interest in Write fd: %d\n",fd);
+    //printf("Selector:: Interest in Write fd: %d\n",fd);
     FD_SET(fd, &writeFds);
 }
 
@@ -60,21 +60,21 @@ void Selector::noInterestInRead(int fd) {
 }
 
 void Selector::noInterestInWrite(int fd) {
-    printf("Selector:: NO --- Interest in Write fd: %d\n",fd);
+    //printf("Selector:: NO --- Interest in Write fd: %d\n",fd);
     FD_CLR(fd, &writeFds);
 }
 
 int Selector::select(timeval *timeout) {
-    std::cout << "Selector::select(timeout)" << std::endl;
+    //std::cout << "Selector::select(timeout)" << std::endl;
     while (true) {
         
         memcpy(&tempReadFds, &readFds, sizeof(readFds));
         memcpy(&tempWriteFds, &writeFds, sizeof(writeFds));
         
-        std::cout << "Printing tempReadFds" << std::endl;
-        printFds(&tempReadFds);
+       // std::cout << "Printing tempReadFds" << std::endl;
+       // printFds(&tempReadFds);
         int numSelected = ::select(FD_SETSIZE, &tempReadFds, &tempWriteFds, NULL, timeout);
-        printf("Select Returned: %d\n", numSelected);
+        //printf("Select Returned: %d\n", numSelected);
         
         if (numSelected == -1) {
             if (errno == EINTR) {
@@ -86,7 +86,7 @@ int Selector::select(timeval *timeout) {
             return 0;
         }
         
-        std::cout<< " checking readFds & writeFds" << std::endl;
+       // std::cout<< " checking readFds & writeFds" << std::endl;
         
         for (int i = 0, count = 0; (count < numSelected) && (i < FD_SETSIZE) ; i++) {
             if (FD_ISSET(i, &tempReadFds)) {

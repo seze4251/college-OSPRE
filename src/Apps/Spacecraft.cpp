@@ -11,6 +11,8 @@
 
 #define Spacecraft_APPL_ID 2
 
+ServiceExternal* Spacecraft::scComms;
+
 Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : pollTime(0), ospreHostName(ospreHostName), osprePort(osprePort) {
     std::cout<< " Spacecraft Constructor called" << std::endl;
     setAppl(this);
@@ -40,7 +42,18 @@ void Spacecraft::handleTimeout() {
     if (currentTime > pollTime) {
         // Send Poll
         if (scComms -> isConnected()) {
-            //TODO: Update Data Message
+            
+            // BS data members to start
+            double ephem[3] {4, 5, 6};
+            double quat[4] {0.25, 0.55, 0.75, 1.5};
+            double angularVelocity[3] {1, 2, 3};
+            time_t satTime = time(0);
+            double sunAngle = 5;
+            bool sleep = false;
+            
+            // Update Data Message
+            dataMessage->update(ephem, quat, angularVelocity, satTime, sunAngle, sleep);
+           // dataMessage->print();
             scComms->sendMessage(dataMessage);
             pollTime = currentTime + 1;
         }
@@ -49,6 +62,9 @@ void Spacecraft::handleTimeout() {
 }
 
 void Spacecraft::open() {
+    // Set Timeout to half a second
+    setTimeoutTime(0, 500000);
+    
     // Make Sure Service is not NULL
     if (scComms == nullptr) {
         scComms = new ServiceExternal(getAppl()->getSelector());
@@ -56,10 +72,12 @@ void Spacecraft::open() {
     
     // Check to see if Client is already Connected
     if (scComms->isConnected() == true) {
-        std::cout << "ServerExternal::openl(): Spacecraft is already connected to ScComms" << std::endl;
+       // std::cout << "ServerExternal::openl(): Spacecraft is already connected to ScComms" << std::endl;
         return;
     } else {
+        std::cout << "Spacecraft Lost connection to S/C Comms, Attempting to reconnect" << std::endl;
         scComms->open(ospreHostName, osprePort);
+        scComms->registerCallback(handleExternalMessage);
     }
     
 }
@@ -83,8 +101,8 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
             break;
             
         default:
-            std::cerr << "ScComms::handleExternalMessage(): Unknown Message Type Recived: " << msg->iden << std::endl;
-            std::cerr << "Closing Connection" << std::endl;
+            std::cerr << "\n\nScComms::handleExternalMessage(): Unknown Message Type Recived: " << msg->iden << std::endl;
+            std::cerr << "Closing Connection\n\n" << std::endl;
             service->closeConnection();
     }
 }
@@ -99,19 +117,21 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
 
 
 void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {
-    
+    msg->print();
 }
 
 void Spacecraft::handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
-    
+    msg->print();
 }
 
 void Spacecraft::handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
+    msg->print();
     
 }
 
 void Spacecraft::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
-    
+    std::cout << "\n\nData Message Recived: Invalid Message, Closing Connection\n\n" << std::endl;
+    scComms->closeConnection();
 }
 
 

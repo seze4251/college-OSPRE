@@ -29,7 +29,7 @@ public:
     void open();
     
     // Generic Message Handler for External Messages
-    void handleExternalMessage(Message_External* msg, ServiceExternal* service);
+    static void handleExternalMessage(Message_External* msg, ServiceExternal* service);
     
     // Additional Message Handler for Spacecraft
     void handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service);
@@ -38,13 +38,25 @@ public:
     void handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service);
     
 private:
+    // Load Scenario Data
+    // TODO Implement this method and data memebers
+    
+    /*  void loadScenario();
+     std::vector<double[3]> ephem;
+     std::vector<double[4]> quat;
+     std::vector<double[3]> angularVelocity;
+     std::vector<time_t> satTime;
+     std::vector<double> sunAngle;
+     std::vector<bool> sleep;
+     */
+    
     // Connect to OSPRE
     std::string ospreHostName;
     int osprePort;
     
     // System Architecture
     time_t pollTime;
-    ServiceExternal* scComms;
+    static ServiceExternal* scComms;
     
     // Pointer To Hold Messages that Are being sent
     External_DataMessage* dataMessage;

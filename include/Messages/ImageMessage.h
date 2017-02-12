@@ -45,14 +45,19 @@ public:
         std::cout << "\n\n\n Resizing Image Message b/c it is bigger than expected \n\n\n";
     }
     
+    char* getImagePointer() {
+        return image;
+    }
     
     // Specific Data Members
     PointEarthMoon point;
-    char* image;
     
     // Do not send these variable below
     int currentImageSize;
     int imageBufferSize;
+    
+private:
+    char* image;
 };
 
 #endif

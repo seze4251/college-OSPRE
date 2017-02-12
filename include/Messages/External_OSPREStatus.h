@@ -25,8 +25,22 @@ public:
         header.header_struct.packetDataLength = 0;
     }
     
+    // Update Message Length
     void updatePacketDataLength() {
         header.header_struct.packetDataLength = (4 * error.size() + 4) - 1;
+    }
+    
+    // Update Message
+    void update(std::vector<ProcessError> error) {
+        this->error = error;
+    }
+    
+    // Print Message
+    void print() {
+        std::cout << "OSPRE Status Message: Printing Message" << std::endl;
+        printHeader();
+        for (auto i = error.begin(); i != error.end(); ++i)
+            std::cout << *i << ' ';
     }
     
     //Specific Data Members

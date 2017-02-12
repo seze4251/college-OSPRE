@@ -11,7 +11,7 @@
 #include "Spacecraft.h"
 
 int main(int argc, char **argv) {
-    int serverPort = 6000;
+    int serverPort = 7500;
     std::string host("localhost");
     
     std::cout << "Spacecraft Application Starting\n";

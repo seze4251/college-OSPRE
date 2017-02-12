@@ -50,8 +50,10 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
     buf.get(messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     messageID = (MessageID) buf.getInt();
     
+    std::cout<< "buf.used() = " << buf.used() << " 1+packetDataLength = " << (1 + messageHeader.header.header_struct.packetDataLength - sizeof(int)) << std::endl;
+    
     // If there is a partial Message, rewind buffer and return null ptr
-    if (buf.used() < (1 + messageHeader.header.header_struct.packetDataLength) ) {
+    if (buf.used() < (1 + messageHeader.header.header_struct.packetDataLength - sizeof(int)) ) {
         std::cout << "External_Parser::parseMessage: Partial Message, Rewinding Buffer" << std::endl;
         buf.rewind(10);
         *partialMessage = true;
@@ -117,6 +119,7 @@ Message_External* External_Parser::parseExternal_DataMessage() {
     
     data->satTime = buf.getLong();
     data->sunAngle = buf.getDouble();
+    data->sleep = (bool) buf.get();
     
     return data;
 }
@@ -147,6 +150,7 @@ Message_External* External_Parser::parseExternal_PointingRequest() {
     
     // Transfer Header and Message ID
     memcpy(pointing->header.bytes, messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
+    
     pointing->iden = messageID;
     
     // Specific Data Members

@@ -51,7 +51,7 @@ void ServiceInternal::registerCallback(void (*messageCallBackFunc)(Message*, Ser
 
 // Virtual Methods from Server
 void ServiceInternal::handleRead() {
-    std::cout << "Entering ServiceInternal::handleRead()" << std::endl;
+    //std::cout << "Entering ServiceInternal::handleRead()" << std::endl;
     int length = readbuf.remaining();
     
     if (length == 0) {
@@ -63,7 +63,7 @@ void ServiceInternal::handleRead() {
     
     while (amountRead < 0) {
         amountRead = ::read(fd, buf, length);
-        std::cout << "handleRead(): Amount Read: " << amountRead << std::endl;
+        //  std::cout << "handleRead(): Amount Read: " << amountRead << std::endl;
         
         // ToDo: Revisit code confiriming MANPAGE on read error conditions
         if (amountRead == 0) {
@@ -86,7 +86,7 @@ void ServiceInternal::handleRead() {
     
     ///**************
     //TEMP
-   // readbuf.printBuffer();
+    // readbuf.printBuffer();
     //TEMP
     //********************
     
@@ -122,9 +122,9 @@ void ServiceInternal::handleRead() {
 
 
 void ServiceInternal::handleWrite() {
-    std::cout << "Entering ServiceInternal::handleWrite()" << std::endl;
+    //  std::cout << "Entering ServiceInternal::handleWrite()" << std::endl;
     int length = writebuf.used();
-    std::cout << "handleWrite writebuf.used: " << length << std::endl;
+    //  std::cout << "handleWrite writebuf.used: " << length << std::endl;
     
     if (length == 0) {
         std::cout << "Nothing Left to Write to Socket" << std::endl;
@@ -132,13 +132,13 @@ void ServiceInternal::handleWrite() {
         return;
     }
     
-
+    
     //std::cout << "ServiceInternal::handleWrite(): Printing Write Buffer" << std::endl;
     //writebuf.printBuffer();
     
     
     writebuf.flip();
-
+    
     char* buf = writebuf.getBuffer();
     
     int amountWritten = write(fd, buf, length);
@@ -177,7 +177,7 @@ void ServiceInternal::sendMessage(Message* msg) {
         return;
     }
     
-    std::cout << "ServiceInternal::sendMessage() Sending Message" << std::endl;
+    //std::cout << "ServiceInternal::sendMessage() Sending Message" << std::endl;
     
     switch (msg->iden) {
         case I_CaptureImageRequest:
@@ -193,7 +193,6 @@ void ServiceInternal::sendMessage(Message* msg) {
             break;
             
         case I_ImageMessage:
-            std::cout << "SendMessage() calling buildImageMessage" <<std::endl;
             build.buildImageMessage(*((ImageMessage*) msg));
             break;
             
@@ -214,7 +213,7 @@ void ServiceInternal::sendMessage(Message* msg) {
             break;
         case I_SolutionMessage:
             build.buildSolutionMessage(*((SolutionMessage*) msg));
-
+            
             break;
         case I_ProcessedImageMessage:
             build.buildProcessedImageMessage(*((ProcessedImageMessage*) msg));

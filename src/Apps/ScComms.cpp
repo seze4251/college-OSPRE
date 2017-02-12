@@ -42,6 +42,9 @@ ScComms::~ScComms() {
 }
 
 void ScComms::open() {
+    // Set Timeout to 1 minute
+    setTimeoutTime(60, 0);
+    
     //Internal Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
@@ -152,15 +155,15 @@ void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest*
  */
 void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
     std::cout << "ScComms::handleOSPREStatus() OSPRE Status Message Recived" << std::endl;
-    std::cout << " Returning, once SC is implemented, will do more!" << std::endl;
-    // TODO: Convert OSPRE Status Message to External OSPRE Status Message
+    // Print Message
+   // msg->print();
+    
+    // Convert OSPRE Status to External OSPRE Status
+    externalOspreStatusMessage->update(msg->error);
     
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
         spacecraft->sendMessage(externalOspreStatusMessage);
     }
-    
-    // Print Message
-    msg->print();
 }
 
 /*
@@ -168,15 +171,17 @@ void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
  */
 void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
     std::cout << "ScComms::handlePointingRequest() Pointing Request Received" << std::endl;
-    std::cout << "Pointing Request: 1-E, 2-M:  " << (int) msg->point << std::endl;
-    // TODO: Convert Pointing Request Message to External Pointing Request Message
+    // Print Message
+    //msg->print();
+    
+    // Convert Pointing Request to External Pointing Request
+    externalPointingMessage->update(msg->point);
     
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
         spacecraft->sendMessage(externalPointingMessage);
     }
     
-    // Print Message
-    msg->print();
+
 }
 
 /*
@@ -184,14 +189,17 @@ void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* servi
  */
 void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
     std::cout << "ScComms::handleSolutionMessage() Solution message Recived" << std::endl;
+    // Print Message
+    //msg->print();
     
-    // TODO: Convert Solution Message to External Solution Message
+    // Convert Internal Solution Message to External Solution Message
+    externalSolutionMessage->update(msg->position, msg->positionError, msg->velocity, msg->velocityError, msg->earthScMoonAngle);
+    
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
         spacecraft->sendMessage(externalSolutionMessage);
     }
     
-    // Print Message
-    msg->print();
+
 }
 
 // *******************************
@@ -205,11 +213,13 @@ void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* servi
  */
 void ScComms::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
     std::cout << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
+   // msg->print();
     
-    // TODO: Convert External Data Message to Data Message
+    // Conver External Data Message to internal Data Message
+    dataMessage->update(msg->ephem, msg->quat, msg->angularVelocity, msg->satTime, msg->sunAngle, msg->sleep);
     
     //Send Data Message
-    for (int i = 1; i < MaxClients; i++) {
+    for (int i = 0; i < MaxClients; i++) {
         if ((connections[i] != nullptr) && (connections[i]->isConnected())) {
             connections[i]->sendMessage(dataMessage);
         }

@@ -53,7 +53,7 @@ bool ServiceExternal::open(std::string hostName, int portNumber) {
 
 // Virtual Methods from Server
 void ServiceExternal::handleRead() {
-    std::cout << "Entering ServiceExternal::handleRead()" << std::endl;
+   // std::cout << "Entering ServiceExternal::handleRead()" << std::endl;
     int length = readbuf.remaining();
     
     if (length == 0) {
@@ -124,9 +124,9 @@ void ServiceExternal::handleRead() {
 
 
 void ServiceExternal::handleWrite() {
-    std::cout << "Entering ServiceExternal::handleWrite()" << std::endl;
+   // std::cout << "Entering ServiceExternal::handleWrite()" << std::endl;
     int length = writebuf.used();
-    std::cout << "ServiceExternal::handleWrite() writebuf.used: " << length << std::endl;
+    // std::cout << "ServiceExternal::handleWrite() writebuf.used: " << length << std::endl;
     
     if (length == 0) {
         std::cout << "Nothing Left to Write to Socket" << std::endl;
@@ -178,7 +178,7 @@ void ServiceExternal::sendMessage(Message_External* msg) {
         return;
     }
     
-    std::cout << "ServiceExternal::sendMessage() Sending Message" << std::endl;
+   // std::cout << "ServiceExternal::sendMessage() Sending Message" << std::endl;
     
     switch (msg->iden) {
         case E_OSPREStatus:

@@ -23,13 +23,61 @@ public:
         header.header_struct.packetDataLength = (8 * 13 + 4)  - 1;
     }
     
+    // Update Message
+    void update(double* position, double* positionError, double* velocity, double* velocityError, double earthScMoonAngle) {
+        memcpy(this->position, position, 3*sizeof(double));
+        memcpy(this->positionError, positionError, 3*sizeof(double));
+        memcpy(this->velocity, velocity, 3*sizeof(double));
+        memcpy(this->velocityError, velocityError, 3*sizeof(double));
+        this->earthScMoonAngle = earthScMoonAngle;
+    }
+    
+    // Print Message
+    void print() {
+        std::cout << "Solution Message: Printing Message" << std::endl;
+        printHeader();
+        
+        std::cout << "Position = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << position[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Position = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << position[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Position Error = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << positionError[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Velocity = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << velocity[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Velocity Error = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << velocityError[i] << " ";
+        }
+        std::cout << std::endl;
+        
+        std::cout << "Earth-SC-Moon Angle = " << earthScMoonAngle << std::endl;
+        
+    }
+    
     // Specific Data Members
     double position[3];
     double positionError[3];
     double velocity[3];
     double velocityError[3];
     double earthScMoonAngle;
-
+    
 };
 
 #endif

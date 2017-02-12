@@ -37,6 +37,9 @@ CameraController::~CameraController() {
 
 
 void CameraController::open() {
+    // Set Timeout to 1 minute
+    setTimeoutTime(60, 0);
+    
     //Open Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
@@ -48,14 +51,14 @@ void CameraController::open() {
     
     //Connect to ScComms
     if(connectToAppl(hostName, 7000, &scComms) == true) {
-        std::cout << "CameraController: Connected to ScComms" << std::endl;
+     //   std::cout << "CameraController: Connected to ScComms" << std::endl;
     } else {
         std::cout << "CameraController: Failure to Connect to ScComms" << std::endl;
     }
     
     // Connect to ImageProcessing
     if(connectToAppl(hostName, 8000, &imageProc) == true) {
-        std::cout << "CameraController: Connected to ImageProcessor" << std::endl;
+       // std::cout << "CameraController: Connected to ImageProcessor" << std::endl;
     } else {
         std::cout << "CameraController: Failure to Connect to ImageProcessor" << std::endl;
     }
@@ -98,8 +101,6 @@ void CameraController::adjustCameraSettings(ImageAdjustment* msg) {
 }
 
 
-
-
 // *******************************
 //
 // Message Handlers: Supported By Camera Controller
@@ -138,7 +139,7 @@ void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatu
  */
 
 void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-    std::cerr << "\n\nCameraController::handleCaptureImageRequest() Capture Image Request Message Recived\n\n" << std::endl;
+    std::cerr << "\nCameraController::handleCaptureImageRequest() Capture Image Request Message Recived\n" << std::endl;
     
     // Print Message
     msg->print();
@@ -171,6 +172,10 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     }
 }
 
+void CameraController::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
+    std::cerr << "Data Message Recivied, should determine if I can take a picture!" << std::endl;
+}
+
 // TODO: Decide is this Needed?
 void CameraController::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
     std::cerr << "ScCoCameraControllermms::handleImageAdjustment(): Recived Image Adjustment Message" << std::endl;
@@ -188,11 +193,7 @@ void CameraController::handleProcessHealthAndStatusResponse(ProcessHealthAndStat
     std::cerr << "Closing Connection" << std::endl;
     service->closeConnection();
 }
-void CameraController::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-    std::cerr << "CameraController::handleEphemerisMessage() Not Supported for CameraController" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
-    service->closeConnection();
-}
+
 void CameraController::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
     std::cerr << "CameraController::handleImageMessage() Not Supported for CameraController" << std::endl;
     std::cerr << "Closing Connection" << std::endl;
