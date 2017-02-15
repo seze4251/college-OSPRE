@@ -134,7 +134,7 @@ $(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(SRCEXT)
 	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	@echo "Cleaning $(TARGET)..."; $(RM) -r $(BUILDDIR) $(TARGET); rm build_Main/*;
+	@echo "Cleaning .o Files...”; $(RM) -r $(BUILDDIR) $(TARGET); rm build_Main/*;
 
 #install:
 #	@echo "Installing $(EXECUTABLE)..."; cp $(TARGET) $(INSTALLBINDIR)

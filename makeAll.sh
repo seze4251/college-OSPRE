@@ -4,3 +4,4 @@ make -j bin/CameraController
 make -j bin/ImageProcessor
 make -j bin/GNC
 make -j bin/Spacecraft
+make clean

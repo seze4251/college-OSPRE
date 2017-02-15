@@ -1,0 +1,14 @@
+#!/bin/bash
+bin_test/testBuilder
+bin_test/testByteBuffer
+bin_test/testCameraController
+bin_test/testCircularBuffer
+bin_test/testExternalBuilder
+bin_test/testExternalParser
+bin_test/testGNC
+bin_test/testImageProcessor
+bin_test/testParser
+bin_test/testScComms
+bin_test/testSpacecraft
+bin_test/testWatchDog
+
