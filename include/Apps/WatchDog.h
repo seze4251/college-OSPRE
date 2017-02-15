@@ -16,6 +16,7 @@
 
 #include "ServerInternal.h"
 #include "ProcessID.h"
+#include "OSPRE_Exceptions.h"
 
 class WatchDog : public ServerInternal {
 public:

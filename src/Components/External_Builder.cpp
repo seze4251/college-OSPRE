@@ -26,9 +26,7 @@ void External_Builder::buildExternal_DataMessage(External_DataMessage&msg) {
     msg.header.header_struct.packetSequence = sequence++;
     
     if (buf.remaining() < 7 + msg.header.header_struct.packetDataLength) {
-        //TODO: Throw Exception Here
-        std::cout << "External_Builder::buildExternal_DataMessage Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "External_Builder::buildExternal_DataMessage(), Not enough room to create message, write buffer full";
     }
     
     // Put Header
@@ -60,7 +58,6 @@ void External_Builder::buildExternal_DataMessage(External_DataMessage&msg) {
     
     // Sleep
     buf.put(msg.sleep);
-    
 }
 
 void External_Builder::buildExternal_OSPREStatus(External_OSPREStatus&msg) {
@@ -72,9 +69,7 @@ void External_Builder::buildExternal_OSPREStatus(External_OSPREStatus&msg) {
     msg.updatePacketDataLength();
     
     if (buf.remaining() < 7 + msg.header.header_struct.packetDataLength) {
-        //TODO: Throw Exception Here
-        std::cout << "External_Builder::buildExternal_DataMessage Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "External_Builder::buildExternal_OSPREStatus(), Not enough room to create message, write buffer full";
     }
     
     // Put Header
@@ -87,8 +82,6 @@ void External_Builder::buildExternal_OSPREStatus(External_OSPREStatus&msg) {
     for (std::vector<ProcessError>::iterator it = msg.error.begin(); it != msg.error.end(); it++ ) {
         buf.putInt((int) (*it));
     }
-    
-    
 }
 
 void External_Builder::buildExternal_PointingRequest(External_PointingRequest& msg) {
@@ -97,9 +90,7 @@ void External_Builder::buildExternal_PointingRequest(External_PointingRequest& m
     msg.header.header_struct.packetSequence = sequence++;
     
     if (buf.remaining() < 7 + msg.header.header_struct.packetDataLength) {
-        //TODO: Throw Exception Here
-        std::cout << "External_Builder::buildExternal_DataMessage Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "External_Builder::buildExternal_PointingRequest(), Not enough room to create message, write buffer full";
     }
     
     // Put Header
@@ -110,7 +101,6 @@ void External_Builder::buildExternal_PointingRequest(External_PointingRequest& m
     
     // Put Pointing Request Message
     buf.putInt((int) msg.point);
-    
 }
 
 
@@ -120,9 +110,7 @@ void External_Builder::buildExternal_SolutionMessage(External_SolutionMessage& m
     msg.header.header_struct.packetSequence = sequence++;
     
     if (buf.remaining() < 7 + msg.header.header_struct.packetDataLength) {
-        //TODO: Throw Exception Here
-        std::cout << "External_Builder::buildExternal_DataMessage Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "External_Builder::buildExternal_SolutionMessage(), Not enough room to create message, write buffer full";
     }
     
     // Put Header

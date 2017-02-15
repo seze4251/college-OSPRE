@@ -17,6 +17,7 @@
 #include "ServerInternal.h"
 #include "ProcessID.h"
 #include "ProcessError.h"
+#include "OSPRE_Exceptions.h"
 
 class CameraController : public ServerInternal {
 public:

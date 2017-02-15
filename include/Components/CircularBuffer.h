@@ -24,6 +24,7 @@ public:
     // Public Methods
     void put(DataMessage* msg);
     DataMessage* get(time_t timeStamp);
+    void printBuffer();
     
 private:
     // Buffer Pointers

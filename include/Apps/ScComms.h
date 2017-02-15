@@ -18,7 +18,7 @@
 #include "ServerInternal.h"
 #include "ProcessID.h"
 #include "ServiceExternal.h"
-
+#include "OSPRE_Exceptions.h"
 
 class ScComms : public ServerInternal {
 public:

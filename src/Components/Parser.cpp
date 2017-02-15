@@ -14,6 +14,8 @@ Parser::Parser(ByteBuffer &bufParam) : buf(bufParam) {
     messageLength = -1;
     messageID = NA;
     timeStamp = 0;
+    
+    // Initialize all message pointers to nullptr
     capture = nullptr;
     data = nullptr;
     adjustment = nullptr;
@@ -67,7 +69,7 @@ Parser::~Parser() {
 Message* Parser::parseMessage(bool* partialMessage) {
     // If there is not a full header, do not parse header
     if (buf.used() < HEADER_MESSAGE_SIZE ) {
-      //  std::cout << "Parser::parseMessage no header left in buffer" << std::endl;
+      //std::cout << "Parser::parseMessage no header left in buffer" << std::endl;
         *partialMessage = false;
         return nullptr;
     }
@@ -132,10 +134,7 @@ Message* Parser::parseMessage(bool* partialMessage) {
             
         default:
             std::cerr << "Parser::parseMessage(): Unknown Message Type Recived: " << messageID << std::endl;
-            std::cerr << "Fatal Error: Closing Connection" << std::endl;
-            // TODO: Throw Error to close connection
-            //Change this exit to throw exception!!
-            exit(-1);
+            throw "Parser::parseMessage(): Unknown Message Type Recived";
     }
     return msg;
 }
@@ -156,7 +155,6 @@ Message* Parser::parseProcessHealthAndStatusResponse() {
         response = new ProcessHealthAndStatusResponse();
     }
     
-    //int messageHeader = 2 * sizeof(int) + sizeof(time_t);
     int messageBody = (messageLength - HEADER_MESSAGE_SIZE) / sizeof(int);
     
     response->timeStamp = timeStamp;
@@ -247,7 +245,6 @@ Message* Parser::parseOSPREStatus() {
         status = new OSPREStatus();
     }
     
-    //int messageHeader = 2 * sizeof(int) + sizeof(time_t);
     int messageBody = (messageLength - HEADER_MESSAGE_SIZE) / sizeof(int);
     
     status->timeStamp = timeStamp;
@@ -303,8 +300,6 @@ Message* Parser::parseSolutionMessage() {
     return solution;
 }
 
-//**************************
-//TODO: COmplete This
 Message* Parser::parseImageMessage() {
     if (image == nullptr) {
         image = new ImageMessage();
@@ -316,7 +311,6 @@ Message* Parser::parseImageMessage() {
     
     int imageLength = messageLength - (HEADER_MESSAGE_SIZE + sizeof(int));
     
-   // std::cout << "Image Length Recivied: " << imageLength << " Image Buffer Size: " << image->imageBufferSize << std::endl;
     
     if( imageLength > image->imageBufferSize) {
         image->resizeImageArray(2*buf.used());

@@ -19,6 +19,7 @@
 #include "ProcessID.h"
 #include "PointEarthMoon.h"
 #include "CircularBuffer.h"
+#include "OSPRE_Exceptions.h"
 
 class GNC : public ServerInternal {
 public:

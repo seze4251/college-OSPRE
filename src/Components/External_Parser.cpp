@@ -88,8 +88,7 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
             
         default:
             std::cerr << "External_Parser::parseMessage(): Unknown Message Type Recived: " << messageID << std::endl;
-            std::cerr << "Fatal Error: Exiting" << std::endl;
-            exit(-1);
+            throw "External_Parser::parseMessage() Unknown message type recived";
     }
     
     return msg;
@@ -134,7 +133,8 @@ Message_External* External_Parser::parseExternal_OSPREStatus() {
     status->iden = messageID;
     
     int messageBody = (messageHeader.header.header_struct.packetDataLength + 1 - sizeof(int)) / sizeof(int);
-    std::cout << "Message Body = " << messageBody << "packetDataLength" << messageHeader.header.header_struct.packetDataLength << std::endl;
+    
+//    std::cout << "Message Body = " << messageBody << "packetDataLength" << messageHeader.header.header_struct.packetDataLength << std::endl;
     
     for (int i = 0; i < messageBody; i++) {
         status->error.push_back((ProcessError) buf.getInt());

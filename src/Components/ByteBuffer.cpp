@@ -14,6 +14,10 @@
 
 ByteBuffer::ByteBuffer(int capacity) {
     std::cout << "ByteBuffer Constructor" << std::endl;
+    if (capacity <= 0) {
+        throw "ByteBuffer::ByteBuffer() Capacity is less than or equal to 0";
+    }
+    
     buf = new char[capacity];
     currentPos = buf;
     this->capacity = capacity;
@@ -21,7 +25,9 @@ ByteBuffer::ByteBuffer(int capacity) {
 }
 
 ByteBuffer::~ByteBuffer() {
-    delete[] buf;
+    if (buf) {
+        delete[] buf;
+    }
 }
 
 void ByteBuffer::clear() {
@@ -29,7 +35,6 @@ void ByteBuffer::clear() {
     size = 0;
 }
 
-// verify - looks right
 void ByteBuffer::compact() {
     if (size == 0) {
         clear();
@@ -39,7 +44,6 @@ void ByteBuffer::compact() {
     }
 }
 
-// verify - looks right so long as size is kept accurate
 void ByteBuffer::flip() {
     if (buf + size == currentPos) {
         currentPos = buf;
@@ -54,25 +58,36 @@ int ByteBuffer::position() {
 
 
 void ByteBuffer::positionWrite(int written) {
+    if (written < 0) {
+        throw "ByteBuffer::positionWrite() Input is less than 0, cannot write less than 0";
+    }
+    
     currentPos += written;
     size -= written;
     
 }
 
 void ByteBuffer::positionRead(int read) {
+    if (read < 0) {
+        throw "ByteBuffer::position() Input is less than 0, cannot read less than 0";
+    }
+    
     currentPos += read;
     size += read;
 }
 
 void ByteBuffer::rewind(int length) {
+    if (length < 0) {
+        throw "ByteBuffer::rewind() Input is less than 0, cannot rewind less than 0";
+    }
+    
     currentPos -= length;
     size += length;
 }
 
 char ByteBuffer::get() {
-    if (size == 0) {
-        // TODO: add throw of Exception
-        return '\0';
+    if (size <= 0) {
+        throw "ByteBuffer::get() Nothing in Byte Buffer to get";
     }
     
     char c = *currentPos;
@@ -82,10 +97,8 @@ char ByteBuffer::get() {
 }
 
 void ByteBuffer::put(char c) {
-    // Is there space to put char in?
     if (size == capacity) {
-        // TODO: add throw of Exception
-        return;
+        throw "ByteBuffer::put() Byte Buffer is full";
     }
     
     *currentPos = c;
@@ -95,45 +108,33 @@ void ByteBuffer::put(char c) {
 
 int ByteBuffer::getInt() {
     if (size < sizeof(int)) {
-        // TODO: add throw of exception
-        std::cout << "Should Throw Exception in getInt" << std::endl;
-        return 0;
+        throw "ByteBuffer::getInt() No int in Buffer";
     }
     
     int i;
-    //char* ptr = (char*) &i;
     memcpy(&i, currentPos, sizeof(int));
     size -= sizeof(int);
     currentPos += sizeof(int);
-    //i = ntohl(i);
     return i;
 }
 
 
 
 void ByteBuffer::putInt(int i) {
-    if ((size + sizeof(int)) > capacity) {
-        // TODO: add throw of Exception
-        std::cout << "Should Throw Exception in putInt" << std::endl;
-        return;
+    if ( capacity  < (size + sizeof(int))) {
+        throw "ByteBuffer::putInt() No Room to put int into Buffer";
     }
     
-   // i = htonl(i); // convert from host to network format
-    //char* ptr = (char*) &i;
     memcpy(currentPos, &i, sizeof(int));
     size += sizeof(int);
     currentPos += sizeof(int);
 }
 
 void ByteBuffer::putLong(long i) {
-    if ((size + sizeof(long)) > capacity) {
-        // TODO: add throw of Exception
-        std::cout << "Should Throw Exception in putLong" << std::endl;
-        return;
+    if (capacity < (size + sizeof(long))) {
+        throw "ByteBuffer::putLong() No Room to put long into Buffer";
     }
     
-   // i = htonl(i); // convert from host to network format
-    //char* ptr = (char*) &i;
     memcpy(currentPos, &i, sizeof(long));
     size += sizeof(long);
     currentPos += sizeof(long);
@@ -141,17 +142,13 @@ void ByteBuffer::putLong(long i) {
 
 long ByteBuffer::getLong() {
     if (size < sizeof(long)) {
-        // TODO: add throw of exception
-        std::cout << "Should Throw Exception in getLong" << std::endl;
-        return 0;
+        throw "ByteBuffer::getLong() No long in Buffer";
     }
     
     long i;
-    //char* ptr = (char*) &i;
     memcpy(&i, currentPos, sizeof(long));
     size -= sizeof(long);
     currentPos += sizeof(long);
-   // i = ntohl(i);
     return i;
 }
 
@@ -169,14 +166,12 @@ void ByteBuffer::putDouble(double d) {
 }
 
 void ByteBuffer::put(char* c, int length) {
-    if (length < 0) {
-        //TODO: Throw Exception
-        return;
+    if (length <= 0) {
+        throw "ByteBuffer::put(char*, int) Can not put length <=0 into buffer";
     }
     
-    if ((size + length) > capacity) {
-        // TODO: add throw of Exception
-        return;
+    if (capacity < (size + length) ) {
+        throw "ByteBuffer::put(char*, int) Not enough size in Buffer to put message";
     }
     
     memcpy(currentPos, c, length);
@@ -187,9 +182,7 @@ void ByteBuffer::put(char* c, int length) {
 
 void ByteBuffer::get(char* location, int length) {
     if (size < length) {
-        // TODO: add throw of exception
-        std::cout << "Should Throw Exception in get(char*, int)" << std::endl;
-        return;
+        throw "ByteBuffer::get(char*, int) Message does not exist within Buffer";
     }
     
     

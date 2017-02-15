@@ -23,32 +23,33 @@ Builder::~Builder() {
 // int Time Stamp
 
 void Builder::createHeader(int length, MessageID msgID, time_t timeStamp) {
+    // Verify Length Parameter is valid
+    if (length <= 0) {
+        throw "Builder::createHeader() Length cannot <= 0";
+    }
+    
     buf.putInt((int) msgID);
     buf.putInt(length);
     buf.putLong((long) timeStamp);
-    //  std::cout << "Builder: Print Header msgID: " << msgID << " length: " << length << " timeStamp: " << timeStamp << std::endl;
-    // buf.printBuffer();
 }
 
 void Builder::buildProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest &msg) {
     int messageSize = HEADER_MESSAGE_SIZE;
+    
+    // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildProcessHealthAndStatusRequest Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "Builder::buildProcessHealthAndStatusRequest(), Not enough room to create message, write buffer full";
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
 }
 
 void Builder::buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse &msg) {
-    int errorSize = msg.error.size();
+    int messageSize = msg.error.size() * sizeof(int) + HEADER_MESSAGE_SIZE;
     
-    int messageSize = errorSize * sizeof(int) + HEADER_MESSAGE_SIZE;
+    // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildProcessHealthAndStatusResponse: Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "Builder::buildProcessHealthAndStatusResponse() Not enough room to create message, write buffer full";
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
@@ -59,11 +60,10 @@ void Builder::buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse
 
 void Builder::buildCaptureImageRequest(CaptureImageRequest &msg) {
     int messageSize = HEADER_MESSAGE_SIZE + 3*sizeof(long) + sizeof(int);
-    // Check Buffer Has Enough Room
+    
+    // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildCaptureImageRequest Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "Builder::buildCaptureImageRequest() Not enough room to create message, write buffer full";
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
@@ -77,11 +77,10 @@ void Builder::buildCaptureImageRequest(CaptureImageRequest &msg) {
 
 void Builder::buildDataMessage(DataMessage &msg) {
     int messageSize = HEADER_MESSAGE_SIZE + 12*sizeof(long) + 1;
-    // Check Buffer Has Enough Room
+    
+    // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildDataMessage Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "Builder::buildDataMessage() Not enough room to create message, write buffer full";
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
@@ -112,13 +111,11 @@ void Builder::buildDataMessage(DataMessage &msg) {
 }
 
 void Builder::buildOSPREStatus(OSPREStatus &msg) {
-    int errorSize = msg.error.size();
+    int messageSize = msg.error.size() * sizeof(int) + HEADER_MESSAGE_SIZE;
     
-    int messageSize = errorSize * sizeof(int) + HEADER_MESSAGE_SIZE;
+    // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildOSPREStatus Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "Builder::buildDataMessage() Not enough room to create message, write buffer full";
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
@@ -131,10 +128,10 @@ void Builder::buildOSPREStatus(OSPREStatus &msg) {
 
 void Builder::buildPointingRequest(PointingRequest &msg) {
     int messageSize = HEADER_MESSAGE_SIZE + sizeof(int);
+    
+    // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildPointingRequest Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "Builder::buildPointingRequest() Not enough room to create message, write buffer full";
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
@@ -143,11 +140,11 @@ void Builder::buildPointingRequest(PointingRequest &msg) {
 
 
 void Builder::buildSolutionMessage(SolutionMessage &msg) {
-    int messageSize =HEADER_MESSAGE_SIZE +  13*sizeof(long);
+    int messageSize = HEADER_MESSAGE_SIZE +  13*sizeof(long);
+    
+    // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildSolutionMessage Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "Builder::buildSolutionMessage() Not enough room to create message, write buffer full";
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
@@ -179,10 +176,10 @@ void Builder::buildSolutionMessage(SolutionMessage &msg) {
 
 void Builder::buildProcessedImageMessage(ProcessedImageMessage &msg) {
     int messageSize = HEADER_MESSAGE_SIZE + 2*sizeof(long) + sizeof(int);
+    
+    // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildProcessedImageMessage Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "Builder::buildProcessedImageMessage() Not enough room to create message, write buffer full";
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
@@ -192,31 +189,12 @@ void Builder::buildProcessedImageMessage(ProcessedImageMessage &msg) {
     buf.putInt(msg.point);
 }
 
-// *******************************
-//
-// TODO: IMPLEMENT METHODS BELOW
-//
-// ********************************
-void Builder::buildImageAdjustment(ImageAdjustment &msg) {
-    int messageSize = HEADER_MESSAGE_SIZE;
-    if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildImageAdjustment Should Throw Exception here!, need to implement" << std::endl;
-        return;
-    }
-    
-    createHeader(messageSize, msg.iden, msg.timeStamp);
-    
-}
-
-// TODO: Find size of Image Message
 void Builder::buildImageMessage(ImageMessage &msg) {
     int messageSize = msg.currentImageSize + HEADER_MESSAGE_SIZE + sizeof(int);
     
+    // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
-        //TODO: Throw Exception Here
-        std::cout << "Builder::buildImageMessage Should Throw Exception here!, need to implement" << std::endl;
-        return;
+        throw "Builder::buildImageMessage() Not enough room to create message, write buffer full";
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
@@ -224,6 +202,16 @@ void Builder::buildImageMessage(ImageMessage &msg) {
     buf.put(msg.getImagePointer(), msg.currentImageSize);
 }
 
-
-
+// Decide if I want this message or not!
+void Builder::buildImageAdjustment(ImageAdjustment &msg) {
+    int messageSize = HEADER_MESSAGE_SIZE;
+    
+    // Check Buffer Has Enough Room to write message
+    if (buf.remaining() < messageSize) {
+        throw "Builder::buildImageAdjustment() Not enough room to create message, write buffer full";
+    }
+    
+    createHeader(messageSize, msg.iden, msg.timeStamp);
+    
+}
 

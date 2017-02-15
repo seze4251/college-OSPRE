@@ -21,17 +21,26 @@ Acceptor::Acceptor(Selector &sel) : Service(sel) {
 }
 
 bool Acceptor::open(std::string hostName, int portNumber) {
-    std::cout << "Acceptor open()" << std::endl;
-    port = portNumber;
+    // Check to see if Acceptor is open
+    if (isConnected() == true) {
+        std::cout << "Acceptor is already connected" << std::endl;
+        return true;
+    }
+    
+    // Assign Inputs To Object Members
+    this->port = portNumber;
     this->hostName = hostName;
+    
+    // Open Server Socket
     fd = openServerSocket(port);
+    
     if (fd == -1) {
-        std::cerr << "Failure to Open Server Socket, Acceptor Exiting\n";
+        std::cerr << "Acceptor::open() Failure to Open Server Socket, Acceptor Exiting\n";
         return false;
     }
     
     if (callBack == NULL) {
-        std::cerr << "CallBack equals NULL, Acceptor Exiting\n";
+        std::cerr << "Acceptor::open() CallBack equals NULL, Acceptor Exiting\n";
         return false;
     }
     getSelector().registerService(fd, this);
@@ -40,7 +49,7 @@ bool Acceptor::open(std::string hostName, int portNumber) {
 }
 
 void Acceptor::registerCallback(void (*callbackFunc)(int)) {
-    std::cout << "Acceptor registerCallback()" << std::endl;
+    //std::cout << "Acceptor registerCallback()" << std::endl;
     callBack = callbackFunc;
 }
 
@@ -52,15 +61,24 @@ void Acceptor::closeConnection() {
 }
 
 void Acceptor::handleRead() {
-    std::cout << "Acceptor handleRead()" << std::endl;
+   // std::cout << "Acceptor handleRead()" << std::endl;
     int cfd = accept(fd, NULL, NULL);
     
     std::cout << "Received client connection, processing input " << cfd << std::endl;
     int opt = 1;
-    ioctl(cfd, FIONBIO, &opt); // Make Socket Nonblock
+    
+    // Make Socket Nonblocking
+    ioctl(cfd, FIONBIO, &opt);
+    
+    // Acceptor Callback to handle the new connection 
     (*callBack)(cfd);
 }
 
 void Acceptor::handleWrite() {
-    std::cerr << "Acceptor handleWrite() Don't Call This" << std::endl;
+    std::cerr << "Acceptor::handleWrite() Method Not Implemented, Don't Call This, Throwing Exception" << std::endl;
+    throw "Acceptor::handleWrite() Method Should not be called ever!";
 }
+
+
+
+

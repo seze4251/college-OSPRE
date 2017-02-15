@@ -13,15 +13,19 @@
 
 // Constructor
 CircularBuffer::CircularBuffer(int numDataMessage) {
+    if (numDataMessage <= 0) {
+        throw "CircularBuffer::CircularBuffer() Amount of Data messages to hold is <= 0";
+    }
+    
     bufferHead = new DataMessage[numDataMessage];
     insert = bufferHead;
     buffSize = numDataMessage;
     
-    // 0 out all time values because time values are initally set to current time
     // Initalize Loop Parameters
     DataMessage* it;
     int j;
     
+    // Zero out all buffer loop timestamps
     for (it = bufferHead, j = 0; j < numDataMessage; it++, j++) {
         it->timeStamp = 0;
     }
@@ -29,29 +33,35 @@ CircularBuffer::CircularBuffer(int numDataMessage) {
 
 //Destructor
 CircularBuffer::~CircularBuffer() {
-    delete bufferHead;
+    if (bufferHead) {
+        delete bufferHead;
+    }
 }
 
-// Public Methods
-/*
- 1. copy data message into
-*/
-
 void CircularBuffer::put(DataMessage* msg) {
-    // If We are at the end of the buffer, Wrap around
-    if (bufferHead + buffSize * sizeof(DataMessage) == insert) {
+    // Check for Invalid Input
+    if (msg == nullptr) {
+        throw "CircularBuffer::put() Data Message Input equals nullptr";
+    }
+    
+    // At the end of the buffer?, Wrap around to begining
+    if ((bufferHead + buffSize * sizeof(DataMessage)) == insert) {
         insert = bufferHead;
     }
     
-    // Copy the Data Message
+    // Copy the Data Message into the buffer
     memcpy((void*) insert, (void*) msg, sizeof(DataMessage));
     
-    //std::cout << "Circular Buffer Added Timestamp: " << msg->timeStamp << std::endl;
-    
+    // move the insert pointer foward
     insert++;
 }
 
 DataMessage* CircularBuffer::get(time_t timeStamp) {
+    // Check Input
+    if (timeStamp <= 0) {
+        throw "CircularBuffer::get() Invalid Time Stamp";
+    }
+    
     // Initalize Loop Parameters
     bool foundMessage = false;
     DataMessage* it;
@@ -74,6 +84,20 @@ DataMessage* CircularBuffer::get(time_t timeStamp) {
     return it;
 }
 
+// This method is used to verify the ciruclar buffer
+void CircularBuffer::printBuffer() {
+    DataMessage* it;
+    int j;
+    
+    std::cout << "Printing Circular Buffer Timestamps" << std::endl;
+    
+    for (it = bufferHead, j = 0; j < buffSize; j++, it++) {
+        std::cout << it->timeStamp << std::endl;
+
+    }
+    
+    std::cout << "Finished Printing Ciruclar Buffer" << std::endl;
+}
 
 
 

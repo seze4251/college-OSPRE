@@ -17,6 +17,7 @@
 
 #include "ServerInternal.h"
 #include "ProcessID.h"
+#include "OSPRE_Exceptions.h"
 
 class ImageProcessor : public ServerInternal {
 public:
