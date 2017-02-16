@@ -19,6 +19,8 @@
 #include "isfinite.h"
 #include "imhist.h"
 #include "analyzeImage_rtwutil.h"
+//#include <exception>
+#include <stdexcept>
 
 // Function Definitions
 
@@ -71,7 +73,20 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   //  OSPRE
   //  analyzeImage.m
   //  Created: 1/13/17
-  //  Modified: 1/13/17
+  //  Modified: 2/16/17
+
+  // First level fail tests
+  if (b_imIn == NULL) {
+	  throw std::invalid_argument("Image is null!");
+  }
+
+  /*
+  To Do:
+  - Check edge quality
+  - Check exposure
+  - Perform other image checks
+  */
+  // Reconstruct image
   for (i = 0; i < 809600; i++) {
     b_imIn[0] = imIn[i];
     b_imIn[1] = imIn[809600 + i];
@@ -92,6 +107,7 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   }
 
   //  Convert to BW, hreshold, and fill image
+  //-------------- Beginning of BS Conversion -------------
   imhist(im, sigma_b_squared);
   num_elems = 0.0;
   for (k = 0; k < 256; k++) {
@@ -183,7 +199,9 @@ void analyzeImage(const unsigned char imIn[2428800], const double
       bw[i + 736 * k] = (I1[(idx[i] + 738 * (idx[1100 + k] - 1)) - 1] != 0);
     }
   }
+  //------------ End of BW Conversion -----------------
 
+  // Allocate memory for centers and radii vectors
   emxInit_real_T(&centers, 2);
   emxInit_real_T(&radii, 2);
 
@@ -193,12 +211,13 @@ void analyzeImage(const unsigned char imIn[2428800], const double
 
   //  Check for valid find
   if ((centers->size[0] == 0) || (centers->size[1] == 0)) {
-    // warning('No centers!')
-    centerPt_size[0] = 1;
-    centerPt_size[1] = 1;
-    centerPt_data[0] = rtNaN;
-    *radius = rtNaN;
-    *numCirc = rtNaN;
+    // If no objects throw error
+    throw std::domain_error("No objects found in image");
+    //centerPt_size[0] = 1;
+    //centerPt_size[1] = 1;
+    //centerPt_data[0] = rtNaN;
+    //*radius = rtNaN;
+    //*numCirc = rtNaN;
   } else {
     //  Return found information
     b_centers[0] = centers->data[0];
@@ -223,6 +242,7 @@ void analyzeImage(const unsigned char imIn[2428800], const double
     *numCirc = i;
   }
 
+  // Free the memory
   emxFree_real_T(&radii);
   emxFree_real_T(&centers);
 }
