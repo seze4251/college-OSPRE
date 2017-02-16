@@ -1,0 +1,14 @@
+isfinite.cpp.o: isfinite.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h \
+  rt_defines.h analyzeImage_types.h isfinite.h
+
+rt_nonfinite.h:
+
+rtwtypes.h:
+
+analyzeImage.h:
+
+rt_defines.h:
+
+analyzeImage_types.h:
+
+isfinite.h:

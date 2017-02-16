@@ -1,0 +1,14 @@
+log.cpp.o: log.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h rt_defines.h \
+  analyzeImage_types.h log.h
+
+rt_nonfinite.h:
+
+rtwtypes.h:
+
+analyzeImage.h:
+
+rt_defines.h:
+
+analyzeImage_types.h:
+
+log.h:

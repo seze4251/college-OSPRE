@@ -1,0 +1,21 @@
+regionprops.cpp.o: regionprops.cpp rt_nonfinite.h rtwtypes.h \
+  analyzeImage.h rt_defines.h analyzeImage_types.h regionprops.h \
+  analyzeImage_emxutil.h sum.h bwconncomp.h
+
+rt_nonfinite.h:
+
+rtwtypes.h:
+
+analyzeImage.h:
+
+rt_defines.h:
+
+analyzeImage_types.h:
+
+regionprops.h:
+
+analyzeImage_emxutil.h:
+
+sum.h:
+
+bwconncomp.h:
