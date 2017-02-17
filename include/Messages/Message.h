@@ -20,6 +20,7 @@
 class Message {
 public:
     Message(MessageID iden, time_t timeStamp) : timeStamp(timeStamp), iden(iden) {}
+    virtual ~Message() {}
     virtual MessageID getMessageID() = 0;
     time_t timeStamp;
     MessageID iden;

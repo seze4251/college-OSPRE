@@ -36,6 +36,7 @@ public:
     
     // Applicaiton Functionality
     void computeSolution(DataMessage*, ProcessedImageMessage*);
+    void readReferenceTrajectory();
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
@@ -69,6 +70,10 @@ private:
     
     // Spacecraft Position
     double latestPosition[3];
+    
+    // GNC Specific Members
+    double* covariance;
+    double* trajectoryDev;
     
 
 

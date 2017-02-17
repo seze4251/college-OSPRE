@@ -7,10 +7,11 @@
 
 #include <unistd.h>
 #include <iostream>
+#include <exception>
 
 #include "CameraController.h"
 
-int main(int argc, char **argv) {
+int main(int, char**) {
     int serverPort = 10000;
     bool readImageFile = true;
     std::string host("localhost");
@@ -18,9 +19,22 @@ int main(int argc, char **argv) {
     std::cout << "CameraController Application Starting\n";
     CameraController controller(host, serverPort, readImageFile);
     
-    std::cout << "CameraController Initalized\n";
-    controller.open();
-    controller.run();
+    try {
+        controller.open();
+        std::cout << "CameraController Initalized\n";
+        controller.run();
+        
+    } catch (const char* exception) {
+        std::cerr << "CameraController: Error: " << exception << std::endl;
+        
+    } catch(std::exception &exception) {
+        std::cerr << "CameraController: Standard exception: " << exception.what() << '\n';
+        
+    } catch (...) {
+        std::cout << "CameraController: Exception of unknown type caught" << std::endl;
+        throw;
+    }
+    
     std::cout << "CameraController Application Terminating\n";
     return 0;
 }

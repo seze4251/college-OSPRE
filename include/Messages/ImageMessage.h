@@ -32,12 +32,16 @@ public:
         printEarthMoon(point);
         std::cout << "Current Image Size = " << currentImageSize << std::endl;
         std::cout << "Total Buffer Size = " << imageBufferSize << std::endl;
+        std::cout << "Camera Width = " << cameraWidth << " Camera Height = " << cameraHeight << " FOV = " << FOV << std::endl;
     }
     
-    void update(PointEarthMoon point, int currentImageSize) {
+    void update(PointEarthMoon point, int currentImageSize, int cameraWidth, int cameraHeight, double FOV) {
         this->timeStamp = time(0);
         this->point = point;
         this->currentImageSize = currentImageSize;
+        this->cameraWidth = cameraWidth;
+        this->cameraHeight = cameraHeight;
+        this->FOV = FOV;
     }
     
     void resizeImageArray(int newSize) {
@@ -57,6 +61,9 @@ public:
     
     // Specific Data Members
     PointEarthMoon point;
+    int cameraWidth;
+    int cameraHeight;
+    double FOV;
     
     // Do not send these variable below
     int currentImageSize;

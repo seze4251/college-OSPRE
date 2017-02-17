@@ -7,10 +7,11 @@
 
 #include <unistd.h>
 #include <iostream>
+#include <exception>
 
 #include "ScComms.h"
 
-int main(int argc, char **argv) {
+int main(int, char**) {
     int serverPort = 7000;
     int externalPort = 7500;
     std::string host("localhost");
@@ -18,10 +19,24 @@ int main(int argc, char **argv) {
     std::cout << "ScComms Application Starting\n";
     ScComms comms(host, serverPort, externalPort);
     
-    std::cout << "ScComms Initalized\n";
-    comms.open();
-    std::cout << "Open Call Made Sucessfully" << std::endl;
-    comms.run();
+    try {
+        comms.open();
+        std::cout << "ScComms Initalized\n";
+        comms.run();
+        
+    } catch (const char* exception) {
+        std::cerr << "ScComms: Error: " << exception << std::endl;
+        
+    } catch(std::exception &exception) {
+        std::cerr << "ScComms: Standard exception: " << exception.what() << '\n';
+        
+    } catch (...) {
+        std::cout << "ScComms: Exception of unknown type caught" << std::endl;
+        throw;
+    }
+    
     std::cout << "ScComms Application Terminating\n";
     return 0;
 }
+
+

@@ -175,7 +175,7 @@ void Builder::buildSolutionMessage(SolutionMessage &msg) {
 }
 
 void Builder::buildProcessedImageMessage(ProcessedImageMessage &msg) {
-    int messageSize = HEADER_MESSAGE_SIZE + 2*sizeof(long) + sizeof(int);
+    int messageSize = HEADER_MESSAGE_SIZE + 4*sizeof(long) + sizeof(int);
     
     // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
@@ -184,13 +184,15 @@ void Builder::buildProcessedImageMessage(ProcessedImageMessage &msg) {
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
     
-    buf.putDouble(msg.distance);
-    buf.putDouble(msg.error);
+    buf.putDouble(msg.alpha);
+    buf.putDouble(msg.beta);
+    buf.putDouble(msg.theta);
+    buf.putDouble(msg.pixel_error);
     buf.putInt(msg.point);
 }
 
 void Builder::buildImageMessage(ImageMessage &msg) {
-    int messageSize = msg.currentImageSize + HEADER_MESSAGE_SIZE + sizeof(int);
+    int messageSize = msg.currentImageSize + HEADER_MESSAGE_SIZE + 3 * sizeof(int) + sizeof(double);
     
     // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
@@ -199,10 +201,13 @@ void Builder::buildImageMessage(ImageMessage &msg) {
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
     buf.putInt((int) msg.point);
+    buf.putInt(msg.cameraWidth);
+    buf.putInt(msg.cameraHeight);
+    buf.putDouble(msg.FOV);
     buf.put(msg.getImagePointer(), msg.currentImageSize);
 }
 
-// Decide if I want this message or not!
+// Todo: Implement in future when OSPRE gets camera funcitonality
 void Builder::buildImageAdjustment(ImageAdjustment &msg) {
     int messageSize = HEADER_MESSAGE_SIZE;
     

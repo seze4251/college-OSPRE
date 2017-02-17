@@ -6,7 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-// To be determined if we need this
+// ToDO: Implement in future when OSPRE gets Camera Functionality
 
 #ifndef IMAGEADJUSTMENT_H
 #define IMAGEADJUSTMENT_H

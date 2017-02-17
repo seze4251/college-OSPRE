@@ -10,16 +10,29 @@
 
 #include "GNC.h"
 
-int main(int argc, char **argv) {
+int main(int, char**) {
     int serverPort = 9000;
     std::string host("localhost");
     
     std::cout << "GNC Application Starting\n";
     GNC gnc(host, serverPort);
     
-    std::cout << "GNC Initalized\n";
-    gnc.open();
-    gnc.run();
+    try {
+        gnc.open();
+        std::cout << "GNC Initalized\n";
+        gnc.run();
+        
+    } catch (const char* exception) {
+        std::cerr << "GNC: Error: " << exception << std::endl;
+        
+    } catch(std::exception &exception) {
+        std::cerr << "GNC: Standard exception: " << exception.what() << '\n';
+        
+    } catch (...) {
+        std::cout << "GNC: Exception of unknown type caught" << std::endl;
+        throw;
+    }
+    
     std::cout << "GNC Application Terminating\n";
     return 0;
 }

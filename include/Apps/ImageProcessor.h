@@ -53,9 +53,12 @@ private:
     // Contain Application Status
     std::vector<ProcessError> status;
 
-    // Pointer To Hold Messages that Are being sent
+    // Pointer To Hold Messages that are being sent
     ProcessedImageMessage* processedImageMessage;
     ProcessHealthAndStatusResponse* processHealthMessage;
+    
+    // Application Specific Members
+    double sensitivity;
 };
 
 #endif

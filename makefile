@@ -13,11 +13,12 @@
 UNAME_S := $(shell uname -s)
 
 # CC
-ifeq ($(UNAME_S),Darwin)
-	CC := clang++ -arch x86_64
-else
-	CC := g++
-endif
+CC := g++
+#ifeq ($(UNAME_S),Darwin)
+#	CC := clang++ -arch x86_64
+#else
+#	CC := g++
+#endif
 
 # Folders
 SRCDIR := src
@@ -70,26 +71,23 @@ BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 
 
 # Shared Compiler Flags
-CFLAGS := -c
+CFLAGS := -c #-Wall -Wextra
 INC := -I include $(INCLIST) -I /usr/local/include
 
 # Platform Specific Compiler Flags
-ifeq ($(UNAME_S),Linux)
-	CFLAGS += -std=gnu++11 -O2 # -fPIC
-
-	# PostgreSQL Special
-	PG_VER := 9.3
-	INC += -I /usr/pgsql-$(PG_VER)/include
-else
-	CFLAGS += -std=c++11 -stdlib=libc++ -O2
-endif
+CFLAGS += -std=gnu++11 -O2 # -fPIC
+#ifeq ($(UNAME_S),Linux)
+#	CFLAGS += -std=gnu++11 -O2 # -fPIC
+#
+#else
+#	CFLAGS += -std=c++11 -stdlib=libc++ -O2
+#endif
 
 #WATCHDOG
 $(TARGET_WatchDog): $(OBJECTS) $(MAINOBJ_DIR)/mainWatchDog.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_WatchDog)"
-	$(CC) $^ -o $(TARGET_WatchDog) 
+	@echo "	 Linking $(TARGET_WatchDog)" $(CC) $^ -o $(TARGET_WatchDog) 
 
 
 #SCCOMMS
@@ -134,7 +132,7 @@ $(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(SRCEXT)
 	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	@echo "Cleaning .o Files...”; $(RM) -r $(BUILDDIR) $(TARGET); rm build_Main/*;
+	@echo "Cleaning .o Files…"; $(RM) -r $(BUILDDIR) $(TARGET); rm build_Main/*;
 
 #install:
 #	@echo "Installing $(EXECUTABLE)..."; cp $(TARGET) $(INSTALLBINDIR)

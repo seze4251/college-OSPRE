@@ -21,22 +21,27 @@ public:
     
     MessageID getMessageID() {return I_ProcessedImageMessage;}
     
-    void update(double distance, double error, PointEarthMoon point, time_t timeStamp) {
+    void update(double alpha, double beta, double theta, double pixel_error, PointEarthMoon point, time_t timeStamp) {
         this->timeStamp = timeStamp;
-        this->distance = distance;
-        this->error = error;
+        this->alpha = alpha;
+        this->beta = beta;
+        this->theta = theta;
+        this->pixel_error = pixel_error;
         this->point = point;
     }
     
     void print() {
         printMessageHeader();
-        std::cout<< "Distance = " << distance  << " (km) Error = " << error << "(km)" << std::endl;
+        std::cout<< "alpha = " << alpha  << " beta = " << beta << " theta = " << theta << std::endl;
+        std::cout << "Pixel Error = " << pixel_error << "TimeStamp = " << timeStamp << std::endl;
         printEarthMoon(point);
     }
     
     // Specific Data Members
-    double distance;
-    double error;
+    double alpha;
+    double beta;
+    double theta;
+    double pixel_error;
     PointEarthMoon point;
 };
 

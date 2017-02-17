@@ -156,7 +156,9 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         // Update Image Message
         //********************************
         //TEMP TEMP Need to fix when Image Size is Known
-        imageMessage->update(msg->point, IMAGE_SIZE);
+        int cameraWidth = 100, cameraHeight = 80;
+        double FOV = 70;
+        imageMessage->update(msg->point, IMAGE_SIZE, cameraWidth, cameraHeight, FOV);
         //TEMP TEMP Need to fix when Image Size is Known
         //******************************
         

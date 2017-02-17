@@ -6,6 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 #include <iostream>
+#include <exception>
 
 #include "GNC.h"
 #include "Service.h"
@@ -26,6 +27,12 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     captureImageMessage = new CaptureImageRequest();
     solutionMessage = new SolutionMessage();
     pointRequest = new PointingRequest();
+    
+    // Application Specific Member Initializations
+    readReferenceTrajectory();
+    covariance = new double[36];
+    trajectoryDev = new double[6];
+    
 }
 
 GNC::~GNC() {
@@ -34,13 +41,9 @@ GNC::~GNC() {
     delete captureImageMessage;
     delete solutionMessage;
     delete pointRequest;
+    delete covariance;
+    delete trajectoryDev;
 }
-
-// *******************************
-//
-// TODO: IMPLEMENT METHODS BELOW
-//
-// ********************************
 
 void GNC::open() {
     // Set Timeout to 1 minute
@@ -57,14 +60,14 @@ void GNC::open() {
     
     //Connect to ScComms
     if(connectToAppl(hostName, 7000, &scComms) == true) {
-    //    std::cout << "GNC: Connected to ScComms" << std::endl;
+        //    std::cout << "GNC: Connected to ScComms" << std::endl;
     } else {
         std::cout << "GNC: Failure to Connect to ScComms" << std::endl;
     }
     
     // Connect to Camera Controller
     if(connectToAppl(hostName, 10000, &cameraController) == true) {
-     //   std::cout << "GNC: Connected to Camera Controller" << std::endl;
+        //   std::cout << "GNC: Connected to Camera Controller" << std::endl;
     } else {
         std::cout << "GNC: Failure to Connect to Camera Controller" << std::endl;
     }
@@ -82,18 +85,17 @@ void GNC::handleTimeout() {
     // Send Timed Capture Image Requests to Camera
     time_t currentTime = time(NULL);
     
+    // Send Poll
     if (currentTime > pollTime) {
-        // Send Poll
+        if (point == PEM_NA) {
+            point = PEM_Earth;
+        } else if (point == PEM_Earth) {
+            point = PEM_Moon;
+        } else {
+            point = PEM_Earth;
+        }
+        
         if ((scComms != nullptr) && (scComms -> isConnected())) {
-            if (point == PEM_NA) {
-                point = PEM_Earth;
-            } else if (point == PEM_Earth) {
-                point = PEM_Moon;
-            } else {
-                point = PEM_Earth;
-            }
-            
-            
             std::cout << "\nSending Pointing Request\n" << std::endl;
             
             pointRequest->update(point);
@@ -137,6 +139,9 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     solutionMessage->update(position, positionError, velocity, velocityError, earthScMoonAngle);
 }
 
+void GNC::readReferenceTrajectory() {
+    std::cout << "Read In Reference Trajectory Here, Need to implement" << std::endl;
+}
 
 // *******************************
 //
@@ -170,7 +175,7 @@ void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     std::cerr << "\n\nGNC::handleDataMessage() Data Message Recived\n\n" << std::endl;
     
     // Print Message
-  //  msg->print();
+    //  msg->print();
     
     // Put Data Into Circular Buffer
     circBuf.put(msg);
@@ -185,7 +190,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     std::cerr << "\n\nGNC::handleProcessedImageMessage() Processed Image Message Recieved\n\n" << std::endl;
     
     // Print Message
-  //  msg->print();
+    //  msg->print();
     
     DataMessage* scData = circBuf.get(msg->timeStamp);
     
@@ -197,7 +202,17 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     }
     
     // Compute Solution and Update Solution Message
-    computeSolution(scData, msg);
+    try {
+        computeSolution(scData, msg);
+        
+    } catch(std::exception &exception) {
+        std::cerr << "ScComms: Standard exception: " << exception.what() << '\n';
+        // TODO: Do Somthing here to send watchdog the problem
+        
+    } catch (...) {
+        std::cerr << "Unknown Exception thrown in GNC::computeSolution()" << std::endl;
+        throw;
+    }
     
     // Send Solution Message
     if (scComms != nullptr) {

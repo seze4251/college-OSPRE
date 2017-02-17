@@ -180,7 +180,7 @@ $(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(SRCEXT)
 
 
 clean:
-	@echo "Cleaning .o Files ...”; $(RM) -r $(BUILDDIR) $(TARGET);
+	@echo "Cleaning .o Files ...”; rm $(BUILDDIR)/*.o; rm rm $(BUILDDIR)/*.o;
 
 #install:
 #	@echo "Installing $(EXECUTABLE)..."; cp $(TARGET) $(INSTALLBINDIR)

@@ -176,8 +176,10 @@ Message* Parser::parseProcessedImageMessage() {
     processed->iden = messageID;
     
     // Specific Data Members
-    processed->distance = buf.getDouble();
-    processed->error = buf.getDouble();
+    processed->alpha = buf.getDouble();
+    processed->beta = buf.getDouble();
+    processed->theta = buf.getDouble();
+    processed->pixel_error = buf.getDouble();
     processed->point = (PointEarthMoon) buf.getInt();
     
     return processed;
@@ -227,18 +229,6 @@ Message* Parser::parseDataMessage() {
     
     return data;
 }
-
-Message* Parser::parseImageAdjustment() {
-    if (adjustment == nullptr) {
-        adjustment = new ImageAdjustment();
-    }
-  
-    adjustment->timeStamp = timeStamp;
-    adjustment->iden = messageID;
-    return adjustment;
-}
-
-
 
 Message* Parser::parseOSPREStatus() {
     if (status == nullptr) {
@@ -308,8 +298,11 @@ Message* Parser::parseImageMessage() {
     image->timeStamp = timeStamp;
     image->iden = messageID;
     image->point = (PointEarthMoon) buf.getInt();
+    image->cameraWidth = buf.getInt();
+    image->cameraHeight = buf.getInt();
+    image->FOV = buf.getDouble();
     
-    int imageLength = messageLength - (HEADER_MESSAGE_SIZE + sizeof(int));
+    int imageLength = messageLength - (HEADER_MESSAGE_SIZE + 3 * sizeof(int) + sizeof(double));
     
     
     if( imageLength > image->imageBufferSize) {
@@ -320,6 +313,17 @@ Message* Parser::parseImageMessage() {
     buf.get(image->getImagePointer(), imageLength);
     
     return image;
+}
+
+// TODO: Implement in future when OSPRE gets camera funcitonality
+Message* Parser::parseImageAdjustment() {
+    if (adjustment == nullptr) {
+        adjustment = new ImageAdjustment();
+    }
+    
+    adjustment->timeStamp = timeStamp;
+    adjustment->iden = messageID;
+    return adjustment;
 }
 
 

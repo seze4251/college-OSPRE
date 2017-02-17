@@ -7,6 +7,7 @@
 //
 #include <iostream>
 #include <unistd.h>
+#include <exception>
 
 #include "ImageProcessor.h"
 #include "Service.h"
@@ -19,6 +20,9 @@ ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInte
     // Allocate Memory for Messages to Send
     processedImageMessage = new ProcessedImageMessage;
     processHealthMessage = new ProcessHealthAndStatusResponse();
+    
+    // Image Processing Specific Members
+    sensitivity = 1.0;
 }
 
 ImageProcessor::~ImageProcessor() {
@@ -70,11 +74,10 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     
     //TODO: ANTHONY's Code HERE!!!!
     
-    double distance = 300;
-    double error = 10;
+    double alpha = 15.1, beta = 20.2, theta = 25.3, pixel_error = 1.3;
     sleep(10);
     // Update ProcessedImageMessage
-    processedImageMessage->update(distance, error, msg->point, msg->timeStamp);
+    processedImageMessage->update(alpha, beta, theta, pixel_error, msg->point, msg->timeStamp);
 }
 
 
@@ -115,7 +118,17 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     
     //TODO: Do Something Here
     // Process the Image
+    
+    try {
     processImage(msg);
+        
+    } catch(std::exception &exception) {
+        std::cerr << "ScComms: Standard exception: " << exception.what() << '\n';
+        // TODO: Do Somthing here to send watchdog the problem
+    } catch (...) {
+        std::cerr << "Unknown Exception thrown in ImageProcessor::processImage()" << std::endl;
+        throw;
+    }
     
     
     

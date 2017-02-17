@@ -107,7 +107,7 @@ void ByteBuffer::put(char c) {
 }
 
 int ByteBuffer::getInt() {
-    if (size < sizeof(int)) {
+    if (size < (int) sizeof(int)) {
         throw "ByteBuffer::getInt() No int in Buffer";
     }
     
@@ -121,7 +121,7 @@ int ByteBuffer::getInt() {
 
 
 void ByteBuffer::putInt(int i) {
-    if ( capacity  < (size + sizeof(int))) {
+    if ( capacity  < (int) (size + sizeof(int))) {
         throw "ByteBuffer::putInt() No Room to put int into Buffer";
     }
     
@@ -131,7 +131,7 @@ void ByteBuffer::putInt(int i) {
 }
 
 void ByteBuffer::putLong(long i) {
-    if (capacity < (size + sizeof(long))) {
+    if (capacity < (size + (int) sizeof(long))) {
         throw "ByteBuffer::putLong() No Room to put long into Buffer";
     }
     
@@ -141,7 +141,7 @@ void ByteBuffer::putLong(long i) {
 }
 
 long ByteBuffer::getLong() {
-    if (size < sizeof(long)) {
+    if (size < (int) sizeof(long)) {
         throw "ByteBuffer::getLong() No long in Buffer";
     }
     
