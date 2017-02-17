@@ -39,8 +39,6 @@
 #include "analyzeImage_terminate.h"
 #include "analyzeImage_initialize.h"
 
-#include <iostream>
-
 // Function Declarations
 static void argInit_1x2_real_T(double result[2]);
 static void argInit_736x1100x3_uint8_T(unsigned char result[2428800]);
@@ -125,16 +123,14 @@ static void main_analyzeImage()
   // Call the entry-point 'analyzeImage'.
   argInit_736x1100x3_uint8_T(uv3);
   argInit_1x2_real_T(dv3);
-std::cout << "Starting Analyze Image Call" << std::endl;
   analyzeImage(uv3, dv3, argInit_real_T(), centerPt_data, centerPt_size, &radius,
                &numCirc);
-std::cout << "Finished Analyze Image Call" << std::endl;
 }
 
 //
 // Arguments    : int argc
 //                const char * const argv[]
-j// Return Type  : int
+// Return Type  : int
 //
 int main(int, const char * const [])
 {

@@ -1,7 +1,7 @@
 analyzeImage.cpp.o: analyzeImage.cpp rt_nonfinite.h rtwtypes.h \
-  analyzeImage.h rt_defines.h analyzeImage_types.h \
-  analyzeImage_emxutil.h imfindcircles.h sum.h imreconstruct.h \
-  padarray.h isfinite.h imhist.h analyzeImage_rtwutil.h
+ analyzeImage.h rt_defines.h analyzeImage_types.h analyzeImage_emxutil.h \
+ imfindcircles.h sum.h imreconstruct.h padarray.h isfinite.h imhist.h \
+ analyzeImage_rtwutil.h
 
 rt_nonfinite.h:
 

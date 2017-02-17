@@ -1,5 +1,5 @@
 imfilter.cpp.o: imfilter.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h \
-  rt_defines.h analyzeImage_types.h imfilter.h convn.h
+ rt_defines.h analyzeImage_types.h imfilter.h convn.h
 
 rt_nonfinite.h:
 

@@ -1,6 +1,6 @@
 chaccum.cpp.o: chaccum.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h \
-  rt_defines.h analyzeImage_types.h chaccum.h analyzeImage_emxutil.h \
-  log.h multithresh.h imfilter.h convn.h all.h
+ rt_defines.h analyzeImage_types.h chaccum.h analyzeImage_emxutil.h log.h \
+ multithresh.h imfilter.h convn.h all.h
 
 rt_nonfinite.h:
 
