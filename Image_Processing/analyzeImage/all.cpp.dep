@@ -1,5 +1,5 @@
 all.cpp.o: all.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h rt_defines.h \
-  analyzeImage_types.h all.h
+ analyzeImage_types.h all.h
 
 rt_nonfinite.h:
 

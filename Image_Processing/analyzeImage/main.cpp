@@ -134,7 +134,7 @@ std::cout << "Finished Analyze Image Call" << std::endl;
 //
 // Arguments    : int argc
 //                const char * const argv[]
-// Return Type  : int
+j// Return Type  : int
 //
 int main(int, const char * const [])
 {

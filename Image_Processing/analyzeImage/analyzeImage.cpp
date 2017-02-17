@@ -77,7 +77,7 @@ void analyzeImage(const unsigned char imIn[2428800], const double
 
   // First level fail tests
   if (b_imIn == NULL) {
-	  throw std::invalid_argument("Image is null!");
+	  throw std::invalid_argument("Image is null");
   }
 
   /*
