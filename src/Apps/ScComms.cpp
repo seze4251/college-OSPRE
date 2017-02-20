@@ -26,6 +26,9 @@ ScComms::ScComms( std::string hostName, int localPort, int externalPort) : Serve
     externalOspreStatusMessage = new External_OSPREStatus(SCCOMMS_APPL_ID);
     externalPointingMessage = new External_PointingRequest(SCCOMMS_APPL_ID);
     externalSolutionMessage = new External_SolutionMessage(SCCOMMS_APPL_ID);
+    
+    // Initialize localError to healthy
+    localError = PE_AllHealthy;
 }
 
 ScComms::~ScComms() {
@@ -134,19 +137,14 @@ void ScComms::handleExternalMessage(Message_External* msg, ServiceExternal* serv
 
 void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     
-    std::cout << "ScComms::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+    // std::cout << "ScComms::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
     
-    // Update Status
-    // TODO: Implement Status Update HERE
+    processHealthMessage->update(localError);
     
-    // Update ProcessHealthAndStatusResponse Message
-    processHealthMessage->update(status);
-    
-    // Send Status Message
     service->sendMessage(processHealthMessage);
     
-    // Reset Status
-    status.clear();
+    // Reset Error Enum
+    localError = PE_AllHealthy;
 }
 
 
@@ -156,10 +154,13 @@ void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest*
 void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
     std::cout << "ScComms::handleOSPREStatus() OSPRE Status Message Recived" << std::endl;
     // Print Message
-   // msg->print();
+    std::cout << std::endl;
+     msg->print();
     
     // Convert OSPRE Status to External OSPRE Status
-    externalOspreStatusMessage->update(msg->error);
+    externalOspreStatusMessage->update(msg);
+    
+    externalOspreStatusMessage->print();
     
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
         spacecraft->sendMessage(externalOspreStatusMessage);
@@ -181,7 +182,7 @@ void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* servi
         spacecraft->sendMessage(externalPointingMessage);
     }
     
-
+    
 }
 
 /*
@@ -199,7 +200,7 @@ void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* servi
         spacecraft->sendMessage(externalSolutionMessage);
     }
     
-
+    
 }
 
 // *******************************
@@ -213,7 +214,7 @@ void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* servi
  */
 void ScComms::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
     std::cout << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
-   // msg->print();
+    // msg->print();
     
     // Conver External Data Message to internal Data Message
     dataMessage->update(msg->ephem, msg->quat, msg->angularVelocity, msg->satTime, msg->sunAngle, msg->sleep);

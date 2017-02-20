@@ -12,14 +12,20 @@
 #include "iostream"
 
 enum ProcessError {
+    // Process Error Not Defined
     PE_NA = -1,
-    PE_healthy = 0,
-    PE_requestTimeOut = 1,
-    PE_notConnected = 2,
-    PE_IP_noBodyInImage = 3,
-    PE_CC_angularVelocityToHigh = 4,
-    PE_invalidData = 5,
-    PE_divideByZero = 6
+    
+    // All Processes are healthy or not healthy
+    PE_AllHealthy = 0,
+    PE_NotHealthy = 1,
+    
+    // Individual Errors
+    PE_requestTimeOut = 2,
+    PE_notConnected = 3,
+    PE_IP_noBodyInImage = 4,
+    PE_CC_angularVelocityToHigh = 5,
+    PE_invalidData = 6,
+    PE_divideByZero = 7
 };
 
 static void printProcessError(ProcessError p) {
@@ -27,8 +33,11 @@ static void printProcessError(ProcessError p) {
         case PE_NA:
             std::cout << "Error: N/A";
             break;
-        case PE_healthy:
+        case PE_AllHealthy:
             std::cout << "OSPRE is Healthy" << std::endl;
+            break;
+        case PE_NotHealthy:
+            std::cout << "OSPRE is Sick" << std::endl;
             break;
         case PE_requestTimeOut:
             std::cout << "Error: Request Time Out" << std::endl;

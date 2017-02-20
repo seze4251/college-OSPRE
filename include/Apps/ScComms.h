@@ -61,7 +61,6 @@ public:
     
 private:
     time_t pollTime;
-    std::vector<ProcessError> status;
     
     Acceptor external_accept;
     int externalPort;
@@ -75,7 +74,7 @@ private:
     External_PointingRequest* externalPointingMessage;
     External_SolutionMessage* externalSolutionMessage;
     
-    
+    ProcessError localError;
 };
 
 #endif

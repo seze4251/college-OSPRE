@@ -21,6 +21,12 @@ WatchDog::WatchDog(std::string hostName, int localPort) : ServerInternal(hostNam
     // Allocate Memory for Messages to Send
     processHealthRequestMessage = new ProcessHealthAndStatusRequest();
     ospreStatusMessage = new OSPREStatus();
+    
+    // Set Received to False
+    healthyScComms = false;
+    healthyScGnc = false;
+    healthyImageProc = false;
+    healthyCameraControl = false;
 }
 
 WatchDog::~WatchDog() {
@@ -46,28 +52,28 @@ void WatchDog::open() {
     
     // Connect to ScComms
     if(connectToAppl(hostName, 7000, &scComms) == true) {
-     //   std::cout << "WatchDog: Connected to ScComms" << std::endl;
+        //   std::cout << "WatchDog: Connected to ScComms" << std::endl;
     } else {
         std::cout << "WatchDog: Failure to Connect to ScComms" << std::endl;
     }
     
     // Connect to GNC
     if(connectToAppl(hostName, 9000, &gnc) == true) {
-     //   std::cout << "WatchDog: Connected to GNC" << std::endl;
+        //   std::cout << "WatchDog: Connected to GNC" << std::endl;
     } else {
         std::cout << "WatchDog: Failure to Connect to GNC" << std::endl;
     }
     
     // Connect to Image Processor
     if(connectToAppl(hostName, 8000, &imageProc) == true) {
-      //  std::cout << "WatchDog: Connected to Image Processor" << std::endl;
+        //  std::cout << "WatchDog: Connected to Image Processor" << std::endl;
     } else {
         std::cout << "WatchDog: Failure to Connect to Image Processor" << std::endl;
     }
     
     // Connect to Camera Controller
     if(connectToAppl(hostName, 10000, &cameraControl) == true) {
-     //   std::cout << "WatchDog: Connected to Camera Controller" << std::endl;
+        //   std::cout << "WatchDog: Connected to Camera Controller" << std::endl;
     } else {
         std::cout << "WatchDog: Failure to Connect to Camera Controller" << std::endl;
     }
@@ -84,72 +90,69 @@ void WatchDog::handleTimeout() {
     // Attempt to connect to all connections
     this->open();
     
-   // std::cout<< "WatchDog::handleTimeout() " << std::endl;
+    // std::cout<< "WatchDog::handleTimeout() " << std::endl;
     time_t currentTime = time(NULL);
     
     if (currentTime > pollProcess) {
         // Send ScComms Health and Status Message
         processHealthRequestMessage->update();
+        
         if ((scComms != nullptr) && (scComms->isConnected())) {
-            
-           // std::cout << "\nSending POLL\n" << std::endl;
             scComms -> sendMessage(processHealthRequestMessage);
-            
-        } else {
-            // Update error vector
-            error.push_back(PE_notConnected);
         }
         
         // Send GNC Health and Status Message
         if ((gnc != nullptr) && (gnc->isConnected())) {
             gnc -> sendMessage(processHealthRequestMessage);
-            
-        } else {
-            // Update error vector
-            error.push_back(PE_notConnected);
         }
         
         // Send Image Processor Health and Status Message
         if ((imageProc != nullptr) && (imageProc->isConnected())) {
             imageProc -> sendMessage(processHealthRequestMessage);
             
-        } else {
-            // Update error vector
-            error.push_back(PE_notConnected);
         }
         
         // Send Camera Controller Health and Status Message
         if ((cameraControl != nullptr) && (cameraControl->isConnected())) {
             cameraControl -> sendMessage(processHealthRequestMessage);
-            
-        } else {
-            // Update error vector
-            error.push_back(PE_notConnected);
         }
         
         // Update Poll Process Time
         pollProcess = currentTime + 10;
         pollStatus = currentTime + 5;
+        
     } else if (currentTime > pollStatus ) {
-        // Update OSPRE Status Message
-        ospreStatusMessage->update(error);
-        
-        // add print statements so you know what is happening
-        
         // Send OSPRE Status Message
         if ((scComms != nullptr) && (scComms->isConnected())) {
-            std::cout << "\nSending OSPRE STATUS\n" << std::endl;
+            
+            if ((healthyScComms == true) && (healthyScGnc == true) && (healthyImageProc == true) &&(healthyCameraControl == true)) {
+                ospreStatusMessage->totalHealth = PE_AllHealthy;
+            } else {
+                ospreStatusMessage->totalHealth = PE_NotHealthy;
+            }
+            
+            std::cout << std::endl;
             ospreStatusMessage->print();
+            std::cout << "\nSending OSPRE STATUS\n" << std::endl;
+            
             scComms->sendMessage(ospreStatusMessage);
-            // Clear OSPRE status vector
-            error.clear();
+            
+            // Set Received to False
+            healthyScComms = false;
+            healthyScGnc = false;
+            healthyImageProc = false;
+            healthyCameraControl = false;
+            
+            // Reset OSPRE Status
+            std::cout << "\n\nPre Send OSPRE Status Message Error: " << ospreStatusMessage->error.size() << " PID Size: " << ospreStatusMessage->pID.size() << std::endl;
+            ospreStatusMessage->clear();
+            std::cout << "Post Send OSPRE Status Message Error: " << ospreStatusMessage->error.size() << " PID Size: " << ospreStatusMessage->pID.size() << std::endl << std::endl;
+            
+            // Update Poll OSPRE Status Message Time
+            pollProcess = currentTime + 10;
+            pollStatus = pollProcess + 1;
         }
-        
-        // Update Poll OSPRE Status Message Time
-        pollProcess = currentTime + 10;
-        pollStatus = pollProcess + 1;
     }
-    //std::cout << "Finished WatchDog::handleTimeout()" << std::endl;
 }
 
 // *******************************
@@ -162,31 +165,50 @@ void WatchDog::handleTimeout() {
  When a response message is recived, diagnose if there are any issues with the processess and store them for the creation of the OSPRE status message
  */
 void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
-    //Determine which client sent the message and print that message has been recived
-/*
+    //Determine which client sent the message
     if (service == cameraControl) {
-        std::cout << "WatchDog: Health and Status Response Received from Camera Controller" << std::endl;
+        if (msg->error == PE_AllHealthy) {
+            healthyCameraControl = true;
+            
+        } else {
+            ospreStatusMessage->numProblemProcesses++;
+            ospreStatusMessage->update(msg->error, P_CameraController);
+        }
+        
     } else if(service == scComms) {
-        std::cout << "WatchDog: Health and Status Response Received from ScComms" << std::endl;
+        if (msg->error == PE_AllHealthy) {
+            healthyScComms = true;
+            
+        } else {
+            ospreStatusMessage->numProblemProcesses++;
+            ospreStatusMessage->update(msg->error, P_ScComms);
+        }
+        
     } else if(service == gnc) {
-        std::cout << "WatchDog: Health and Status Response Received from GNC" << std::endl;
+        if (msg->error == PE_AllHealthy) {
+            healthyScGnc = true;
+        } else {
+            ospreStatusMessage->numProblemProcesses++;
+            ospreStatusMessage->update(msg->error, P_GNC);
+        }
+        
     } else if(service == imageProc) {
-        std::cout << "WatchDog: Health and Status Response Received from ImageProcessor" << std::endl;
+        if (msg->error == PE_AllHealthy) {
+            healthyImageProc = true;
+        } else {
+            ospreStatusMessage->numProblemProcesses++;
+            ospreStatusMessage->update(msg->error, P_ImageProcessor);
+        }
+        
     } else {
         std::cerr << "WatchDogClientHandler::handleProcessHealthAndStatusResponse: Client Response Message Not Expected" << std::endl;
         std::cerr << "Closing Connection" << std::endl;
         service->closeConnection();
     }
-    */
-    // Print Message
-    msg->print();
-    
-    // Insert Error into Error Vectors
-    error.insert(error.end(), msg->error.begin(), msg->error.end());
 }
 
 void WatchDog::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-   // std::cout << "WatchDog::handleDataMessage() Ignoring Data Message" << std::endl;
+    // std::cout << "WatchDog::handleDataMessage() Ignoring Data Message" << std::endl;
 }
 
 // *******************************
@@ -238,8 +260,8 @@ void WatchDog::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceIn
     service->closeConnection();
 }
 
-/*
-array of process that you expect to connect?
-*/
+
+
+
 
 

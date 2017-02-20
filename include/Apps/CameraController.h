@@ -58,7 +58,6 @@ private:
     // If readImageFile == true, then reads in a Image from file
     // if readImageFile == false, then takes a picture
     bool readImageFile;
-    std::vector<ProcessError> status;
     
     //Pointer to Image
     char* image;
@@ -66,6 +65,8 @@ private:
     // Pointer To Hold Messages that are being sent
     ImageMessage* imageMessage;
     ProcessHealthAndStatusResponse* processHealthMessage;
+    
+    ProcessError localError;
 };
 
 #endif

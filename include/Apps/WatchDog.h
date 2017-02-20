@@ -58,10 +58,11 @@ private:
     ProcessHealthAndStatusRequest* processHealthRequestMessage;
     OSPREStatus* ospreStatusMessage;
     
-    //Error Vector
-    std::vector<ProcessError> error;
-
-    
+    // Received Responses from Process
+    bool healthyScComms;
+    bool healthyScGnc;
+    bool healthyImageProc;
+    bool healthyCameraControl;
 };
 
 #endif

@@ -149,21 +149,15 @@ Message* Parser::parseProcessHealthAndStatusRequest() {
     return request;
 }
 
-
 Message* Parser::parseProcessHealthAndStatusResponse() {
     if (response == nullptr) {
         response = new ProcessHealthAndStatusResponse();
     }
     
-    int messageBody = (messageLength - HEADER_MESSAGE_SIZE) / sizeof(int);
-    
     response->timeStamp = timeStamp;
     response->iden = messageID;
     
-    for (int i = 0; i < messageBody; i++) {
-        response->error.push_back((ProcessError) buf.getInt());
-    }
-    
+    response->error = (ProcessError) buf.getInt();
     return response;
 }
 
@@ -233,14 +227,18 @@ Message* Parser::parseDataMessage() {
 Message* Parser::parseOSPREStatus() {
     if (status == nullptr) {
         status = new OSPREStatus();
+    } else {
+        status->error.clear();
     }
-    
-    int messageBody = (messageLength - HEADER_MESSAGE_SIZE) / sizeof(int);
     
     status->timeStamp = timeStamp;
     status->iden = messageID;
     
-    for (int i = 0; i < messageBody; i++) {
+    status->totalHealth = (ProcessError) buf.getInt();
+    status->numProblemProcesses = buf.getInt();
+    
+    for (int i = 0; i < status->numProblemProcesses; i++) {
+        status->pID.push_back((ProcessID) buf.getInt());
         status->error.push_back((ProcessError) buf.getInt());
     }
     

@@ -130,18 +130,19 @@ Message_External* External_Parser::parseExternal_OSPREStatus() {
     
     // Transfer Header and Message ID
     memcpy(status->header.bytes, messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
-    status->iden = messageID;
     
-    int messageBody = (messageHeader.header.header_struct.packetDataLength + 1 - sizeof(int)) / sizeof(int);
+    status->iden = messageID;
+    status->totalHealth = (ProcessError) buf.getInt();
+    status->numProblemProcesses = buf.getInt();
     
 //    std::cout << "Message Body = " << messageBody << "packetDataLength" << messageHeader.header.header_struct.packetDataLength << std::endl;
     
-    for (int i = 0; i < messageBody; i++) {
+    for (int i = 0; i < status->numProblemProcesses; i++) {
+        status->pID.push_back((ProcessID) buf.getInt());
         status->error.push_back((ProcessError) buf.getInt());
     }
-    
-    return status;
 
+    return status;
 }
 
 Message_External* External_Parser::parseExternal_PointingRequest() {

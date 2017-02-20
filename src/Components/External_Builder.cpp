@@ -77,10 +77,15 @@ void External_Builder::buildExternal_OSPREStatus(External_OSPREStatus&msg) {
     
     // Put Message ID
     buf.putInt((int) msg.iden);
+    buf.putInt((int) msg.totalHealth);
+    buf.putInt(msg.numProblemProcesses);
     
-    // Put Error Messages
-    for (std::vector<ProcessError>::iterator it = msg.error.begin(); it != msg.error.end(); it++ ) {
-        buf.putInt((int) (*it));
+    std::vector<ProcessID>::iterator itPID;
+    std::vector<ProcessError>::iterator itPError;
+    
+    for (itPID = msg.pID.begin(), itPError = msg.error.begin(); itPError != msg.error.end(); itPID++, itPError++ ) {
+        buf.putInt((int) (*itPID));
+        buf.putInt((int) (*itPError));
     }
 }
 

@@ -22,12 +22,10 @@ public:
     //Constructors:
     ProcessHealthAndStatusResponse() : Message(getMessageID(), time(0)) {}
     
-    ProcessHealthAndStatusResponse(std::vector<ProcessError> error) : Message(getMessageID(), time(0)), error(error) {}
-    
     MessageID getMessageID() {return I_ProcessHealthAndStatusResponse; }
     
     //Member Functions
-    void update(std::vector<ProcessError> error) {
+    void update(ProcessError error) {
         this->timeStamp = time(0);
         this->error = error;
     }
@@ -35,14 +33,15 @@ public:
     void print() {
         printMessageHeader();
         
-        for (auto i = error.begin(); i != error.end(); ++i)
-            printProcessError(*i);
+        printProcessError(error);
+        
+        if (error == PE_NotHealthy) {
+            printProcessError(error);
+        }
     }
     
-    // Specific Data Members
-    std::vector<ProcessError> error;
-    
-    
+    // Process Health
+    ProcessError error;
 };
 
 #endif

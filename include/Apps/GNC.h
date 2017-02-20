@@ -54,7 +54,6 @@ private:
     time_t pollTime;
     ServiceInternal* scComms;
     ServiceInternal* cameraController;
-    std::vector<ProcessError> status;
     
     // Pointer To Hold Messages that Are being sent
     ProcessHealthAndStatusResponse* processHealthMessage;
@@ -75,7 +74,7 @@ private:
     double* covariance;
     double* trajectoryDev;
     
-
+    ProcessError localError;
 
     
 };

@@ -28,6 +28,9 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     solutionMessage = new SolutionMessage();
     pointRequest = new PointingRequest();
     
+    // Initialize localError to healthy
+    localError = PE_AllHealthy;
+    
     // Application Specific Member Initializations
     readReferenceTrajectory();
     covariance = new double[36];
@@ -155,17 +158,14 @@ void GNC::readReferenceTrajectory() {
 void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
     
-    // Update Status
-    // TODO: Implement Status Update HERE
-    
     // Update ProcessHealthAndStatusResponse Message
-    processHealthMessage->update(status);
+    processHealthMessage->update(localError);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
     
-    // Reset Status
-    status.clear();
+    // Reset Error Enum
+    localError = PE_AllHealthy;
 }
 
 /*
@@ -208,6 +208,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     } catch(std::exception &exception) {
         std::cerr << "ScComms: Standard exception: " << exception.what() << '\n';
         // TODO: Do Somthing here to send watchdog the problem
+        localError = PE_NotHealthy;
         
     } catch (...) {
         std::cerr << "Unknown Exception thrown in GNC::computeSolution()" << std::endl;

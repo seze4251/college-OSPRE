@@ -21,8 +21,14 @@ ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInte
     processedImageMessage = new ProcessedImageMessage;
     processHealthMessage = new ProcessHealthAndStatusResponse();
     
+    // Initialize localError to healthy
+    localError = PE_AllHealthy;
+    
     // Image Processing Specific Members
     sensitivity = 1.0;
+    
+    //TEMP TEMP TEMP
+    test = false;
 }
 
 ImageProcessor::~ImageProcessor() {
@@ -94,17 +100,13 @@ void ImageProcessor::processImage(ImageMessage* msg) {
 void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
     
-    // Update Status
-    // TODO: Implement Status Update HERE
-    
-    // Update ProcessHealthAndStatusResponse Message
-    processHealthMessage->update(status);
+    processHealthMessage->update(localError);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
     
-    // Reset Status
-    status.clear();
+    // Reset Error Enum
+    localError = PE_AllHealthy;
 }
 
 /*
@@ -118,13 +120,17 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     
     //TODO: Do Something Here
     // Process the Image
+    test = !test;
     
     try {
     processImage(msg);
-        
+        if (test) {
+        throw std::exception();
+        }
     } catch(std::exception &exception) {
         std::cerr << "ScComms: Standard exception: " << exception.what() << '\n';
         // TODO: Do Somthing here to send watchdog the problem
+        localError = PE_IP_noBodyInImage;
     } catch (...) {
         std::cerr << "Unknown Exception thrown in ImageProcessor::processImage()" << std::endl;
         throw;

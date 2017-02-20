@@ -45,7 +45,7 @@ void Builder::buildProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest &
 }
 
 void Builder::buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse &msg) {
-    int messageSize = msg.error.size() * sizeof(int) + HEADER_MESSAGE_SIZE;
+    int messageSize = sizeof(int) + HEADER_MESSAGE_SIZE;
     
     // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
@@ -53,9 +53,7 @@ void Builder::buildProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse
     }
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
-    for (std::vector<ProcessError>::iterator it = msg.error.begin(); it != msg.error.end(); it++ ) {
-        buf.putInt((int) (*it));
-    }
+    buf.putInt((int) msg.error);
 }
 
 void Builder::buildCaptureImageRequest(CaptureImageRequest &msg) {
@@ -111,7 +109,7 @@ void Builder::buildDataMessage(DataMessage &msg) {
 }
 
 void Builder::buildOSPREStatus(OSPREStatus &msg) {
-    int messageSize = msg.error.size() * sizeof(int) + HEADER_MESSAGE_SIZE;
+    int messageSize = 2 * msg.error.size() * sizeof(int) + 2 * sizeof(int) + HEADER_MESSAGE_SIZE;
     
     // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
@@ -120,10 +118,16 @@ void Builder::buildOSPREStatus(OSPREStatus &msg) {
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
     
-    for (std::vector<ProcessError>::iterator it = msg.error.begin(); it != msg.error.end(); it++ ) {
-        buf.putInt((int) (*it));
-    }
+    buf.putInt((int) msg.totalHealth);
+    buf.putInt(msg.numProblemProcesses);
     
+    std::vector<ProcessID>::iterator itPID;
+    std::vector<ProcessError>::iterator itPError;
+    
+    for (itPID = msg.pID.begin(), itPError = msg.error.begin(); itPError != msg.error.end(); itPID++, itPError++ ) {
+        buf.putInt((int) (*itPID));
+        buf.putInt((int) (*itPError));
+    }
 }
 
 void Builder::buildPointingRequest(PointingRequest &msg) {

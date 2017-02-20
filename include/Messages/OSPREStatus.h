@@ -15,25 +15,50 @@
 
 #include "Message.h"
 #include "ProcessError.h"
+#include "ProcessID.h"
 
 class OSPREStatus : public Message {
 public:
-    OSPREStatus() : Message(getMessageID(), time(0)) {}
+    OSPREStatus() : Message(getMessageID(), time(0)) {
+        numProblemProcesses = 0;
+    }
     MessageID getMessageID() { return I_OSPREStatus; }
     
     // Specific Data Members
-    void update( std::vector<ProcessError> error) {
+    void update(ProcessError p_error, ProcessID PID) {
         this->timeStamp = time(0);
-        this->error = error;
+        pID.push_back(PID);
+        error.push_back(p_error);
+        numProblemProcesses = error.size();
     }
     
+    void clear() {
+        numProblemProcesses = 0;
+        pID.clear();
+        error.clear();
+    }
+    
+    // Print Message
     void print() {
         printMessageHeader();
-        for (auto i = error.begin(); i != error.end(); ++i)
-            printProcessError(*i);
+        printProcessError(totalHealth);
+        std::cout << "Number of Processes with Errors: " << numProblemProcesses << std::endl;
+        
+        std::vector<ProcessID>::iterator itPID;
+        std::vector<ProcessError>::iterator itPError;
+        
+        for (itPID = pID.begin(), itPError = error.begin(); itPError != error.end(); itPID++, itPError++ ) {
+            printProcessID(*itPID);
+            printProcessError(*itPError);
+        }
     }
     
-    //Specific Data Members
+    //OSPRE System Health
+    ProcessError totalHealth;
+    
+    //OSPRE Process Health
+    int numProblemProcesses;
+    std::vector<ProcessID> pID;
     std::vector<ProcessError> error;
 };
 

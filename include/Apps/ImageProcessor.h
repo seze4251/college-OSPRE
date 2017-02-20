@@ -49,9 +49,6 @@ public:
 private:
     time_t pollTime;
     ServiceInternal* gnc;
-    
-    // Contain Application Status
-    std::vector<ProcessError> status;
 
     // Pointer To Hold Messages that are being sent
     ProcessedImageMessage* processedImageMessage;
@@ -59,6 +56,12 @@ private:
     
     // Application Specific Members
     double sensitivity;
+    
+    ProcessError localError;
+    
+    // TEMP TEMP TEMP
+    bool test;
+    // TEMP TEMP TEMP
 };
 
 #endif

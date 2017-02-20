@@ -21,6 +21,9 @@ CameraController::CameraController(std::string hostName, int localPort, bool rea
     // Allocate Memory for Messages to Send
     imageMessage = new ImageMessage();
     processHealthMessage = new ProcessHealthAndStatusResponse();
+    
+    // Initialize localError to healthy
+    localError = PE_AllHealthy;
 }
 
 CameraController::~CameraController() {
@@ -113,18 +116,15 @@ void CameraController::adjustCameraSettings(ImageAdjustment* msg) {
  */
 void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-    
-    // Update Status
-    // TODO: Implement Status Update HERE
-    
+  
     // Update ProcessHealthAndStatusResponse Message
-    processHealthMessage->update(status);
+    processHealthMessage->update(localError);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
     
-    // Reset Status
-    status.clear();
+    // Reset Error Enum
+    localError = PE_AllHealthy;
 }
 
 /*

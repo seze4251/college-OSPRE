@@ -1,6 +1,6 @@
 #
 #	 Makefile
-#	 SantaCruzServer
+#	 OSPRE
 #
 #	 Created by Hilton Lipschitz on 2015-09-01.
 #	 Copyright (c) 2015 Maritime Capital LP. All rights reserved.
@@ -10,15 +10,11 @@
 
 # HIL: No spaces or comments after otherwise it captures them!
 # Determine the platform
+
 UNAME_S := $(shell uname -s)
 
 # CC
 CC := g++
-#ifeq ($(UNAME_S),Darwin)
-#	CC := clang++ -arch x86_64
-#else
-#	CC := g++
-#endif
 
 # Folders
 SRCDIR := src
@@ -50,13 +46,9 @@ TARGET_GNC := $(TARGETDIR)/$(EXECUTABLE_GNC)
 EXECUTABLE_SPACECRAFT := Spacecraft
 TARGET_SPACECRAFT := $(TARGETDIR)/$(EXECUTABLE_SPACECRAFT)
 
-#
 # Main OBJS
 MAINDIR := Main_Files
 MAINOBJ_DIR := build_Main
-
-# Final Paths
-INSTALLBINDIR := /usr/local/bin
 
 # Code Lists
 SRCEXT := cpp
@@ -69,13 +61,13 @@ INCDIRS := $(shell find include/**/* -name '*.h' -exec dirname {} \; | sort | un
 INCLIST := $(patsubst include/%,-I include/%,$(INCDIRS))
 BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 
-
 # Shared Compiler Flags
 CFLAGS := -c #-Wall -Wextra
 INC := -I include $(INCLIST) -I /usr/local/include
 
 # Platform Specific Compiler Flags
 CFLAGS += -std=gnu++11 -O2 # -fPIC
+
 #ifeq ($(UNAME_S),Linux)
 #	CFLAGS += -std=gnu++11 -O2 # -fPIC
 #
@@ -87,38 +79,38 @@ CFLAGS += -std=gnu++11 -O2 # -fPIC
 $(TARGET_WatchDog): $(OBJECTS) $(MAINOBJ_DIR)/mainWatchDog.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_WatchDog)" $(CC) $^ -o $(TARGET_WatchDog) 
+	@echo "	 Linking $(TARGET_WatchDog)\n"; $(CC) $^ -o $(TARGET_WatchDog) 
 
 
 #SCCOMMS
 $(TARGET_ScComms): $(OBJECTS) $(MAINOBJ_DIR)/mainScComms.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_ScComms)"; $(CC) $^ -o $(TARGET_ScComms)
+	@echo "	 Linking $(TARGET_ScComms)\n"; $(CC) $^ -o $(TARGET_ScComms)
 
 #CAMERA CONTROLLER
 $(TARGET_CameraController): $(OBJECTS) $(MAINOBJ_DIR)/mainCameraController.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_CameraController)"; $(CC) $^ -o $(TARGET_CameraController)
+	@echo "	 Linking $(TARGET_CameraController)\n"; $(CC) $^ -o $(TARGET_CameraController)
 
 #IMAGE PROCCESSOR
 $(TARGET_IMAGEPROC): $(OBJECTS) $(MAINOBJ_DIR)/mainImageProcessor.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_IMAGEPROC)"; $(CC) $^ -o $(TARGET_IMAGEPROC)
+	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC)
 
 #GNC
 $(TARGET_GNC): $(OBJECTS) $(MAINOBJ_DIR)/mainGNC.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_GNC)"; $(CC) $^ -o $(TARGET_GNC)
+	@echo "	 Linking $(TARGET_GNC)\n"; $(CC) $^ -o $(TARGET_GNC)
 
 #SPACECRAFT
 $(TARGET_SPACECRAFT): $(OBJECTS) $(MAINOBJ_DIR)/mainSpacecraft.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_SPACECRAFT)"; $(CC) $^ -o $(TARGET_SPACECRAFT)
+	@echo "	 Linking $(TARGET_SPACECRAFT)\n"; $(CC) $^ -o $(TARGET_SPACECRAFT)
 
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
