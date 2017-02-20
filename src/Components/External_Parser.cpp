@@ -43,7 +43,7 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
     
     // If there is not a full header + message ID, do not parse header
     if (buf.used() < 10 ) {
-        std::cout << "External_Parser::parseMessage no header left in buffer" << std::endl;
+       // std::cout << "External_Parser::parseMessage no header left in buffer" << std::endl;
         return nullptr;
     }
     
@@ -126,6 +126,9 @@ Message_External* External_Parser::parseExternal_DataMessage() {
 Message_External* External_Parser::parseExternal_OSPREStatus() {
     if (status == nullptr) {
         status = new External_OSPREStatus(0);
+    } else {
+        status->pID.clear();
+        status->error.clear();
     }
     
     // Transfer Header and Message ID

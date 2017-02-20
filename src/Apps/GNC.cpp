@@ -204,11 +204,12 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     // Compute Solution and Update Solution Message
     try {
         computeSolution(scData, msg);
+        throw std::exception();
         
     } catch(std::exception &exception) {
         std::cerr << "ScComms: Standard exception: " << exception.what() << '\n';
         // TODO: Do Somthing here to send watchdog the problem
-        localError = PE_NotHealthy;
+        localError = PE_invalidData;
         
     } catch (...) {
         std::cerr << "Unknown Exception thrown in GNC::computeSolution()" << std::endl;

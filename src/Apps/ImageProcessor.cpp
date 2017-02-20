@@ -104,6 +104,7 @@ void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusR
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
+    processHealthMessage->print();
     
     // Reset Error Enum
     localError = PE_AllHealthy;
@@ -120,7 +121,11 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     
     //TODO: Do Something Here
     // Process the Image
-    test = !test;
+    if (test == true) {
+        test = false;
+    } else {
+        test = true;
+    }
     
     try {
     processImage(msg);

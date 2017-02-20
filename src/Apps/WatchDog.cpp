@@ -118,8 +118,8 @@ void WatchDog::handleTimeout() {
         }
         
         // Update Poll Process Time
-        pollProcess = currentTime + 10;
-        pollStatus = currentTime + 5;
+        pollProcess = currentTime + 30;
+        pollStatus = currentTime + 15;
         
     } else if (currentTime > pollStatus ) {
         // Send OSPRE Status Message
@@ -167,6 +167,7 @@ void WatchDog::handleTimeout() {
 void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
     //Determine which client sent the message
     if (service == cameraControl) {
+        std::cout<< "Recived Response Message from CC" << std::endl;
         if (msg->error == PE_AllHealthy) {
             healthyCameraControl = true;
             
@@ -176,6 +177,7 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
         }
         
     } else if(service == scComms) {
+        std::cout<< "Recived Response Message from scComms" << std::endl;
         if (msg->error == PE_AllHealthy) {
             healthyScComms = true;
             
@@ -185,6 +187,9 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
         }
         
     } else if(service == gnc) {
+        std::cout<< "Recived Response Message from gnc" << std::endl;
+        std::cout << "Printing gnc Response Message" << std::endl;
+        msg->print();
         if (msg->error == PE_AllHealthy) {
             healthyScGnc = true;
         } else {
@@ -193,6 +198,9 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
         }
         
     } else if(service == imageProc) {
+        std::cout<< "Recived Response Message from IP" << std::endl;
+        std::cout << "Printing Image Processor Response Message" << std::endl;
+        msg->print();
         if (msg->error == PE_AllHealthy) {
             healthyImageProc = true;
         } else {

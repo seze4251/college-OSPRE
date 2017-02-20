@@ -160,6 +160,7 @@ void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
     // Convert OSPRE Status to External OSPRE Status
     externalOspreStatusMessage->update(msg);
     
+    std::cout << "Printing External OSPRE Status Message" << std::endl;
     externalOspreStatusMessage->print();
     
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
