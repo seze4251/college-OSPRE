@@ -354,7 +354,7 @@ int main(int argc, char **argv) {
     // get(char*)
     temp = true;
     try {
-        buf.put(cstr, 1000);
+        buf.put(cstr, 1025*1025);
     } catch (const char*){
         temp = false;
     }
