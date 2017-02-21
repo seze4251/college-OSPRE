@@ -8,6 +8,7 @@
 
 #include <string.h>
 #include <iostream>
+#include <exception>
 
 #include "CircularBuffer.h"
 
@@ -33,15 +34,33 @@ CircularBuffer::CircularBuffer(int numDataMessage) {
 
 //Destructor
 CircularBuffer::~CircularBuffer() {
-    if (bufferHead) {
-        delete bufferHead;
-    }
+    std::cout << "Starting CircularBuffer Destructor" << std::endl;
+  /*  try {
+        if (bufferHead) {
+            try {
+                delete bufferHead;
+            } catch (std::exception exception) {
+                std::cout << "Error: " << exception.what() << std::endl;
+            } catch (...) {
+                std::cout << "Error: Unkown type of exception caught" << std::endl;
+                throw;
+            }
+        }
+    } catch (std::exception) {
+        std::cout << "Cannot do if statement on buffer head" << std::endl;
+        throw;
+    } */
+    std::cout << "Ending CircularBuffer Destructor" << std::endl;
 }
 
 void CircularBuffer::put(DataMessage* msg) {
     // Check for Invalid Input
     if (msg == nullptr) {
         throw "CircularBuffer::put() Data Message Input equals nullptr";
+    }
+    
+    if (msg->timeStamp < 0) {
+        throw "CircularBuffer::put() Data Message has a negative timestap, invalid";
     }
     
     // At the end of the buffer?, Wrap around to begining
@@ -69,16 +88,13 @@ DataMessage* CircularBuffer::get(time_t timeStamp) {
     
     for (it = bufferHead, j = 0; j < buffSize; j++, it++) {
         if (it->timeStamp == timeStamp) {
-            std::cout << "CircularBuffer::get() Found Message Timestamp: " << timeStamp << std::endl;
             foundMessage = true;
             break;
         }
     }
     
     if (foundMessage == false) {
-        // TODO: Throw exception here
-        std::cout << "\n\n\nCircularBuffer::get() could not find Data Message\n\n\n" << std::endl;
-        return nullptr;
+        throw "CircularBuffer::get() DataMessage Not Found in buffer";
     }
     
     return it;
@@ -93,7 +109,7 @@ void CircularBuffer::printBuffer() {
     
     for (it = bufferHead, j = 0; j < buffSize; j++, it++) {
         std::cout << it->timeStamp << std::endl;
-
+        
     }
     
     std::cout << "Finished Printing Ciruclar Buffer" << std::endl;
