@@ -10,8 +10,17 @@
 #include "Builder.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Testing Builder Starting\n";
+    std::cout << "\nTesting Builder Starting\n";
+    bool passedAllTests = true;
     
-    std::cout << "Testing Builder Terminating\n";
+    
+    
+    if (passedAllTests == true) {
+        std::cout << "Builder Passed All Tests" << std::endl;
+    } else {
+        std::cout << "Builder Failed one or multiple Tests" << std::endl;
+    }
+
+    std::cout << "Testing Builder Terminating\n\n";
     return 0;
 }

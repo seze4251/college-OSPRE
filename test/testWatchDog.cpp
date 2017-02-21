@@ -10,8 +10,16 @@
 #include "WatchDog.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Testing WatchDog Starting\n";
+    std::cout << "\nTesting WatchDog Starting\n";
+    bool passedAllTests = true;
     
-    std::cout << "Testing WatchDog Terminating\n";
+    
+    
+    if (passedAllTests == true) {
+        std::cout << "WatchDog Passed All Tests" << std::endl;
+    } else {
+        std::cout << "WatchDog Failed one or multiple Tests" << std::endl;
+    }
+    std::cout << "Testing WatchDog Terminating\n\n";
     return 0;
 }

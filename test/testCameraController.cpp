@@ -10,8 +10,17 @@
 #include "CameraController.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Testing CameraController Starting\n";
+    std::cout << "\nTesting CameraController Starting\n";
+    bool passedAllTests = true;
     
-    std::cout << "Testing CameraController Terminating\n";
+    
+    
+    if (passedAllTests == true) {
+        std::cout << "CameraController Passed All Tests" << std::endl;
+    } else {
+        std::cout << "CameraController Failed one or multiple Tests" << std::endl;
+    }
+
+    std::cout << "Testing CameraController Terminating\n\n";
     return 0;
 }

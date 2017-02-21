@@ -10,8 +10,17 @@
 #include "Parser.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Testing Parser Starting\n";
+    std::cout << "\nTesting Parser Starting\n";
+    bool passedAllTests = true;
     
-    std::cout << "Testing Parser Terminating\n";
+    
+    
+    if (passedAllTests == true) {
+        std::cout << "Parser Passed All Tests" << std::endl;
+    } else {
+        std::cout << "Parser Failed one or multiple Tests" << std::endl;
+    }
+
+    std::cout << "Testing Parser Terminating\n\n";
     return 0;
 }

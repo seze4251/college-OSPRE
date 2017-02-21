@@ -62,6 +62,10 @@ void ByteBuffer::positionWrite(int written) {
         throw "ByteBuffer::positionWrite() Input is less than 0, cannot write less than 0";
     }
     
+    if (size - written < 0) {
+        throw "ByteBuffer::position() size can not decrease below 0";
+    }
+    
     currentPos += written;
     size -= written;
     
@@ -72,6 +76,10 @@ void ByteBuffer::positionRead(int read) {
         throw "ByteBuffer::position() Input is less than 0, cannot read less than 0";
     }
     
+    if (size + read > capacity) {
+        throw "ByteBuffer::position() trying to increase the size to be greater than the capacity of buffer";
+    }
+    
     currentPos += read;
     size += read;
 }
@@ -79,6 +87,14 @@ void ByteBuffer::positionRead(int read) {
 void ByteBuffer::rewind(int length) {
     if (length < 0) {
         throw "ByteBuffer::rewind() Input is less than 0, cannot rewind less than 0";
+    }
+    
+    if ((size + length) > capacity) {
+        throw "ByteBuffer::rewind() ByteBuffer.size can not increase above capacity";
+    }
+    
+    if (currentPos - length < buf) {
+        throw "ByteBuffer::rewind() current position can not go out of the ByteBuffer's allocated memory";
     }
     
     currentPos -= length;
@@ -101,6 +117,10 @@ void ByteBuffer::put(char c) {
         throw "ByteBuffer::put() Byte Buffer is full";
     }
     
+    if (capacity  < (int) (size + sizeof(char))) {
+        throw "ByteBuffer::put(char) ByteBuffer is full";
+    }
+
     *currentPos = c;
     currentPos++;
     size++;
@@ -125,6 +145,10 @@ void ByteBuffer::putInt(int i) {
         throw "ByteBuffer::putInt() No Room to put int into Buffer";
     }
     
+    if (size == capacity) {
+        throw "ByteBuffer::putInt() ByteBuffer is full";
+    }
+    
     memcpy(currentPos, &i, sizeof(int));
     size += sizeof(int);
     currentPos += sizeof(int);
@@ -133,6 +157,10 @@ void ByteBuffer::putInt(int i) {
 void ByteBuffer::putLong(long i) {
     if (capacity < (size + (int) sizeof(long))) {
         throw "ByteBuffer::putLong() No Room to put long into Buffer";
+    }
+    
+    if (size == capacity) {
+        throw "ByteBuffer::putLong() ByteBuffer is full";
     }
     
     memcpy(currentPos, &i, sizeof(long));
@@ -170,8 +198,16 @@ void ByteBuffer::put(char* c, int length) {
         throw "ByteBuffer::put(char*, int) Can not put length <=0 into buffer";
     }
     
+    if (size == capacity) {
+        throw "ByteBuffer::put(char*, int) ByteBuffer is full";
+    }
+    
     if (capacity < (size + length) ) {
         throw "ByteBuffer::put(char*, int) Not enough size in Buffer to put message";
+    }
+    
+    if (c == nullptr) {
+        throw "ByteBuffer::get(char*, int) Passed in null ptr";
     }
     
     memcpy(currentPos, c, length);
@@ -183,6 +219,14 @@ void ByteBuffer::put(char* c, int length) {
 void ByteBuffer::get(char* location, int length) {
     if (size < length) {
         throw "ByteBuffer::get(char*, int) Message does not exist within Buffer";
+    }
+    
+    if (length < 0) {
+        throw "ByteBuffer::get(char*, int) Length is less than 0";
+    }
+    
+    if (location == nullptr) {
+        throw "ByteBuffer::get(char*, int) Passed in null ptr";
     }
     
     

@@ -10,8 +10,17 @@
 #include "External_Parser.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Testing ExternalParser Starting\n";
+    std::cout << "\nTesting ExternalParser Starting\n";
+    bool passedAllTests = true;
     
-    std::cout << "Testing ExternalParser Terminating\n";
+    
+    
+    if (passedAllTests == true) {
+        std::cout << "ExternalParser Passed All Tests" << std::endl;
+    } else {
+        std::cout << "ExternalParser Failed one or multiple Tests" << std::endl;
+    }
+
+    std::cout << "Testing ExternalParser Terminating\n\n";
     return 0;
 }

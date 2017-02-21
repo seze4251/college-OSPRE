@@ -96,96 +96,84 @@ CFLAGS += -std=gnu++11 # -fPIC
 
 #testByteBuffer
 $(TARGET_testByteBuffer): $(OBJECTS) $(MAINOBJ_DIR)/testByteBuffer.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testByteBuffer)"
-	$(CC) $^ -o $(TARGET_testByteBuffer) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testByteBuffer)"; $(CC) $^ -o $(TARGET_testByteBuffer);
 
 
 #testCameraController
 $(TARGET_testCameraController): $(OBJECTS) $(MAINOBJ_DIR)/testCameraController.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testCameraController)"
-	$(CC) $^ -o $(TARGET_testCameraController) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testCameraController)"; $(CC) $^ -o $(TARGET_testCameraController);
 
 
 #testCircularBuffer
 $(TARGET_testCircularBuffer): $(OBJECTS) $(MAINOBJ_DIR)/testCircularBuffer.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testCircularBuffer)"
-	$(CC) $^ -o $(TARGET_testCircularBuffer) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testCircularBuffer)"; $(CC) $^ -o $(TARGET_testCircularBuffer);
 
 #testExternalBuilder
 $(TARGET_testExternalBuilder): $(OBJECTS) $(MAINOBJ_DIR)/testExternalBuilder.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testExternalBuilder)"
-	$(CC) $^ -o $(TARGET_testExternalBuilder) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testExternalBuilder)"; $(CC) $^ -o $(TARGET_testExternalBuilder);
 
 #testExternalParser
 $(TARGET_testExternalParser): $(OBJECTS) $(MAINOBJ_DIR)/testExternalParser.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testExternalParser)"
-	$(CC) $^ -o $(TARGET_testExternalParser) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testExternalParser)"; $(CC) $^ -o $(TARGET_testExternalParser);
 
 #testGNC
 $(TARGET_testGNC): $(OBJECTS) $(MAINOBJ_DIR)/testGNC.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testGNC)"
-	$(CC) $^ -o $(TARGET_testGNC) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testGNC)"; $(CC) $^ -o $(TARGET_testGNC); 
 
 #testImageProcessor
 $(TARGET_testImageProcessor): $(OBJECTS) $(MAINOBJ_DIR)/testImageProcessor.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testImageProcessor)"
-	$(CC) $^ -o $(TARGET_testImageProcessor) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testImageProcessor)"; $(CC) $^ -o $(TARGET_testImageProcessor);
 
 #testParser
 $(TARGET_testParser): $(OBJECTS) $(MAINOBJ_DIR)/testParser.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testParser)"
-	$(CC) $^ -o $(TARGET_testParser) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testParser)"; $(CC) $^ -o $(TARGET_testParser);
 
 #testScComms
 $(TARGET_testScComms): $(OBJECTS) $(MAINOBJ_DIR)/testScComms.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testScComms)"
-	$(CC) $^ -o $(TARGET_testScComms) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testScComms)"; $(CC) $^ -o $(TARGET_testScComms);
 
 #testSpacecraft
 $(TARGET_testSpacecraft): $(OBJECTS) $(MAINOBJ_DIR)/testSpacecraft.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testSpacecraft)"
-	$(CC) $^ -o $(TARGET_testSpacecraft) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testSpacecraft)"; $(CC) $^ -o $(TARGET_testSpacecraft);
 
 #testBuilder
 $(TARGET_testBuilder): $(OBJECTS) $(MAINOBJ_DIR)/testBuilder.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testBuilder)"
-	$(CC) $^ -o $(TARGET_testBuilder) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testBuilder)"; $(CC) $^ -o $(TARGET_testBuilder);
 
 #testWatchDog
 $(TARGET_testWatchDog): $(OBJECTS) $(MAINOBJ_DIR)/testWatchDog.o
-	@mkdir -p $(TARGETDIR)
-	@echo "	 Linking $(TARGET_testWatchDog)"
-	$(CC) $^ -o $(TARGET_testWatchDog) 
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_testWatchDog)"; $(CC) $^ -o $(TARGET_testWatchDog);
 
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	@mkdir -p $(BUILDLIST)
-	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@mkdir -p $(BUILDLIST);
+	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<;
 
 # Need to have all dependencies mapped out for building 
 $(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(SRCEXT)
-	@mkdir -p $(BUILDLIST)
-	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@mkdir -p $(BUILDLIST);
+	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<;
 
 
 clean:
-	@echo "Cleaning .o Files ...”; rm $(BUILDDIR)/*.o; rm rm $(BUILDDIR)/*.o;
+	@echo "Cleaning .o Files ..."; rm -r $(BUILDDIR)/;
 
 #install:
-#	@echo "Installing $(EXECUTABLE)..."; cp $(TARGET) $(INSTALLBINDIR)
+#	@echo "Installing $(EXECUTABLE)..."; cp $(TARGET) $(INSTALLBINDIR);
 	
 #distclean:
-#	@echo "Removing $(EXECUTABLE)"; rm $(INSTALLBINDIR)/$(EXECUTABLE)
+#	@echo "Removing $(EXECUTABLE)"; rm $(INSTALLBINDIR)/$(EXECUTABLE);
 
 .PHONY: clean

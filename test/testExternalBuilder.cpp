@@ -10,8 +10,17 @@
 #include "External_Builder.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Testing ExternalBuilder Starting\n";
+    std::cout << "\nTesting ExternalBuilder Starting\n";
+    bool passedAllTests = true;
     
-    std::cout << "Testing ExternalBuilder Terminating\n";
+    
+    
+    if (passedAllTests == true) {
+        std::cout << "ExternalBuilder Passed All Tests" << std::endl;
+    } else {
+        std::cout << "ExternalBuilder Failed one or multiple Tests" << std::endl;
+    }
+
+    std::cout << "Testing ExternalBuilder Terminating\n\n";
     return 0;
 }

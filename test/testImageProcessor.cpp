@@ -10,8 +10,17 @@
 #include "ImageProcessor.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Testing ImageProcessor Starting\n";
+    std::cout << "\nTesting ImageProcessor Starting\n";
+    bool passedAllTests = true;
     
-    std::cout << "Testing ImageProcessor Terminating\n";
+    
+    
+    if (passedAllTests == true) {
+        std::cout << "ImageProcessor Passed All Tests" << std::endl;
+    } else {
+        std::cout << "ImageProcessor Failed one or multiple Tests" << std::endl;
+    }
+
+    std::cout << "Testing ImageProcessor Terminating\n\n";
     return 0;
 }

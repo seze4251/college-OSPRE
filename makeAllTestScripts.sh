@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 # Remove Old Executables
 echo "Removing Old Executables"

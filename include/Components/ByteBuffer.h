@@ -48,8 +48,8 @@ public:
     void printBuffer();
     
 private:
-    char *buf;
-    char *currentPos;
+    char* buf;
+    char* currentPos;
     int size;
     int capacity;
     
