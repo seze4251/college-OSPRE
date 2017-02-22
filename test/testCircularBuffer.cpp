@@ -6,6 +6,7 @@
 //
 
 #include <iostream>
+#include <unistd.h>
 
 #include "DataMessage.h"
 #include "CircularBuffer.h"
@@ -112,7 +113,7 @@ int main(int argc, char **argv) {
     }
     
     test = true;
-    msg1.timeStamp = -10;
+    msg1.satTime = -10;
     try {
         circBuf_Norm.put(&msg1);
     } catch (const char*) {
@@ -149,6 +150,8 @@ int main(int argc, char **argv) {
     
     // Find TimeStamp that is not in the buffer!
     test = true;
+    ::sleep(1);
+    
     try {
         DataMessage* msg1Point = circBuf_Norm.get(time(0));
     } catch (const char*) {
@@ -161,20 +164,20 @@ int main(int argc, char **argv) {
     }
     
     // Overflow Message Buffer
-    msg1.timeStamp = 1;
+    msg1.satTime = 1;
     circBuf_Small.put(&msg1);
     
-    msg1.timeStamp = 2;
+    msg1.satTime = 2;
     circBuf_Small.put(&msg1);
     
-    msg1.timeStamp = 3;
+    msg1.satTime = 3;
     circBuf_Small.put(&msg1);
     
     test = false;
     try {
-        DataMessage* msg1Point = circBuf_Norm.get(1);
-        msg1Point = circBuf_Norm.get(2);
-        msg1Point = circBuf_Norm.get(3);
+        DataMessage* msg1Point = circBuf_Small.get(1);
+        msg1Point = circBuf_Small.get(2);
+        msg1Point = circBuf_Small.get(3);
     } catch (const char*) {
         test = true;
     }
@@ -185,12 +188,14 @@ int main(int argc, char **argv) {
     }
     
     
-    msg1.timeStamp = 4;
+    msg1.satTime = 4;
     circBuf_Small.put(&msg1);
+    
+    //circBuf_Small.printBuffer();
     
     test = true;
     try {
-        DataMessage* msg1Point = circBuf_Norm.get(1);
+        DataMessage* msg1Point = circBuf_Small.get(1);
     } catch (const char*) {
         test = false;
     }
@@ -202,9 +207,9 @@ int main(int argc, char **argv) {
     
     test = false;
     try {
-        DataMessage* msg1Point = circBuf_Norm.get(2);
-        msg1Point = circBuf_Norm.get(3);
-        msg1Point = circBuf_Norm.get(4);
+        DataMessage* msg1Point = circBuf_Small.get(2);
+        msg1Point = circBuf_Small.get(3);
+        msg1Point = circBuf_Small.get(4);
     } catch (const char*) {
         test = true;
     }

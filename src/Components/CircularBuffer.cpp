@@ -28,30 +28,16 @@ CircularBuffer::CircularBuffer(int numDataMessage) {
     
     // Zero out all buffer loop timestamps
     for (it = bufferHead, j = 0; j < numDataMessage; it++, j++) {
-        it->timeStamp = 0;
+        it->satTime = 0;
     }
 }
 
 //Destructor
 CircularBuffer::~CircularBuffer() {
-    std::cout << "Starting CircularBuffer Destructor" << std::endl;
-  /*  try {
-        if (bufferHead) {
-            try {
-                delete bufferHead;
-            } catch (std::exception exception) {
-                std::cout << "Error: " << exception.what() << std::endl;
-            } catch (...) {
-                std::cout << "Error: Unkown type of exception caught" << std::endl;
-                throw;
-            }
+    if (bufferHead) {
+            delete[] bufferHead;
         }
-    } catch (std::exception) {
-        std::cout << "Cannot do if statement on buffer head" << std::endl;
-        throw;
-    } */
-    std::cout << "Ending CircularBuffer Destructor" << std::endl;
-}
+ }
 
 void CircularBuffer::put(DataMessage* msg) {
     // Check for Invalid Input
@@ -59,12 +45,12 @@ void CircularBuffer::put(DataMessage* msg) {
         throw "CircularBuffer::put() Data Message Input equals nullptr";
     }
     
-    if (msg->timeStamp < 0) {
+    if (msg->satTime < 0) {
         throw "CircularBuffer::put() Data Message has a negative timestap, invalid";
     }
     
     // At the end of the buffer?, Wrap around to begining
-    if ((bufferHead + buffSize * sizeof(DataMessage)) == insert) {
+    if ((bufferHead + buffSize) == insert) {
         insert = bufferHead;
     }
     
@@ -75,9 +61,9 @@ void CircularBuffer::put(DataMessage* msg) {
     insert++;
 }
 
-DataMessage* CircularBuffer::get(time_t timeStamp) {
+DataMessage* CircularBuffer::get(time_t satTime) {
     // Check Input
-    if (timeStamp <= 0) {
+    if (satTime <= 0) {
         throw "CircularBuffer::get() Invalid Time Stamp";
     }
     
@@ -87,7 +73,7 @@ DataMessage* CircularBuffer::get(time_t timeStamp) {
     int j;
     
     for (it = bufferHead, j = 0; j < buffSize; j++, it++) {
-        if (it->timeStamp == timeStamp) {
+        if (it->satTime == satTime) {
             foundMessage = true;
             break;
         }
@@ -108,8 +94,7 @@ void CircularBuffer::printBuffer() {
     std::cout << "Printing Circular Buffer Timestamps" << std::endl;
     
     for (it = bufferHead, j = 0; j < buffSize; j++, it++) {
-        std::cout << it->timeStamp << std::endl;
-        
+        std::cout << it->satTime << std::endl;
     }
     
     std::cout << "Finished Printing Ciruclar Buffer" << std::endl;

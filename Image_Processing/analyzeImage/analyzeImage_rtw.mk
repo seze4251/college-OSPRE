@@ -21,7 +21,7 @@
 # MAKEFILE                Name of this makefile
 # COMPUTER                Computer type. See the MATLAB "computer" command.
 
-PRODUCT_NAME              = bin/analyzeImage
+PRODUCT_NAME              = ../lib/analyzeImage
 MAKEFILE                  = analyzeImage_rtw.mk
 COMPUTER                  = GLNX
 MATLAB_ROOT               = .

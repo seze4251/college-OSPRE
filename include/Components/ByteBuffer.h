@@ -52,7 +52,6 @@ private:
     char* currentPos;
     int size;
     int capacity;
-    
 };
 
 #endif
