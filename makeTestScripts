@@ -18,53 +18,21 @@ BUILDDIR := build_test
 TARGETDIR := bin_test
 
 # Targets (12 executables)
-#testBuilder
-EXECUTABLE_testBuilder := testBuilder
-TARGET_testBuilder := $(TARGETDIR)/$(EXECUTABLE_testBuilder)
-
 #testByteBuffer
 EXECUTABLE_testByteBuffer := testByteBuffer
 TARGET_testByteBuffer := $(TARGETDIR)/$(EXECUTABLE_testByteBuffer)
-
-#testCameraController
-EXECUTABLE_testCameraController := testCameraController
-TARGET_testCameraController := $(TARGETDIR)/$(EXECUTABLE_testCameraController)
 
 #testCircularBuffer
 EXECUTABLE_testCircularBuffer := testCircularBuffer
 TARGET_testCircularBuffer := $(TARGETDIR)/$(EXECUTABLE_testCircularBuffer)
 
-#testExternalBuilder
-EXECUTABLE_testExternalBuilder := testExternalBuilder
-TARGET_testExternalBuilder := $(TARGETDIR)/$(EXECUTABLE_testExternalBuilder)
+#testInternalBuilderParser
+EXECUTABLE_testInternalBuilderParser := testInternalBuilderParser
+TARGET_testInternalBuilderParser := $(TARGETDIR)/$(EXECUTABLE_testInternalBuilderParser)
 
-#testExternalParser
-EXECUTABLE_testExternalParser := testExternalParser
-TARGET_testExternalParser := $(TARGETDIR)/$(EXECUTABLE_testExternalParser)
-
-#testGNC
-EXECUTABLE_testGNC := testGNC
-TARGET_testGNC := $(TARGETDIR)/$(EXECUTABLE_testGNC)
-
-#testImageProcessor
-EXECUTABLE_testImageProcessor := testImageProcessor
-TARGET_testImageProcessor := $(TARGETDIR)/$(EXECUTABLE_testImageProcessor)
-
-#testParser
-EXECUTABLE_testParser := testParser
-TARGET_testParser := $(TARGETDIR)/$(EXECUTABLE_testParser)
-
-#testScComms
-EXECUTABLE_testScComms := testScComms
-TARGET_testScComms := $(TARGETDIR)/$(EXECUTABLE_testScComms)
-
-#testSpacecraft
-EXECUTABLE_testSpacecraft := testSpacecraft
-TARGET_testSpacecraft := $(TARGETDIR)/$(EXECUTABLE_testSpacecraft)
-
-#testWatchDog
-EXECUTABLE_testWatchDog := testWatchDog
-TARGET_testWatchDog := $(TARGETDIR)/$(EXECUTABLE_testWatchDog)
+#testExternalBuilderParser
+EXECUTABLE_testExternalBuilderParser := testExternalBuilderParser
+TARGET_testExternalBuilderParser := $(TARGETDIR)/$(EXECUTABLE_testExternalBuilderParser)
 
 #
 # Main OBJS
@@ -99,63 +67,20 @@ $(TARGET_testByteBuffer): $(OBJECTS) $(MAINOBJ_DIR)/testByteBuffer.o
 	@mkdir -p $(TARGETDIR);
 	@echo "	 Linking $(TARGET_testByteBuffer)"; $(CC) $^ -o $(TARGET_testByteBuffer);
 
-
-#testCameraController
-$(TARGET_testCameraController): $(OBJECTS) $(MAINOBJ_DIR)/testCameraController.o
-	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testCameraController)"; $(CC) $^ -o $(TARGET_testCameraController);
-
-
 #testCircularBuffer
 $(TARGET_testCircularBuffer): $(OBJECTS) $(MAINOBJ_DIR)/testCircularBuffer.o
 	@mkdir -p $(TARGETDIR);
 	@echo "	 Linking $(TARGET_testCircularBuffer)"; $(CC) $^ -o $(TARGET_testCircularBuffer);
 
 #testExternalBuilder
-$(TARGET_testExternalBuilder): $(OBJECTS) $(MAINOBJ_DIR)/testExternalBuilder.o
+$(TARGET_testExternalBuilderParser): $(OBJECTS) $(MAINOBJ_DIR)/testExternalBuilderParser.o
 	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testExternalBuilder)"; $(CC) $^ -o $(TARGET_testExternalBuilder);
+	@echo "	 Linking $(TARGET_testExternalBuilderParser)"; $(CC) $^ -o $(TARGET_testExternalBuilderParser);
 
-#testExternalParser
-$(TARGET_testExternalParser): $(OBJECTS) $(MAINOBJ_DIR)/testExternalParser.o
+#testInternalBuilderParser
+$(TARGET_testInternalBuilderParser): $(OBJECTS) $(MAINOBJ_DIR)/testInternalBuilderParser.o
 	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testExternalParser)"; $(CC) $^ -o $(TARGET_testExternalParser);
-
-#testGNC
-$(TARGET_testGNC): $(OBJECTS) $(MAINOBJ_DIR)/testGNC.o
-	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testGNC)"; $(CC) $^ -o $(TARGET_testGNC); 
-
-#testImageProcessor
-$(TARGET_testImageProcessor): $(OBJECTS) $(MAINOBJ_DIR)/testImageProcessor.o
-	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testImageProcessor)"; $(CC) $^ -o $(TARGET_testImageProcessor);
-
-#testParser
-$(TARGET_testParser): $(OBJECTS) $(MAINOBJ_DIR)/testParser.o
-	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testParser)"; $(CC) $^ -o $(TARGET_testParser);
-
-#testScComms
-$(TARGET_testScComms): $(OBJECTS) $(MAINOBJ_DIR)/testScComms.o
-	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testScComms)"; $(CC) $^ -o $(TARGET_testScComms);
-
-#testSpacecraft
-$(TARGET_testSpacecraft): $(OBJECTS) $(MAINOBJ_DIR)/testSpacecraft.o
-	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testSpacecraft)"; $(CC) $^ -o $(TARGET_testSpacecraft);
-
-#testBuilder
-$(TARGET_testBuilder): $(OBJECTS) $(MAINOBJ_DIR)/testBuilder.o
-	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testBuilder)"; $(CC) $^ -o $(TARGET_testBuilder);
-
-#testWatchDog
-$(TARGET_testWatchDog): $(OBJECTS) $(MAINOBJ_DIR)/testWatchDog.o
-	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_testWatchDog)"; $(CC) $^ -o $(TARGET_testWatchDog);
-
+	@echo "	 Linking $(TARGET_testInternalBuilderParser)"; $(CC) $^ -o $(TARGET_testInternalBuilderParser);
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDLIST);
