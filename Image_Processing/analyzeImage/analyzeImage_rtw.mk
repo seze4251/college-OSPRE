@@ -165,7 +165,8 @@ MAKE_EXT            = .mk
 ## OUTPUT INFO
 ###########################################################################
 
-PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)/analyzeImage.lib
+#PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)analyzeImage.lib
+PRODUCT = ../lib/analyzeImage.lib
 PRODUCT_TYPE = "static-library"
 BUILD_TYPE = "Static Library"
 
