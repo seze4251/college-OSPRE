@@ -124,7 +124,8 @@ CFLAGS               = -c \
                        -O0
 CPPFLAGS             = -c \
                        -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -O2
+                       -O2 \
+                       -std=c++0x
 CPP_LDFLAGS          = -lrt -lpthread -ldl
 CPP_SHAREDLIB_LDFLAGS  = -shared  \
                          -lrt -lpthread -ldl

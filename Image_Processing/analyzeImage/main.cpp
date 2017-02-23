@@ -126,8 +126,8 @@ static void main_analyzeImage()
   argInit_736x1100x3_uint8_T(uv3);
   argInit_1x2_real_T(dv3);
 std::cout << "Starting Analyze Image Call" << std::endl;
- // analyzeImage(uv3, dv3, argInit_real_T(), centerPt_data, centerPt_size, &radius,
-   //            &numCirc);
+  analyzeImage(uv3, dv3, argInit_real_T(), centerPt_data, centerPt_size, &radius,
+               &numCirc);
 std::cout << "Finished Analyze Image Call" << std::endl;
 }
 
