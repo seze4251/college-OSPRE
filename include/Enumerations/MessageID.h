@@ -9,6 +9,8 @@
 #ifndef MESSAGEID_H
 #define MESSAGEID_H
 
+#include <iostream>
+
 enum MessageID {
     NA = -1,
     I_CaptureImageRequest = 1,

@@ -19,7 +19,7 @@ int main(int, char**) {
     std::cout << "CameraController Application Starting\n";
     CameraController controller(host, serverPort, readImageFile);
     
-    FILE* fid = controller.getLogFileID();
+    FILE* logFile = controller.getLogFileID();
     
     try {
         controller.open();

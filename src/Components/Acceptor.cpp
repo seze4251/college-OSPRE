@@ -5,7 +5,7 @@
 //  Created by Seth on 11/24/2016.
 //  Copyright © 2016 Seth. All rights reserved.
 //
-
+#include <iostream>
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -25,12 +25,16 @@ bool Acceptor::open(std::string hostName, int portNumber) {
         return true;
     }
     
+    std::cout << "core1" << std::endl;
     // Assign Inputs To Object Members
     this->port = portNumber;
     this->hostName = hostName;
     
+    std::cout << "core2" << std::endl;
     // Open Server Socket
     fd = openServerSocket(port);
+    
+    std::cout << "core3" << std::endl;
     
     if (fd == -1) {
         throw "Acceptor::open() Failure to Open Server Socket, Acceptor Exiting";

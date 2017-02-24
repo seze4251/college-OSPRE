@@ -66,9 +66,9 @@ private:
     
     // Log File
     FILE* logFile;
+
 };
 
 #endif
 
-// Connect to ScComms
 

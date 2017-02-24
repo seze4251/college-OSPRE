@@ -18,8 +18,9 @@ int main(int, char**) {
     std::cout << "ImageProcessor Application Starting\n";
     ImageProcessor proc(host, serverPort);
     
-    FILE* fid = proc.getLogFileID();
+    FILE* logFile = proc.getLogFileID();
     
+    std::cout << "made it here!!" << std::endl;
     try {
         proc.open();
         std::cout << "ImageProcessor Running\n";

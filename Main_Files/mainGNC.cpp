@@ -17,7 +17,7 @@ int main(int, char**) {
     std::cout << "GNC Application Starting\n";
     GNC gnc(host, serverPort);
     
-    FILE* fid = gnc.getLogFileID();
+    FILE* logFile = gnc.getLogFileID();
     
     try {
         gnc.open();

@@ -67,7 +67,7 @@ void GNC::open() {
     logFile = fopen(buffer, "a+");
     
     // Log Application Starting
-    fprintf(logFile, "GNC Application Started, Time = %f", time(0));
+    fprintf(logFile, "GNC Application Started, Time = %ld\n", time(0));
     
     // Set Timeout to 1 minute
     setTimeoutTime(10, 0);

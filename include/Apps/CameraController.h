@@ -78,4 +78,3 @@ private:
 
 #endif
 
-// Camera Controller Connect to ScComms, WatchDog and IP

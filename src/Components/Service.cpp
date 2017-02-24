@@ -6,6 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
+#include "iostream"
 #include <string>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -38,11 +39,15 @@ int Service::openServerSocket(int portNumber) {
     sprintf(buf, "%d", portNumber);
     int s = ::getaddrinfo(NULL, buf, &hints, &result);
     
+    std::cout << "weee1" << std::endl;
+    
     if (s != 0) {
-        char error[50] =sprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+        std::cout << "weee2" << std::endl;
+        char error[50];
+        sprintf(error, "getaddrinfo: %s\n", gai_strerror(s));
         throw error;
     }
-    
+    std::cout << "weee3" << std::endl;
     // Bind Server Socket
     int sfd = -1;
     for (rp = result; rp != NULL; rp = rp->ai_next) {
@@ -64,15 +69,22 @@ int Service::openServerSocket(int portNumber) {
         close(sfd);
     }
     
+    std::cout << "weee4" << std::endl;
     // Check to make sure bind to address succeeded
     if (sfd == -1) {
+        std::cout << "weee4.5" << std::endl;
         throw "Open Server Socket Failed";
     }
     
+    std::cout << "weee5" << std::endl;
     freeaddrinfo(result);
+    
+    std::cout << "weee6" << std::endl;
+    std::cout << "SFD = " << sfd << std::endl;
     
     // Listen on Server Socket for incomming connections
     if (listen(sfd, 4) == -1) {
+        std::cout << "weee6.5" << std::endl;
         throw "Listen Failed on Server Socket";
     }
     
@@ -96,7 +108,8 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
     int s = ::getaddrinfo(serverHosts, buf, &hints, &result);
     
     if (s != 0) {
-        char error[50] =sprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+        char error[50];
+        sprintf(error, "getaddrinfo: %s\n", gai_strerror(s));
         throw error;
     }
     

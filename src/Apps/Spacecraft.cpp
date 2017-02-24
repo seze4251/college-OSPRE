@@ -54,7 +54,7 @@ void Spacecraft::open() {
     logFile = fopen(buffer, "a+");
     
     // Log Application Starting
-    fprintf(logFile, "Spacecraft Application Started, Time = %f", time(0));
+    fprintf(logFile, "Spacecraft Application Started, Time = %ld\n", time(0));
     
     // Set Timeout to half a second
     setTimeoutTime(0, 500000);
@@ -136,9 +136,8 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
             break;
             
         default:
-            fprintf(logFile, "Error: Unexpected Message Type Recieved, Closing Client Connection...\n");
             service->closeConnection();
-            break;
+            throw "Error: Unexpected Message Type Recieved, Closing Client Connection";
     }
 }
 

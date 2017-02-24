@@ -55,7 +55,7 @@ void WatchDog::open() {
     logFile = fopen(buffer, "a+");
     
     // Log Application Starting
-    fprintf(logFile, "WatchDog Application Started, Time = %f", time(0));
+    fprintf(logFile, "WatchDog Application Started, Time = %ld\n", time(0));
     
     // Set Timeout
     setTimeoutTime(1, 0);

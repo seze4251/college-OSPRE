@@ -19,7 +19,7 @@ int main(int, char**) {
     std::cout << "WatchDog Application Starting\n";
     WatchDog dog(host, serverPort);
     
-    FILE* fid = dog.getLogFileID();
+    FILE* logFile = dog.getLogFileID();
     
     try {
         dog.open();

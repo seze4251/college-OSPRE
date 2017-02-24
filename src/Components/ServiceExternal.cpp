@@ -167,7 +167,7 @@ void ServiceExternal::sendMessage(Message_External* msg) {
             break;
             
         default:
-            throw << "ServiceExternal::sendMessage() msgID unknown, process exiting";
+            throw "ServiceExternal::sendMessage() msgID unknown, process exiting";
     }
     
     // Register Intrest in Write

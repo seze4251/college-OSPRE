@@ -63,7 +63,7 @@ void ScComms::open() {
     logFile = fopen(buffer, "a+");
     
     // Log Application Starting
-    fprintf(logFile, "ScComms Application Started, Time = %f", time(0));
+    fprintf(logFile, "ScComms Application Started, Time = %ld", time(0));
     
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
@@ -124,8 +124,7 @@ FILE* ScComms::getLogFileID() {
 void ScComms::handleExternalConnection(int fd) {
     // File Descriptors less than 0 are invalid
     if (fd < 0) {
-        fprintf(logFile, "Error: handleExternalConnection() Invalid File Descriptor, Throwing Exception\n");
-        throw "handleExternalConnection() Invalid File Descriptor"
+        throw "handleExternalConnection() Invalid File Descriptor";
     }
     
     // If spacecraft hasn't connected before, allocate memory for Service External
@@ -161,8 +160,8 @@ void ScComms::handleExternalMessage(Message_External* msg, ServiceExternal* serv
             break;
             
         default:
-            fprintf(logFile, "Error: ScComms::handleExternalMessage(): Unknown Message Type Recived, Closing Connection\n");
             service->closeConnection();
+            throw "Error: ScComms::handleExternalMessage(): Unknown Message Type Recived, Closing Connection";
     }
 }
 

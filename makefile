@@ -106,7 +106,7 @@ $(TARGET_CameraController): $(OBJECTS) $(MAINOBJ_DIR)/mainCameraController.o
 $(TARGET_IMAGEPROC): $(OBJECTS) $(MAINOBJ_DIR)/mainImageProcessor.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC) ./lib/analyzeImage.lib
+	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC)
 
 #GNC
 $(TARGET_GNC): $(OBJECTS) $(MAINOBJ_DIR)/mainGNC.o

@@ -62,7 +62,7 @@ int Server::run() {
     while (terminateFlag == false) {
         tempTimeVal = t_val;
         if (sel.select(&tempTimeVal) == -1) {
-            throw "Server::run() select() error"
+            throw "Server::run() select() error";
             break;
         }
         

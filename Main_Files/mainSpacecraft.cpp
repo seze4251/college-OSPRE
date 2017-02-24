@@ -18,7 +18,7 @@ int main(int, char**) {
     std::cout << "Spacecraft Application Starting\n";
     Spacecraft sc(host, serverPort);
     
-    FILE* fid = sc.getLogFileID();
+    FILE* logFile = sc.getLogFileID();
     
     try {
         sc.open();

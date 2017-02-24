@@ -87,5 +87,5 @@ private:
 
 #endif
 
-// GNC Connect to WatchDog, IP and SC Comms
+
 

@@ -1,0 +1,1538 @@
+Camera Controller Application Started, Time = 1487919112
+Connection: Server Socket Opened
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDoCamera Controller Application Started, Time = 1487919317
+Connection: Server Socket Opened
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected tCamera Controller Application Started, Time = 1487919542
+Connection: Server Socket Opened
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: DataMessage from ScComms
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Received Message: ProcessHealthAndStatusRequest from WatchDog
+Sent Message: StatusAndHealthResponse to WatchDog
+Connection: Connected to ScComms
+Connection: Connected to Image Processing
+Connection: Connected to ScComms
+Connection: Connected to Im

@@ -11,6 +11,7 @@
 #include "CameraController.h"
 #include "Service.h"
 
+
 CameraController::CameraController(std::string hostName, int localPort, bool readImageFile) : ServerInternal(hostName, localPort, P_CameraController), pollTime(0), readImageFile(readImageFile) {
     setAppl(this);
     
@@ -58,7 +59,7 @@ void CameraController::open() {
     logFile = fopen(buffer, "a+");
     
     // Log Application Starting
-    fprintf(logFile, "WatchDog Application Started, Time = %f", time(0));
+    fprintf(logFile, "Camera Controller Application Started, Time = %ld\n", time(0));
     
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
