@@ -1,0 +1,14 @@
+sum.cpp.o: sum.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h rt_defines.h \
+ analyzeImage_types.h sum.h
+
+rt_nonfinite.h:
+
+rtwtypes.h:
+
+analyzeImage.h:
+
+rt_defines.h:
+
+analyzeImage_types.h:
+
+sum.h:
