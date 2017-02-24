@@ -1,4 +1,5 @@
 //
+//
 //  ByteBuffer.cpp
 //  ByteBuffer
 //
@@ -7,6 +8,7 @@
 //
 #include <cstring>
 #include <string>
+#include <string.h>
 #include <iostream>
 
 #include "ByteBuffer.h"

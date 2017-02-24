@@ -124,7 +124,8 @@ CFLAGS               = -c \
                        -O0
 CPPFLAGS             = -c \
                        -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -O2
+                       -O2 \
+                       -std=c++0x
 CPP_LDFLAGS          = -lrt -lpthread -ldl
 CPP_SHAREDLIB_LDFLAGS  = -shared  \
                          -lrt -lpthread -ldl
@@ -164,7 +165,8 @@ MAKE_EXT            = .mk
 ## OUTPUT INFO
 ###########################################################################
 
-PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)/analyzeImage.lib
+#PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)analyzeImage.lib
+PRODUCT = ../lib/analyzeImage.lib
 PRODUCT_TYPE = "static-library"
 BUILD_TYPE = "Static Library"
 
