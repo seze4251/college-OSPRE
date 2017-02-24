@@ -187,7 +187,8 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
 }
 
 void GNC::readReferenceTrajectory() {
-    fprintf(logFile, "Need To Implement: readReferenceTrajectory\n");
+    std::cout << "Need To Implement: readReferenceTrajectory" << std::endl;
+    //fprintf(logFile, "Need To Implement: readReferenceTrajectory\n");
 }
 
 // *******************************

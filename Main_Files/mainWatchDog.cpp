@@ -23,6 +23,7 @@ int main(int, char**) {
     
     try {
         dog.open();
+        logFile = dog.getLogFileID();
         std::cout << "WatchDog Running\n";
         dog.run();
         

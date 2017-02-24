@@ -19,10 +19,11 @@ int main(int, char**) {
     std::cout << "ScComms Application Starting\n";
     ScComms comms(host, serverPort, externalPort);
     
-    FILE* logFile = comms.getLogFileID();
+    FILE* logFile;
     
     try {
         comms.open();
+        logFile = comms.getLogFileID();
         std::cout << "ScComms Running\n";
         comms.run();
         

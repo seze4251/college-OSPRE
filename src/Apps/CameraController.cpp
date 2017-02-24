@@ -103,17 +103,21 @@ void CameraController::handleTimeout() {
     }
     
     //Connect to ScComms
-    if(connectToAppl(hostName, 7000, &scComms) == true) {
-        fprintf(logFile, "Connection: Connected to ScComms\n");
-    } else {
-        fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+    if (scComms->isConnected() == false) {
+        if(connectToAppl(hostName, 7000, &scComms) == true) {
+            fprintf(logFile, "Connection: Connected to ScComms\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+        }
     }
     
     // Connect to ImageProcessing
-    if(connectToAppl(hostName, 8000, &imageProc) == true) {
-        fprintf(logFile, "Connection: Connected to Image Processing\n");
-    } else {
-        fprintf(logFile, "Error: Unable to Connect to ImageProcessing\n");
+    if (imageProc->isConnected() == false) {
+        if(connectToAppl(hostName, 8000, &imageProc) == true) {
+            fprintf(logFile, "Connection: Connected to Image Processing\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to ImageProcessing\n");
+        }
     }
     
     // Check to make sure that Camera is still available <- ping camera
@@ -130,7 +134,7 @@ FILE* CameraController::getLogFileID() {
 // ********************************
 //TODO: Needs Implementation
 bool CameraController::canCaptureImage(CaptureImageRequest* msg) {
-fprintf(logFile, "TODO: Need to Implement canCaptureImage()\n");
+    fprintf(logFile, "TODO: Need to Implement canCaptureImage()\n");
     return false;
 }
 

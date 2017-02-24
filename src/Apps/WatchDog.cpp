@@ -116,31 +116,39 @@ void WatchDog::handleTimeout() {
     }
     
     // Connect to ScComms
-    if(connectToAppl(hostName, 7000, &scComms) == true) {
-        fprintf(logFile, "Connection: Connected to ScComms\n");
-    } else {
-        fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+    if (scComms->isConnected() == false) {
+        if(connectToAppl(hostName, 7000, &scComms) == true) {
+            fprintf(logFile, "Connection: Connected to ScComms\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+        }
     }
     
     // Connect to GNC
-    if(connectToAppl(hostName, 9000, &gnc) == true) {
-        fprintf(logFile, "Connection: Connected to GNC\n");
-    } else {
-        fprintf(logFile, "Error: Unable to Connect to GNC\n");
+    if (gnc->isConnected() == false) {
+        if(connectToAppl(hostName, 9000, &gnc) == true) {
+            fprintf(logFile, "Connection: Connected to GNC\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to GNC\n");
+        }
     }
     
     // Connect to Image Processor
-    if(connectToAppl(hostName, 8000, &imageProc) == true) {
-        fprintf(logFile, "Connection: Connected to Image Processor\n");
-    } else {
-        fprintf(logFile, "Error: Unable to Connect to ImageProcessor\n");
+    if (imageProc->isConnected() == false) {
+        if(connectToAppl(hostName, 8000, &imageProc) == true) {
+            fprintf(logFile, "Connection: Connected to Image Processor\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to ImageProcessor\n");
+        }
     }
     
     // Connect to Camera Controller
-    if(connectToAppl(hostName, 10000, &cameraControl) == true) {
-        fprintf(logFile, "Connection: Connected to CameraController\n");
-    } else {
-        fprintf(logFile, "Error: Unable to Connect to CameraController\n");
+    if (cameraControl->isConnected() == false) {
+        if(connectToAppl(hostName, 10000, &cameraControl) == true) {
+            fprintf(logFile, "Connection: Connected to CameraController\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to CameraController\n");
+        }
     }
     
     time_t currentTime = time(NULL);
@@ -185,7 +193,7 @@ void WatchDog::handleTimeout() {
             } else {
                 ospreStatusMessage->totalHealth = PE_NotHealthy;
             }
-
+            
             scComms->sendMessage(ospreStatusMessage);
             fprintf(logFile, "Sent Message: OSPRE Status to ScComms\n");
             
@@ -279,37 +287,37 @@ void WatchDog::handleDataMessage(DataMessage* msg, ServiceInternal* service) {}
 //
 // ********************************
 void WatchDog::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: Request, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: Request, Closing Connection\n");
     service->closeConnection();
     
 }
 void WatchDog::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: ImageRequest, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: ImageRequest, Closing Connection\n");
     service->closeConnection();
 }
 
 void WatchDog::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: ImageAdjustment, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: ImageAdjustment, Closing Connection\n");
     service->closeConnection();
 }
 void WatchDog::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: ImageMessage, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: ImageMessage, Closing Connection\n");
     service->closeConnection();
 }
 void WatchDog::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: OSPREStatus, Closing Connection\n");    service->closeConnection();
+    fprintf(logFile, "Error: Invalid Message Recived: OSPREStatus, Closing Connection\n");    service->closeConnection();
 }
 void WatchDog::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: PointingRequest, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: PointingRequest, Closing Connection\n");
     service->closeConnection();
 }
 void WatchDog::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
-fprintf(logFile, "Error: Invalid Message Recived: SolutionMessage, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: SolutionMessage, Closing Connection\n");
     service->closeConnection();
 }
 
 void WatchDog::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: ProcessedImageMessage, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: ProcessedImageMessage, Closing Connection\n");
     service->closeConnection();
 }
 

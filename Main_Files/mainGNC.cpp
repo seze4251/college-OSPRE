@@ -17,10 +17,11 @@ int main(int, char**) {
     std::cout << "GNC Application Starting\n";
     GNC gnc(host, serverPort);
     
-    FILE* logFile = gnc.getLogFileID();
+    FILE* logFile;
     
     try {
         gnc.open();
+        logFile = gnc.getLogFileID();
         std::cout << "GNC Running\n";
         gnc.run();
         

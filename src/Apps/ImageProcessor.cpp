@@ -80,7 +80,7 @@ void ImageProcessor::open() {
             fprintf(logFile, "Error: Unable to Open Acceptor, Exiting...\n");
             exit(-1);
         }
-    
+        
         fprintf(logFile, "Connection: Server Socket Opened\n");
     }
     
@@ -107,10 +107,12 @@ void ImageProcessor::handleTimeout() {
     }
     
     //Connect to GNC
-    if(connectToAppl(hostName, 9000, &gnc) == true) {
-        fprintf(logFile, "Connection: Connected to GNC\n");
-    } else {
-        fprintf(logFile, "Error: Unable to Connect to GNC\n");
+    if (gnc->isConnected() == false) {
+        if(connectToAppl(hostName, 9000, &gnc) == true) {
+            fprintf(logFile, "Connection: Connected to GNC\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to GNC\n");
+        }
     }
 }
 
@@ -177,9 +179,9 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     }
     
     try {
-    processImage(msg);
+        processImage(msg);
         if (test) {
-        throw std::exception();
+            throw std::exception();
         }
     } catch(std::exception &exception) {
         fprintf(logFile, "Error: HandleImageMessage() Exception Caught: %s\n", exception.what());
@@ -202,36 +204,36 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
 //
 // ********************************
 void ImageProcessor::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: Response, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: Response, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: CaptureImageRequest, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: CaptureImageRequest, Closing Connection\n");
     service->closeConnection();
 }
 
 void ImageProcessor::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: DataMessage, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: DataMessage, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: ImageAdjustment, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: ImageAdjustment, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: OSPREStatus, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: OSPREStatus, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: PointingRequest, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: PointingRequest, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
-fprintf(logFile, "Error: Invalid Message Recived: SolutionMessage, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: SolutionMessage, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
-fprintf(logFile, "Error: Invalid Message Recived: ProcessedImageMessage, Closing Connection\n");
+    fprintf(logFile, "Error: Invalid Message Recived: ProcessedImageMessage, Closing Connection\n");
     service->closeConnection();
 }
 
