@@ -10,6 +10,7 @@
 #ifndef CAPTUREIMAGEREQUEST_H
 #define CAPTUREIMAGEREQUEST_H
 #include <iostream>
+#include <cstring>
 
 #include "Message.h"
 

@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+
 #include "Parser.h"
 
 Parser::Parser(ByteBuffer &bufParam) : buf(bufParam) {

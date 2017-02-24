@@ -14,7 +14,12 @@
 UNAME_S := $(shell uname -s)
 
 # CC
-CC := g++
+ifeq ($(UNAME_S),Darwin)
+  CC := clang++ -arch x86_64
+else
+  CC := g++
+endif
+
 
 # Folders
 SRCDIR := src
@@ -65,21 +70,24 @@ BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 CFLAGS := -c #-Wall -Wextra
 INC := -I include $(INCLIST) -I /usr/local/include
 
-# Platform Specific Compiler Flags
-CFLAGS += -std=gnu++11 -O2 # -fPIC
 
-#ifeq ($(UNAME_S),Linux)
-#	CFLAGS += -std=gnu++11 -O2 # -fPIC
-#
-#else
-#	CFLAGS += -std=c++11 -stdlib=libc++ -O2
-#endif
+# Platform Specific Compiler Flags
+ifeq ($(UNAME_S),Linux)
+    CFLAGS += -std=gnu++11 -O2 # -fPIC
+
+    # PostgreSQL Special
+    PG_VER := 9.3
+    INC += -I /usr/pgsql-$(PG_VER)/include
+    LIB += -L /usr/pgsql-$(PG_VER)/lib
+else
+  CFLAGS += -std=c++11 -stdlib=libc++ -O2
+endif
 
 #WATCHDOG
 $(TARGET_WatchDog): $(OBJECTS) $(MAINOBJ_DIR)/mainWatchDog.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_WatchDog)\n"; $(CC) $^ -o $(TARGET_WatchDog) 
+	@echo "	 Linking $(TARGET_WatchDog)\n"; $(CC) $^ -o $(TARGET_WatchDog)
 
 
 #SCCOMMS
@@ -98,13 +106,13 @@ $(TARGET_CameraController): $(OBJECTS) $(MAINOBJ_DIR)/mainCameraController.o
 $(TARGET_IMAGEPROC): $(OBJECTS) $(MAINOBJ_DIR)/mainImageProcessor.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC)
+	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC) ./lib/analyzeImage.lib
 
 #GNC
 $(TARGET_GNC): $(OBJECTS) $(MAINOBJ_DIR)/mainGNC.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_GNC)\n"; $(CC) $^ -o $(TARGET_GNC)
+	@echo "	 Linking $(TARGET_GNC)\n"; $(CC) $^ -o $(TARGET_GNC) 
 
 #SPACECRAFT
 $(TARGET_SPACECRAFT): $(OBJECTS) $(MAINOBJ_DIR)/mainSpacecraft.o
@@ -120,7 +128,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 
 # Need to have all dependencies mapped out for building 
 $(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(SRCEXT)
-	@mkdir -p $(BUILDLIST)
+	@mkdir -p $(MAINOBJ_DIR)
 	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:

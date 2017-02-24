@@ -5,15 +5,16 @@
 //  Created by Seth on 11/10/2016.
 //  Copyright © 2016 Seth. All rights reserved.
 //
-
-#include "Selector.h"
 #include <iostream>
+#include <cstring>
 #include <string>
 #include <errno.h>
 #include <sys/select.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include "Selector.h"
 #include "Service.h"
 
 Selector::Selector() {

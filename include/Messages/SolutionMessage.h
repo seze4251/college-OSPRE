@@ -10,6 +10,7 @@
 #ifndef SOLUTIONMESSAGE_H
 #define SOLUTIONMESSAGE_H
 
+#include <cstring>
 #include <vector>
 #include <iostream>
 

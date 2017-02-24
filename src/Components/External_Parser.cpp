@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <cstring>
 
 #include "MessageSizes.h"
 #include "External_Parser.h"
