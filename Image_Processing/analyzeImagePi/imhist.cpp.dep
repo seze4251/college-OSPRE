@@ -1,0 +1,14 @@
+imhist.cpp.o: imhist.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h \
+ rt_defines.h analyzeImage_types.h imhist.h
+
+rt_nonfinite.h:
+
+rtwtypes.h:
+
+analyzeImage.h:
+
+rt_defines.h:
+
+analyzeImage_types.h:
+
+imhist.h:
