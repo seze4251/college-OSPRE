@@ -5,3 +5,4 @@ bin_test/
 build_test/
 Image_Processing/analyzeImage/*.o
 Image_Processing/analyzeImage/*.dep
+log/

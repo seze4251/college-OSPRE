@@ -1136,4 +1136,209 @@ Connection: Connected to Image Processor
 Connection: Connected to CameraController
 Connection: Connected to ScComms
 Error: Unable to Connect to GNC
-Connection: Connected to Image Proce
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Sent Message: ProcessHealthAndStatusRequest to ScComms
+Sent Message: ProcessHealthAndStatusRequest to ImageProcessor
+Sent Message: ProcessHealthAndStatusRequest to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Received Message: ProcessHealthAndStatusResponse from ScComms
+Received Message: ProcessHealthAndStatusResponse from CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Received Message: ProcessHealthAndStatusResponse from ImageProcessor
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Sent Message: OSPRE Status to ScComms
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Sent Message: ProcessHealthAndStatusRequest to ScComms
+Sent Message: ProcessHealthAndStatusRequest to ImageProcessor
+Sent Message: ProcessHealthAndStatusRequest to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Received Message: ProcessHealthAndStatusResponse from ScComms
+Received Message: ProcessHealthAndStatusResponse from CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Received Message: ProcessHealthAndStatusResponse from ImageProcessor
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Sent Message: OSPRE Status to ScComms
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Sent Message: ProcessHealthAndStatusRequest to ScComms
+Sent Message: ProcessHealthAndStatusRequest to ImageProcessor
+Sent Message: ProcessHealthAndStatusRequest to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Received Message: ProcessHealthAndStatusResponse from ScComms
+Received Message: ProcessHealthAndStatusResponse from CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Received Message: ProcessHealthAndStatusResponse from ImageProcessor
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Sent Message: OSPRE Status to ScComms
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Sent Message: ProcessHealthAndStatusRequest to ScComms
+Sent Message: ProcessHealthAndStatusRequest to ImageProcessor
+Sent Message: ProcessHealthAndStatusRequest to CameraController
+Connection: Connected to ScComms
+Error: Unable to Connect to GNC
+Connection: Connected to Image Processor
+Connection: Connected to CameraController
+Received Message: ProcessHealthAndStatusResponse from ScComms
+Received Message: ProcessHealthAndStatusResponse from CameraController
+Connection: Connected to ScComms
+Error: Unable to Connec
