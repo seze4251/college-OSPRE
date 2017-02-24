@@ -7,7 +7,6 @@
 //
 
 
-// Right now make this specific for Data Messages
 #ifndef CIRCULARBUFFER_H
 #define CIRCULARBUFFER_H
 

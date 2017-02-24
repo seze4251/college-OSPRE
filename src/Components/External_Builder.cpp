@@ -6,13 +6,10 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-#include <iostream>
-
 #include "External_Builder.h"
 #include "MessageSizes.h"
 
 External_Builder::External_Builder(ByteBuffer& bufParam) : buf(bufParam) {
-    std::cout << "External_Builder Constructor" << std::endl;
     sequence = 0;
 }
 

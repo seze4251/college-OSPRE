@@ -10,6 +10,7 @@
 #ifndef DATAMESSAGE_H
 #define DATAMESSAGE_H
 #include <iostream>
+#include <cstring>
 
 #include "Message.h"
 

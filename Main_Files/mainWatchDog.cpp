@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <exception>
+#include <stdio.h>
 
 #include "WatchDog.h"
 
@@ -18,22 +19,28 @@ int main(int, char**) {
     std::cout << "WatchDog Application Starting\n";
     WatchDog dog(host, serverPort);
     
+    FILE* fid = dog.getLogFileID();
+    
     try {
         dog.open();
-        std::cout << "WatchDog Initalized\n";
+        std::cout << "WatchDog Running\n";
         dog.run();
         
     } catch (const char* exception) {
-        std::cerr << "WatchDog: Error: " << exception << std::endl;
+        fprintf(logFile, "Error: Const Char* Exception Caught: %s\n", exception);
         
     } catch(std::exception &exception) {
-        std::cerr << "WatchDog: Standard exception: " << exception.what() << '\n';
+        fprintf(logFile, "Error: Standard Exception Caught: %s\n", exception.what());
         
     } catch (...) {
-        std::cout << "WatchDog: Exception of unknown type caught" << std::endl;
+        fprintf(logFile, "Error: Unknown Type Of Exception Caught, Application Terminating \n");
         throw;
     }
     
+    fprintf(logFile, "Application Terminating \n");
     std::cout << "WatchDog Application Terminating\n";
     return 0;
 }
+
+
+

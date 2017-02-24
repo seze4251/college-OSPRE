@@ -6,13 +6,12 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-#include <iostream>
+#include <cstring>
 
 #include "MessageSizes.h"
 #include "External_Parser.h"
 
 External_Parser::External_Parser(ByteBuffer &bufParam) : buf(bufParam), messageHeader(0, NA) {
-    std::cout << "External_Parser Constructor" << std::endl;
     data = nullptr;
     status = nullptr;
     pointing = nullptr;
@@ -43,51 +42,39 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
     
     // If there is not a full header + message ID, do not parse header
     if (buf.used() < 10 ) {
-       // std::cout << "External_Parser::parseMessage no header left in buffer" << std::endl;
         return nullptr;
     }
     
     buf.get(messageHeader.header.bytes, EXTERNAL_HEADER_MESSAGE_SIZE);
     messageID = (MessageID) buf.getInt();
     
-    std::cout<< "buf.used() = " << buf.used() << " 1+packetDataLength = " << (1 + messageHeader.header.header_struct.packetDataLength - sizeof(int)) << std::endl;
-    
     // If there is a partial Message, rewind buffer and return null ptr
     if (buf.used() < (1 + messageHeader.header.header_struct.packetDataLength - sizeof(int)) ) {
-        std::cout << "External_Parser::parseMessage: Partial Message, Rewinding Buffer" << std::endl;
         buf.rewind(10);
         *partialMessage = true;
         return nullptr;
     }
     
-    
     Message_External* msg = nullptr;
-    
-    std::cout << "External_Parser::parseMessage() starting Message ID switch Statement" << std::endl;
     
     switch (messageID) {
         case E_OSPREStatus:
             msg = parseExternal_OSPREStatus();
-            std::cout << "External_Parser::parseMessage() OSPREStatus" << std::endl;
             break;
             
         case E_PointingRequest:
             msg = parseExternal_PointingRequest();
-            std::cout << "External_Parser::parseMessage() Pointing Request" << std::endl;
             break;
             
         case E_SpacecraftDataMessage:
             msg = parseExternal_DataMessage();
-            std::cout << "External_Parser::parseMessage() Data Message" << std::endl;
             break;
             
         case E_SolutionMessage:
             msg = parseExternal_SolutionMessage();
-            std::cout << "External_Parser::parseMessage() Solution Message" << std::endl;
             break;
             
         default:
-            std::cerr << "External_Parser::parseMessage(): Unknown Message Type Recived: " << messageID << std::endl;
             throw "External_Parser::parseMessage() Unknown message type recived";
     }
     
@@ -137,8 +124,6 @@ Message_External* External_Parser::parseExternal_OSPREStatus() {
     status->iden = messageID;
     status->totalHealth = (ProcessError) buf.getInt();
     status->numProblemProcesses = buf.getInt();
-    
-//    std::cout << "Message Body = " << messageBody << "packetDataLength" << messageHeader.header.header_struct.packetDataLength << std::endl;
     
     for (int i = 0; i < status->numProblemProcesses; i++) {
         status->pID.push_back((ProcessID) buf.getInt());

@@ -4,7 +4,7 @@
 //  Created by Seth on 11/24/2016.
 //  Copyright © 2016 Seth. All rights reserved.
 //
-
+#include <stdio.h>
 #include <unistd.h>
 #include <iostream>
 #include <exception>
@@ -19,22 +19,25 @@ int main(int, char**) {
     std::cout << "CameraController Application Starting\n";
     CameraController controller(host, serverPort, readImageFile);
     
+    FILE* fid = controller.getLogFileID();
+    
     try {
         controller.open();
-        std::cout << "CameraController Initalized\n";
+        std::cout << "CameraController Running\n";
         controller.run();
         
     } catch (const char* exception) {
-        std::cerr << "CameraController: Error: " << exception << std::endl;
+        fprintf(logFile, "Error: Const Char* Exception Caught: %s\n", exception);
         
     } catch(std::exception &exception) {
-        std::cerr << "CameraController: Standard exception: " << exception.what() << '\n';
+fprintf(logFile, "Error: Standard Exception Caught: %s\n", exception.what());
         
     } catch (...) {
-        std::cout << "CameraController: Exception of unknown type caught" << std::endl;
+        fprintf(logFile, "Error: Unknown Type Of Exception Caught, Application Terminating \n");
         throw;
     }
     
+    fprintf(logFile, "Application Terminating \n");
     std::cout << "CameraController Application Terminating\n";
     return 0;
 }

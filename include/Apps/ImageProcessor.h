@@ -13,7 +13,7 @@
 #include <string>
 #include <ctime>
 #include <vector>
-
+#include <stdio.h>
 
 #include "ServerInternal.h"
 #include "ProcessID.h"
@@ -45,7 +45,11 @@ public:
     virtual void handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service);
     virtual void handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service);
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
-    virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);    
+    virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
+    
+    // Logging
+    FILE* getLogFileID();
+    
 private:
     time_t pollTime;
     ServiceInternal* gnc;
@@ -62,6 +66,9 @@ private:
     // TEMP TEMP TEMP
     bool test;
     // TEMP TEMP TEMP
+    
+    // Log File
+    FILE* logFile;
 };
 
 #endif

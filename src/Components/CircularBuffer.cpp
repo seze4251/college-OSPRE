@@ -6,6 +6,7 @@
 //  Copyright © 2017 Seth. All rights reserved.
 //
 
+#include <cstring>
 #include <string.h>
 #include <iostream>
 #include <exception>

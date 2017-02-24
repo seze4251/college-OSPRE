@@ -11,6 +11,7 @@
 #define EXTERNALDATAMESSAGE_H
 
 #include <ctime>
+#include <cstring>
 
 #include "Message_External.h"
 

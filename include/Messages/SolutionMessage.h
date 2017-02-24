@@ -6,10 +6,10 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-
 #ifndef SOLUTIONMESSAGE_H
 #define SOLUTIONMESSAGE_H
 
+#include <cstring>
 #include <vector>
 #include <iostream>
 

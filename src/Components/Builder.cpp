@@ -7,15 +7,10 @@
 //
 
 #include "Builder.h"
-#include <iostream>
 
-Builder::Builder(ByteBuffer& bufParam) : buf(bufParam) {
-    std::cout << "Builder Constructor" << std::endl;
-}
+Builder::Builder(ByteBuffer& bufParam) : buf(bufParam) {}
 
-Builder::~Builder() {
-    
-}
+Builder::~Builder() {}
 
 // Current Message Header
 // int Message ID

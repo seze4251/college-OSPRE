@@ -10,6 +10,8 @@
 #ifndef EXTERNAL_SOLUTIONMESSAGE_H
 #define EXTERNAL_SOLUTIONMESSAGE_H
 
+#include <cstring>
+
 #include "Message_External.h"
 
 class External_SolutionMessage : public Message_External {

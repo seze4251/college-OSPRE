@@ -25,7 +25,6 @@
 Server* Server::appl;
 
 Server::Server() {
-    std::cout << "Server Constructor called" << std::endl;
     signal(SIGPIPE, SIG_IGN);
     t_val.tv_sec = 5;
     t_val.tv_usec = 0;
@@ -36,7 +35,6 @@ Server::~Server() {
 }
 
 Selector& Server::getSelector() {
-//    std::cout << "getSelector \n";
     return sel;
 }
 
@@ -64,7 +62,7 @@ int Server::run() {
     while (terminateFlag == false) {
         tempTimeVal = t_val;
         if (sel.select(&tempTimeVal) == -1) {
-            std::cerr << "Server::run() select() error, exiting" << std::endl;
+            throw "Server::run() select() error"
             break;
         }
         
