@@ -6,7 +6,6 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-
 #ifndef SOLUTIONMESSAGE_H
 #define SOLUTIONMESSAGE_H
 

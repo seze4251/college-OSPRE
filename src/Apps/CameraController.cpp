@@ -6,12 +6,12 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 #include <iostream>
+#include <stdio.h>
 
 #include "CameraController.h"
 #include "Service.h"
 
 CameraController::CameraController(std::string hostName, int localPort, bool readImageFile) : ServerInternal(hostName, localPort, P_CameraController), pollTime(0), readImageFile(readImageFile) {
-    std::cout<< "CameraController Constructor called" << std::endl;
     setAppl(this);
     
     // Set pointers to services to NULL
@@ -24,12 +24,17 @@ CameraController::CameraController(std::string hostName, int localPort, bool rea
     
     // Initialize localError to healthy
     localError = PE_AllHealthy;
+    logFile = nullptr;
 }
 
 CameraController::~CameraController() {
     //Free Messages from Memory
     delete imageMessage;
     delete processHealthMessage;
+    
+    // Close Log File
+    if (logFile)
+        fclose(logFile);
 }
 
 // *******************************
@@ -40,30 +45,45 @@ CameraController::~CameraController() {
 
 
 void CameraController::open() {
+    // Create File Name
+    time_t rawtime;
+    struct tm * timeinfo;
+    char buffer[80];
+    
+    rawtime = time(0);
+    timeinfo = localtime(&rawtime);
+    strftime(buffer, 80,"./log/CameraControllerLog_%d-%m-%Y.log",timeinfo);
+    
+    // Open Log File
+    logFile = fopen(buffer, "a+");
+    
+    // Log Application Starting
+    fprintf(logFile, "WatchDog Application Started, Time = %f", time(0));
+    
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     
     //Open Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
-            std::cerr << "CameraController Server Socket Failed To Open, CameraController Exiting" << std::endl;
+            fprintf(logFile, "Error: Unable to Open Acceptor, Exiting...\n");
             exit(-1);
         }
-        std::cout << "CameraController Server Socket Opened" << std::endl;
+        fprintf(logFile, "Connection: Server Socket Opened\n");
     }
     
     //Connect to ScComms
     if(connectToAppl(hostName, 7000, &scComms) == true) {
-     //   std::cout << "CameraController: Connected to ScComms" << std::endl;
+        fprintf(logFile, "Connection: Connected to ScComms\n");
     } else {
-        std::cout << "CameraController: Failure to Connect to ScComms" << std::endl;
+        fprintf(logFile, "Error: Unable to Connect to ScComms\n");
     }
     
     // Connect to ImageProcessing
     if(connectToAppl(hostName, 8000, &imageProc) == true) {
-       // std::cout << "CameraController: Connected to ImageProcessor" << std::endl;
+        fprintf(logFile, "Connection: Connected to Image Processing\n");
     } else {
-        std::cout << "CameraController: Failure to Connect to ImageProcessor" << std::endl;
+        fprintf(logFile, "Error: Unable to Connect to ImageProcessor\n");
     }
 }
 
@@ -72,9 +92,34 @@ void CameraController::open() {
  2. Check to make sure that Camera is still connected
  */
 void CameraController::handleTimeout() {
-    this->open();
+    //Open Acceptor
+    if (accept.isConnected() == false) {
+        if(accept.open(hostName, localPort) == false) {
+            fprintf(logFile, "Error: Unable to Open Acceptor, Exiting...\n");
+            exit(-1);
+        }
+        fprintf(logFile, "Connection: Server Socket Opened\n");
+    }
+    
+    //Connect to ScComms
+    if(connectToAppl(hostName, 7000, &scComms) == true) {
+        fprintf(logFile, "Connection: Connected to ScComms\n");
+    } else {
+        fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+    }
+    
+    // Connect to ImageProcessing
+    if(connectToAppl(hostName, 8000, &imageProc) == true) {
+        fprintf(logFile, "Connection: Connected to Image Processing\n");
+    } else {
+        fprintf(logFile, "Error: Unable to Connect to ImageProcessing\n");
+    }
     
     // Check to make sure that Camera is still available <- ping camera
+}
+
+FILE* CameraController::getLogFileID() {
+    return logFile;
 }
 
 // *******************************
@@ -84,23 +129,23 @@ void CameraController::handleTimeout() {
 // ********************************
 //TODO: Needs Implementation
 bool CameraController::canCaptureImage(CaptureImageRequest* msg) {
-    std::cout << "CameraController::canCaptureImage(CaptureImageRequest* msg): Not Implemented yet" << std::endl;
+fprintf(logFile, "TODO: Need to Implement canCaptureImage()\n");
     return false;
 }
 
 // TODO: Waiting on Dylan for Implementation
 void CameraController::captureImage() {
-    std::cout << "CameraController::captureImage(): Not Implemented yet" << std::endl;
+    fprintf(logFile, "TODO: Need to Implement captureImage\n");
 }
 
 // TODO: Seth Implement
 void CameraController::readImage() {
-    std::cout << "CameraController::readImage(): Not Implemented yet" << std::endl;
+    fprintf(logFile, "TODO: Need To Implement readImage\n");
 }
 
 //TODO: Waiting on Dylan for how to implement, might not need
 void CameraController::adjustCameraSettings(ImageAdjustment* msg) {
-    std::cout << "CameraController::adjustCameraSettings(ImageAdjustment* msg): Not Implemented yet" << std::endl;
+    fprintf(logFile, "TODO: Need To Implement adjustCameraSettings\n");
 }
 
 
@@ -115,13 +160,14 @@ void CameraController::adjustCameraSettings(ImageAdjustment* msg) {
  Send Status to WatchDog
  */
 void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
-    std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
-  
+    fprintf(logFile, "Received Message: ProcessHealthAndStatusRequest from WatchDog\n");
+    
     // Update ProcessHealthAndStatusResponse Message
     processHealthMessage->update(localError);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
+    fprintf(logFile, "Sent Message: StatusAndHealthResponse to WatchDog\n");
     
     // Reset Error Enum
     localError = PE_AllHealthy;
@@ -139,10 +185,7 @@ void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatu
  */
 
 void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-    std::cerr << "\nCameraController::handleCaptureImageRequest() Capture Image Request Message Recived\n" << std::endl;
-    
-    // Print Message
-    msg->print();
+    fprintf(logFile, "Received Message: CaptureImageRequest from GNC\n");
     
     // Decide if Camera Controller can Capture Image or if it can read an image
     if (canCaptureImage(msg) == true || readImageFile) {
@@ -164,8 +207,8 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         
         // Send Image Message to Image Processor
         if (imageProc != nullptr) {
-            std::cout << "Sending Image Message" << std::endl;
             imageProc->sendMessage(imageMessage);
+            fprintf(logFile, "Sent Message: ImageMessage to ImageProcessor\n");
         }
         
     } else {
@@ -175,12 +218,12 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
 }
 
 void CameraController::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-    std::cerr << "Data Message Recivied, should determine if I can take a picture!" << std::endl;
+    fprintf(logFile, "Received Message: DataMessage from ScComms\n");
 }
 
 // TODO: Decide is this Needed?
 void CameraController::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
-    std::cerr << "ScCoCameraControllermms::handleImageAdjustment(): Recived Image Adjustment Message" << std::endl;
+    fprintf(logFile, "Received Message: ImageAdjustmentMessage from ImageProcessing\n");
     adjustCameraSettings(msg);
 }
 
@@ -191,34 +234,28 @@ void CameraController::handleImageAdjustment(ImageAdjustment* msg, ServiceIntern
 //
 // ********************************
 void CameraController::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
-    std::cerr << "CameraController::handleProcessHealthAndStatusResponse() Not Supported for CameraController" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: ProcessHealthAndStatusResponse, Closing Connection\n");
     service->closeConnection();
 }
 
 void CameraController::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "CameraController::handleImageMessage() Not Supported for CameraController" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: ImageMessage, Closing Connection\n");
     service->closeConnection();
 }
 void CameraController::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-    std::cerr << "CameraController::handleOSPREStatus() Not Supported for CameraController" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: OSPREStatus, Closing Connection\n");
     service->closeConnection();
 }
 void CameraController::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
-    std::cerr << "CameraController::handlePointingRequest() Not Supported for CameraController" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: PointingRequest, Closing Connection\n");
     service->closeConnection();
 }
 void CameraController::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
-    std::cerr << "CameraController::handleSolutionMessage() Not Supported for CameraController" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: SolutionMessage, Closing Connection\n");
     service->closeConnection();
 }
 void CameraController::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "CameraController::handleProcessedImageMessage() Not Supported for CameraController" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: ProcessedImageMessage, Closing Connection\n");
     service->closeConnection();
 }
 

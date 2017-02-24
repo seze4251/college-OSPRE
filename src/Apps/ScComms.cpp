@@ -6,6 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 #include <iostream>
+#include <stdio.h>
 
 #include "ScComms.h"
 #include "Service.h"
@@ -15,7 +16,6 @@
 ServiceExternal* ScComms::spacecraft;
 
 ScComms::ScComms( std::string hostName, int localPort, int externalPort) : ServerInternal(hostName, localPort, P_ScComms), external_accept(getSelector()), externalPort(externalPort), pollTime(0) {
-    std::cout<< " ScComms Constructor called" << std::endl;
     setAppl(this);
     external_accept.registerCallback(handleExternalConnection);
     spacecraft = nullptr;
@@ -29,6 +29,7 @@ ScComms::ScComms( std::string hostName, int localPort, int externalPort) : Serve
     
     // Initialize localError to healthy
     localError = PE_AllHealthy;
+    logFile = nullptr;
 }
 
 ScComms::~ScComms() {
@@ -42,38 +43,77 @@ ScComms::~ScComms() {
     if (spacecraft != nullptr) {
         delete spacecraft;
     }
+    
+    // Close Log File
+    if (logFile)
+        fclose(logFile);
 }
 
 void ScComms::open() {
+    // Create File Name
+    time_t rawtime;
+    struct tm * timeinfo;
+    char buffer[80];
+    
+    rawtime = time(0);
+    timeinfo = localtime(&rawtime);
+    strftime(buffer, 80,"./log/ScCommsLog_%d-%m-%Y.log",timeinfo);
+    
+    // Open Log File
+    logFile = fopen(buffer, "a+");
+    
+    // Log Application Starting
+    fprintf(logFile, "ScComms Application Started, Time = %f", time(0));
+    
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     
     //Internal Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
-            std::cerr << "ScComms Internal Server Socket Failed To Open, ScComms Exiting" << std::endl;
+            fprintf(logFile, "Error: Unable to Open Internal Acceptor, Exiting...\n");
             exit(-1);
         }
-        std::cout << "ScComms Internal Server Socket Opened" << std::endl;
+        fprintf(logFile, "Connection: Internal Server Socket Opened\n");
     }
     
     // External Acceptor
     if (external_accept.isConnected() == false) {
         if(external_accept.open(hostName, externalPort) == false) {
-            std::cerr << "ScComms External Server Socket Failed To Open, ScComms Exiting" << std::endl;
+            fprintf(logFile, "Error: Unable to Open External Acceptor, Exiting...\n");
             exit(-1);
         }
-        std::cout << "ScComms External Server Socket Opened" << std::endl;
+        fprintf(logFile, "Connection: External Server Socket Opened\n");
     }
-    
 }
 
 /*
  1. Need to check that all connections are still open
  */
 void ScComms::handleTimeout() {
-    this->open();
+    //Internal Acceptor
+    if (accept.isConnected() == false) {
+        if(accept.open(hostName, localPort) == false) {
+            fprintf(logFile, "Error: Unable to Open Internal Acceptor, Exiting...\n");
+            exit(-1);
+        }
+        fprintf(logFile, "Connection: Internal Server Socket Opened\n");
+    }
+    
+    // External Acceptor
+    if (external_accept.isConnected() == false) {
+        if(external_accept.open(hostName, externalPort) == false) {
+            fprintf(logFile, "Error: Unable to Open External Acceptor, Exiting...\n");
+            exit(-1);
+        }
+        fprintf(logFile, "Connection: External Server Socket Opened\n");
+    }
 }
+
+FILE* ScComms::getLogFileID() {
+    return logFile;
+}
+
 
 // *******************************
 //
@@ -84,8 +124,8 @@ void ScComms::handleTimeout() {
 void ScComms::handleExternalConnection(int fd) {
     // File Descriptors less than 0 are invalid
     if (fd < 0) {
-        std::cout << "ScComms::handleExternalConnection() Invalid File Descriptor" << std::endl;
-        return;
+        fprintf(logFile, "Error: handleExternalConnection() Invalid File Descriptor, Throwing Exception\n");
+        throw "handleExternalConnection() Invalid File Descriptor"
     }
     
     // If spacecraft hasn't connected before, allocate memory for Service External
@@ -121,8 +161,7 @@ void ScComms::handleExternalMessage(Message_External* msg, ServiceExternal* serv
             break;
             
         default:
-            std::cerr << "ScComms::handleExternalMessage(): Unknown Message Type Recived: " << msg->iden << std::endl;
-            std::cerr << "Closing Connection" << std::endl;
+            fprintf(logFile, "Error: ScComms::handleExternalMessage(): Unknown Message Type Recived, Closing Connection\n");
             service->closeConnection();
     }
 }
@@ -136,12 +175,12 @@ void ScComms::handleExternalMessage(Message_External* msg, ServiceExternal* serv
 // ********************************
 
 void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
-    
-    // std::cout << "ScComms::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+    fprintf(logFile, "Received Message: ProcessHealthAndStatusRequest from WatchDog\n");
     
     processHealthMessage->update(localError);
     
     service->sendMessage(processHealthMessage);
+    fprintf(logFile, "Sent Message: StatusAndHealthResponse to WatchDog\n");
     
     // Reset Error Enum
     localError = PE_AllHealthy;
@@ -152,19 +191,14 @@ void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest*
  1. Send OSPRE Status to S/C
  */
 void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-    std::cout << "ScComms::handleOSPREStatus() OSPRE Status Message Recived" << std::endl;
-    // Print Message
-    std::cout << std::endl;
-     msg->print();
+    fprintf(logFile, "Received Message: OSPREStatus Message from WatchDog\n");
     
     // Convert OSPRE Status to External OSPRE Status
     externalOspreStatusMessage->update(msg);
     
-    std::cout << "Printing External OSPRE Status Message" << std::endl;
-    externalOspreStatusMessage->print();
-    
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
         spacecraft->sendMessage(externalOspreStatusMessage);
+        fprintf(logFile, "Sent Message: ExternalOSPREStatus to Spacecraft\n");
     }
 }
 
@@ -172,15 +206,14 @@ void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
  1. Send Pointing Request to S/C
  */
 void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
-    std::cout << "ScComms::handlePointingRequest() Pointing Request Received" << std::endl;
-    // Print Message
-    //msg->print();
+    fprintf(logFile, "Received Message: PointingRequest from GNC\n");
     
     // Convert Pointing Request to External Pointing Request
     externalPointingMessage->update(msg->point);
     
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
         spacecraft->sendMessage(externalPointingMessage);
+        fprintf(logFile, "Sent Message: ExternalPointingRequest to Spacecraft\n");
     }
     
     
@@ -190,15 +223,14 @@ void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* servi
  1. Send Solution Message to S/C
  */
 void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
-    std::cout << "ScComms::handleSolutionMessage() Solution message Recived" << std::endl;
-    // Print Message
-    //msg->print();
+    fprintf(logFile, "Received Message: SolutionMessage from GNC\n");
     
     // Convert Internal Solution Message to External Solution Message
     externalSolutionMessage->update(msg->position, msg->positionError, msg->velocity, msg->velocityError, msg->earthScMoonAngle);
     
     if ((spacecraft != nullptr) && (spacecraft->isConnected())) {
         spacecraft->sendMessage(externalSolutionMessage);
+        fprintf(logFile, "Sent Message: ExternalSolutionMessage to Spacecraft\n");
     }
     
     
@@ -214,8 +246,7 @@ void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* servi
  1. Foward Data Message to everyone
  */
 void ScComms::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
-    std::cout << "ScComms::handleExternalDataMessage() External Data Message Received" << std::endl;
-    // msg->print();
+    fprintf(logFile, "Received Message: ExternalDataMessage from Spacecraft\n");
     
     // Conver External Data Message to internal Data Message
     dataMessage->update(msg->ephem, msg->quat, msg->angularVelocity, msg->satTime, msg->sunAngle, msg->sleep);
@@ -224,21 +255,9 @@ void ScComms::handleExternalDataMessage(External_DataMessage* msg, ServiceExtern
     for (int i = 0; i < MaxClients; i++) {
         if ((connections[i] != nullptr) && (connections[i]->isConnected())) {
             connections[i]->sendMessage(dataMessage);
+            fprintf(logFile, "Sent Message: DataMessage to Client[%d}\n", i);
         }
     }
-}
-
-void ScComms::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {
-    std::cout << "ScComms::handleExternalOSPREStatusMessage() not implemented, exiting process..." << std::endl;
-    exit(-1);
-}
-void ScComms::handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
-    std::cout << "ScComms::handleExternalPointingMessage() not implemented, exiting process..." << std::endl;
-    exit(-1);
-}
-void ScComms::handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
-    std::cout << "ScComms::handleExternalSolutionMessage() not implemented, exiting process..." << std::endl;
-    exit(-1);
 }
 
 // *******************************
@@ -246,39 +265,47 @@ void ScComms::handleExternalSolutionMessage(External_SolutionMessage* msg, Servi
 // Message Handlers: Not Supported on ScComms
 //
 // ********************************
+
+void ScComms::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {
+    fprintf(logFile, "Error: Invalid Message Recived: ExternalStatus, Closing Connection\n");
+    service->closeConnection();
+}
+void ScComms::handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
+    fprintf(logFile, "Error: Invalid Message Recived: ExternalPointing, Closing Connection\n");
+    service->closeConnection();
+}
+void ScComms::handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
+    fprintf(logFile, "Error: Invalid Message Recived: ExternalSolution, Closing Connection\n");
+    service->closeConnection();
+}
+
 void ScComms::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleProcessHealthAndStatusResponse() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: Response, Closing Connection\n");
     service->closeConnection();
 }
 
 void ScComms::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleCaptureImageRequest() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: CaptureImageRequest, Closing Connection\n");
     service->closeConnection();
 }
 
 void ScComms::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleImageAdjustment() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: ImageAdjustment, Closing Connection\n");
     service->closeConnection();
 }
 
 void ScComms::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleImageMessage() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: ImageMessage, Closing Connection\n");
     service->closeConnection();
 }
 
 void ScComms::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleProcessedImageMessage() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: ProcessedImageMessage, Closing Connection\n");
     service->closeConnection();
 }
 
 void ScComms::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-    std::cerr << "ScComms::handleDataMessage() Not Supported for ScComms" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: DataMessage, Closing Connection\n");
     service->closeConnection();
 }
 

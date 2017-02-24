@@ -6,8 +6,6 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-#include "Service.h"
-#include <iostream>
 #include <string>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -18,10 +16,11 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/ioctl.h>
+#include <stdio.h>
 
-Service::Service(Selector &sharedSel) : sel(sharedSel) {
-    std::cout << "Service Constructor \n";
-}
+#include "Service.h"
+
+Service::Service(Selector &sharedSel) : sel(sharedSel) {}
 
 int Service::openServerSocket(int portNumber) {
     struct addrinfo hints;
@@ -40,23 +39,20 @@ int Service::openServerSocket(int portNumber) {
     int s = ::getaddrinfo(NULL, buf, &hints, &result);
     
     if (s != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
-        return -1;
+        char error[50] =sprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+        throw error;
     }
     
     // Bind Server Socket
     int sfd = -1;
     for (rp = result; rp != NULL; rp = rp->ai_next) {
-        // printf("family %d, socketType %d, protocol %d\n", rp->ai_family,
-        //       rp->ai_socktype, rp->ai_protocol);
-        
         sfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
         
         // Set socket to reuse address
         int reuse = 1;
         
         if (setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0) {
-            perror("setsockopt(SO_REUSEADDR) failed");
+            throw "setsockopt(SO_REUSEADDR) failed";
         }
         
         if (sfd == -1)
@@ -70,17 +66,14 @@ int Service::openServerSocket(int portNumber) {
     
     // Check to make sure bind to address succeeded
     if (sfd == -1) {
-        std::cout << "Open Server Socket Failed \n";
-        return -1;
+        throw "Open Server Socket Failed";
     }
     
     freeaddrinfo(result);
     
     // Listen on Server Socket for incomming connections
     if (listen(sfd, 4) == -1) {
-        perror("listen");
-        std::cout << "Open Server Socket Failed \n";
-        return -1;
+        throw "Listen Failed on Server Socket";
     }
     
     return sfd;
@@ -103,13 +96,13 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
     int s = ::getaddrinfo(serverHosts, buf, &hints, &result);
     
     if (s != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
-        return -1;
+        char error[50] =sprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+        throw error;
     }
     
     int fd = -1;
     
-    for (int i =0; i < 1; i++) {
+    for (int i =0; i < 2; i++) {
         for (rp = result; rp != NULL; rp = rp->ai_next) {
             fd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
             
@@ -120,7 +113,6 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
             
             // Attempt to connect socket
             if (connect(fd, rp->ai_addr, rp->ai_addrlen) != -1) {
-              //  std::cout<< "CONNECTED\n" << std::endl;
                 break;
             }
             
@@ -132,12 +124,11 @@ int Service::connectToServer(const char *serverHosts, int serverPort) {
             break;
         }
         
-      //  std::cout << "Service::connectToServer(): Failed to connect on " << i+1 << "/1 tries, Sleeping for 1 seconds" << std::endl;
-        //sleep(1);
+        sleep(1);
     }
     
     if (fd == -1) {
-        fprintf(stderr, "Service::connectToServer(): Could not Connect\n");
+        /* Could Not Connect To Server */
         return -1;
     }
     

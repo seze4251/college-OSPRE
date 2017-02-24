@@ -12,7 +12,7 @@
 
 #include <string>
 #include <ctime>
-
+#include <stdio.h>
 
 #include "Server.h"
 #include "ServiceExternal.h"
@@ -37,6 +37,9 @@ public:
     void handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service);
     void handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service);
     
+    // Logging
+    FILE* getLogFileID();
+    
 private:
     // Load Scenario Data
     // TODO Implement this method and data memebers
@@ -60,6 +63,9 @@ private:
     
     // Pointer To Hold Messages that Are being sent
     External_DataMessage* dataMessage;
+    
+    // Log File
+    FILE* logFile;
 };
 
 #endif

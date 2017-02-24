@@ -8,12 +8,12 @@
 #include <iostream>
 #include <unistd.h>
 #include <exception>
+#include <stdio.h>
 
 #include "ImageProcessor.h"
 #include "Service.h"
 
 ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_ImageProcessor), pollTime(0) {
-    std::cout<< "ImageProcessor Constructor called" << std::endl;
     setAppl(this);
     gnc = nullptr;
     
@@ -29,12 +29,17 @@ ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInte
     
     //TEMP TEMP TEMP
     test = false;
+    logFile = nullptr;
 }
 
 ImageProcessor::~ImageProcessor() {
     //Free Messages from Memory
     delete processedImageMessage;
     delete processHealthMessage;
+    
+    // Close Log File
+    if (logFile)
+        fclose(logFile);
 }
 
 // *******************************
@@ -43,23 +48,38 @@ ImageProcessor::~ImageProcessor() {
 //
 // ********************************
 void ImageProcessor::open() {
+    // Create File Name
+    time_t rawtime;
+    struct tm * timeinfo;
+    char buffer[80];
+    
+    rawtime = time(0);
+    timeinfo = localtime(&rawtime);
+    strftime(buffer, 80,"./log/ImageProcessorLog_%d-%m-%Y.log",timeinfo);
+    
+    // Open Log File
+    logFile = fopen(buffer, "a+");
+    
+    // Log Application Starting
+    fprintf(logFile, "Image Processor Application Started, Time = %f", time(0));
+    
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     
     //Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
-            std::cerr << "ImageProcessor Server Socket Failed To Open, ImageProcessor Exiting" << std::endl;
+            fprintf(logFile, "Error: Unable to Open Acceptor, Exiting...\n");
             exit(-1);
         }
-        std::cout << "ImageProcessor Server Socket Opened" << std::endl;
+        fprintf(logFile, "Connection: Server Socket Opened\n");
     }
     
     //Connect to GNC
     if(connectToAppl(hostName, 9000, &gnc) == true) {
-    //    std::cout << "ImageProcessor: Connected to GNC" << std::endl;
+        fprintf(logFile, "Connection: Connected to GNC\n");
     } else {
-        std::cout << "ImageProcessor: Failure to Connect to GNC" << std::endl;
+        fprintf(logFile, "Error: Unable to Connect to GNC\n");
     }
 }
 
@@ -67,8 +87,27 @@ void ImageProcessor::open() {
  1. Need to check that all connections are still open
  */
 void ImageProcessor::handleTimeout() {
-    this->open();
+    //Acceptor
+    if (accept.isConnected() == false) {
+        if(accept.open(hostName, localPort) == false) {
+            fprintf(logFile, "Error: Unable to Open Acceptor, Exiting...\n");
+            exit(-1);
+        }
+        fprintf(logFile, "Connection: Server Socket Opened\n");
+    }
+    
+    //Connect to GNC
+    if(connectToAppl(hostName, 9000, &gnc) == true) {
+        fprintf(logFile, "Connection: Connected to GNC\n");
+    } else {
+        fprintf(logFile, "Error: Unable to Connect to GNC\n");
+    }
 }
+
+FILE* ImageProcessor::getLogFileID() {
+    return logFile;
+}
+
 
 // *******************************
 //
@@ -98,13 +137,13 @@ void ImageProcessor::processImage(ImageMessage* msg) {
  Send Status to WatchDog
  */
 void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
-    std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+    fprintf(logFile, "Received Message: ProcessHealthAndStatusRequest from WatchDog\n");
     
     processHealthMessage->update(localError);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
-    processHealthMessage->print();
+    fprintf(logFile, "Sent Message: StatusAndHealthResponse to WatchDog\n");
     
     // Reset Error Enum
     localError = PE_AllHealthy;
@@ -117,7 +156,7 @@ void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusR
  4. Send Image Adjustment to Camera Controller
  */
 void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "\n\nImageProcessor::handleImageMessage() Image Message Recived\n\n" << std::endl;
+    fprintf(logFile, "Received Message: ImageMessage from CameraController\n");
     
     //TODO: Do Something Here
     // Process the Image
@@ -133,19 +172,17 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
         throw std::exception();
         }
     } catch(std::exception &exception) {
-        std::cerr << "ScComms: Standard exception: " << exception.what() << '\n';
-        // TODO: Do Somthing here to send watchdog the problem
+        fprintf(logFile, "Error: HandleImageMessage() Exception Caught: %s\n", exception.what());
         localError = PE_IP_noBodyInImage;
     } catch (...) {
-        std::cerr << "Unknown Exception thrown in ImageProcessor::processImage()" << std::endl;
+        fprintf(logFile, "Error: HandleImageMessage() Unknown Type of Exception Caught\n");
         throw;
     }
-    
-    
     
     // Send Processed Image Message to GNC
     if (gnc != nullptr) {
         gnc->sendMessage(processedImageMessage);
+        fprintf(logFile, "Sent Message: ProcessedImageMessage to GNC\n");
     }
 }
 
@@ -155,44 +192,36 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
 //
 // ********************************
 void ImageProcessor::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handleProcessHealthAndStatusResponse() Not Supported for ImageProcessor" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+fprintf(logFile, "Error: Invalid Message Recived: Response, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handleCaptureImageRequest() Not Supported for ImageProcessor" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+fprintf(logFile, "Error: Invalid Message Recived: CaptureImageRequest, Closing Connection\n");
     service->closeConnection();
 }
 
 void ImageProcessor::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handleDataMessage() Not Supported for ImageProcessor" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+fprintf(logFile, "Error: Invalid Message Recived: DataMessage, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handleImageAdjustment() Not Supported for ImageProcessor" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+fprintf(logFile, "Error: Invalid Message Recived: ImageAdjustment, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handleOSPREStatus() Not Supported for ImageProcessor" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+fprintf(logFile, "Error: Invalid Message Recived: OSPREStatus, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handlePointingRequest() Not Supported for ImageProcessor" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+fprintf(logFile, "Error: Invalid Message Recived: PointingRequest, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
-    std::cerr << "ImageProcessor::handleSolutionMessage() Not Supported for ImageProcessor" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+fprintf(logFile, "Error: Invalid Message Recived: SolutionMessage, Closing Connection\n");
     service->closeConnection();
 }
 void ImageProcessor::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "ImageProcessor::handleProcessedImageMessage() Not Supported for ImageProcessor" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+fprintf(logFile, "Error: Invalid Message Recived: ProcessedImageMessage, Closing Connection\n");
     service->closeConnection();
 }
 

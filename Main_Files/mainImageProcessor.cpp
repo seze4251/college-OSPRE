@@ -4,7 +4,7 @@
 //  Created by Seth on 11/24/2016.
 //  Copyright © 2016 Seth. All rights reserved.
 //
-
+#include <stdio.h>
 #include <unistd.h>
 #include <iostream>
 #include <exception>
@@ -18,22 +18,25 @@ int main(int, char**) {
     std::cout << "ImageProcessor Application Starting\n";
     ImageProcessor proc(host, serverPort);
     
+    FILE* fid = proc.getLogFileID();
+    
     try {
         proc.open();
-        std::cout << "ImageProcessor Initalized\n";
+        std::cout << "ImageProcessor Running\n";
         proc.run();
         
     } catch (const char* exception) {
-        std::cerr << "ImageProcessor: Error: " << exception << std::endl;
+                fprintf(logFile, "Error: Const Char* Exception Caught: %s\n", exception);
         
     } catch(std::exception &exception) {
-        std::cerr << "ImageProcessor: Standard exception: " << exception.what() << '\n';
+fprintf(logFile, "Error: Standard Exception Caught: %s\n", exception.what());
         
     } catch (...) {
-        std::cout << "ImageProcessor: Exception of unknown type caught" << std::endl;
+        fprintf(logFile, "Error: Unknown Type Of Exception Caught, Application Terminating \n");
         throw;
     }
     
+    fprintf(logFile, "Application Terminating \n");
     std::cout << "ImageProcessor Application Terminating\n";
     return 0;
 }

@@ -8,13 +8,12 @@
 //
 #include <cstring>
 #include <string>
-#include <string.h>
 #include <iostream>
+#include <stdio.h>
 
 #include "ByteBuffer.h"
 
 ByteBuffer::ByteBuffer(int capacity) {
-    std::cout << "ByteBuffer Constructor" << std::endl;
     if (capacity <= 0) {
         throw "ByteBuffer::ByteBuffer() Capacity is less than or equal to 0";
     }

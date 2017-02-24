@@ -6,12 +6,9 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
-#include <iostream>
-
 #include "Parser.h"
 
 Parser::Parser(ByteBuffer &bufParam) : buf(bufParam) {
-    std::cout << "Parser Constructor" << std::endl;
     messageLength = -1;
     messageID = NA;
     timeStamp = 0;
@@ -70,7 +67,6 @@ Parser::~Parser() {
 Message* Parser::parseMessage(bool* partialMessage) {
     // If there is not a full header, do not parse header
     if (buf.used() < HEADER_MESSAGE_SIZE ) {
-      //std::cout << "Parser::parseMessage no header left in buffer" << std::endl;
         *partialMessage = false;
         return nullptr;
     }
@@ -78,11 +74,8 @@ Message* Parser::parseMessage(bool* partialMessage) {
     messageID = (MessageID) buf.getInt();
     messageLength = buf.getInt();
     
-    //std::cout << "Message Length: " << messageLength - 2 * sizeof(int) << "  buf.used: " << buf.used() << std::endl;
-    
     // If there is a partial Message, rewind buffer and return null ptr
     if (buf.used() < (messageLength - 2 * sizeof(int)) ) {
-        std::cout << "Parser::parseMessage: Partial Message, Rewinding Buffer" << std::endl;
         buf.rewind((2 * sizeof(int) ));
         *partialMessage = true;
         return nullptr;
@@ -90,8 +83,7 @@ Message* Parser::parseMessage(bool* partialMessage) {
     
     timeStamp = (time_t) buf.getLong();
     Message* msg = nullptr;
-  //  std::cout << "Parser Dump: MessageID: " << messageID << " Message Length: " << messageLength << " timeStamp: " << timeStamp << std::endl;
-   // std::cout << "Current Time: " << time(0) << std::endl;
+
     switch (messageID) {
         case I_CaptureImageRequest:
             msg = parseCaptureImageRequest();
@@ -134,7 +126,6 @@ Message* Parser::parseMessage(bool* partialMessage) {
             break;
             
         default:
-            std::cerr << "Parser::parseMessage(): Unknown Message Type Recived: " << messageID << std::endl;
             throw "Parser::parseMessage(): Unknown Message Type Recived";
     }
     return msg;

@@ -57,7 +57,6 @@ public:
 protected:
     Acceptor accept;
     
-    // hostName and localPort needed for serversocket in Acceptor
     std::string hostName;
     int localPort;
     

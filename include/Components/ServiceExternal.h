@@ -9,8 +9,8 @@
 
 #ifndef SERVICEEXTERNAL_H
 #define SERVICEEXTERNAL_H
+
 #include <string>
-#include <iostream>
 #include <vector>
 
 #include "Service.h"

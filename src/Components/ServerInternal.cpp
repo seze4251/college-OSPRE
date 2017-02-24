@@ -5,7 +5,7 @@
 //  Created by Seth on 01/17/2017.
 //  Copyright © 2016 Seth. All rights reserved.
 //
-#include <iostream>
+
 #include <unistd.h>
 
 #include "ServerInternal.h"
@@ -15,8 +15,6 @@ ProcessID ServerInternal::p_ID_Static;
 
 // Constructors
 ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_ID) : accept(getSelector()), hostName(hostName), localPort(localPort), p_ID(p_ID) {
-    std::cout << "ServerInternal Constructor called" << std::endl;
-    
     accept.registerCallback(handleConnectionRequest);
     
     for (int i = 0; i < MaxClients; i++) {
@@ -47,10 +45,8 @@ void ServerInternal::handleConnectionRequest(int fd) {
     }
     
     if (avail == -1) {
-        std::cout << "ServerInternal::handleConnectionRequest() New Client Addition Failed, too many clients" << std::endl;
         ::close(fd);
-        return;
-        
+        throw "ServerInternal::handleConnectionRequest() New Client Addition Failed, too many clients, Closed fd";
     }
     
     // if memory for ServiceInternal has not been created, allocate it
@@ -65,10 +61,9 @@ void ServerInternal::handleConnectionRequest(int fd) {
     if (connections[avail]->open(fd) == true) {
         // Register CallBack
         connections[avail]->registerCallback(handleMessage);
-        std::cout << "ServerInternal::handleConnectionRequest() New Client Added" << std::endl;
         
     } else {
-        std::cout << "handleConnectionRequest() New Client Addition Failed" << std::endl;
+        throw "handleConnectionRequest() New Client Addition Failed";
     }
 }
 
@@ -76,14 +71,12 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
     
     // Make Sure Service is not NULL
     if (service == nullptr) {
-        std::cout << "ServerInternal::connectToAppl(): service is a nullptr" << std::endl;
-        return false;
+        throw "ServerInternal::connectToAppl(): service is a nullptr";
     }
     
     // Check to see if Client is already Connected
     if (*service != nullptr) {
         if ((*service)->isConnected() == true) {
-            //    std::cout << "ServerInternal::connectToAppl(): Service is already connected" << std::endl;
             return true;
         }
     }
@@ -104,7 +97,7 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
     
     // No available space to add a service
     if (avail == -1) {
-        std::cout << "ServerInternal::connectToAppl() New Client Addition Failed, too many clients" << std::endl;
+        throw "ServerInternal::connectToAppl() New Client Addition Failed, too many clients";
         if (service != nullptr) {
             *service = nullptr;
         }
@@ -126,7 +119,6 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
     if (connections[avail]->open(host, port) == true) {
         // Register CallBack
         connections[avail]->registerCallback(handleMessage);
-        //  std::cout << "ServerInternal::connectToAppl(): New Client Added" << std::endl;
         
         if (service != nullptr) {
             *service = connections[avail];
@@ -134,7 +126,6 @@ bool ServerInternal::connectToAppl(std::string host, int port, ServiceInternal**
         return true;
         
     } else {
-        //    std::cout << "ServerInternal::connectToAppl(): New Client Addition Failed" << std::endl;
         *service = nullptr;
         return false;
     }
@@ -183,12 +174,9 @@ void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
             break;
             
         default:
-            std::cerr << "ServerInternal::handleMessage(): Unknown Message Type Recived: " << msg->iden << std::endl;
-            //TODO:: FIGURE OUT WAY TO THROW EXCEPTION OR CLOSE CONNECTION
-            std::cerr << "Fatal Error: Closing Connection" << std::endl;
+            throw "ServerInternal::handleMessage(): Unknown Message Type Recived";
             service->closeConnection();
     }
-    //  std::cout << "Leaving ServerInternal::handleMessage, back to ServiceInternal::handleRead()" << std::endl;
 }
 
 

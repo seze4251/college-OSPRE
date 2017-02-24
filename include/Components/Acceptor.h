@@ -13,7 +13,6 @@
 #include "Service.h"
 #include <string>
 
-// NOTE:  This class is derived from Service and not Service_Internal good or bad?
 class Acceptor : public Service {
 public:
     // Constructor

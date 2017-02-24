@@ -6,6 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 #include <iostream>
+#include <stdio.h>
 
 #include "Spacecraft.h"
 
@@ -14,7 +15,6 @@
 ServiceExternal* Spacecraft::scComms;
 
 Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : pollTime(0), ospreHostName(ospreHostName), osprePort(osprePort) {
-    std::cout<< " Spacecraft Constructor called" << std::endl;
     setAppl(this);
     
     // Initialize scComms
@@ -22,6 +22,8 @@ Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : pollTime(0), 
     
     // Allocate Memory for Messages to Send
     dataMessage = new External_DataMessage(Spacecraft_APPL_ID);
+    
+    logFile = nullptr;
 }
 
 Spacecraft::~Spacecraft() {
@@ -32,11 +34,58 @@ Spacecraft::~Spacecraft() {
     if (scComms != nullptr) {
         delete scComms;
     }
+    
+    // Close Log File
+    if (logFile)
+        fclose(logFile);
+}
+
+void Spacecraft::open() {
+    // Create File Name
+    time_t rawtime;
+    struct tm * timeinfo;
+    char buffer[80];
+    
+    rawtime = time(0);
+    timeinfo = localtime(&rawtime);
+    strftime(buffer, 80,"./log/SpacecraftLog_%d-%m-%Y.log",timeinfo);
+    
+    // Open Log File
+    logFile = fopen(buffer, "a+");
+    
+    // Log Application Starting
+    fprintf(logFile, "Spacecraft Application Started, Time = %f", time(0));
+    
+    // Set Timeout to half a second
+    setTimeoutTime(0, 500000);
+    
+    // Make Sure Service is not NULL
+    if (scComms == nullptr) {
+        scComms = new ServiceExternal(getAppl()->getSelector());
+    }
+    
+    // Check to see if Client is already Connected
+    scComms->open(ospreHostName, osprePort);
+    scComms->registerCallback(handleExternalMessage);
+    if (scComms->isConnected() == false) {
+        fprintf(logFile, "Connection: Connected to ScComms\n");
+    } else {
+        fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+    }
+    
 }
 
 void Spacecraft::handleTimeout() {
-    // Make sure connections are still connected
-    open();
+    // Check to see if Client is already Connected
+    if (scComms->isConnected() == false) {
+        scComms->open(ospreHostName, osprePort);
+        scComms->registerCallback(handleExternalMessage);
+        if (scComms->isConnected() == false) {
+            fprintf(logFile, "Connection: Connected to ScComms\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+        }
+    }
     
     // Send Timed Capture Image Requests to Camera
     time_t currentTime = time(NULL);
@@ -55,7 +104,7 @@ void Spacecraft::handleTimeout() {
             
             // Update Data Message
             dataMessage->update(ephem, quat, angularVelocity, satTime, sunAngle, sleep);
-            // dataMessage->print();
+            fprintf(logFile, "Sent Message: ExternalDataMessage to ScComms\n");
             scComms->sendMessage(dataMessage);
             pollTime = currentTime + 1;
         }
@@ -63,52 +112,31 @@ void Spacecraft::handleTimeout() {
     
 }
 
-void Spacecraft::open() {
-    // Set Timeout to half a second
-    setTimeoutTime(0, 500000);
-    
-    // Make Sure Service is not NULL
-    if (scComms == nullptr) {
-        scComms = new ServiceExternal(getAppl()->getSelector());
-    }
-    
-    // Check to see if Client is already Connected
-    if (scComms->isConnected() == true) {
-        // std::cout << "ServerExternal::openl(): Spacecraft is already connected to ScComms" << std::endl;
-        return;
-    } else {
-        std::cout << "Spacecraft Lost connection to S/C Comms, Attempting to reconnect" << std::endl;
-        scComms->open(ospreHostName, osprePort);
-        scComms->registerCallback(handleExternalMessage);
-    }
-    
+FILE* Spacecraft::getLogFileID() {
+    return logFile;
 }
+
 
 void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* service) {
     switch (msg->iden) {
         case E_OSPREStatus:
-            std::cout << "OSPRE Status Recivied" << std::endl;
             ((Spacecraft*) getAppl())->handleExternalOSPREStatusMessage((External_OSPREStatus*) msg, service);
             break;
             
         case E_PointingRequest:
-            std::cout << "Pointing Request Recivied" << std::endl;
             ((Spacecraft*) getAppl())->handleExternalPointingMessage((External_PointingRequest*) msg, service);
             break;
             
         case E_SolutionMessage:
-            std::cout << "Solution Message Recivied" << std::endl;
             ((Spacecraft*) getAppl())->handleExternalSolutionMessage((External_SolutionMessage*) msg, service);
             break;
             
         case E_SpacecraftDataMessage:
-            std::cout << "Spacecraft Data message Recivied" << std::endl;
             ((Spacecraft*) getAppl())->handleExternalDataMessage((External_DataMessage*) msg, service);
             break;
             
         default:
-            std::cerr << "\n\nScComms::handleExternalMessage(): Unknown Message Type Recived: " << msg->iden << std::endl;
-            std::cerr << "Closing Connection\n\n" << std::endl;
+            fprintf(logFile, "Error: Unexpected Message Type Recieved, Closing Client Connection...\n");
             service->closeConnection();
             break;
     }
@@ -124,21 +152,23 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
 
 
 void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {
-    msg->print();
+    fprintf(logFile, "Received Message: ExternalOSPREStatus Message from ScComms\n");
+    //msg->print();
 }
 
 void Spacecraft::handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
-    msg->print();
+    fprintf(logFile, "Received Message: ExternalPointing Message from ScComms\n");
+    // msg->print();
 }
 
 void Spacecraft::handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
-    msg->print();
+    fprintf(logFile, "Received Message: ExternalSolution Message from ScComms\n");
+    //msg->print();
     
 }
 
 void Spacecraft::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
-    std::cout << "\n\nData Message Recived: Invalid Message, Printing Message and Closing Connection\n\n" << std::endl;
-    msg->print();
+    fprintf(logFile, "Error: Invalid Message Recived: ExternalDataMessage, Closing Connection\n");
     scComms->closeConnection();
 }
 

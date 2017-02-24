@@ -7,12 +7,12 @@
 //
 #include <iostream>
 #include <exception>
+#include <stdio.h>
 
 #include "GNC.h"
 #include "Service.h"
 
 GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_GNC), pollTime(0) {
-    std::cout<< "GNC Constructor called" << std::endl;
     setAppl(this);
     
     // Set pointers to services to NULL
@@ -36,6 +36,7 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     covariance = new double[36];
     trajectoryDev = new double[6];
     
+    logFile = nullptr;
 }
 
 GNC::~GNC() {
@@ -46,33 +47,52 @@ GNC::~GNC() {
     delete pointRequest;
     delete covariance;
     delete trajectoryDev;
+    
+    // Close Log File
+    if (logFile)
+        fclose(logFile);
 }
 
 void GNC::open() {
+    // Create File Name
+    time_t rawtime;
+    struct tm * timeinfo;
+    char buffer[80];
+    
+    rawtime = time(0);
+    timeinfo = localtime(&rawtime);
+    strftime(buffer, 80, "./log/GNCLog_%d-%m-%Y.log",timeinfo);
+    
+    // Open Log File
+    logFile = fopen(buffer, "a+");
+    
+    // Log Application Starting
+    fprintf(logFile, "GNC Application Started, Time = %f", time(0));
+    
     // Set Timeout to 1 minute
     setTimeoutTime(10, 0);
     
     //Acceptor
     if (accept.isConnected() == false) {
         if(accept.open(hostName, localPort) == false) {
-            std::cerr << "GNC Server Socket Failed To Open, GNC Exiting" << std::endl;
+            fprintf(logFile, "Error: Unable to Open Acceptor, Exiting...\n");
             exit(-1);
         }
-        std::cout << "GNC Server Socket Opened" << std::endl;
+        fprintf(logFile, "Connection: Server Socket Opened\n");
     }
     
     //Connect to ScComms
     if(connectToAppl(hostName, 7000, &scComms) == true) {
-        //    std::cout << "GNC: Connected to ScComms" << std::endl;
+        fprintf(logFile, "Connection: Connected to ScComms\n");
     } else {
-        std::cout << "GNC: Failure to Connect to ScComms" << std::endl;
+        fprintf(logFile, "Error: Unable to Connect to ScComms\n");
     }
     
     // Connect to Camera Controller
     if(connectToAppl(hostName, 10000, &cameraController) == true) {
-        //   std::cout << "GNC: Connected to Camera Controller" << std::endl;
+        fprintf(logFile, "Connection: Connected to Camera Controller\n");
     } else {
-        std::cout << "GNC: Failure to Connect to Camera Controller" << std::endl;
+        fprintf(logFile, "Error: Unable to Connect to CameraController\n");
     }
 }
 
@@ -83,7 +103,29 @@ void GNC::open() {
  */
 void GNC::handleTimeout() {
     // Check all connections are still open
-    this->open();
+    //Acceptor
+    if (accept.isConnected() == false) {
+        if(accept.open(hostName, localPort) == false) {
+            fprintf(logFile, "Error: Unable to Open Acceptor, Exiting...\n");
+            exit(-1);
+        }
+        fprintf(logFile, "Connection: Server Socket Opened\n");
+    }
+    
+    //Connect to ScComms
+    if(connectToAppl(hostName, 7000, &scComms) == true) {
+        fprintf(logFile, "Connection: Connected to ScComms\n");
+    } else {
+        fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+    }
+    
+    // Connect to Camera Controller
+    if(connectToAppl(hostName, 10000, &cameraController) == true) {
+        fprintf(logFile, "Connection: Connected to CameraController\n");
+    } else {
+        fprintf(logFile, "Error: Unable to Connect to CameraController\n");
+    }
+    
     
     // Send Timed Capture Image Requests to Camera
     time_t currentTime = time(NULL);
@@ -99,21 +141,23 @@ void GNC::handleTimeout() {
         }
         
         if ((scComms != nullptr) && (scComms -> isConnected())) {
-            std::cout << "\nSending Pointing Request\n" << std::endl;
-            
             pointRequest->update(point);
             scComms -> sendMessage(pointRequest);
+            fprintf(logFile, "Sent Message: Pointing Request to ScComms\n");
         }
         
         if ((cameraController != nullptr) && (cameraController->isConnected())) {
             captureImageMessage->update(point, latestPosition);
-            
-            std::cout << "\nSending Capture Image Message\n" << std::endl;
             cameraController -> sendMessage(captureImageMessage);
+            fprintf(logFile, "Sent Message: CaptureImageMessage to CameraController\n");
         }
         
         pollTime = currentTime + 20;
     }
+}
+
+FILE* GNC::getLogFileID() {
+    return logFile;
 }
 
 // *******************************
@@ -143,7 +187,7 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
 }
 
 void GNC::readReferenceTrajectory() {
-    std::cout << "Read In Reference Trajectory Here, Need to implement" << std::endl;
+    fprintf(logFile, "Need To Implement: readReferenceTrajectory\n");
 }
 
 // *******************************
@@ -156,13 +200,14 @@ void GNC::readReferenceTrajectory() {
  Send Status to WatchDog
  */
 void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
-    std::cout << "WatchDogService::handleProcessHealthAndStatusRequest(): Process Health and Status Response Received" << std::endl;
+    fprintf(logFile, "Received Message: ProcessHealthAndStatusRequest from WatchDog\n");
     
     // Update ProcessHealthAndStatusResponse Message
     processHealthMessage->update(localError);
     
     // Send Status Message
     service->sendMessage(processHealthMessage);
+    fprintf(logFile, "Sent Message: StatusAndHealthResponse to WatchDog\n");
     
     // Reset Error Enum
     localError = PE_AllHealthy;
@@ -172,10 +217,7 @@ void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg
  1. Store the Data Message in circular buffer
  */
 void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-    std::cerr << "\n\nGNC::handleDataMessage() Data Message Recived\n\n" << std::endl;
-    
-    // Print Message
-    //  msg->print();
+    fprintf(logFile, "Received Message: DataMessage from ScComms\n");
     
     // Put Data Into Circular Buffer
     circBuf.put(msg);
@@ -187,19 +229,10 @@ void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
  3. Send a Solution Message
  */
 void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "\n\nGNC::handleProcessedImageMessage() Processed Image Message Recieved\n\n" << std::endl;
-    
-    // Print Message
-    //  msg->print();
+    fprintf(logFile, "Received Message: ProcessedImageMessage from ScComms\n");
     
     DataMessage* scData = circBuf.get(msg->timeStamp);
     
-    // Should this move into computeSolution or get rid of completly?
-    if (scData == nullptr) {
-        std::cout << "Data Message == nullptr, circular buffer broken, or Data Message not found!" << std::endl;
-        //TODO: Throw exception here
-        return;
-    }
     
     // Compute Solution and Update Solution Message
     try {
@@ -207,18 +240,18 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
         throw std::exception();
         
     } catch(std::exception &exception) {
-        std::cerr << "ScComms: Standard exception: " << exception.what() << '\n';
-        // TODO: Do Somthing here to send watchdog the problem
+        fprintf(logFile, "Error: HandleProcessedImageMessage() Exception Caught: %s\n", exception.what());
         localError = PE_invalidData;
         
     } catch (...) {
-        std::cerr << "Unknown Exception thrown in GNC::computeSolution()" << std::endl;
+        fprintf(logFile, "Error: HandleProcessedImageMessage() Unknown Type of Exception Caught\n");
         throw;
     }
     
     // Send Solution Message
     if (scComms != nullptr) {
         scComms -> sendMessage(solutionMessage);
+        fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
     }
 }
 
@@ -229,38 +262,31 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
 //
 // ********************************
 void GNC::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-    std::cerr << "GNC::handleOSPREStatus() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: OSPRE Status, Closing Connection\n");
     service->closeConnection();
 }
 void GNC::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
-    std::cerr << "GNC::handleProcessHealthAndStatusResponse() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: ResponseMessage, Closing Connection\n");
     service->closeConnection();
 }
 void GNC::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-    std::cerr << "GNC::handleCaptureImageRequest() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: CaptureImageRequest, Closing Connection\n");
     service->closeConnection();
 }
 void GNC::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
-    std::cerr << "GNC::handleImageAdjustment() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: ImageAdjustmentMessage, Closing Connection\n");
     service->closeConnection();
 }
 void GNC::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
-    std::cerr << "GNC::handleImageMessage() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: ImageMessage, Closing Connection\n");
     service->closeConnection();
 }
 void GNC::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
-    std::cerr << "GNC::handlePointingRequest() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: PointingRequest, Closing Connection\n");
     service->closeConnection();
 }
 void GNC::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
-    std::cerr << "GNC::handleSolutionMessage() Not Supported for GNC" << std::endl;
-    std::cerr << "Closing Connection" << std::endl;
+    fprintf(logFile, "Error: Invalid Message Recived: SolutionMessage, Closing Connection\n");
     service->closeConnection();
 }
 
