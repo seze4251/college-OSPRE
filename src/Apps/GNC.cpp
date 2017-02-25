@@ -113,17 +113,22 @@ void GNC::handleTimeout() {
     }
     
     //Connect to ScComms
-    if(connectToAppl(hostName, 7000, &scComms) == true) {
-        fprintf(logFile, "Connection: Connected to ScComms\n");
-    } else {
-        fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+    if (scComms == nullptr || scComms->isConnected() == false) {
+        if(connectToAppl(hostName, 7000, &scComms) == true) {
+            fprintf(logFile, "Connection: Connected to ScComms\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+        }
     }
     
     // Connect to Camera Controller
-    if(connectToAppl(hostName, 10000, &cameraController) == true) {
-        fprintf(logFile, "Connection: Connected to CameraController\n");
-    } else {
-        fprintf(logFile, "Error: Unable to Connect to CameraController\n");
+    
+    if (cameraController == nullptr || cameraController->isConnected() == false) {
+        if(connectToAppl(hostName, 10000, &cameraController) == true) {
+            fprintf(logFile, "Connection: Connected to CameraController\n");
+        } else {
+            fprintf(logFile, "Error: Unable to Connect to CameraController\n");
+        }
     }
     
     
@@ -232,8 +237,12 @@ void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
 void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: ProcessedImageMessage from ScComms\n");
     
-    DataMessage* scData = circBuf.get(msg->timeStamp);
-    
+    DataMessage* scData;
+    try {
+        scData = circBuf.get(msg->timeStamp);
+    } catch (const char* exception) {
+        fprintf(logFile, "Error: Data Message Not Received, Exception: %s\n", exception);
+    }
     
     // Compute Solution and Update Solution Message
     try {

@@ -103,7 +103,7 @@ void CameraController::handleTimeout() {
     }
     
     //Connect to ScComms
-    if (scComms->isConnected() == false) {
+    if (scComms == nullptr || scComms->isConnected() == false) {
         if(connectToAppl(hostName, 7000, &scComms) == true) {
             fprintf(logFile, "Connection: Connected to ScComms\n");
         } else {
@@ -112,7 +112,7 @@ void CameraController::handleTimeout() {
     }
     
     // Connect to ImageProcessing
-    if (imageProc->isConnected() == false) {
+    if (imageProc == nullptr || imageProc->isConnected() == false) {
         if(connectToAppl(hostName, 8000, &imageProc) == true) {
             fprintf(logFile, "Connection: Connected to Image Processing\n");
         } else {

@@ -116,7 +116,7 @@ void WatchDog::handleTimeout() {
     }
     
     // Connect to ScComms
-    if (scComms->isConnected() == false) {
+    if (scComms == nullptr || scComms->isConnected() == false) {
         if(connectToAppl(hostName, 7000, &scComms) == true) {
             fprintf(logFile, "Connection: Connected to ScComms\n");
         } else {
@@ -125,7 +125,7 @@ void WatchDog::handleTimeout() {
     }
     
     // Connect to GNC
-    if (gnc->isConnected() == false) {
+    if (gnc == nullptr || gnc->isConnected() == false) {
         if(connectToAppl(hostName, 9000, &gnc) == true) {
             fprintf(logFile, "Connection: Connected to GNC\n");
         } else {
@@ -134,7 +134,7 @@ void WatchDog::handleTimeout() {
     }
     
     // Connect to Image Processor
-    if (imageProc->isConnected() == false) {
+    if (imageProc == nullptr || imageProc->isConnected() == false) {
         if(connectToAppl(hostName, 8000, &imageProc) == true) {
             fprintf(logFile, "Connection: Connected to Image Processor\n");
         } else {
@@ -143,7 +143,7 @@ void WatchDog::handleTimeout() {
     }
     
     // Connect to Camera Controller
-    if (cameraControl->isConnected() == false) {
+    if (cameraControl == nullptr || cameraControl->isConnected() == false) {
         if(connectToAppl(hostName, 10000, &cameraControl) == true) {
             fprintf(logFile, "Connection: Connected to CameraController\n");
         } else {

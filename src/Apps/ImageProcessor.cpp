@@ -57,25 +57,17 @@ void ImageProcessor::open() {
     timeinfo = localtime(&rawtime);
     strftime(buffer, 80,"./log/ImageProcessorLog_%d-%m-%Y.log",timeinfo);
     
-    std::cout << "made it to 1" <<std::endl;
-    
     // Open Log File
     logFile = fopen(buffer, "a+");
     
-    std::cout << "made it to 1.5" <<std::endl;
-    
     // Log Application Starting
     fprintf(logFile, "Image Processor Application Started, Time = %ld\n", time(0));
-    std::cout << "made it to 1.75" <<std::endl;
-    
+
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     
-    std::cout << "made it to 2" <<std::endl;
-    
     //Acceptor
     if (accept.isConnected() == false) {
-        std::cout << "Am I in here?" << std::endl;
         if(accept.open(hostName, localPort) == false) {
             fprintf(logFile, "Error: Unable to Open Acceptor, Exiting...\n");
             exit(-1);
@@ -84,7 +76,6 @@ void ImageProcessor::open() {
         fprintf(logFile, "Connection: Server Socket Opened\n");
     }
     
-    std::cout << "made it to 3" <<std::endl;
     //Connect to GNC
     if(connectToAppl(hostName, 9000, &gnc) == true) {
         fprintf(logFile, "Connection: Connected to GNC\n");
@@ -107,7 +98,7 @@ void ImageProcessor::handleTimeout() {
     }
     
     //Connect to GNC
-    if (gnc->isConnected() == false) {
+    if (gnc == nullptr || gnc->isConnected() == false) {
         if(connectToAppl(hostName, 9000, &gnc) == true) {
             fprintf(logFile, "Connection: Connected to GNC\n");
         } else {

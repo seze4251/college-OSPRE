@@ -20,7 +20,6 @@ int main(int, char**) {
     
     FILE* logFile;
     
-    std::cout << "made it here!!" << std::endl;
     try {
         proc.open();
         logFile = proc.getLogFileID();
