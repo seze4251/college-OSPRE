@@ -1,4 +1,6 @@
 #!/bin/bash
+ulimit -c unlimited
+
 bin_test/testByteBuffer
 bin_test/testCircularBuffer
 bin_test/testExternalBuilderParser

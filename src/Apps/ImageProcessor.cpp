@@ -105,12 +105,9 @@ void ImageProcessor::handleTimeout() {
             fprintf(logFile, "Error: Unable to Connect to GNC\n");
         }
     }
+    
+    flushLog();
 }
-
-FILE* ImageProcessor::getLogFileID() {
-    return logFile;
-}
-
 
 // *******************************
 //

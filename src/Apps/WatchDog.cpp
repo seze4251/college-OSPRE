@@ -211,12 +211,8 @@ void WatchDog::handleTimeout() {
             pollStatus = pollProcess + 1;
         }
     }
+    flushLog();
 }
-
-FILE* WatchDog::getLogFileID() {
-    return logFile;
-}
-
 
 // *******************************
 //

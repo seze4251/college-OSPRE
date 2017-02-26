@@ -47,9 +47,6 @@ public:
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
-    // Logging
-    FILE* getLogFileID();
-    
 private:
     time_t pollTime;
     ServiceInternal* gnc;
@@ -66,9 +63,6 @@ private:
     // TEMP TEMP TEMP
     bool test;
     // TEMP TEMP TEMP
-    
-    // Log File
-    FILE* logFile;
 };
 
 #endif

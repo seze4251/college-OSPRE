@@ -109,13 +109,8 @@ void Spacecraft::handleTimeout() {
             pollTime = currentTime + 1;
         }
     }
-    
+    flushLog();
 }
-
-FILE* Spacecraft::getLogFileID() {
-    return logFile;
-}
-
 
 void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* service) {
     switch (msg->iden) {

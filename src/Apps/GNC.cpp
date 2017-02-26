@@ -159,10 +159,7 @@ void GNC::handleTimeout() {
         
         pollTime = currentTime + 20;
     }
-}
-
-FILE* GNC::getLogFileID() {
-    return logFile;
+    flushLog();
 }
 
 // *******************************

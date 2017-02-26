@@ -50,9 +50,6 @@ public:
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
-    // Logging
-    FILE* getLogFileID();
-    
 private:
     // Internal Members  for System Architecture
     time_t pollTime;
@@ -79,10 +76,6 @@ private:
     double* trajectoryDev;
     
     ProcessError localError;
-
-    // Log File
-    FILE* logFile;
-    
 };
 
 #endif

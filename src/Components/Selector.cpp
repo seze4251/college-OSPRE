@@ -17,6 +17,7 @@
 
 #include "Selector.h"
 #include "Service.h"
+#include "Server.h"
 
 Selector::Selector() {
     for (int x = 0; x < FD_SETSIZE; x++) {
@@ -80,7 +81,7 @@ int Selector::select(timeval *timeout) {
                 if (services[i] != NULL) {
                     services[i]->handleRead();
                 } else {
-                    std::cerr << "Error, attempt to read() on FD with no associated service" << std::endl;
+                    fprintf(Server::getAppl()->getLogFileID(), "Client Disconnection: attempt to read() on FD with no associated service\n");
                     return -1;
                 }
                 count++;
@@ -92,7 +93,7 @@ int Selector::select(timeval *timeout) {
                     services[i]->handleWrite();
                 } else {
                     if (FD_ISSET(i, &writeFds)) {
-                        std::cerr << "Error, attempt to write() on FD with no associated service" << std::endl;
+                        fprintf(Server::getAppl()->getLogFileID(), "Client Disconnection: attempt to write() on FD with no associated service\n");
                         return -1;
                     }
                 }

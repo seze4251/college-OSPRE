@@ -51,9 +51,6 @@ public:
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
-    // Logging
-    FILE* getLogFileID();
-    
 private:
     time_t pollTime;
     ServiceInternal* imageProc;
@@ -71,9 +68,6 @@ private:
     ProcessHealthAndStatusResponse* processHealthMessage;
     
     ProcessError localError;
-    
-    // Log File
-    FILE* logFile;
 };
 
 #endif

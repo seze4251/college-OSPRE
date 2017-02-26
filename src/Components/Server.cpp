@@ -19,6 +19,7 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/ioctl.h>
+#include <ctime>
 
 #include "Server.h"
 
@@ -28,6 +29,7 @@ Server::Server() {
     signal(SIGPIPE, SIG_IGN);
     t_val.tv_sec = 5;
     t_val.tv_usec = 0;
+    flushTime = 0;
 }
 
 Server::~Server() {
@@ -53,6 +55,15 @@ void Server::handleTimeout() {
 void Server::setTimeoutTime(int sec, int micro) {
     t_val.tv_sec = sec;
     t_val.tv_usec = micro;
+}
+
+void Server::flushLog() {
+    int tempTime = time(0);
+    
+    if ((tempTime - flushTime) > 10) {
+        fflush(logFile);
+        flushTime = tempTime;
+    }
 }
 
 int Server::run() {

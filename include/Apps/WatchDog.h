@@ -43,9 +43,6 @@ public:
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
-    // Logging
-    FILE* getLogFileID();
-    
 private:
     // Poll Times
     time_t pollProcess;
@@ -66,9 +63,6 @@ private:
     bool healthyScGnc;
     bool healthyImageProc;
     bool healthyCameraControl;
-    
-    // Log File
-    FILE* logFile;
 };
 
 #endif

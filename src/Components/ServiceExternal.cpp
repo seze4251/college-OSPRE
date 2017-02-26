@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include "ServiceExternal.h"
-
+#include "Server.h"
 
 // Constructor
 ServiceExternal::ServiceExternal(Selector& sel, int fd, int buffSize) : Service(sel), fd(fd), readbuf(buffSize), writebuf(buffSize), build(writebuf), parse(readbuf),  partialMessage(false)  {
@@ -61,7 +61,7 @@ void ServiceExternal::handleRead() {
         amountRead = ::read(fd, buf, length);
         
         if (amountRead == 0) {
-            std::cerr << "ServiceExternal::handleRead(): read() returned 0, closing connection" << std::endl;
+            fprintf(Server::getAppl()->getLogFileID(), "Client Disconnection: ServiceExternal::handleRead(): read() returned 0, closing connection\n");
             closeConnection();
             return;
             

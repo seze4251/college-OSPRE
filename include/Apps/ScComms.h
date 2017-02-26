@@ -58,9 +58,6 @@ public:
     virtual void handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service);
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
-    // Logging
-    FILE* getLogFileID();
-    
 private:
     time_t pollTime;
     
@@ -77,9 +74,6 @@ private:
     External_SolutionMessage* externalSolutionMessage;
     
     ProcessError localError;
-    
-    // Log File
-    FILE* logFile;
 };
 
 #endif

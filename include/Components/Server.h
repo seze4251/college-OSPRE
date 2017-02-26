@@ -26,16 +26,20 @@ public:
     Selector& getSelector();
     
     static Server* getAppl();
-
+    FILE* getLogFileID() { return logFile;}
+    
 protected:
     static void setAppl(Server* srv);
     static Server* appl;
     virtual void handleTimeout() = 0;
     void setTimeoutTime(int sec, int micro);
+    void flushLog();
     timeval t_val;
+    FILE* logFile;
     
 private:
     Selector sel;
+    int flushTime;
 };
 
 #endif

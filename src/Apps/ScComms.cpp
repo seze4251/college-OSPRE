@@ -108,12 +108,8 @@ void ScComms::handleTimeout() {
         }
         fprintf(logFile, "Connection: External Server Socket Opened\n");
     }
+    flushLog();
 }
-
-FILE* ScComms::getLogFileID() {
-    return logFile;
-}
-
 
 // *******************************
 //

@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include "ServiceInternal.h"
+#include "Server.h"
 
 // Constructor
 ServiceInternal::ServiceInternal(Selector& sel, int fd, int buffSize) : Service(sel), fd(fd), readbuf(buffSize), writebuf(buffSize), build(writebuf), parse(readbuf), partialMessage(false) {}
@@ -59,7 +60,7 @@ void ServiceInternal::handleRead() {
         amountRead = ::read(fd, buf, length);
 
         if (amountRead == 0) {
-            std::cerr << "ServiceInternal::handleRead(): read() returned 0, closing connection" << std::endl;
+            fprintf(Server::getAppl()->getLogFileID(), "Client Disconnection: ServiceInternal::handleRead(): read() returned 0, closing connection\n");
             closeConnection();
             return;
             

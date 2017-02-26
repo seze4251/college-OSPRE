@@ -119,12 +119,8 @@ void CameraController::handleTimeout() {
             fprintf(logFile, "Error: Unable to Connect to ImageProcessing\n");
         }
     }
-    
+    flushLog();
     // Check to make sure that Camera is still available <- ping camera
-}
-
-FILE* CameraController::getLogFileID() {
-    return logFile;
 }
 
 // *******************************
