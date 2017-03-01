@@ -35,10 +35,12 @@ int main(int, char**) {
         
     } catch (...) {
         fprintf(logFile, "Error: Unknown Type Of Exception Caught, Application Terminating \n");
+        fflush(logFile);
         throw;
     }
     
     fprintf(logFile, "Application Terminating \n");
+    fflush(logFile);
     std::cout << "WatchDog Application Terminating\n";
     return 0;
 }

@@ -2,7 +2,7 @@
 ## Makefile generated for MATLAB file/project 'Kalman_Filter_Iteration'. 
 ## 
 ## Makefile     : Kalman_Filter_Iteration_rtw.mk
-## Generated on : Tue Feb 21 11:34:48 2017
+## Generated on : Tue Feb 28 11:46:24 2017
 ## MATLAB Coder version: 3.2 (R2016b)
 ## 
 ## Build Info:
@@ -20,82 +20,60 @@
 # PRODUCT_NAME            Name of the system to build
 # MAKEFILE                Name of this makefile
 # COMPUTER                Computer type. See the MATLAB "computer" command.
-# PERL                    PERL Tool
-# GEN_LNK_SCRIPT          Perl script to generate the command file
-# CMD_FILE                Command file
 
 PRODUCT_NAME              = Kalman_Filter_Iteration
 MAKEFILE                  = Kalman_Filter_Iteration_rtw.mk
-COMPUTER                  = PCWIN64
-MATLAB_ROOT               = C:/PROGRA~1/MATLAB/R2016b
-MATLAB_BIN                = C:/PROGRA~1/MATLAB/R2016b/bin
-MATLAB_ARCH_BIN           = C:/PROGRA~1/MATLAB/R2016b/bin/win64
+COMPUTER                  = GLNX
+MATLAB_ROOT               = .
+MATLAB_BIN                = .
+MATLAB_ARCH_BIN           = .
 MASTER_ANCHOR_DIR         = 
-START_DIR                 = C:/Users/cameron/GOOGLE~1/PERSONAL/Senior/SENIOR~1/ALGORI~1/KALMAN~1
-ARCH                      = win64
+START_DIR                 = /home/ubuntu
+ARCH                      = glnx
 RELATIVE_PATH_TO_ANCHOR   = .
-PERL                      = $(MATLAB_ROOT)/sys/perl/win32/bin/perl.exe
-GEN_LNK_SCRIPT            = $(MATLAB_ROOT)/rtw/c/tools/mkvc_lnk.pl
-CMD_FILE                  = $(PRODUCT_NAME).lnk
-ANSI_OPTS                 = -ansi -pedantic -Wno-long-long -fwrapv
-CPP_ANSI_OPTS             = -std=c++98 -pedantic -Wno-long-long -fwrapv
 
 ###########################################################################
 ## TOOLCHAIN SPECIFICATIONS
 ###########################################################################
 
-# Toolchain Name:          MinGW64 v4.x | gmake (64-bit Windows)
-# Supported Version(s):    4.x
+# Toolchain Name:          GNU GCC Raspberry Pi v1.0 | gmake (64-bit Windows)
+# Supported Version(s):    
 # ToolchainInfo Version:   R2016b
 # Specification Revision:  1.0
 # 
-#-------------------------------------------
-# Macros assumed to be defined elsewhere
-#-------------------------------------------
-
-# ANSI_OPTS
-# CPP_ANSI_OPTS
-# MINGW_ROOT
 
 #-----------
 # MACROS
 #-----------
 
-WARN_FLAGS         = -Wall -W -Wwrite-strings -Winline -Wstrict-prototypes -Wnested-externs -Wpointer-arith -Wcast-align
-WARN_FLAGS_MAX     = $(WARN_FLAGS) -Wcast-qual -Wshadow
-CPP_WARN_FLAGS     = -Wall -W -Wwrite-strings -Winline -Wpointer-arith -Wcast-align
-CPP_WARN_FLAGS_MAX = $(CPP_WARN_FLAGS) -Wcast-qual -Wshadow
-MEX_OPTS_FILE      = $(MATLAB_ROOT)/bin/win64/mexopts/mingw64.xml
-MW_EXTERNLIB_DIR   = $(MATLAB_ROOT)/extern/lib/win64/mingw64
-SHELL              = %SystemRoot%/system32/cmd.exe
+CCOUTPUTFLAG = --output_file=
+LDOUTPUTFLAG = --output_file=
 
 TOOLCHAIN_SRCS = 
 TOOLCHAIN_INCS = 
-TOOLCHAIN_LIBS = -lws2_32
+TOOLCHAIN_LIBS = -lm -lm -lstdc++
 
 #------------------------
 # BUILD TOOL COMMANDS
 #------------------------
 
-# C Compiler: GNU C Compiler
-CC_PATH = $(MINGW_ROOT)
-CC = $(CC_PATH)/gcc
+# Assembler: GNU GCC Raspberry Pi Assembler
+AS = as
 
-# Linker: GNU Linker
-LD_PATH = $(MINGW_ROOT)
-LD = $(LD_PATH)/gcc
+# C Compiler: GNU GCC Raspberry Pi C Compiler
+CC = gcc
 
-# C++ Compiler: GNU C++ Compiler
-CPP_PATH = $(MINGW_ROOT)
-CPP = $(CPP_PATH)/g++
+# Linker: GNU GCC Raspberry Pi Linker
+LD = gcc
 
-# C++ Linker: GNU C++ Linker
-CPP_LD_PATH = $(MINGW_ROOT)
-CPP_LD = $(CPP_LD_PATH)/g++
+# C++ Compiler: GNU GCC Raspberry Pi C++ Compiler
+CPP = g++
 
-# Archiver: GNU Archiver
-AR_PATH = $(MINGW_ROOT)
-AR = $(AR_PATH)/ar
+# C++ Linker: GNU GCC Raspberry Pi C++ Linker
+CPP_LD = g++
+
+# Archiver: GNU GCC Raspberry Pi Archiver
+AR = ar
 
 # MEX Tool: MEX Tool
 MEX_PATH = $(MATLAB_BIN)
@@ -107,15 +85,16 @@ DOWNLOAD =
 # Execute: Execute
 EXECUTE = $(PRODUCT)
 
-# Builder: GMAKE Utility
-MAKE_PATH = %MATLAB%/bin/win64
-MAKE = $(MAKE_PATH)/gmake
+# Builder: Make Tool
+MAKE = make
 
 
 #-------------------------
 # Directives/Utilities
 #-------------------------
 
+ASDEBUG             = -g
+AS_OUTPUT_FLAG      = -o
 CDEBUG              = -g
 C_OUTPUT_FLAG       = -o
 LDDEBUG             = -g
@@ -127,52 +106,55 @@ OUTPUT_FLAG         = -o
 ARDEBUG             =
 STATICLIB_OUTPUT_FLAG =
 MEX_DEBUG           = -g
-RM                  = @del
-ECHO                = @echo
-MV                  = @move
+RM                  =
+ECHO                = echo
+MV                  =
 RUN                 =
 
 #----------------------------------------
 # "Faster Builds" Build Configuration
 #----------------------------------------
 
-ARFLAGS              = ruvs
-CFLAGS               = -c $(ANSI_OPTS) \
+ARFLAGS              = -r
+ASFLAGS              = -c \
+                       $(ASFLAGS_ADDITIONAL) \
+                       $(INCLUDES)
+CFLAGS               = -c \
+                       -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
                        -O0
-CPPFLAGS             = -c $(CPP_ANSI_OPTS) \
-                       -O0
-CPP_LDFLAGS          = -Wl,-rpath,"$(MATLAB_ARCH_BIN)",-L"$(MATLAB_ARCH_BIN)"
-CPP_SHAREDLIB_LDFLAGS  = -shared -Wl,-rpath,"$(MATLAB_ARCH_BIN)",-L"$(MATLAB_ARCH_BIN)" -Wl,--no-undefined \
-                         -Wl,--out-implib,$(basename $(PRODUCT))$(STATICLIB_EXT)
+CPPFLAGS             = -c \
+                       -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
+                       -O2
+CPP_LDFLAGS          = -lrt -lpthread -ldl
+CPP_SHAREDLIB_LDFLAGS  = -shared  \
+                         -lrt -lpthread -ldl
 DOWNLOAD_FLAGS       =
 EXECUTE_FLAGS        =
-LDFLAGS              = -Wl,-rpath,"$(MATLAB_ARCH_BIN)",-L"$(MATLAB_ARCH_BIN)"
-MEX_CFLAGS           = -MATLAB_ARCH=$(ARCH) $(INCLUDES) \
-                         \
-                       COPTIMFLAGS="$(ANSI_OPTS)  \
-                       -O0 \
-                        $(DEFINES)" \
-                         \
-                       -silent
-MEX_LDFLAGS          = LDFLAGS=='$$LDFLAGS'
+LDFLAGS              = -lrt -lpthread -ldl
+MEX_CFLAGS           =
+MEX_LDFLAGS          =
 MAKE_FLAGS           = -f $(MAKEFILE)
-SHAREDLIB_LDFLAGS    = -shared -Wl,-rpath,"$(MATLAB_ARCH_BIN)",-L"$(MATLAB_ARCH_BIN)" -Wl,--no-undefined \
-                       -Wl,--out-implib,$(basename $(PRODUCT))$(STATICLIB_EXT)
+SHAREDLIB_LDFLAGS    = -shared  \
+                       -lrt -lpthread -ldl
 
 #--------------------
 # File extensions
 #--------------------
 
+OBJ_EXT             = .s.o
+ASM_EXT             = .s
+C_DEP               = .c.dep
 H_EXT               = .h
-OBJ_EXT             = .obj
+COBJ_EXT            = .c.o
 C_EXT               = .c
-EXE_EXT             = .exe
-SHAREDLIB_EXT       = .dll
+EXE_EXT             = .elf
+SHAREDLIB_EXT       = .so
+CXX_DEP             = .cpp.dep
 HPP_EXT             = .hpp
-OBJ_EXT             = .obj
+CPPOBJ_EXT          = .cpp.o
 CPP_EXT             = .cpp
-EXE_EXT             = .exe
-SHAREDLIB_EXT       = .dll
+EXE_EXT             =
+SHAREDLIB_EXT       = .so
 STATICLIB_EXT       = .lib
 MEX_EXT             = .mexw64
 MAKE_EXT            = .mk
@@ -190,7 +172,7 @@ BUILD_TYPE = "Static Library"
 ## INCLUDE PATHS
 ###########################################################################
 
-INCLUDES_BUILDINFO = -I$(START_DIR) -I$(START_DIR)/codegen/lib/Kalman_Filter_Iteration -I$(MATLAB_ROOT)/extern/include -I$(MATLAB_ROOT)/simulink/include -I$(MATLAB_ROOT)/rtw/c/src -I$(MATLAB_ROOT)/rtw/c/src/ext_mode/common -I$(MATLAB_ROOT)/rtw/c/ert
+INCLUDES_BUILDINFO = -I./
 
 INCLUDES = $(INCLUDES_BUILDINFO)
 
@@ -198,15 +180,17 @@ INCLUDES = $(INCLUDES_BUILDINFO)
 ## DEFINES
 ###########################################################################
 
+DEFINES_ = -D__MW_TARGET_USE_HARDWARE_RESOURCES_H__ -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=200000 -DMODEL=Kalman_Filter_Iteration -DHAVESTDIO -DUSE_RTMODEL
+DEFINES_SKIPFORSIL = -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=200000
 DEFINES_STANDARD = -DMODEL=Kalman_Filter_Iteration -DHAVESTDIO -DUSE_RTMODEL
 
-DEFINES = $(DEFINES_STANDARD)
+DEFINES = $(DEFINES_) $(DEFINES_SKIPFORSIL) $(DEFINES_STANDARD)
 
 ###########################################################################
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(START_DIR)/codegen/lib/Kalman_Filter_Iteration/Kalman_Filter_Iteration_initialize.cpp $(START_DIR)/codegen/lib/Kalman_Filter_Iteration/Kalman_Filter_Iteration_terminate.cpp $(START_DIR)/codegen/lib/Kalman_Filter_Iteration/Kalman_Filter_Iteration.cpp
+SRCS = Kalman_Filter_Iteration_rtwutil.cpp Kalman_Filter_Iteration_initialize.cpp Kalman_Filter_Iteration_terminate.cpp Kalman_Filter_Iteration.cpp Position_From_Angles_Slew.cpp Position_From_Earth_Range.cpp Position_From_Moon_Range.cpp Quaternion_To_Attitude.cpp norm.cpp cosd.cpp sind.cpp tand.cpp
 
 ALL_SRCS = $(SRCS)
 
@@ -214,7 +198,7 @@ ALL_SRCS = $(SRCS)
 ## OBJECTS
 ###########################################################################
 
-OBJS = Kalman_Filter_Iteration_initialize.obj Kalman_Filter_Iteration_terminate.obj Kalman_Filter_Iteration.obj
+OBJS = Kalman_Filter_Iteration_rtwutil.cpp.o Kalman_Filter_Iteration_initialize.cpp.o Kalman_Filter_Iteration_terminate.cpp.o Kalman_Filter_Iteration.cpp.o Position_From_Angles_Slew.cpp.o Position_From_Earth_Range.cpp.o Position_From_Moon_Range.cpp.o Quaternion_To_Attitude.cpp.o norm.cpp.o cosd.cpp.o sind.cpp.o tand.cpp.o
 
 ALL_OBJS = $(OBJS)
 
@@ -244,21 +228,68 @@ SYSTEM_LIBS =
 # C Compiler
 #---------------
 
+CFLAGS_SKIPFORSIL =  
 CFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 
-CFLAGS += $(CFLAGS_BASIC)
+CFLAGS += $(CFLAGS_SKIPFORSIL) $(CFLAGS_BASIC)
 
 #-----------------
 # C++ Compiler
 #-----------------
 
+CPPFLAGS_SKIPFORSIL =  
 CPPFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 
-CPPFLAGS += $(CPPFLAGS_BASIC)
+CPPFLAGS += $(CPPFLAGS_SKIPFORSIL) $(CPPFLAGS_BASIC)
+
+#---------------
+# C++ Linker
+#---------------
+
+CPP_LDFLAGS_SKIPFORSIL =  
+
+CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
+
+#------------------------------
+# C++ Shared Library Linker
+#------------------------------
+
+CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL =  
+
+CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
+
+#-----------
+# Linker
+#-----------
+
+LDFLAGS_SKIPFORSIL =  
+
+LDFLAGS += $(LDFLAGS_SKIPFORSIL)
+
+#--------------------------
+# Shared Library Linker
+#--------------------------
+
+SHAREDLIB_LDFLAGS_SKIPFORSIL =  
+
+SHAREDLIB_LDFLAGS += $(SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
 ###########################################################################
 ## INLINED COMMANDS
 ###########################################################################
+
+
+DERIVED_SRCS = $(subst .o,.dep,$(OBJS))
+
+build:
+
+%.dep:
+
+
+
+-include codertarget_assembly_flags.mk
+-include *.dep
+
 
 ###########################################################################
 ## PHONY TARGETS
@@ -268,7 +299,7 @@ CPPFLAGS += $(CPPFLAGS_BASIC)
 
 
 all : build
-	@echo "### Successfully generated all binary outputs."
+	echo "### Successfully generated all binary outputs."
 
 
 build : prebuild $(PRODUCT)
@@ -292,11 +323,9 @@ execute : download
 #---------------------------------
 
 $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
-	$(PERL) $(GEN_LNK_SCRIPT) $(CMD_FILE) $(OBJS)
-	@echo "### Creating static library "$(PRODUCT)" ..."
-	$(AR) $(ARFLAGS)  $(PRODUCT) @$(CMD_FILE)
-	@echo "### Created: $(PRODUCT)"
-	$(RM) $(CMD_FILE)
+	echo "### Creating static library "$(PRODUCT)" ..."
+	$(AR) $(ARFLAGS)  $(PRODUCT) $(OBJS)
+	echo "### Created: $(PRODUCT)"
 
 
 ###########################################################################
@@ -307,43 +336,63 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 # SOURCE-TO-OBJECT
 #---------------------
 
-%.obj : %.c
+%.c.o : %.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-%.obj : %.cpp
+%.s.o : %.s
+	$(AS) $(ASFLAGS) -o "$@" "$<"
+
+
+%.cpp.o : %.cpp
 	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
-%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.c
+%.c.o : %.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-%.obj : $(RELATIVE_PATH_TO_ANCHOR)/%.cpp
+%.s.o : %.s
+	$(AS) $(ASFLAGS) -o "$@" "$<"
+
+
+%.cpp.o : %.cpp
 	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
-%.obj : $(START_DIR)/%.c
+%.c.o : %.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-%.obj : $(START_DIR)/%.cpp
+%.s.o : %.s
+	$(AS) $(ASFLAGS) -o "$@" "$<"
+
+
+%.cpp.o : %.cpp
 	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
-%.obj : $(START_DIR)/codegen/lib/Kalman_Filter_Iteration/%.c
+%.c.o : %.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-%.obj : $(START_DIR)/codegen/lib/Kalman_Filter_Iteration/%.cpp
+%.s.o : %.s
+	$(AS) $(ASFLAGS) -o "$@" "$<"
+
+
+%.cpp.o : %.cpp
 	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
-%.obj : $(MATLAB_ROOT)/rtw/c/src/%.c
+%.c.o : %.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 
-%.obj : $(MATLAB_ROOT)/rtw/c/src/%.cpp
+%.s.o : %.s
+	$(AS) $(ASFLAGS) -o "$@" "$<"
+
+
+%.cpp.o : %.cpp
 	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
@@ -359,35 +408,38 @@ $(ALL_OBJS) : $(MAKEFILE) rtw_proj.tmw
 ###########################################################################
 
 info : 
-	@echo "### PRODUCT = $(PRODUCT)"
-	@echo "### PRODUCT_TYPE = $(PRODUCT_TYPE)"
-	@echo "### BUILD_TYPE = $(BUILD_TYPE)"
-	@echo "### INCLUDES = $(INCLUDES)"
-	@echo "### DEFINES = $(DEFINES)"
-	@echo "### ALL_SRCS = $(ALL_SRCS)"
-	@echo "### ALL_OBJS = $(ALL_OBJS)"
-	@echo "### LIBS = $(LIBS)"
-	@echo "### MODELREF_LIBS = $(MODELREF_LIBS)"
-	@echo "### SYSTEM_LIBS = $(SYSTEM_LIBS)"
-	@echo "### TOOLCHAIN_LIBS = $(TOOLCHAIN_LIBS)"
-	@echo "### CFLAGS = $(CFLAGS)"
-	@echo "### LDFLAGS = $(LDFLAGS)"
-	@echo "### SHAREDLIB_LDFLAGS = $(SHAREDLIB_LDFLAGS)"
-	@echo "### CPPFLAGS = $(CPPFLAGS)"
-	@echo "### CPP_LDFLAGS = $(CPP_LDFLAGS)"
-	@echo "### CPP_SHAREDLIB_LDFLAGS = $(CPP_SHAREDLIB_LDFLAGS)"
-	@echo "### ARFLAGS = $(ARFLAGS)"
-	@echo "### MEX_CFLAGS = $(MEX_CFLAGS)"
-	@echo "### MEX_LDFLAGS = $(MEX_LDFLAGS)"
-	@echo "### DOWNLOAD_FLAGS = $(DOWNLOAD_FLAGS)"
-	@echo "### EXECUTE_FLAGS = $(EXECUTE_FLAGS)"
-	@echo "### MAKE_FLAGS = $(MAKE_FLAGS)"
+	echo "### PRODUCT = $(PRODUCT)"
+	echo "### PRODUCT_TYPE = $(PRODUCT_TYPE)"
+	echo "### BUILD_TYPE = $(BUILD_TYPE)"
+	echo "### INCLUDES = $(INCLUDES)"
+	echo "### DEFINES = $(DEFINES)"
+	echo "### ALL_SRCS = $(ALL_SRCS)"
+	echo "### ALL_OBJS = $(ALL_OBJS)"
+	echo "### LIBS = $(LIBS)"
+	echo "### MODELREF_LIBS = $(MODELREF_LIBS)"
+	echo "### SYSTEM_LIBS = $(SYSTEM_LIBS)"
+	echo "### TOOLCHAIN_LIBS = $(TOOLCHAIN_LIBS)"
+	echo "### ASFLAGS = $(ASFLAGS)"
+	echo "### CFLAGS = $(CFLAGS)"
+	echo "### LDFLAGS = $(LDFLAGS)"
+	echo "### SHAREDLIB_LDFLAGS = $(SHAREDLIB_LDFLAGS)"
+	echo "### CPPFLAGS = $(CPPFLAGS)"
+	echo "### CPP_LDFLAGS = $(CPP_LDFLAGS)"
+	echo "### CPP_SHAREDLIB_LDFLAGS = $(CPP_SHAREDLIB_LDFLAGS)"
+	echo "### ARFLAGS = $(ARFLAGS)"
+	echo "### MEX_CFLAGS = $(MEX_CFLAGS)"
+	echo "### MEX_LDFLAGS = $(MEX_LDFLAGS)"
+	echo "### DOWNLOAD_FLAGS = $(DOWNLOAD_FLAGS)"
+	echo "### EXECUTE_FLAGS = $(EXECUTE_FLAGS)"
+	echo "### MAKE_FLAGS = $(MAKE_FLAGS)"
 
 
 clean : 
 	$(ECHO) "### Deleting all derived files..."
-	$(RM) $(subst /,\,$(PRODUCT))
-	$(RM) $(subst /,\,$(ALL_OBJS))
+	$(RM) $(PRODUCT)
+	$(RM) $(ALL_OBJS)
+	$(RM) *.c.dep
+	$(RM) *.cpp.dep
 	$(ECHO) "### Deleted all derived files."
 
 

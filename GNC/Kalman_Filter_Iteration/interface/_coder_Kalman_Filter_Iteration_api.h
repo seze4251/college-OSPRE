@@ -5,7 +5,7 @@
  * File: _coder_Kalman_Filter_Iteration_api.h
  *
  * MATLAB Coder version            : 3.2
- * C/C++ source code generated on  : 21-Feb-2017 11:34:43
+ * C/C++ source code generated on  : 28-Feb-2017 11:46:21
  */
 
 #ifndef _CODER_KALMAN_FILTER_ITERATION_API_H
@@ -33,6 +33,22 @@ extern void Kalman_Filter_Iteration_atexit(void);
 extern void Kalman_Filter_Iteration_initialize(void);
 extern void Kalman_Filter_Iteration_terminate(void);
 extern void Kalman_Filter_Iteration_xil_terminate(void);
+extern void Position_From_Angles_Slew(real_T r_E_M[3], real_T q_E[4], real_T
+  q_M[4], real_T alpha, real_T beta, real_T vel[3], real_T time, real_T r_E_SC1
+  [3], real_T r_E_SC2[3]);
+extern void Position_From_Angles_Slew_api(const mxArray *prhs[7], const mxArray *
+  plhs[2]);
+extern void Position_From_Earth_Range(real_T q_E[4], real_T alpha, real_T beta,
+  real_T theta, real_T r_E_SC[3]);
+extern void Position_From_Earth_Range_api(const mxArray *prhs[4], const mxArray *
+  plhs[1]);
+extern void Position_From_Moon_Range(real_T r_E_M[3], real_T q_M[4], real_T
+  alpha, real_T beta, real_T theta, real_T r_E_SC[3]);
+extern void Position_From_Moon_Range_api(const mxArray *prhs[5], const mxArray
+  *plhs[1]);
+extern void Quaternion_To_Attitude(real_T q[4], real_T r_SC_body[3]);
+extern void Quaternion_To_Attitude_api(const mxArray *prhs[1], const mxArray
+  *plhs[1]);
 
 #endif
 

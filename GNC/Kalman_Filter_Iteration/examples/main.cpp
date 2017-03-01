@@ -5,7 +5,7 @@
 // File: main.cpp
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 21-Feb-2017 11:34:43
+// C/C++ source code generated on  : 28-Feb-2017 11:46:21
 //
 
 //***********************************************************************
@@ -34,6 +34,10 @@
 //***********************************************************************
 // Include Files
 #include "Kalman_Filter_Iteration.h"
+#include "Position_From_Angles_Slew.h"
+#include "Position_From_Earth_Range.h"
+#include "Position_From_Moon_Range.h"
+#include "Quaternion_To_Attitude.h"
 #include "main.h"
 #include "Kalman_Filter_Iteration_terminate.h"
 #include "Kalman_Filter_Iteration_initialize.h"
@@ -41,10 +45,15 @@
 // Function Declarations
 static void argInit_3x1_real_T(double result[3]);
 static void argInit_3x3_real_T(double result[9]);
+static void argInit_4x1_real_T(double result[4]);
 static void argInit_6x1_real_T(double result[6]);
 static void argInit_6x6_real_T(double result[36]);
 static double argInit_real_T();
 static void main_Kalman_Filter_Iteration();
+static void main_Position_From_Angles_Slew();
+static void main_Position_From_Earth_Range();
+static void main_Position_From_Moon_Range();
+static void main_Quaternion_To_Attitude();
 
 // Function Definitions
 
@@ -80,6 +89,22 @@ static void argInit_3x3_real_T(double result[9])
       // Change this value to the value that the application requires.
       result[idx0 + 3 * idx1] = argInit_real_T();
     }
+  }
+}
+
+//
+// Arguments    : double result[4]
+// Return Type  : void
+//
+static void argInit_4x1_real_T(double result[4])
+{
+  int idx0;
+
+  // Loop over the array to initialize each element.
+  for (idx0 = 0; idx0 < 4; idx0++) {
+    // Set the value of the array element.
+    // Change this value to the value that the application requires.
+    result[idx0] = argInit_real_T();
   }
 }
 
@@ -162,6 +187,86 @@ static void main_Kalman_Filter_Iteration()
 }
 
 //
+// Arguments    : void
+// Return Type  : void
+//
+static void main_Position_From_Angles_Slew()
+{
+  double dv6[3];
+  double dv7[4];
+  double dv8[4];
+  double dv9[3];
+  double r_E_SC1[3];
+  double r_E_SC2[3];
+
+  // Initialize function 'Position_From_Angles_Slew' input arguments.
+  // Initialize function input argument 'r_E_M'.
+  // Initialize function input argument 'q_E'.
+  // Initialize function input argument 'q_M'.
+  // Initialize function input argument 'vel'.
+  // Call the entry-point 'Position_From_Angles_Slew'.
+  argInit_3x1_real_T(dv6);
+  argInit_4x1_real_T(dv7);
+  argInit_4x1_real_T(dv8);
+  argInit_3x1_real_T(dv9);
+  Position_From_Angles_Slew(dv6, dv7, dv8, argInit_real_T(), argInit_real_T(),
+    dv9, argInit_real_T(), r_E_SC1, r_E_SC2);
+}
+
+//
+// Arguments    : void
+// Return Type  : void
+//
+static void main_Position_From_Earth_Range()
+{
+  double dv10[4];
+  double r_E_SC[3];
+
+  // Initialize function 'Position_From_Earth_Range' input arguments.
+  // Initialize function input argument 'q_E'.
+  // Call the entry-point 'Position_From_Earth_Range'.
+  argInit_4x1_real_T(dv10);
+  Position_From_Earth_Range(dv10, argInit_real_T(), argInit_real_T(),
+    argInit_real_T(), r_E_SC);
+}
+
+//
+// Arguments    : void
+// Return Type  : void
+//
+static void main_Position_From_Moon_Range()
+{
+  double dv11[3];
+  double dv12[4];
+  double r_E_SC[3];
+
+  // Initialize function 'Position_From_Moon_Range' input arguments.
+  // Initialize function input argument 'r_E_M'.
+  // Initialize function input argument 'q_M'.
+  // Call the entry-point 'Position_From_Moon_Range'.
+  argInit_3x1_real_T(dv11);
+  argInit_4x1_real_T(dv12);
+  Position_From_Moon_Range(dv11, dv12, argInit_real_T(), argInit_real_T(),
+    argInit_real_T(), r_E_SC);
+}
+
+//
+// Arguments    : void
+// Return Type  : void
+//
+static void main_Quaternion_To_Attitude()
+{
+  double dv13[4];
+  double r_SC_body[3];
+
+  // Initialize function 'Quaternion_To_Attitude' input arguments.
+  // Initialize function input argument 'q'.
+  // Call the entry-point 'Quaternion_To_Attitude'.
+  argInit_4x1_real_T(dv13);
+  Quaternion_To_Attitude(dv13, r_SC_body);
+}
+
+//
 // Arguments    : int argc
 //                const char * const argv[]
 // Return Type  : int
@@ -175,6 +280,10 @@ int main(int, const char * const [])
   // Invoke the entry-point functions.
   // You can call entry-point functions multiple times.
   main_Kalman_Filter_Iteration();
+  main_Position_From_Angles_Slew();
+  main_Position_From_Earth_Range();
+  main_Position_From_Moon_Range();
+  main_Quaternion_To_Attitude();
 
   // Terminate the application.
   // You do not need to do this more than one time.

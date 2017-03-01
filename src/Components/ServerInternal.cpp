@@ -25,7 +25,11 @@ ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_
 
 //Destructor
 ServerInternal::~ServerInternal() {
-    
+    for (int i = 0; i < MaxClients; i++) {
+        if ((connections[i] != nullptr)) {
+            delete connections[i];
+        }
+    }
 }
 
 // Public Methods

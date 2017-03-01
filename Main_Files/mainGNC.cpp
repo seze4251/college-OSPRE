@@ -33,10 +33,12 @@ fprintf(logFile, "Error: Standard Exception Caught: %s\n", exception.what());
         
     } catch (...) {
         fprintf(logFile, "Error: Unknown Type Of Exception Caught, Application Terminating \n");
+        fflush(logFile);
         throw;
     }
     
     fprintf(logFile, "Application Terminating \n");
+    fflush(logFile);
     std::cout << "GNC Application Terminating\n";
     return 0;
 }

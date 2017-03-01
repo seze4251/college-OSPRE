@@ -5,7 +5,7 @@
 // File: main.h
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 21-Feb-2017 11:34:43
+// C/C++ source code generated on  : 28-Feb-2017 11:46:21
 //
 
 //***********************************************************************
@@ -37,6 +37,7 @@
 
 // Include Files
 #include <cmath>
+#include <float.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>

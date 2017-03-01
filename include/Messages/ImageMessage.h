@@ -22,7 +22,7 @@ public:
     }
     
     ~ImageMessage() {
-        delete image;
+        delete[] image;
     }
     
     MessageID getMessageID() { return I_ImageMessage; }
@@ -49,7 +49,7 @@ public:
             return;
         }
         
-        delete image;
+        delete[] image;
         image = new char[newSize];
         imageBufferSize = newSize;
         std::cout << "\n\n\n Resizing Image Message b/c it is bigger than expected \n\n\n";

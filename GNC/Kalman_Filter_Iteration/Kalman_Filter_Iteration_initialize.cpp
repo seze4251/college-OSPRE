@@ -5,11 +5,15 @@
 // File: Kalman_Filter_Iteration_initialize.cpp
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 21-Feb-2017 11:34:43
+// C/C++ source code generated on  : 28-Feb-2017 11:46:21
 //
 
 // Include Files
 #include "Kalman_Filter_Iteration.h"
+#include "Position_From_Angles_Slew.h"
+#include "Position_From_Earth_Range.h"
+#include "Position_From_Moon_Range.h"
+#include "Quaternion_To_Attitude.h"
 #include "Kalman_Filter_Iteration_initialize.h"
 
 // Function Definitions

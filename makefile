@@ -63,8 +63,10 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 # Folder Lists
 # Note: Intentionally excludes the root of the include folder so the lists are clean
 INCDIRS := $(shell find include/**/* -name '*.h' -exec dirname {} \; | sort | uniq)
-INCLIST := $(patsubst include/%,-I include/%,$(INCDIRS))
 BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
+INCLIST := $(patsubst include/%,-I include/%,$(INCDIRS))
+# Having trouble getting Header files for library to link
+#INCLIST += $(shell find Image_Processing/analyzeImagePi/ -name '*.h' -exec dirname {} \; | sort | uniq)
 
 # Shared Compiler Flags
 CFLAGS := -c #-Wall -Wextra
@@ -106,7 +108,7 @@ $(TARGET_CameraController): $(OBJECTS) $(MAINOBJ_DIR)/mainCameraController.o
 $(TARGET_IMAGEPROC): $(OBJECTS) $(MAINOBJ_DIR)/mainImageProcessor.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC)
+	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC) -I ././Image_Processing/analyzeImagePi ./Image_Processing/lib/analyzeImage.lib
 
 #GNC
 $(TARGET_GNC): $(OBJECTS) $(MAINOBJ_DIR)/mainGNC.o

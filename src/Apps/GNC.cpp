@@ -45,8 +45,8 @@ GNC::~GNC() {
     delete captureImageMessage;
     delete solutionMessage;
     delete pointRequest;
-    delete covariance;
-    delete trajectoryDev;
+    delete[] covariance;
+    delete[] trajectoryDev;
     
     // Close Log File
     if (logFile)

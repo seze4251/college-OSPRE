@@ -33,27 +33,16 @@ div.tooltip { visibility: hidden; position: fixed;
 <tr><td align="left" valign="top" class="td-linebottomrt">Build directory</td>
 <td align="left" valign="top" class="td-linebottomrt-link"><a href="matlab: cd('C:\Users\cameron\Google Drive\PERSONAL\Senior\Senior Projects\Algorithms\Kalman Filter Real-Time Code\codegen\lib\Kalman_Filter_Iteration')">C:\Users\cameron\Google Drive\PERSONAL\Senior\Senior Projects\Algorithms\Kalman Filter Real-Time Code\codegen\lib\Kalman_Filter_Iteration</a></td></tr>
 <tr><td align="left" valign="top" class="td-linebottomrt">Make wrapper</td>
-<td align="left" valign="top" class="td-linebottomrt-link">.\Kalman_Filter_Iteration_rtw.bat</td></tr>
+<td align="left" valign="top" class="td-linebottomrt-link">make  -f Kalman_Filter_Iteration_rtw.mk all</td></tr>
 <tr><td align="left" valign="top" class="td-linebottomrt">Make command</td>
-<td align="left" valign="top" class="td-linebottomrt-link">C:\PROGRA~1\MATLAB\R2016b\bin\win64\gmake  -f Kalman_Filter_Iteration_rtw.mk all</td></tr>
+<td align="left" valign="top" class="td-linebottomrt-link">make  -f Kalman_Filter_Iteration_rtw.mk all</td></tr>
 </table>
 <br/>
 <table border="1" cellpadding="4" cellspacing="1" width="100%">
 <tr><td align="left" class="td-linebottomrt-gray">Build Log</td></tr>
 <tr><td valign="top" class="td-script">
 <pre>
-<span class="td-line-number">    1   </span><span class="td-line-normal">C:\PROGRA~3\MATLAB\SUPPOR~1\R2016b\MW_MIN~1\bin/g++ -c -std=c++98 -pedantic -Wno-long-long -fwrapv -O0 -DMODEL=Kalman_Filter_Iteration -DHAVESTDIO -DUSE_RTMODEL -IC:/Users/cameron/GOOGLE~1/PERSONAL/Senior/SENIOR~1/ALGORI~1/KALMAN~1 -IC:/Users/cameron/GOOGLE~1/PERSONAL/Senior/SENIOR~1/ALGORI~1/KALMAN~1/codegen/lib/Kalman_Filter_Iteration -IC:/PROGRA~1/MATLAB/R2016b/extern/include -IC:/PROGRA~1/MATLAB/R2016b/simulink/include -IC:/PROGRA~1/MATLAB/R2016b/rtw/c/src -IC:/PROGRA~1/MATLAB/R2016b/rtw/c/src/ext_mode/common -IC:/PROGRA~1/MATLAB/R2016b/rtw/c/ert -o "Kalman_Filter_Iteration_initialize.obj" "Kalman_Filter_Iteration_initialize.cpp"</span>
-<span class="td-line-number">    2   </span><span class="td-line-normal">C:\PROGRA~3\MATLAB\SUPPOR~1\R2016b\MW_MIN~1\bin/g++ -c -std=c++98 -pedantic -Wno-long-long -fwrapv -O0 -DMODEL=Kalman_Filter_Iteration -DHAVESTDIO -DUSE_RTMODEL -IC:/Users/cameron/GOOGLE~1/PERSONAL/Senior/SENIOR~1/ALGORI~1/KALMAN~1 -IC:/Users/cameron/GOOGLE~1/PERSONAL/Senior/SENIOR~1/ALGORI~1/KALMAN~1/codegen/lib/Kalman_Filter_Iteration -IC:/PROGRA~1/MATLAB/R2016b/extern/include -IC:/PROGRA~1/MATLAB/R2016b/simulink/include -IC:/PROGRA~1/MATLAB/R2016b/rtw/c/src -IC:/PROGRA~1/MATLAB/R2016b/rtw/c/src/ext_mode/common -IC:/PROGRA~1/MATLAB/R2016b/rtw/c/ert -o "Kalman_Filter_Iteration_terminate.obj" "Kalman_Filter_Iteration_terminate.cpp"</span>
-<span class="td-line-number">    3   </span><span class="td-line-normal">C:\PROGRA~3\MATLAB\SUPPOR~1\R2016b\MW_MIN~1\bin/g++ -c -std=c++98 -pedantic -Wno-long-long -fwrapv -O0 -DMODEL=Kalman_Filter_Iteration -DHAVESTDIO -DUSE_RTMODEL -IC:/Users/cameron/GOOGLE~1/PERSONAL/Senior/SENIOR~1/ALGORI~1/KALMAN~1 -IC:/Users/cameron/GOOGLE~1/PERSONAL/Senior/SENIOR~1/ALGORI~1/KALMAN~1/codegen/lib/Kalman_Filter_Iteration -IC:/PROGRA~1/MATLAB/R2016b/extern/include -IC:/PROGRA~1/MATLAB/R2016b/simulink/include -IC:/PROGRA~1/MATLAB/R2016b/rtw/c/src -IC:/PROGRA~1/MATLAB/R2016b/rtw/c/src/ext_mode/common -IC:/PROGRA~1/MATLAB/R2016b/rtw/c/ert -o "Kalman_Filter_Iteration.obj" "Kalman_Filter_Iteration.cpp"</span>
-<span class="td-line-number">    4   </span><span class="td-line-normal">C:/PROGRA~1/MATLAB/R2016b/sys/perl/win32/bin/perl.exe C:/PROGRA~1/MATLAB/R2016b/rtw/c/tools/mkvc_lnk.pl Kalman_Filter_Iteration.lnk Kalman_Filter_Iteration_initialize.obj Kalman_Filter_Iteration_terminate.obj Kalman_Filter_Iteration.obj</span>
-<span class="td-line-number">    5   </span><span class="td-line-normal">"### Creating static library "./Kalman_Filter_Iteration.lib" ..."</span>
-<span class="td-line-number">    6   </span><span class="td-line-normal">C:\PROGRA~3\MATLAB\SUPPOR~1\R2016b\MW_MIN~1\bin/ar ruvs  ./Kalman_Filter_Iteration.lib @Kalman_Filter_Iteration.lnk</span>
-<span class="td-line-number">    7   </span><span class="td-line-normal">a - Kalman_Filter_Iteration_initialize.obj</span>
-<span class="td-line-number">    8   </span><span class="td-line-normal">a - Kalman_Filter_Iteration_terminate.obj</span>
-<span class="td-line-number">    9   </span><span class="td-line-normal">a - Kalman_Filter_Iteration.obj</span>
-<span class="td-line-number">   10   </span><span class="td-line-normal">C:\PROGRA~3\MATLAB\SUPPOR~1\R2016b\MW_MIN~1\bin/ar: creating ./Kalman_Filter_Iteration.lib</span>
-<span class="td-line-number">   11   </span><span class="td-line-normal">"### Created: ./Kalman_Filter_Iteration.lib"</span>
-<span class="td-line-number">   12   </span><span class="td-line-normal">"### Successfully generated all binary outputs."</span>
+<span class="td-line-number">    1   </span><span class="td-line-normal">Compilation suppressed: generating code only.</span>
 </pre>
 </td></tr></table>
 </div>

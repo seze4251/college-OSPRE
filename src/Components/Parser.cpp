@@ -31,6 +31,10 @@ Parser::~Parser() {
         delete capture;
     }
     
+    if (data != nullptr) {
+        delete data;
+    }
+    
     if (adjustment != nullptr) {
         delete adjustment;
     }
