@@ -39,7 +39,7 @@ Server::~Server() {
 }
 
 void signalHandler(int) {
-    fprintf(Server::getAppl()->logFile, "SIG_TERM: Program Terminated by User n");
+    fprintf(Server::getAppl()->logFile, "SIG_TERM: Program Terminated by User \n");
     fflush(Server::getAppl()->logFile);
     fclose(Server::getAppl()->logFile);
     exit(0);
