@@ -39,7 +39,6 @@ Server::~Server() {
 }
 
 void signalHandler(int) {
-    std::cout << "Signal Handler Called" << std::endl;
     fprintf(Server::getAppl()->logFile, "SIG_TERM: Program Terminated by User n");
     fflush(Server::getAppl()->logFile);
     fclose(Server::getAppl()->logFile);
