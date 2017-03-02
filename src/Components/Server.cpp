@@ -24,8 +24,10 @@
 #include "Server.h"
 
 Server* Server::appl;
+void signalHandler(int);
 
 Server::Server() {
+    signal(SIGTERM, signalHandler);
     signal(SIGPIPE, SIG_IGN);
     t_val.tv_sec = 5;
     t_val.tv_usec = 0;
@@ -34,6 +36,14 @@ Server::Server() {
 
 Server::~Server() {
     
+}
+
+void signalHandler(int) {
+    std::cout << "Signal Handler Called" << std::endl;
+    fprintf(Server::getAppl()->logFile, "SIG_TERM: Program Terminated by User n");
+    fflush(Server::getAppl()->logFile);
+    fclose(Server::getAppl()->logFile);
+    exit(0);
 }
 
 Selector& Server::getSelector() {
@@ -83,4 +93,26 @@ int Server::run() {
     return 0;
 }
 
+/*
+// in the file you are registering the signal handler
+ #include <signal.h>
+ 
+ //before the function where you want to register the handler
+ extern bool flag = false;
+ 
+ void signalHandler(int) {
+    flag = true;
+ }
 
+ //register the signal handler
+ signal(SIGTERM, signalHandler);
+ 
+ //check flag to see if the signal has been received. If non-fatal then reset the flag back to false.
+ if (flag == true) {
+    flag = false;
+    doSomething();  // possibly break out of your mainloop()
+ }
+ 
+ // Notes: signalHandler() will get called upon receipt of this signal. It can happen anytime at any point in time. You want to do the very minimum inside a signal handler.
+ // Also, between the time the flag is checked and the time it is reset to false, the signalHandler() might have been invoked again.
+*/

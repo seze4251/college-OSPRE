@@ -24,7 +24,8 @@ public:
     //Public Methods
     int run();
     Selector& getSelector();
-    
+
+    friend void signalHandler(int);
     static Server* getAppl();
     FILE* getLogFileID() { return logFile;}
     
