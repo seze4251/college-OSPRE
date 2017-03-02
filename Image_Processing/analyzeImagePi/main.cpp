@@ -50,13 +50,14 @@ using namespace cv;
 
 // Function Declarations
 static void main_analyzeImage();
+static void argInit_736x1100x3_uint8_T(unsigned char);
 
 // Function Definitions
 
 // This initializes an empty image with dims 736x1100
 // Unused but it may be useful for decyphering how Matlab handles images
 //
-/* static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
+static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
 {
   int idx0;
   int idx1;
@@ -72,7 +73,7 @@ static void main_analyzeImage();
       }
     }
   }
-} */
+}
 
 //
 // Call analyzeImage
@@ -120,22 +121,40 @@ int main(int argc, char** argv)
 {
   // Get image
   Mat image;
-  image = imread(argv[1], CV_LOAD_IMAGE_COLOR);
+  image = imread(argv[1], IMREAD_COLOR);
+
+  // Initialize blank image
+  unsigned char imIn[2428800];
+  Vec3b intensity;
   
   if(!image.data){
     std::cout << "Could not open or find the image" << std::endl;
     return -1;
   }
 
-  unsigned char* dataMat = image.data;
+//  unsigned char* dataMat = image.data;
 
+  int counter = 0;
+  // Loop through image and convert
+  for (int i=0; i < image.cols; i++){
+    for (int j=0; j < image.rows; j++){
+      intensity = image.at<Vec3b>(j,i);
+      uchar blue = intensity.val[0];
+      uchar green = intesnity.val[1];
+      uchar red = intensity.val[2];
+      imIn[counter] = red;
+      imIn[counter + 809600] = green;
+      imIn[counter + 2*809600] = blue;
+      counter++;
+    }
+  }
   // Initialize the application.
   // You do not need to do this more than one time.
   analyzeImage_initialize();
 
   // Invoke the entry-point functions.
   // You can call entry-point functions multiple times.
-  main_analyzeImage(dataMat);
+  main_analyzeImage(imIn);
 
   // Terminate the application.
   // You do not need to do this more than one time.
