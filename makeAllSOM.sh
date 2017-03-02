@@ -16,3 +16,4 @@ make bin/Spacecraft
 # Cleaning .o Files
 echo "Cleaning OSPRE"
 make clean
+rm -r Build_Apps build_Main

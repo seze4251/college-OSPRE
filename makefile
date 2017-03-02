@@ -63,10 +63,9 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 # Folder Lists
 # Note: Intentionally excludes the root of the include folder so the lists are clean
 INCDIRS := $(shell find include/**/* -name '*.h' -exec dirname {} \; | sort | uniq)
-BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 INCLIST := $(patsubst include/%,-I include/%,$(INCDIRS))
-# Having trouble getting Header files for library to link
-#INCLIST += $(shell find Image_Processing/analyzeImagePi/ -name '*.h' -exec dirname {} \; | sort | uniq)
+BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
+
 
 # Shared Compiler Flags
 CFLAGS := -c #-Wall -Wextra
@@ -86,38 +85,38 @@ else
 endif
 
 #WATCHDOG
-$(TARGET_WatchDog): $(OBJECTS) $(MAINOBJ_DIR)/mainWatchDog.o
+$(TARGET_WatchDog): $(OBJECTS) $(MAINOBJ_DIR)/mainWatchDog.o Build_Apps/WatchDog.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
 	@echo "	 Linking $(TARGET_WatchDog)\n"; $(CC) $^ -o $(TARGET_WatchDog)
 
 
 #SCCOMMS
-$(TARGET_ScComms): $(OBJECTS) $(MAINOBJ_DIR)/mainScComms.o
+$(TARGET_ScComms): $(OBJECTS) $(MAINOBJ_DIR)/mainScComms.o Build_Apps/ScComms.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
 	@echo "	 Linking $(TARGET_ScComms)\n"; $(CC) $^ -o $(TARGET_ScComms)
 
 #CAMERA CONTROLLER
-$(TARGET_CameraController): $(OBJECTS) $(MAINOBJ_DIR)/mainCameraController.o
+$(TARGET_CameraController): $(OBJECTS) $(MAINOBJ_DIR)/mainCameraController.o Build_Apps/CameraController.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
 	@echo "	 Linking $(TARGET_CameraController)\n"; $(CC) $^ -o $(TARGET_CameraController)
 
 #IMAGE PROCCESSOR
-$(TARGET_IMAGEPROC): $(OBJECTS) $(MAINOBJ_DIR)/mainImageProcessor.o
+$(TARGET_IMAGEPROC): $(OBJECTS) $(MAINOBJ_DIR)/mainImageProcessor.o Build_Apps/ImageProcessor.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC) -I ././Image_Processing/analyzeImagePi ./Image_Processing/lib/analyzeImage.lib
+	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC) -I./Image_Processing/analyzeImagePi/ ./lib/analyzeImage.lib
 
 #GNC
-$(TARGET_GNC): $(OBJECTS) $(MAINOBJ_DIR)/mainGNC.o
+$(TARGET_GNC): $(OBJECTS) $(MAINOBJ_DIR)/mainGNC.o Build_Apps/GNC.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_GNC)\n"; $(CC) $^ -o $(TARGET_GNC) 
+	@echo "	 Linking $(TARGET_GNC)\n"; $(CC) $^ -o $(TARGET_GNC) -I ./GNC/Kalman_Filter_Iteration/ ./lib/Kalman_Filter_Iteration.lib
 
 #SPACECRAFT
-$(TARGET_SPACECRAFT): $(OBJECTS) $(MAINOBJ_DIR)/mainSpacecraft.o
+$(TARGET_SPACECRAFT): $(OBJECTS) $(MAINOBJ_DIR)/mainSpacecraft.o Build_Apps/Spacecraft.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
 	@echo "	 Linking $(TARGET_SPACECRAFT)\n"; $(CC) $^ -o $(TARGET_SPACECRAFT)
@@ -131,7 +130,12 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 # Need to have all dependencies mapped out for building 
 $(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(SRCEXT)
 	@mkdir -p $(MAINOBJ_DIR)
-	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -I Apps_inc -c -o $@ $<
+
+
+Build_Apps/%.o: Apps_src/%.$(SRCEXT)
+	@mkdir -p Build_Apps
+	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -I Apps_inc -I ./Image_Processing/analyzeImagePi/ -I ./GNC/Kalman_Filter_Iteration/ -c -o $@ $<
 
 clean:
 	@echo "Cleaning .o Files…"; $(RM) -r $(BUILDDIR) $(TARGET); rm build_Main/*;

@@ -10,6 +10,7 @@
 #include <exception>
 #include <stdio.h>
 
+
 #include "rt_nonfinite.h"
 #include "analyzeImage.h"
 #include "analyzeImage_terminate.h"
@@ -122,6 +123,7 @@ void ImageProcessor::handleTimeout() {
 void ImageProcessor::processImage(ImageMessage* msg) {
     
     //TODO: ANTHONY's Code HERE!!!!
+    static unsigned char uv3[2428800];
     double dv3[2] = {157, 167};
     double centerPt_data[2];
     int centerPt_size[2];
@@ -136,8 +138,7 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     //  argInit_736x1100x3_uint8_T(uv3);
     //  argInit_1x2_real_T(dv3);
     std::cout << "Starting Analyze Image Call" << std::endl;
-    analyzeImage(msg->getImagePointer(), dv3, sensVal, centerPt_data, centerPt_size, &radius,
-                 &numCirc);
+    analyzeImage(uv3, dv3, sensVal, centerPt_data, centerPt_size, &radius, &numCirc);
     std::cout << "Finished Analyze Image Call" << std::endl;
     
     double alpha = 15.1, beta = 20.2, theta = 25.3, pixel_error = 1.3;

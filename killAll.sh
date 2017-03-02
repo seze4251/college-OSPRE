@@ -6,3 +6,4 @@ pkill GNC
 pkill ScComms
 pkill WatchDog
 pkill Spacecraft
+pkill CameraControlle
