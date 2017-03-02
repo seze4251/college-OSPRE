@@ -33,11 +33,21 @@
 //                int centerPt_size[2]
 //                double *radius
 //                double *numCirc
+//
+//				  double alpha --- horizontal body centerpoint deviation from image center [deg]
+//				  double beta --- vertical body centerpoint deviation from image center [deg]
+//				  double theta --- angular diameter of found object [deg]
+//
+//				  double pxDeg[2] --- pixels per degree of camera, (xPxDeg, yPxDeg)
+//				  int imgWidth --- width of image [px]
+//				  int imgHeight --- heihgt of image [px]
 // Return Type  : void
 //
 void analyzeImage(const unsigned char imIn[2428800], const double
                   radiusRangeGuess[2], double sensVal, double centerPt_data[],
-                  int centerPt_size[2], double *radius, double *numCirc)
+                  int centerPt_size[2], double *radius, double *numCirc,
+				  double alpha, double beta, double theta,
+				  double pxDeg[2], int imgWidth, int imgHeight)
 {
   static unsigned char im[809600];
   int i;
@@ -68,6 +78,13 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   emxArray_real_T *centers;
   emxArray_real_T *radii;
   double b_centers[2];
+  
+  int xCenter = imgWidth/2;
+  int yCenter = imgHeight/2;
+  
+  // Temporary theta variables for angular diameter calculation
+  double thetaX;
+  double thetaY;
 
   //  Anthony Torres
   //  OSPRE
@@ -213,11 +230,6 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   if ((centers->size[0] == 0) || (centers->size[1] == 0)) {
     // If no objects throw error
     throw std::domain_error("No objects found in image");
-    //centerPt_size[0] = 1;
-    //centerPt_size[1] = 1;
-    //centerPt_data[0] = rtNaN;
-    //*radius = rtNaN;
-    //*numCirc = rtNaN;
   } else {
     //  Return found information
     b_centers[0] = centers->data[0];
@@ -238,6 +250,15 @@ void analyzeImage(const unsigned char imIn[2428800], const double
         i = k;
       }
     }
+	
+	// Calculate output pointing values
+	alpha = (b_centers[0]-xCenter)/pxDeg[0];
+	beta = (b_centers[1]-yCenter)/pxDeg[1];
+	
+	// Calculate angular diameter of body in x and y, and average the two for output
+	thetaX = (*radius)/pxDeg[0];
+	thetaY = (*radius)/pxDeg[1];
+	theta = 0.5*(thetaX + thetaY);
 
     *numCirc = i;
   }

@@ -49,35 +49,14 @@
 using namespace cv;
 
 // Function Declarations
-static void argInit_1x2_real_T(double result[2]);
-static void argInit_736x1100x3_uint8_T(unsigned char result[2428800]);
-static double argInit_real_T();
-static unsigned char argInit_uint8_T();
 static void main_analyzeImage();
 
 // Function Definitions
 
+// This initializes an empty image with dims 736x1100
+// Unused but it may be useful for decyphering how Matlab handles images
 //
-// Arguments    : double result[2]
-// Return Type  : void
-//
-static void argInit_1x2_real_T(double result[2])
-{
-  int idx1;
-
-  // Loop over the array to initialize each element.
-  for (idx1 = 0; idx1 < 2; idx1++) {
-    // Set the value of the array element.
-    // Change this value to the value that the application requires.
-    result[idx1] = argInit_real_T();
-  }
-}
-
-//
-// Arguments    : unsigned char result[2428800]
-// Return Type  : void
-//
-static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
+/* static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
 {
   int idx0;
   int idx1;
@@ -93,32 +72,17 @@ static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
       }
     }
   }
-}
+} */
 
 //
-// Arguments    : void
-// Return Type  : double
-//
-static double argInit_real_T()
-{
-  return 0.0;
-}
-
-//
-// Arguments    : void
-// Return Type  : unsigned char
-//
-static unsigned char argInit_uint8_T()
-{
-  return 0;
-}
-
+// Call analyzeImage
 //
 // Arguments    : void
 // Return Type  : void
 //
 static void main_analyzeImage(unsigned char uv3[2428800])
 {
+  // Initialize variables
 //  static unsigned char uv3[2428800];
   double dv3[2] = {157, 167};
   double centerPt_data[2];
@@ -126,16 +90,17 @@ static void main_analyzeImage(unsigned char uv3[2428800])
   double radius;
   double numCirc;
   double sensVal = 0.99;
+  double alpha; double beta; double theta;
+  double pxDeg = {67, 67};
+  int imgWidth = 4160; int imgHeight = 3120; // These need to be updated to retrieve them from CameraController
 
   // Initialize function 'analyzeImage' input arguments.
   // Initialize function input argument 'imIn'.
   // Initialize function input argument 'radiusRangeGuess'.
   // Call the entry-point 'analyzeImage'.
-//  argInit_736x1100x3_uint8_T(uv3);
-//  argInit_1x2_real_T(dv3);
 std::cout << "Starting Analyze Image Call" << std::endl;
   analyzeImage(uv3, dv3, sensVal, centerPt_data, centerPt_size, &radius,
-               &numCirc);
+               &numCirc, alpha, beta, theta, pxDeg, imgWidth, imgHeight);
 std::cout << "Finished Analyze Image Call" << std::endl;
 
   // Print info
