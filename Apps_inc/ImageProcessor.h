@@ -59,10 +59,6 @@ private:
     double sensitivity;
     
     ProcessError localError;
-    
-    // TEMP TEMP TEMP
-    bool test;
-    // TEMP TEMP TEMP
 };
 
 #endif

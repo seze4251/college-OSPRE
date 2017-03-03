@@ -32,8 +32,6 @@ ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInte
     // Image Processing Specific Members
     sensitivity = 1.0;
     
-    //TEMP TEMP TEMP
-    test = false;
     logFile = nullptr;
 }
 
@@ -119,9 +117,8 @@ void ImageProcessor::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
-// TODO: Anthony to complete
 void ImageProcessor::processImage(ImageMessage* msg) {
-    
+    // We have ImageMessage and 
     //TODO: ANTHONY's Code HERE!!!!
     static unsigned char uv3[2428800];
     double dv3[2] = {157, 167};
@@ -180,22 +177,15 @@ void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusR
 void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: ImageMessage from CameraController\n");
     
-    //TODO: Do Something Here
-    // Process the Image
-    if (test == true) {
-        test = false;
-    } else {
-        test = true;
-    }
     
     try {
         processImage(msg);
-        if (test) {
-            throw std::exception();
-        }
+        
     } catch(std::exception &exception) {
+        // TODO: Need to Update to be Image Processor Specific
         fprintf(logFile, "Error: HandleImageMessage() Exception Caught: %s\n", exception.what());
         localError = PE_IP_noBodyInImage;
+        
     } catch (...) {
         fprintf(logFile, "Error: HandleImageMessage() Unknown Type of Exception Caught\n");
         throw;

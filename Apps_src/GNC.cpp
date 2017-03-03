@@ -180,7 +180,58 @@ void GNC::handleTimeout() {
 void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procMessage) {
     // Check Inputs <- unecessary if Cameron does it
     
+   // double* covariance;
+   // double* trajectoryDev;
     // Call Camerons Code Here
+    
+// 1) CALCULATE ATTITUDE FROM QUATERNION *********************
+    // main_Quaternion_To_Attitude();
+
+// 2) CALCULATE POSITION ESTIMATE FROM 1 OF 3 FUNCTIONS
+    double dv6[3];
+    double dv7[4];
+    double dv8[4];
+    double dv9[3];
+    double r_E_SC1[3];
+    double r_E_SC2[3];
+    
+    
+    // Initialize function 'Position_From_Angles_Slew' input arguments.
+    // Initialize function input argument 'r_E_M'.
+    // Initialize function input argument 'q_E'.
+    // Initialize function input argument 'q_M'.
+    // Initialize function input argument 'vel'.
+    // Call the entry-point 'Position_From_Angles_Slew'.
+    /*  argInit_3x1_real_T(dv6);
+     argInit_4x1_real_T(dv7);
+     argInit_4x1_real_T(dv8);
+     argInit_3x1_real_T(dv9); */
+    //Position_From_Angles_Slew(dv6, dv7, dv8, argInit_real_T(), argInit_real_T(),
+    //                            dv9, argInit_real_T(), r_E_SC1, r_E_SC2);
+    
+    double dv10[4];
+    double r_E_SC[3];
+    
+    // Initialize function 'Position_From_Earth_Range' input arguments.
+    // Initialize function input argument 'q_E'.
+    // Call the entry-point 'Position_From_Earth_Range'.
+    // argInit_4x1_real_T(dv10);
+    // Position_From_Earth_Range(dv10, argInit_real_T(), argInit_real_T(),
+    //                           argInit_real_T(), r_E_SC);
+    
+    double dv11[3];
+    double dv12[4];
+    // double r_E_SC[3];
+    
+    // Initialize function 'Position_From_Moon_Range' input arguments.
+    // Initialize function input argument 'r_E_M'.
+    // Initialize function input argument 'q_M'.
+    // Call the entry-point 'Position_From_Moon_Range'.
+    // argInit_3x1_real_T(dv11);
+    // argInit_4x1_real_T(dv12);
+    // Position_From_Moon_Range(dv11, dv12, argInit_real_T(), argInit_real_T(), argInit_real_T(), r_E_SC);
+    
+// 3) CALCULATE UPDATED STATE ESTIMATE USING KALMAN FILTER
     double dv0[6];
     double dv1[36];
     double dv2[36];
@@ -193,64 +244,27 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     double y[3];
     
     // Initialize function 'Kalman_Filter_Iteration' input arguments.
-    // Initialize function input argument 'x_hat_0'.
+    // Initialize function input argument 'x_hat_0'. -> Trajectory Dev
     // Initialize function input argument 'phi'.
-    // Initialize function input argument 'P_0'.
+    // Initialize function input argument 'P_0'. -> Coveriance
     // Initialize function input argument 'Y'.
     // Initialize function input argument 'X_ref'.
     // Initialize function input argument 'R'.
     // Call the entry-point 'Kalman_Filter_Iteration'.
-   /* argInit_6x1_real_T(dv0);
-    argInit_6x6_real_T(dv1);
-    argInit_6x6_real_T(dv2);
-    argInit_3x1_real_T(dv3);
-    argInit_6x1_real_T(dv4);
-    argInit_3x3_real_T(dv5); */
-    Kalman_Filter_Iteration(dv0, dv1, dv2, dv3, dv4, dv5, X_est, x_hat, P, y);
     
-    double dv6[3];
-    double dv7[4];
-    double dv8[4];
-    double dv9[3];
-    double r_E_SC1[3];
-    double r_E_SC2[3];
     
-    // Initialize function 'Position_From_Angles_Slew' input arguments.
-    // Initialize function input argument 'r_E_M'.
-    // Initialize function input argument 'q_E'.
-    // Initialize function input argument 'q_M'.
-    // Initialize function input argument 'vel'.
-    // Call the entry-point 'Position_From_Angles_Slew'.
-  /*  argInit_3x1_real_T(dv6);
-    argInit_4x1_real_T(dv7);
-    argInit_4x1_real_T(dv8);
-    argInit_3x1_real_T(dv9); */
-    //Position_From_Angles_Slew(dv6, dv7, dv8, argInit_real_T(), argInit_real_T(),
-  //                            dv9, argInit_real_T(), r_E_SC1, r_E_SC2);
+    // TODO: Change PHI to DV1
+    // TODO: Call function that computes Y from Processed Image Message
+    // TODO: Next reference trajectory position
+    // TODO: Store dv5 the R Matrix
+    // X_est
+    //
     
-    double dv10[4];
-    double r_E_SC[3];
+    Kalman_Filter_Iteration(trajectoryDev, dv1, covariance, dv3, dv4, dv5, X_est, x_hat, P, y);
     
-    // Initialize function 'Position_From_Earth_Range' input arguments.
-    // Initialize function input argument 'q_E'.
-    // Call the entry-point 'Position_From_Earth_Range'.
-   // argInit_4x1_real_T(dv10);
-   // Position_From_Earth_Range(dv10, argInit_real_T(), argInit_real_T(),
-   //                           argInit_real_T(), r_E_SC);
+
     
-    double dv11[3];
-    double dv12[4];
-   // double r_E_SC[3];
-    
-    // Initialize function 'Position_From_Moon_Range' input arguments.
-    // Initialize function input argument 'r_E_M'.
-    // Initialize function input argument 'q_M'.
-    // Call the entry-point 'Position_From_Moon_Range'.
-   // argInit_3x1_real_T(dv11);
-    // argInit_4x1_real_T(dv12);
-   // Position_From_Moon_Range(dv11, dv12, argInit_real_T(), argInit_real_T(), argInit_real_T(), r_E_SC);
-    
-   // main_Quaternion_To_Attitude();
+
     
     // TEMPORARY FIX:
     // LETS CODE COMPILE
