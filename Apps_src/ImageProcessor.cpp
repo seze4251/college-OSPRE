@@ -29,11 +29,20 @@ ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInte
     // Initialize localError to healthy
     localError = PE_AllHealthy;
     
-    // Image Processing Specific Members
-    sensitivity = 1.0;
-    
+    // Initialize Logfile
     logFile = nullptr;
+    
+    // Initialize Applicaiton Specific Members
+    // Image Processing Specific Members
+    sensitivity = -1;
+    numCirc = -1;
+    alpha = -1;
+    beta = -1;
+    theta = -1;
+    radius = -1;
+    pixel_error = -1;
 }
+
 
 ImageProcessor::~ImageProcessor() {
     //Free Messages from Memory
@@ -42,7 +51,7 @@ ImageProcessor::~ImageProcessor() {
     
     // Close Log File
     if (logFile)
-        fclose(logFile);
+    fclose(logFile);
 }
 
 // *******************************
@@ -65,7 +74,7 @@ void ImageProcessor::open() {
     
     // Log Application Starting
     fprintf(logFile, "Image Processor Application Started, Time = %ld\n", time(0));
-
+    
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     
@@ -117,29 +126,21 @@ void ImageProcessor::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
+void ImageProcessor::setImageParameters(int cameraWidth, int cameraHeight, double FOV, double* estimatedPosition, PointEarthMoon point) {
+    // estimated Position is a double[3]
+    // Need to Set Variables:
+    // double sensitivity;
+    // double pxDeg[2]; // Pixel Per Degree
+    // double dv3[2]; //Pixel Radius Guess from estimated Position
+    dv3[0] = 5;
+}
+
 void ImageProcessor::processImage(ImageMessage* msg) {
-    // We have ImageMessage and 
-    //TODO: ANTHONY's Code HERE!!!!
-    static unsigned char uv3[2428800];
-    double dv3[2] = {157, 167};
-    double centerPt_data[2];
-    int centerPt_size[2];
-    double radius;
-    double numCirc;
-    double sensVal = 0.99;
+    setImageParameters(msg->cameraWidth, msg->cameraHeight, msg->FOV, msg->estimatedPosition, msg->point);
     
-    // Initialize function 'analyzeImage' input arguments.
-    // Initialize function input argument 'imIn'.
-    // Initialize function input argument 'radiusRangeGuess'.
-    // Call the entry-point 'analyzeImage'.
-    //  argInit_736x1100x3_uint8_T(uv3);
-    //  argInit_1x2_real_T(dv3);
-    std::cout << "Starting Analyze Image Call" << std::endl;
-    analyzeImage(uv3, dv3, sensVal, centerPt_data, centerPt_size, &radius, &numCirc);
-    std::cout << "Finished Analyze Image Call" << std::endl;
+    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, pxDeg, msg->cameraWidth, msg->cameraHeight);
     
-    double alpha = 15.1, beta = 20.2, theta = 25.3, pixel_error = 1.3;
-    sleep(10);
+    
     // Update ProcessedImageMessage
     processedImageMessage->update(alpha, beta, theta, pixel_error, msg->point, msg->timeStamp);
 }

@@ -63,7 +63,8 @@ public:
     PointEarthMoon point;
     int cameraWidth;
     int cameraHeight;
-    double FOV;
+    double FOV[2];
+    double estimatedPosition[3];
     
     // Do not send these variable below
     int currentImageSize;

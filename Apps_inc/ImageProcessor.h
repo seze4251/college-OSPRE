@@ -33,6 +33,7 @@ public:
     virtual void handleTimeout();
     
     // Applicaiton Functionality
+    void setImageParameters(int cameraWidth, int cameraHeight, double* FOV, double* estimatedPosition, PointEarthMoon point);
     void processImage(ImageMessage* msg);
     
     // Message Handlers
@@ -50,15 +51,32 @@ public:
 private:
     time_t pollTime;
     ServiceInternal* gnc;
-
+    
     // Pointer To Hold Messages that are being sent
     ProcessedImageMessage* processedImageMessage;
     ProcessHealthAndStatusResponse* processHealthMessage;
     
-    // Application Specific Members
-    double sensitivity;
-    
     ProcessError localError;
+    
+    
+    // Application Specific Members
+    // INPUTS: Set in funciton before Analyze Image Call
+    double sensitivity;
+    double pxDeg[2]; // Pixel Per Degree
+    double dv3[2]; //Pixel Radius Guess from estimated Position
+    
+    // OUTPUTS:
+    double numCirc; // Number of Circles (Output)
+    double alpha; // Degrees, (Output)
+    double beta; // Degrees, (Output)
+    double theta; // Degrees, (Output)
+    double centerPt_data[2]; // Calculated Center (Pixels)
+    int centerPt_size[2]; // Don't Know (Unused)
+    double radius; // Output Radius (Pixels)
+    
+    // TEMP TEMP
+    double pixel_error;
+    // TEMP TEMP
 };
 
 #endif
