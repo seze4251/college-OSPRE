@@ -45,6 +45,9 @@
 
 #include <iostream>
 
+// Add timing functionality
+#include <ctime>
+
 // Namespaces
 using namespace cv;
 
@@ -57,6 +60,7 @@ static void argInit_736x1100x3_uint8_T(unsigned char);
 // This initializes an empty image with dims 736x1100
 // Unused but it may be useful for decyphering how Matlab handles images
 //
+/*
 static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
 {
   int idx0;
@@ -73,7 +77,7 @@ static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
       }
     }
   }
-}
+} */
 
 //
 // Call analyzeImage
@@ -92,16 +96,20 @@ static void main_analyzeImage(unsigned char uv3[2428800])
   double numCirc;
   double sensVal = 0.99;
   double alpha; double beta; double theta;
-  double pxDeg = {67, 67};
+  double pxDeg[2] = {67, 67};
   int imgWidth = 4160; int imgHeight = 3120; // These need to be updated to retrieve them from CameraController
+
+  std::clock_t start;
 
   // Initialize function 'analyzeImage' input arguments.
   // Initialize function input argument 'imIn'.
   // Initialize function input argument 'radiusRangeGuess'.
   // Call the entry-point 'analyzeImage'.
 std::cout << "Starting Analyze Image Call" << std::endl;
+  start = std::clock();
   analyzeImage(uv3, dv3, sensVal, centerPt_data, centerPt_size, &radius,
                &numCirc, alpha, beta, theta, pxDeg, imgWidth, imgHeight);
+  std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 std::cout << "Finished Analyze Image Call" << std::endl;
 
   // Print info
@@ -109,6 +117,8 @@ std::cout << "Finished Analyze Image Call" << std::endl;
     std::cout << "No objects found" << std::endl;
   } else {
     std::cout << "Found " << numCirc << " object(s)!" << std::endl;
+    std::cout << "Center: " << centerPt_data[0] << ", " << centerPt_data[1] << std::endl;
+    std::cout << "Radius: " << radius << std::endl;
   }
 }
 
@@ -140,7 +150,7 @@ int main(int argc, char** argv)
     for (int j=0; j < image.rows; j++){
       intensity = image.at<Vec3b>(j,i);
       uchar blue = intensity.val[0];
-      uchar green = intesnity.val[1];
+      uchar green = intensity.val[1];
       uchar red = intensity.val[2];
       imIn[counter] = red;
       imIn[counter + 809600] = green;
