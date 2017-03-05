@@ -127,12 +127,24 @@ void ImageProcessor::handleTimeout() {
 //
 // ********************************
 void ImageProcessor::setImageParameters(int cameraWidth, int cameraHeight, double FOV, double* estimatedPosition, PointEarthMoon point) {
-    // estimated Position is a double[3]
-    // Need to Set Variables:
-    // double sensitivity;
-    // double pxDeg[2]; // Pixel Per Degree
-    // double dv3[2]; //Pixel Radius Guess from estimated Position
-    dv3[0] = 5;
+	// estimated Position is a double[3]
+	// Need to Set Variables:
+	// double sensitivity;
+	// double pxDeg[2]; // Pixel Per Degree
+	// double dv3[2]; //Pixel Radius Guess from estimated Position
+	dv3[0] = 5;
+
+	if (point == PEM_EARTH) {
+		// Evaluate on the assumption that we're pointing at the Earth
+		//
+		// Need to take estimated position, calculate expected angular diameter of celestial body, use image properties to turn this value
+		// into an estimated pixel radius
+		//
+		// Use emperically determined correlation function to determine the necessary sensitivity based on phase of moon and position
+		//
+	} else (point == PEM_MOON) {
+		// Evaluate on the assumption that we're pointing at the Moon
+	}
 }
 
 void ImageProcessor::processImage(ImageMessage* msg) {
