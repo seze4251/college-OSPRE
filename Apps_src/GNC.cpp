@@ -182,83 +182,58 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     
    // double* covariance;
    // double* trajectoryDev;
-    // Call Camerons Code Here
+   // Call Camerons Code Here
     
 // 1) CALCULATE ATTITUDE FROM QUATERNION *********************
-    // main_Quaternion_To_Attitude();
-
-// 2) CALCULATE POSITION ESTIMATE FROM 1 OF 3 FUNCTIONS
-    double dv6[3];
-    double dv7[4];
-    double dv8[4];
-    double dv9[3];
-    double r_E_SC1[3];
-    double r_E_SC2[3];
+    double dv13[4];
+    double r_SC_body[3]; // Camera Unit Vector
+    
+    Quaternion_To_Attitude(dataMessage->quat, r_SC_body);
+    
+    // 2) CALCULATE POSITION ESTIMATE FROM 1 OF 3 FUNCTIONS
+    // ANGLES
+    double dv6[3]; // MOON ECI Vector
+    double dv7[4]; // Spacecraft Earth Quat
+    double dv8[4]; // Spacecraft Moon Quat // Need to Store
+    double dv9[3]; // Velocity of S/C  // Need
+    // TEMPA is Alpha
+    // TempB is Beta
+    // Temp C is time between two pictures being taken
+    double r_E_SC1[3]; // OUTPUT(ECI Position of First Picture)
+    double r_E_SC2[3]; // OUTPUT(ECI Position of Second Picture)
+    
+    Position_From_Angles_Slew(dv6, dv7, dv8, tempA, tempB, dv9, tempC, r_E_SC1, r_E_SC2);
+    
+    // Earth Range
+    double dv10[4]; //Spacecraft Earth Quat
+    // Temp1 Alpha
+    // Temp 2 Beta
+    // Temp3 Theta
+    
+    double r_E_SC[3]; // Spacecraft ECI Vector
+    
+    Position_From_Earth_Range(dv10, temp1, temp2, temp3, r_E_SC);
     
     
-    // Initialize function 'Position_From_Angles_Slew' input arguments.
-    // Initialize function input argument 'r_E_M'.
-    // Initialize function input argument 'q_E'.
-    // Initialize function input argument 'q_M'.
-    // Initialize function input argument 'vel'.
-    // Call the entry-point 'Position_From_Angles_Slew'.
-    /*  argInit_3x1_real_T(dv6);
-     argInit_4x1_real_T(dv7);
-     argInit_4x1_real_T(dv8);
-     argInit_3x1_real_T(dv9); */
-    //Position_From_Angles_Slew(dv6, dv7, dv8, argInit_real_T(), argInit_real_T(),
-    //                            dv9, argInit_real_T(), r_E_SC1, r_E_SC2);
+    // Moon Ranging
+    double dv11[3]; // MOON ECI Position Vector
+    double dv12[4]; // Spacecraft Moon Quaterinion
+    // Temps Alpha Beta Theta
+    double r_E_SC[3]; // Spacecraft ECI Position
     
-    double dv10[4];
-    double r_E_SC[3];
-    
-    // Initialize function 'Position_From_Earth_Range' input arguments.
-    // Initialize function input argument 'q_E'.
-    // Call the entry-point 'Position_From_Earth_Range'.
-    // argInit_4x1_real_T(dv10);
-    // Position_From_Earth_Range(dv10, argInit_real_T(), argInit_real_T(),
-    //                           argInit_real_T(), r_E_SC);
-    
-    double dv11[3];
-    double dv12[4];
-    // double r_E_SC[3];
-    
-    // Initialize function 'Position_From_Moon_Range' input arguments.
-    // Initialize function input argument 'r_E_M'.
-    // Initialize function input argument 'q_M'.
-    // Call the entry-point 'Position_From_Moon_Range'.
-    // argInit_3x1_real_T(dv11);
-    // argInit_4x1_real_T(dv12);
-    // Position_From_Moon_Range(dv11, dv12, argInit_real_T(), argInit_real_T(), argInit_real_T(), r_E_SC);
+  Position_From_Moon_Range(dv11, dv12, TEMP7, TEMP8, TEMP9, r_E_SC);
     
 // 3) CALCULATE UPDATED STATE ESTIMATE USING KALMAN FILTER
-    double dv0[6];
-    double dv1[36];
-    double dv2[36];
-    double dv3[3];
-    double dv4[6];
-    double dv5[9];
-    double X_est[6];
-    double x_hat[6];
-    double P[36];
-    double y[3];
-    
-    // Initialize function 'Kalman_Filter_Iteration' input arguments.
-    // Initialize function input argument 'x_hat_0'. -> Trajectory Dev
-    // Initialize function input argument 'phi'.
-    // Initialize function input argument 'P_0'. -> Coveriance
-    // Initialize function input argument 'Y'.
-    // Initialize function input argument 'X_ref'.
-    // Initialize function input argument 'R'.
-    // Call the entry-point 'Kalman_Filter_Iteration'.
-    
-    
-    // TODO: Change PHI to DV1
-    // TODO: Call function that computes Y from Processed Image Message
-    // TODO: Next reference trajectory position
-    // TODO: Store dv5 the R Matrix
-    // X_est
-    //
+    double dv0[6]; // 'x_hat_0'. -> Trajectory Dev
+    double dv1[36]; // 'phi' -> State Transition Matrix
+    double dv2[36]; // 'P_0'. -> Coveriance
+    double dv3[3]; // Y -> State Observation
+    double dv4[6]; // 'X_ref' -> Reference Trajectory
+    double dv5[9]; // R -> State Error Coveriance
+    double X_est[6]; // OUTPUT: Postion / Velocity
+    double x_hat[6]; // Trajectory Deviation, same as DVO
+    double P[36]; // Same as Coveriance
+    double y[3]; // Residuals (Ignore)
     
     Kalman_Filter_Iteration(trajectoryDev, dv1, covariance, dv3, dv4, dv5, X_est, x_hat, P, y);
     
@@ -334,8 +309,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     // Compute Solution and Update Solution Message
     try {
         computeSolution(scData, msg);
-        throw std::exception();
-        
+                
     } catch(std::exception &exception) {
         fprintf(logFile, "Error: HandleProcessedImageMessage() Exception Caught: %s\n", exception.what());
         localError = PE_invalidData;
