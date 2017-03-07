@@ -126,12 +126,20 @@ void ImageProcessor::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
-void ImageProcessor::setImageParameters(int cameraWidth, int cameraHeight, double FOV, double* estimatedPosition, PointEarthMoon point) {
-	// estimated Position is a double[3]
+void ImageProcessor::setImageParameters(int cameraWidth, int cameraHeight, double FOV[2], double* estimatedPosition, PointEarthMoon point) {
+	// estimated Position is a double[3] <--- What units, and relative to what? Need estimated distance to Earth and Moon to estimate the radius
 	// Need to Set Variables:
 	// double sensitivity;
 	// double pxDeg[2]; // Pixel Per Degree
 	// double dv3[2]; //Pixel Radius Guess from estimated Position
+
+	/*
+	NEEDS:
+	 - position estimation units and reference frame
+	 - Moon and Earth properties (radius, phase) Phase might not be necessary if we're restricting to only a single trajectory: we can just calculate a
+	 function that gives phase based on estimated position
+	 - FOV is a 1x2 double array, want this to be the pixels/degree
+	*/
 	dv3[0] = 5;
 
 	if (point == PEM_EARTH) {
@@ -142,6 +150,15 @@ void ImageProcessor::setImageParameters(int cameraWidth, int cameraHeight, doubl
 		//
 		// Use emperically determined correlation function to determine the necessary sensitivity based on phase of moon and position
 		//
+
+		double dist = 20000; // km, this needs to be determined from the estimatedPosition
+		double angDiam = atan(MOON_RADIUS / dist) * 180 / PI * 2; // [deg], is PI defined in math libraries?
+		double moonPxDiam[2] = { angDiam*FOV[0], angDiam*FOV[1] }; // [px], diam of Moon in height and width
+
+		double radGuess[2] = calcRadGuess(moonPxDiam, estimatedPosition, point); // This function needs to be emperically determined
+
+		double sens = calcSens(moonPxDiam, estimatedPosition, point); // This function needs to be emperically determined
+
 	} else (point == PEM_MOON) {
 		// Evaluate on the assumption that we're pointing at the Moon
 	}
