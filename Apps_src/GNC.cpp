@@ -180,77 +180,102 @@ void GNC::handleTimeout() {
 void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procMessage) {
     // Check Inputs <- unecessary if Cameron does it
     
+    // Stuff I am storing for cameron
    // double* covariance;
    // double* trajectoryDev;
-   // Call Camerons Code Here
+    // double r_SC_body[3];
+     double velSC[3];
+    double phi[36];
     
-// 1) CALCULATE ATTITUDE FROM QUATERNION *********************
-    double dv13[4];
-    double r_SC_body[3]; // Camera Unit Vector
+    double range_EarthRangeCutoff;
+    double range_AnglesCutoff;
+    double range_estimate;
     
-    Quaternion_To_Attitude(dataMessage->quat, r_SC_body);
+    if (range_estimate < range_EarthRangeCutoff) {
+        // Earth Ranging to find Position
+        
+        
+        // Earth Range
+        Position_From_Earth_Range(dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage->theta, r_E_SC);
+        
+    } else if ( range_estimate < range_AnglesCutoff) {
+        // Angles Method to find Position
+        
+        // Get Data Message1
+        DataMessage dataMessage1;
+        
+        // Determine which Data Message has Moon Ephemeris
+        double* moonEphem;
+        
+        // Determine which Data Message has Moon and Earth Quat
+        double* moonQuat;
+        double* earthQuat;
+        
+        double r_E_SC1[3]; // OUTPUT(ECI Position of First Picture)
+        double r_E_SC2[3]; // OUTPUT(ECI Position of Second Picture)
+        
+        Position_From_Angles_Slew(moonEphem, earthQuat, moonQuat, procMessage->alpha, procMessage->beta, velSC, procMessage->theta, r_E_SC1, r_E_SC2);
+        
+        //****************************
+        // Call Kalman filter Twice
+        //****************************
+        // 'x_hat_0'. -> Trajectory Dev
+        // 'phi' -> State Transition Matrix
+        // 'P_0'. -> Coveriance
+        // Y -> State Observation
+        double X_ref[6]; // 'X_ref' -> Reference Trajectory
+        double R[9]; // R -> State Error Coveriance
+        double X_est[6]; // OUTPUT: Postion / Velocity
+        double x_hat_remove[6]; // Trajectory Deviation, same as DVO
+        double P_remove[36]; // Same as Coveriance
+        double residuals_ignore[3]; // Residuals (Ignore)
+        
+        Kalman_Filter_Iteration(trajectoryDev, phi, covariance, r_E_SC, X_ref, R, X_est, x_hat_remove, P_remove, residuals_ignore);
+        // 'x_hat_0'. -> Trajectory Dev
+        // 'phi' -> State Transition Matrix
+        // 'P_0'. -> Coveriance
+        // Y -> State Observation
+        double X_ref[6]; // 'X_ref' -> Reference Trajectory
+        double R[9]; // R -> State Error Coveriance
+        double X_est[6]; // OUTPUT: Postion / Velocity
+        double x_hat_remove[6]; // Trajectory Deviation, same as DVO
+        double P_remove[36]; // Same as Coveriance
+        double residuals_ignore[3]; // Residuals (Ignore)
+        
+        Kalman_Filter_Iteration(trajectoryDev, phi, covariance, r_E_SC, X_ref, R, X_est, x_hat_remove, P_remove, residuals_ignore);
+        
+        
+    } else {
+        // Moon Ranging to find Position
+        double r_E_SC[3]; // Calculated Range Vector
+        
+          Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, r_E_SC);
+        
+        // 'x_hat_0'. -> Trajectory Dev
+        // 'phi' -> State Transition Matrix
+        // 'P_0'. -> Coveriance
+        // Y -> State Observation
+        double X_ref[6]; // 'X_ref' -> Reference Trajectory
+        double R[9]; // R -> State Error Coveriance
+        double X_est[6]; // OUTPUT: Postion / Velocity
+        double x_hat_remove[6]; // Trajectory Deviation, same as DVO
+        double P_remove[36]; // Same as Coveriance
+        double residuals_ignore[3]; // Residuals (Ignore)
+        
+        Kalman_Filter_Iteration(trajectoryDev, phi, covariance, r_E_SC, X_ref, R, X_est, x_hat_remove, P_remove, residuals_ignore);
+        
+    }
     
-    // 2) CALCULATE POSITION ESTIMATE FROM 1 OF 3 FUNCTIONS
-    // ANGLES
-    double dv6[3]; // MOON ECI Vector
-    double dv7[4]; // Spacecraft Earth Quat
-    double dv8[4]; // Spacecraft Moon Quat // Need to Store
-    double dv9[3]; // Velocity of S/C  // Need
-    // TEMPA is Alpha
-    // TempB is Beta
-    // Temp C is time between two pictures being taken
-    double r_E_SC1[3]; // OUTPUT(ECI Position of First Picture)
-    double r_E_SC2[3]; // OUTPUT(ECI Position of Second Picture)
-    
-    Position_From_Angles_Slew(dv6, dv7, dv8, tempA, tempB, dv9, tempC, r_E_SC1, r_E_SC2);
-    
-    // Earth Range
-    double dv10[4]; //Spacecraft Earth Quat
-    // Temp1 Alpha
-    // Temp 2 Beta
-    // Temp3 Theta
-    
-    double r_E_SC[3]; // Spacecraft ECI Vector
-    
-    Position_From_Earth_Range(dv10, temp1, temp2, temp3, r_E_SC);
-    
-    
-    // Moon Ranging
-    double dv11[3]; // MOON ECI Position Vector
-    double dv12[4]; // Spacecraft Moon Quaterinion
-    // Temps Alpha Beta Theta
-    double r_E_SC[3]; // Spacecraft ECI Position
-    
-  Position_From_Moon_Range(dv11, dv12, TEMP7, TEMP8, TEMP9, r_E_SC);
-    
-// 3) CALCULATE UPDATED STATE ESTIMATE USING KALMAN FILTER
-    double dv0[6]; // 'x_hat_0'. -> Trajectory Dev
-    double dv1[36]; // 'phi' -> State Transition Matrix
-    double dv2[36]; // 'P_0'. -> Coveriance
-    double dv3[3]; // Y -> State Observation
-    double dv4[6]; // 'X_ref' -> Reference Trajectory
-    double dv5[9]; // R -> State Error Coveriance
-    double X_est[6]; // OUTPUT: Postion / Velocity
-    double x_hat[6]; // Trajectory Deviation, same as DVO
-    double P[36]; // Same as Coveriance
-    double y[3]; // Residuals (Ignore)
-    
-    Kalman_Filter_Iteration(trajectoryDev, dv1, covariance, dv3, dv4, dv5, X_est, x_hat, P, y);
-    
-
-    
-
+    // Send Solution Message
     
     // TEMPORARY FIX:
-    // LETS CODE COMPILE
-    double position[3] {1, 2, 3};
+    // Need Outputs from Cameron
     double positionError[3] {4, 5, 6};
-    double velocity[3] {7, 8, 9};
     double velocityError[3] {10, 11, 12};
     double earthScMoonAngle {180};
     
     // Update Solution Message
-    solutionMessage->update(position, positionError, velocity, velocityError, earthScMoonAngle);
+    solutionMessage->update(X_est[0], positionError, X_est[3], velocityError, earthScMoonAngle);
 }
 
 void GNC::readReferenceTrajectory() {

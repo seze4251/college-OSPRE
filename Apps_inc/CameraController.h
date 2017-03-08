@@ -67,6 +67,9 @@ private:
     ImageMessage* imageMessage;
     ProcessHealthAndStatusResponse* processHealthMessage;
     
+    // Hold Most Recent Data Message
+    DataMessage data;
+    
     ProcessError localError;
 };
 

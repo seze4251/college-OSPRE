@@ -32,16 +32,34 @@ public:
         printEarthMoon(point);
         std::cout << "Current Image Size = " << currentImageSize << std::endl;
         std::cout << "Total Buffer Size = " << imageBufferSize << std::endl;
-        std::cout << "Camera Width = " << cameraWidth << " Camera Height = " << cameraHeight << " FOV = " << FOV << std::endl;
+        
+        std::cout << "pix_deg = ";
+        for (int i = 0; i < 2; i++) {
+            std::cout << pix_deg[i] << " ";
+        }
+        std::cout << " (pix/deg)" << std::endl;
+        
+        std::cout << "estimatedPosition = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << estimatedPosition[i] << " ";
+        }
+        std::cout << " (km)" << std::endl;
+        
+        std::cout << "Moon Ephem = ";
+        for (int i = 0; i < 3; i++) {
+            std::cout << moonEphem[i] << " ";
+        }
+        std::cout << " (km)" << std::endl;
     }
     
-    void update(PointEarthMoon point, int currentImageSize, int cameraWidth, int cameraHeight, double FOV) {
+    void update(PointEarthMoon point, int currentImageSize, double* pix_deg, double* estimatedPosition, double* moonEphem) {
         this->timeStamp = time(0);
         this->point = point;
         this->currentImageSize = currentImageSize;
-        this->cameraWidth = cameraWidth;
-        this->cameraHeight = cameraHeight;
-        this->FOV = FOV;
+        memcpy(this->pix_deg, pix_deg, 2 * sizeof(double));
+        memcpy(this->estimatedPosition, estimatedPosition, 3 * sizeof(double));
+        memcpy(this->moonEphem, moonEphem, 3 * sizeof(double));
+    
     }
     
     void resizeImageArray(int newSize) {
@@ -61,10 +79,9 @@ public:
     
     // Specific Data Members
     PointEarthMoon point;
-    int cameraWidth;
-    int cameraHeight;
-    double FOV[2];
+    double pix_deg[2]; // Pixel per degree
     double estimatedPosition[3];
+    double moonEphem[3];
     
     // Do not send these variable below
     int currentImageSize;

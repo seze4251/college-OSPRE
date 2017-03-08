@@ -191,7 +191,7 @@ void Builder::buildProcessedImageMessage(ProcessedImageMessage &msg) {
 }
 
 void Builder::buildImageMessage(ImageMessage &msg) {
-    int messageSize = msg.currentImageSize + HEADER_MESSAGE_SIZE + 3 * sizeof(int) + sizeof(double);
+    int messageSize = msg.currentImageSize + HEADER_MESSAGE_SIZE + sizeof(int) + 8*sizeof(double);
     
     // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
@@ -200,9 +200,22 @@ void Builder::buildImageMessage(ImageMessage &msg) {
     
     createHeader(messageSize, msg.iden, msg.timeStamp);
     buf.putInt((int) msg.point);
-    buf.putInt(msg.cameraWidth);
-    buf.putInt(msg.cameraHeight);
-    buf.putDouble(msg.FOV);
+    
+    // pix_deg
+    for (int i = 0; i < 2; i++) {
+        buf.putDouble(msg.pix_deg[i]);
+    }
+    
+    // estimated position
+    for (int i = 0; i < 3; i++) {
+        buf.putDouble(msg.estimatedPosition[i]);
+    }
+    
+    // moon ephemeris
+    for (int i = 0; i < 3; i++) {
+        buf.putDouble(msg.moonEphem[i]);
+    }
+    
     buf.put(msg.getImagePointer(), msg.currentImageSize);
 }
 

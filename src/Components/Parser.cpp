@@ -293,11 +293,20 @@ Message* Parser::parseImageMessage() {
     image->timeStamp = timeStamp;
     image->iden = messageID;
     image->point = (PointEarthMoon) buf.getInt();
-    image->cameraWidth = buf.getInt();
-    image->cameraHeight = buf.getInt();
-    image->FOV = buf.getDouble();
     
-    int imageLength = messageLength - (HEADER_MESSAGE_SIZE + 3 * sizeof(int) + sizeof(double));
+    for (int i = 0; i < 2; i++) {
+        image->pix_deg[i] = buf.getDouble();
+    }
+    
+    for (int i = 0; i < 3; i++) {
+        image->estimatedPosition[i] = buf.getDouble();
+    }
+    
+    for (int i = 0; i < 3; i++) {
+        image->moonEphem[i] = buf.getDouble();
+    }
+    
+    int imageLength = messageLength - (HEADER_MESSAGE_SIZE + sizeof(int) + 8*sizeof(double));
     
     
     if( imageLength > image->imageBufferSize) {
