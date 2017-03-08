@@ -184,11 +184,14 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
    // double* covariance;
    // double* trajectoryDev;
     // double r_SC_body[3];
-     double velSC[3];
-    double phi[36];
     
+    double velSC[3];
+    double phi[36];
+    // Read in values from config file
     double range_EarthRangeCutoff;
     double range_AnglesCutoff;
+    
+    
     double range_estimate;
     
     if (range_estimate < range_EarthRangeCutoff) {
@@ -270,8 +273,8 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     
     // TEMPORARY FIX:
     // Need Outputs from Cameron
-    double positionError[3] {4, 5, 6};
-    double velocityError[3] {10, 11, 12};
+    double positionError[3] {1000, 1000, 1000}; // km
+    double velocityError[3] {0.250, 0.250, 0.250}; // km/s
     double earthScMoonAngle {180};
     
     // Update Solution Message
