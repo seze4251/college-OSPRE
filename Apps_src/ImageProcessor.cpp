@@ -10,7 +10,7 @@
 #include <exception>
 #include <stdio.h>
 
-
+#include <cmath>
 #include "rt_nonfinite.h"
 #include "analyzeImage.h"
 #include "analyzeImage_terminate.h"
@@ -126,7 +126,7 @@ void ImageProcessor::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
-void ImageProcessor::setImageParameters(int cameraWidth, int cameraHeight, double FOV[2], double* estimatedPosition, PointEarthMoon point) {
+void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, double* estimatedPosition, double* moonEphem) {
 	// estimated Position is a double[3] <--- What units, and relative to what? Need estimated distance to Earth and Moon to estimate the radius
 	// Need to Set Variables:
 	// double sensitivity;
@@ -140,9 +140,10 @@ void ImageProcessor::setImageParameters(int cameraWidth, int cameraHeight, doubl
 	 function that gives phase based on estimated position
 	 - FOV is a 1x2 double array, want this to be the pixels/degree
 	*/
+    
 	dv3[0] = 5;
 
-	if (point == PEM_EARTH) {
+	if (point == PEM_Earth) {
 		// Evaluate on the assumption that we're pointing at the Earth
 		//
 		// Need to take estimated position, calculate expected angular diameter of celestial body, use image properties to turn this value
@@ -150,24 +151,43 @@ void ImageProcessor::setImageParameters(int cameraWidth, int cameraHeight, doubl
 		//
 		// Use emperically determined correlation function to determine the necessary sensitivity based on phase of moon and position
 		//
+        
+        // CHEATING PAREMETERS TO DEFINE ELSEWHERE
+        double MOON_RADIUS = 1736;
 
 		double dist = 20000; // km, this needs to be determined from the estimatedPosition
-		double angDiam = atan(MOON_RADIUS / dist) * 180 / PI * 2; // [deg], is PI defined in math libraries?
-		double moonPxDiam[2] = { angDiam*FOV[0], angDiam*FOV[1] }; // [px], diam of Moon in height and width
+		double angDiam = atan(MOON_RADIUS / dist) * 180 / M_PI * 2; // [deg], is PI defined in math libraries?
+		double moonPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Moon in height and width
 
-		double radGuess[2] = calcRadGuess(moonPxDiam, estimatedPosition, point); // This function needs to be emperically determined
+        double radGuess[2];
+        calcRadGuess(moonPxDiam, estimatedPosition, point, radGuess); // This function needs to be emperically determined
 
 		double sens = calcSens(moonPxDiam, estimatedPosition, point); // This function needs to be emperically determined
 
-	} else (point == PEM_MOON) {
+	} else if (point == PEM_Moon) {
 		// Evaluate on the assumption that we're pointing at the Moon
+        int a;
 	}
 }
 
-void ImageProcessor::processImage(ImageMessage* msg) {
-    setImageParameters(msg->cameraWidth, msg->cameraHeight, msg->FOV, msg->estimatedPosition, msg->point);
+void ImageProcessor::calcRadGuess(double* moonPxDiam_, double* estPos_, PointEarthMoon point_, double* ans) {
+}
+
+double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
+    return (double) 1;
     
-    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, pxDeg, msg->cameraWidth, msg->cameraHeight);
+}
+
+void ImageProcessor::processImage(ImageMessage* msg) {
+    setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
+    
+  
+    
+    // TEMP TEMP
+    int cameraWidth;
+    int cameraHeight;
+    // TEMP TEMP
+    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, pxDeg, cameraWidth, cameraHeight);
     
     
     // Update ProcessedImageMessage

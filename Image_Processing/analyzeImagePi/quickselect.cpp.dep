@@ -1,5 +1,5 @@
 quickselect.cpp.o: quickselect.cpp rt_nonfinite.h rtwtypes.h \
- analyzeImage.h rt_defines.h analyzeImage_types.h quickselect.h sort3.h
+  analyzeImage.h rt_defines.h analyzeImage_types.h quickselect.h sort3.h
 
 rt_nonfinite.h:
 

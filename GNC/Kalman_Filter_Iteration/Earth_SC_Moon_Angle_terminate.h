@@ -2,13 +2,13 @@
 // Academic License - for use in teaching, academic research, and meeting
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
-// File: Quaternion_To_Attitude.h
+// File: Earth_SC_Moon_Angle_terminate.h
 //
 // MATLAB Coder version            : 3.2
 // C/C++ source code generated on  : 09-Mar-2017 10:09:18
 //
-#ifndef QUATERNION_TO_ATTITUDE_H
-#define QUATERNION_TO_ATTITUDE_H
+#ifndef EARTH_SC_MOON_ANGLE_TERMINATE_H
+#define EARTH_SC_MOON_ANGLE_TERMINATE_H
 
 // Include Files
 #include <cmath>
@@ -20,12 +20,12 @@
 #include "Earth_SC_Moon_Angle_types.h"
 
 // Function Declarations
-extern void Quaternion_To_Attitude(const double q[4], double r_SC_body[3]);
+extern void Earth_SC_Moon_Angle_terminate();
 
 #endif
 
 //
-// File trailer for Quaternion_To_Attitude.h
+// File trailer for Earth_SC_Moon_Angle_terminate.h
 //
 // [EOF]
 //

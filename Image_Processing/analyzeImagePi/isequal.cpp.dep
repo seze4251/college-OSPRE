@@ -1,5 +1,5 @@
 isequal.cpp.o: isequal.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h \
- rt_defines.h analyzeImage_types.h isequal.h
+  rt_defines.h analyzeImage_types.h isequal.h
 
 rt_nonfinite.h:
 

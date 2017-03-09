@@ -15,6 +15,7 @@
 #include <vector>
 #include <stdio.h>
 
+#include "PointEarthMoon.h"
 #include "ServerInternal.h"
 #include "ProcessID.h"
 #include "OSPRE_Exceptions.h"
@@ -33,7 +34,8 @@ public:
     virtual void handleTimeout();
     
     // Applicaiton Functionality
-    void setImageParameters(int cameraWidth, int cameraHeight, double* FOV, double* estimatedPosition, PointEarthMoon point);
+    void setImageParameters(PointEarthMoon point, double* pix_deg, double* estimatedPosition, double* moonEphem);
+    
     void processImage(ImageMessage* msg);
     
     // Message Handlers
@@ -77,6 +79,9 @@ private:
     // TEMP TEMP
     double pixel_error;
     // TEMP TEMP
+    
+    void calcRadGuess(double* , double* , PointEarthMoon, double* );
+    double calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point);
 };
 
 #endif

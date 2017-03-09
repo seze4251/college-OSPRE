@@ -5,62 +5,60 @@
 // File: Kalman_Filter_Iteration.cpp
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 28-Feb-2017 11:46:21
+// C/C++ source code generated on  : 09-Mar-2017 10:09:18
 //
 
 // Include Files
+#include "Earth_SC_Moon_Angle.h"
 #include "Kalman_Filter_Iteration.h"
 #include "Position_From_Angles_Slew.h"
 #include "Position_From_Earth_Range.h"
 #include "Position_From_Moon_Range.h"
 #include "Quaternion_To_Attitude.h"
+#include "State_Error.h"
 
 // Function Definitions
 
 //
 // Time Update
-// Arguments    : const double x_hat_0[6]
+// Arguments    : double x_hat[6]
 //                const double phi[36]
-//                const double P_0[36]
+//                double P[36]
 //                const double Y[3]
 //                const double X_ref[6]
 //                const double R[9]
 //                double X_est[6]
-//                double x_hat[6]
-//                double P[36]
-//                double y[3]
 // Return Type  : void
 //
-void Kalman_Filter_Iteration(const double x_hat_0[6], const double phi[36],
-  const double P_0[36], const double Y[3], const double X_ref[6], const double
-  R[9], double X_est[6], double x_hat[6], double P[36], double y[3])
+void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36],
+  const double Y[3], const double X_ref[6], const double R[9], double X_est[6])
 {
   double b_phi[36];
-  int p2;
+  int p3;
   double x_bar[6];
   double a[18];
-  int p3;
+  int p2;
   double b_a[9];
-  int i;
-  double P_bar[36];
+  int p1;
   double x[9];
+  double P_bar[36];
   double absx11;
-  double absx21;
   static const signed char c_a[18] = { 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0 };
 
+  double absx21;
   double absx31;
   static const signed char b[18] = { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
     0, 0, 0 };
 
   int itmp;
   double c[9];
-  double b_y[3];
+  double b_Y[3];
   double K[18];
   signed char I[36];
   signed char b_I[36];
   double c_I[36];
-  double b_K[36];
+  double d_I[36];
 
   //  Kalman_Filter_Iteration Function
   //   Calculates the state vector of the next measurement given the Kalman
@@ -83,54 +81,53 @@ void Kalman_Filter_Iteration(const double x_hat_0[6], const double phi[36],
   //            |      y      |   Residuals matrix                         |
   //            |_____________|____________________________________________|
   //
-  for (p2 = 0; p2 < 6; p2++) {
-    x_bar[p2] = 0.0;
-    for (p3 = 0; p3 < 6; p3++) {
-      b_phi[p2 + 6 * p3] = 0.0;
-      for (i = 0; i < 6; i++) {
-        b_phi[p2 + 6 * p3] += phi[p2 + 6 * i] * P_0[i + 6 * p3];
+  for (p3 = 0; p3 < 6; p3++) {
+    x_bar[p3] = 0.0;
+    for (p2 = 0; p2 < 6; p2++) {
+      b_phi[p3 + 6 * p2] = 0.0;
+      for (p1 = 0; p1 < 6; p1++) {
+        b_phi[p3 + 6 * p2] += phi[p3 + 6 * p1] * P[p1 + 6 * p2];
       }
 
-      x_bar[p2] += phi[p2 + 6 * p3] * x_hat_0[p3];
+      x_bar[p3] += phi[p3 + 6 * p2] * x_hat[p2];
     }
 
-    for (p3 = 0; p3 < 6; p3++) {
-      P_bar[p2 + 6 * p3] = 0.0;
-      for (i = 0; i < 6; i++) {
-        P_bar[p2 + 6 * p3] += b_phi[p2 + 6 * i] * phi[p3 + 6 * i];
+    for (p2 = 0; p2 < 6; p2++) {
+      P_bar[p3 + 6 * p2] = 0.0;
+      for (p1 = 0; p1 < 6; p1++) {
+        P_bar[p3 + 6 * p2] += b_phi[p3 + 6 * p1] * phi[p2 + 6 * p1];
       }
     }
   }
 
   //  Observation Deviation, Observation State Matrix, Gain Matrix
-  for (i = 0; i < 3; i++) {
-    y[i] = Y[i] - X_ref[i];
+  for (p3 = 0; p3 < 3; p3++) {
     for (p2 = 0; p2 < 6; p2++) {
-      a[i + 3 * p2] = 0.0;
-      for (p3 = 0; p3 < 6; p3++) {
-        a[i + 3 * p2] += (double)c_a[i + 3 * p3] * P_bar[p3 + 6 * p2];
+      a[p3 + 3 * p2] = 0.0;
+      for (p1 = 0; p1 < 6; p1++) {
+        a[p3 + 3 * p2] += (double)c_a[p3 + 3 * p1] * P_bar[p1 + 6 * p2];
       }
     }
 
     for (p2 = 0; p2 < 3; p2++) {
       absx11 = 0.0;
-      for (p3 = 0; p3 < 6; p3++) {
-        absx11 += a[i + 3 * p3] * (double)b[p3 + 6 * p2];
+      for (p1 = 0; p1 < 6; p1++) {
+        absx11 += a[p3 + 3 * p1] * (double)b[p1 + 6 * p2];
       }
 
-      b_a[i + 3 * p2] = absx11 + R[i + 3 * p2];
+      b_a[p3 + 3 * p2] = absx11 + R[p3 + 3 * p2];
     }
   }
 
   memcpy(&x[0], &b_a[0], 9U * sizeof(double));
-  i = 0;
+  p1 = 0;
   p2 = 3;
   p3 = 6;
   absx11 = std::abs(b_a[0]);
   absx21 = std::abs(b_a[1]);
   absx31 = std::abs(b_a[2]);
   if ((absx21 > absx11) && (absx21 > absx31)) {
-    i = 3;
+    p1 = 3;
     p2 = 0;
     x[0] = b_a[1];
     x[1] = b_a[0];
@@ -140,7 +137,7 @@ void Kalman_Filter_Iteration(const double x_hat_0[6], const double phi[36],
     x[7] = b_a[6];
   } else {
     if (absx31 > absx11) {
-      i = 6;
+      p1 = 6;
       p3 = 0;
       x[0] = b_a[2];
       x[2] = b_a[0];
@@ -178,9 +175,9 @@ void Kalman_Filter_Iteration(const double x_hat_0[6], const double phi[36],
   x[8] -= absx11 * x[7];
   absx11 = (x[5] * x[1] - x[2]) / x[8];
   absx21 = -(x[1] + x[7] * absx11) / x[4];
-  c[i] = ((1.0 - x[3] * absx21) - x[6] * absx11) / x[0];
-  c[i + 1] = absx21;
-  c[i + 2] = absx11;
+  c[p1] = ((1.0 - x[3] * absx21) - x[6] * absx11) / x[0];
+  c[p1 + 1] = absx21;
+  c[p1 + 2] = absx11;
   absx11 = -x[5] / x[8];
   absx21 = (1.0 - x[7] * absx11) / x[4];
   c[p2] = -(x[3] * absx21 + x[6] * absx11) / x[0];
@@ -191,111 +188,111 @@ void Kalman_Filter_Iteration(const double x_hat_0[6], const double phi[36],
   c[p3] = -(x[3] * absx21 + x[6] * absx11) / x[0];
   c[p3 + 1] = absx21;
   c[p3 + 2] = absx11;
-  for (p2 = 0; p2 < 6; p2++) {
-    for (p3 = 0; p3 < 3; p3++) {
-      a[p2 + 6 * p3] = 0.0;
-      for (i = 0; i < 6; i++) {
-        a[p2 + 6 * p3] += P_bar[p2 + 6 * i] * (double)b[i + 6 * p3];
+  for (p3 = 0; p3 < 6; p3++) {
+    for (p2 = 0; p2 < 3; p2++) {
+      a[p3 + 6 * p2] = 0.0;
+      for (p1 = 0; p1 < 6; p1++) {
+        a[p3 + 6 * p2] += P_bar[p3 + 6 * p1] * (double)b[p1 + 6 * p2];
       }
     }
 
-    for (p3 = 0; p3 < 3; p3++) {
-      K[p2 + 6 * p3] = 0.0;
-      for (i = 0; i < 3; i++) {
-        K[p2 + 6 * p3] += a[p2 + 6 * i] * c[i + 3 * p3];
+    for (p2 = 0; p2 < 3; p2++) {
+      K[p3 + 6 * p2] = 0.0;
+      for (p1 = 0; p1 < 3; p1++) {
+        K[p3 + 6 * p2] += a[p3 + 6 * p1] * c[p1 + 3 * p2];
       }
     }
   }
 
   //  Measurement Update
-  for (p2 = 0; p2 < 3; p2++) {
+  for (p3 = 0; p3 < 3; p3++) {
     absx11 = 0.0;
-    for (p3 = 0; p3 < 6; p3++) {
-      absx11 += (double)c_a[p2 + 3 * p3] * x_bar[p3];
+    for (p2 = 0; p2 < 6; p2++) {
+      absx11 += (double)c_a[p3 + 3 * p2] * x_bar[p2];
     }
 
-    b_y[p2] = y[p2] - absx11;
+    b_Y[p3] = (Y[p3] - X_ref[p3]) - absx11;
   }
 
-  for (p2 = 0; p2 < 6; p2++) {
+  for (p3 = 0; p3 < 6; p3++) {
     absx11 = 0.0;
-    for (p3 = 0; p3 < 3; p3++) {
-      absx11 += K[p2 + 6 * p3] * b_y[p3];
+    for (p2 = 0; p2 < 3; p2++) {
+      absx11 += K[p3 + 6 * p2] * b_Y[p2];
     }
 
-    x_hat[p2] = x_bar[p2] + absx11;
+    x_hat[p3] = x_bar[p3] + absx11;
   }
 
-  for (p2 = 0; p2 < 36; p2++) {
-    I[p2] = 0;
+  for (p3 = 0; p3 < 36; p3++) {
+    I[p3] = 0;
   }
 
-  for (i = 0; i < 6; i++) {
-    I[i + 6 * i] = 1;
+  for (p1 = 0; p1 < 6; p1++) {
+    I[p1 + 6 * p1] = 1;
   }
 
-  for (p2 = 0; p2 < 36; p2++) {
-    b_I[p2] = 0;
+  for (p3 = 0; p3 < 36; p3++) {
+    b_I[p3] = 0;
   }
 
-  for (i = 0; i < 6; i++) {
-    b_I[i + 6 * i] = 1;
-    for (p2 = 0; p2 < 6; p2++) {
-      absx11 = 0.0;
-      for (p3 = 0; p3 < 3; p3++) {
-        absx11 += K[i + 6 * p3] * (double)c_a[p3 + 3 * p2];
-      }
-
-      b_phi[i + 6 * p2] = (double)I[i + 6 * p2] - absx11;
-    }
-
-    for (p2 = 0; p2 < 6; p2++) {
-      c_I[i + 6 * p2] = 0.0;
-      for (p3 = 0; p3 < 6; p3++) {
-        c_I[i + 6 * p2] += b_phi[i + 6 * p3] * P_bar[p3 + 6 * p2];
-      }
-    }
-  }
-
-  for (p2 = 0; p2 < 6; p2++) {
+  for (p1 = 0; p1 < 6; p1++) {
+    b_I[p1 + 6 * p1] = 1;
     for (p3 = 0; p3 < 6; p3++) {
       absx11 = 0.0;
-      for (i = 0; i < 3; i++) {
-        absx11 += K[p3 + 6 * i] * (double)c_a[i + 3 * p2];
+      for (p2 = 0; p2 < 3; p2++) {
+        absx11 += K[p1 + 6 * p2] * (double)c_a[p2 + 3 * p3];
       }
 
-      b_phi[p2 + 6 * p3] = (double)b_I[p3 + 6 * p2] - absx11;
+      c_I[p1 + 6 * p3] = (double)I[p1 + 6 * p3] - absx11;
     }
 
-    for (p3 = 0; p3 < 3; p3++) {
-      a[p2 + 6 * p3] = 0.0;
-      for (i = 0; i < 3; i++) {
-        a[p2 + 6 * p3] += K[p2 + 6 * i] * R[i + 3 * p3];
+    for (p3 = 0; p3 < 6; p3++) {
+      d_I[p1 + 6 * p3] = 0.0;
+      for (p2 = 0; p2 < 6; p2++) {
+        d_I[p1 + 6 * p3] += c_I[p1 + 6 * p2] * P_bar[p2 + 6 * p3];
       }
     }
   }
 
-  for (p2 = 0; p2 < 6; p2++) {
-    for (p3 = 0; p3 < 6; p3++) {
-      P_bar[p2 + 6 * p3] = 0.0;
-      for (i = 0; i < 6; i++) {
-        P_bar[p2 + 6 * p3] += c_I[p2 + 6 * i] * b_phi[i + 6 * p3];
+  for (p3 = 0; p3 < 6; p3++) {
+    for (p2 = 0; p2 < 6; p2++) {
+      absx11 = 0.0;
+      for (p1 = 0; p1 < 3; p1++) {
+        absx11 += K[p2 + 6 * p1] * (double)c_a[p1 + 3 * p3];
       }
 
-      b_K[p2 + 6 * p3] = 0.0;
-      for (i = 0; i < 3; i++) {
-        b_K[p2 + 6 * p3] += a[p2 + 6 * i] * K[p3 + 6 * i];
+      c_I[p3 + 6 * p2] = (double)b_I[p2 + 6 * p3] - absx11;
+    }
+
+    for (p2 = 0; p2 < 3; p2++) {
+      a[p3 + 6 * p2] = 0.0;
+      for (p1 = 0; p1 < 3; p1++) {
+        a[p3 + 6 * p2] += K[p3 + 6 * p1] * R[p1 + 3 * p2];
+      }
+    }
+  }
+
+  for (p3 = 0; p3 < 6; p3++) {
+    for (p2 = 0; p2 < 6; p2++) {
+      b_phi[p3 + 6 * p2] = 0.0;
+      for (p1 = 0; p1 < 6; p1++) {
+        b_phi[p3 + 6 * p2] += d_I[p3 + 6 * p1] * c_I[p1 + 6 * p2];
+      }
+
+      P_bar[p3 + 6 * p2] = 0.0;
+      for (p1 = 0; p1 < 3; p1++) {
+        P_bar[p3 + 6 * p2] += a[p3 + 6 * p1] * K[p2 + 6 * p1];
       }
     }
   }
 
   //  Updated Estimate
-  for (i = 0; i < 6; i++) {
-    for (p2 = 0; p2 < 6; p2++) {
-      P[p2 + 6 * i] = P_bar[p2 + 6 * i] + b_K[p2 + 6 * i];
+  for (p1 = 0; p1 < 6; p1++) {
+    for (p3 = 0; p3 < 6; p3++) {
+      P[p3 + 6 * p1] = b_phi[p3 + 6 * p1] + P_bar[p3 + 6 * p1];
     }
 
-    X_est[i] = X_ref[i] + x_hat[i];
+    X_est[p1] = X_ref[p1] + x_hat[p1];
   }
 }
 

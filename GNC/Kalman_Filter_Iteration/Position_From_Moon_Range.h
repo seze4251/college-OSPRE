@@ -5,7 +5,7 @@
 // File: Position_From_Moon_Range.h
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 28-Feb-2017 11:46:21
+// C/C++ source code generated on  : 09-Mar-2017 10:09:18
 //
 #ifndef POSITION_FROM_MOON_RANGE_H
 #define POSITION_FROM_MOON_RANGE_H
@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "rtwtypes.h"
-#include "Kalman_Filter_Iteration_types.h"
+#include "Earth_SC_Moon_Angle_types.h"
 
 // Function Declarations
 extern void Position_From_Moon_Range(const double r_E_M[3], const double q_M[4],

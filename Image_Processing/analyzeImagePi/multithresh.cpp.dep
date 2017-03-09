@@ -1,7 +1,7 @@
 multithresh.cpp.o: multithresh.cpp rt_nonfinite.h rtwtypes.h \
- analyzeImage.h rt_defines.h analyzeImage_types.h multithresh.h \
- isfinite.h analyzeImage_emxutil.h nullAssignment.h unique.h sortIdx.h \
- sum.h imhist.h im2uint8.h
+  analyzeImage.h rt_defines.h analyzeImage_types.h multithresh.h \
+  isfinite.h analyzeImage_emxutil.h nullAssignment.h unique.h sortIdx.h \
+  sum.h imhist.h im2uint8.h
 
 rt_nonfinite.h:
 

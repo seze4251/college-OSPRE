@@ -1,6 +1,6 @@
 sort1.cpp.o: sort1.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h \
- rt_defines.h analyzeImage_types.h sort1.h analyzeImage_emxutil.h \
- sortIdx.h
+  rt_defines.h analyzeImage_types.h sort1.h analyzeImage_emxutil.h \
+  sortIdx.h
 
 rt_nonfinite.h:
 

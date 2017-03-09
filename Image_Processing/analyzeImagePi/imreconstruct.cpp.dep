@@ -1,6 +1,6 @@
 imreconstruct.cpp.o: imreconstruct.cpp rt_nonfinite.h rtwtypes.h \
- analyzeImage.h rt_defines.h analyzeImage_types.h imreconstruct.h \
- imregionalmax.h analyzeImage_rtwutil.h
+  analyzeImage.h rt_defines.h analyzeImage_types.h imreconstruct.h \
+  imregionalmax.h analyzeImage_rtwutil.h
 
 rt_nonfinite.h:
 

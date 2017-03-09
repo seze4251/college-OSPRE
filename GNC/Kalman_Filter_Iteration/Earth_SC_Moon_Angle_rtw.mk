@@ -1,13 +1,13 @@
 ###########################################################################
-## Makefile generated for MATLAB file/project 'Kalman_Filter_Iteration'. 
+## Makefile generated for MATLAB file/project 'Earth_SC_Moon_Angle'. 
 ## 
-## Makefile     : Kalman_Filter_Iteration_rtw.mk
-## Generated on : Tue Feb 28 11:46:24 2017
+## Makefile     : Earth_SC_Moon_Angle_rtw.mk
+## Generated on : Thu Mar 09 10:10:13 2017
 ## MATLAB Coder version: 3.2 (R2016b)
 ## 
 ## Build Info:
 ## 
-## Final product: $(RELATIVE_PATH_TO_ANCHOR)/Kalman_Filter_Iteration.lib
+## Final product: $(RELATIVE_PATH_TO_ANCHOR)/Earth_SC_Moon_Angle.lib
 ## Product type : static-library
 ## 
 ###########################################################################
@@ -21,8 +21,8 @@
 # MAKEFILE                Name of this makefile
 # COMPUTER                Computer type. See the MATLAB "computer" command.
 
-PRODUCT_NAME              = Kalman_Filter_Iteration
-MAKEFILE                  = Kalman_Filter_Iteration_rtw.mk
+PRODUCT_NAME              = Earth_SC_Moon_Angle
+MAKEFILE                  = Earth_SC_Moon_Angle_rtw.mk
 COMPUTER                  = GLNX
 MATLAB_ROOT               = .
 MATLAB_BIN                = .
@@ -164,7 +164,7 @@ MAKE_EXT            = .mk
 ## OUTPUT INFO
 ###########################################################################
 
-PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)/Kalman_Filter_Iteration.lib
+PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)/Earth_SC_Moon_Angle.lib
 PRODUCT_TYPE = "static-library"
 BUILD_TYPE = "Static Library"
 
@@ -180,9 +180,9 @@ INCLUDES = $(INCLUDES_BUILDINFO)
 ## DEFINES
 ###########################################################################
 
-DEFINES_ = -D__MW_TARGET_USE_HARDWARE_RESOURCES_H__ -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=200000 -DMODEL=Kalman_Filter_Iteration -DHAVESTDIO -DUSE_RTMODEL
+DEFINES_ = -D__MW_TARGET_USE_HARDWARE_RESOURCES_H__ -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=200000 -DMODEL=Earth_SC_Moon_Angle -DHAVESTDIO -DUSE_RTMODEL
 DEFINES_SKIPFORSIL = -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=200000
-DEFINES_STANDARD = -DMODEL=Kalman_Filter_Iteration -DHAVESTDIO -DUSE_RTMODEL
+DEFINES_STANDARD = -DMODEL=Earth_SC_Moon_Angle -DHAVESTDIO -DUSE_RTMODEL
 
 DEFINES = $(DEFINES_) $(DEFINES_SKIPFORSIL) $(DEFINES_STANDARD)
 
@@ -190,7 +190,7 @@ DEFINES = $(DEFINES_) $(DEFINES_SKIPFORSIL) $(DEFINES_STANDARD)
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = Kalman_Filter_Iteration_rtwutil.cpp Kalman_Filter_Iteration_initialize.cpp Kalman_Filter_Iteration_terminate.cpp Kalman_Filter_Iteration.cpp Position_From_Angles_Slew.cpp Position_From_Earth_Range.cpp Position_From_Moon_Range.cpp Quaternion_To_Attitude.cpp norm.cpp cosd.cpp sind.cpp tand.cpp
+SRCS = Earth_SC_Moon_Angle_rtwutil.cpp Earth_SC_Moon_Angle_initialize.cpp Earth_SC_Moon_Angle_terminate.cpp Earth_SC_Moon_Angle.cpp Kalman_Filter_Iteration.cpp Position_From_Angles_Slew.cpp Position_From_Earth_Range.cpp Position_From_Moon_Range.cpp Quaternion_To_Attitude.cpp State_Error.cpp norm.cpp cosd.cpp sind.cpp tand.cpp
 
 ALL_SRCS = $(SRCS)
 
@@ -198,7 +198,7 @@ ALL_SRCS = $(SRCS)
 ## OBJECTS
 ###########################################################################
 
-OBJS = Kalman_Filter_Iteration_rtwutil.cpp.o Kalman_Filter_Iteration_initialize.cpp.o Kalman_Filter_Iteration_terminate.cpp.o Kalman_Filter_Iteration.cpp.o Position_From_Angles_Slew.cpp.o Position_From_Earth_Range.cpp.o Position_From_Moon_Range.cpp.o Quaternion_To_Attitude.cpp.o norm.cpp.o cosd.cpp.o sind.cpp.o tand.cpp.o
+OBJS = Earth_SC_Moon_Angle_rtwutil.cpp.o Earth_SC_Moon_Angle_initialize.cpp.o Earth_SC_Moon_Angle_terminate.cpp.o Earth_SC_Moon_Angle.cpp.o Kalman_Filter_Iteration.cpp.o Position_From_Angles_Slew.cpp.o Position_From_Earth_Range.cpp.o Position_From_Moon_Range.cpp.o Quaternion_To_Attitude.cpp.o State_Error.cpp.o norm.cpp.o cosd.cpp.o sind.cpp.o tand.cpp.o
 
 ALL_OBJS = $(OBJS)
 

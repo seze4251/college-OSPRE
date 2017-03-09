@@ -1,5 +1,5 @@
 bwconncomp.cpp.o: bwconncomp.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h \
- rt_defines.h analyzeImage_types.h bwconncomp.h analyzeImage_emxutil.h
+  rt_defines.h analyzeImage_types.h bwconncomp.h analyzeImage_emxutil.h
 
 rt_nonfinite.h:
 

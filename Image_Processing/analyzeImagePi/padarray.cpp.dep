@@ -1,5 +1,5 @@
 padarray.cpp.o: padarray.cpp rt_nonfinite.h rtwtypes.h analyzeImage.h \
- rt_defines.h analyzeImage_types.h padarray.h
+  rt_defines.h analyzeImage_types.h padarray.h
 
 rt_nonfinite.h:
 

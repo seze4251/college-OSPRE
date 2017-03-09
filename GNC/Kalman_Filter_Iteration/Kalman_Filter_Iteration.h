@@ -5,7 +5,7 @@
 // File: Kalman_Filter_Iteration.h
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 28-Feb-2017 11:46:21
+// C/C++ source code generated on  : 09-Mar-2017 10:09:18
 //
 #ifndef KALMAN_FILTER_ITERATION_H
 #define KALMAN_FILTER_ITERATION_H
@@ -17,12 +17,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "rtwtypes.h"
-#include "Kalman_Filter_Iteration_types.h"
+#include "Earth_SC_Moon_Angle_types.h"
 
 // Function Declarations
-extern void Kalman_Filter_Iteration(const double x_hat_0[6], const double phi[36],
-  const double P_0[36], const double Y[3], const double X_ref[6], const double
-  R[9], double X_est[6], double x_hat[6], double P[36], double y[3]);
+extern void Kalman_Filter_Iteration(double x_hat[6], const double phi[36],
+  double P[36], const double Y[3], const double X_ref[6], const double R[9],
+  double X_est[6]);
 
 #endif
 

@@ -189,7 +189,7 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     fprintf(logFile, "Received Message: CaptureImageRequest from GNC\n");
     
     // Decide if Camera Controller can Capture Image or if it can read an image
-    if (sleep) {
+    if (data.sleep) {
         fprintf(logFile, "Sleep: bool sleep = true, Camera Controller not capturing images\n");
         // Send something to WatchDog?
         return;
@@ -209,7 +209,7 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         int currentImageSize = IMAGE_SIZE;
         double pix_deg[2] {75, 75};
         
-        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data->ephem);
+        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem);
         
         //TEMP TEMP Need to fix when readimage function is created
         //******************************
@@ -228,7 +228,7 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
 
 void CameraController::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: DataMessage from ScComms\n");
-    data->update(msg->ephem, msg->quat, msg->angularVelocity, msg->satTime, msg->sunAngle, msg->sleep);
+    data.update(msg->ephem, msg->quat, msg->angularVelocity, msg->satTime, msg->sunAngle, msg->sleep);
 }
 
 // TODO: Decide is this Needed?
