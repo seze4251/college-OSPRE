@@ -208,8 +208,9 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         //TEMP TEMP Need to fix when readimage function is created
         int currentImageSize = IMAGE_SIZE;
         double pix_deg[2] {75, 75};
-        
-        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem);
+        int cameraWidth = 150;
+        int cameraHeight = 100;
+        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight);
         
         //TEMP TEMP Need to fix when readimage function is created
         //******************************

@@ -294,6 +294,9 @@ Message* Parser::parseImageMessage() {
     image->iden = messageID;
     image->point = (PointEarthMoon) buf.getInt();
     
+    image->cameraWidth = buf.getInt();
+    image->cameraHeight = buf.getInt();
+
     for (int i = 0; i < 2; i++) {
         image->pix_deg[i] = buf.getDouble();
     }
@@ -306,7 +309,7 @@ Message* Parser::parseImageMessage() {
         image->moonEphem[i] = buf.getDouble();
     }
     
-    int imageLength = messageLength - (HEADER_MESSAGE_SIZE + sizeof(int) + 8*sizeof(double));
+    int imageLength = messageLength - (HEADER_MESSAGE_SIZE + 3*sizeof(int) + 8*sizeof(double));
     
     
     if( imageLength > image->imageBufferSize) {
@@ -315,7 +318,7 @@ Message* Parser::parseImageMessage() {
     
     image->currentImageSize = imageLength;
     buf.get(image->getImagePointer(), imageLength);
-    
+
     return image;
 }
 

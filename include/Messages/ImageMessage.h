@@ -52,14 +52,15 @@ public:
         std::cout << " (km)" << std::endl;
     }
     
-    void update(PointEarthMoon point, int currentImageSize, double* pix_deg, double* estimatedPosition, double* moonEphem) {
+    void update(PointEarthMoon point, int currentImageSize, double* pix_deg, double* estimatedPosition, double* moonEphem, int cameraWidth, int cameraHeight) {
         this->timeStamp = time(0);
         this->point = point;
         this->currentImageSize = currentImageSize;
         memcpy(this->pix_deg, pix_deg, 2 * sizeof(double));
         memcpy(this->estimatedPosition, estimatedPosition, 3 * sizeof(double));
         memcpy(this->moonEphem, moonEphem, 3 * sizeof(double));
-    
+        this->cameraWidth = cameraWidth;
+        this->cameraHeight = cameraHeight;
     }
     
     void resizeImageArray(int newSize) {
@@ -79,6 +80,8 @@ public:
     
     // Specific Data Members
     PointEarthMoon point;
+    int cameraWidth;
+    int cameraHeight;
     double pix_deg[2]; // Pixel per degree
     double estimatedPosition[3];
     double moonEphem[3];

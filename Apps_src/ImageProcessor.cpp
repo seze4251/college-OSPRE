@@ -181,13 +181,8 @@ double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, P
 void ImageProcessor::processImage(ImageMessage* msg) {
     setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
     
-  
-    
-    // TEMP TEMP
-    int cameraWidth;
-    int cameraHeight;
-    // TEMP TEMP
-    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, pxDeg, cameraWidth, cameraHeight);
+
+    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, pxDeg, msg->cameraWidth, msg->cameraHeight);
     
     
     // Update ProcessedImageMessage
