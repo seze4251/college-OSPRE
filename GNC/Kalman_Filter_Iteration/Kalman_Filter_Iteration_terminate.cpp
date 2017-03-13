@@ -2,7 +2,7 @@
 // Academic License - for use in teaching, academic research, and meeting
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
-// File: norm.cpp
+// File: Kalman_Filter_Iteration_terminate.cpp
 //
 // MATLAB Coder version            : 3.2
 // C/C++ source code generated on  : 09-Mar-2017 13:26:09
@@ -15,40 +15,21 @@
 #include "Position_From_Moon_Range.h"
 #include "Quaternion_To_Attitude.h"
 #include "State_Error.h"
-#include "norm.h"
+#include "Kalman_Filter_Iteration_terminate.h"
 
 // Function Definitions
 
 //
-// Arguments    : const double x[3]
-// Return Type  : double
+// Arguments    : void
+// Return Type  : void
 //
-double norm(const double x[3])
+void Kalman_Filter_Iteration_terminate()
 {
-  double y;
-  double scale;
-  int k;
-  double absxk;
-  double t;
-  y = 0.0;
-  scale = 2.2250738585072014E-308;
-  for (k = 0; k < 3; k++) {
-    absxk = std::abs(x[k]);
-    if (absxk > scale) {
-      t = scale / absxk;
-      y = 1.0 + y * t * t;
-      scale = absxk;
-    } else {
-      t = absxk / scale;
-      y += t * t;
-    }
-  }
-
-  return scale * std::sqrt(y);
+  // (no terminate code required)
 }
 
 //
-// File trailer for norm.cpp
+// File trailer for Kalman_Filter_Iteration_terminate.cpp
 //
 // [EOF]
 //

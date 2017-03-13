@@ -5,11 +5,10 @@
 // File: Quaternion_To_Attitude.cpp
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 09-Mar-2017 10:09:18
+// C/C++ source code generated on  : 09-Mar-2017 13:26:09
 //
 
 // Include Files
-#include "Earth_SC_Moon_Angle.h"
 #include "Kalman_Filter_Iteration.h"
 #include "Position_From_Angles_Slew.h"
 #include "Position_From_Earth_Range.h"

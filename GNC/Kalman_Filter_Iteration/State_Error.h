@@ -5,7 +5,7 @@
 // File: State_Error.h
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 09-Mar-2017 10:09:18
+// C/C++ source code generated on  : 09-Mar-2017 13:26:09
 //
 #ifndef STATE_ERROR_H
 #define STATE_ERROR_H
@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "rtwtypes.h"
-#include "Earth_SC_Moon_Angle_types.h"
+#include "Kalman_Filter_Iteration_types.h"
 
 // Function Declarations
 extern void State_Error(const double X_ref[6], const double X_est[6], double

@@ -4,6 +4,11 @@
 echo "Removing Old Executables"
 rm bin/*
 
+# Remake Libraries
+echo "Making Libraries"
+./Image_Processing/analyzeImagePi/makeImageLib.sh
+./GNC/Kalman_Filter_Iteration/makeGNCLib.sh
+
 # Compile OSPRE
 echo "Compiling OSPRE"
 make -j bin/WatchDog

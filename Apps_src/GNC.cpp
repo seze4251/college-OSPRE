@@ -41,8 +41,33 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     
     // Application Specific Member Initializations
     readReferenceTrajectory();
-    covariance = new double[36];
-    trajectoryDev = new double[6];
+    
+    // Initialize All GNC specific app members
+    
+    /*
+     // GNC Specific Members
+     double x_hat[6];
+     double phi[36];
+     double P[36];
+     double dv0[3];
+     double dv1[6];
+     double dv2[9];
+     double X_est[6];
+     double covariance[36];
+     double trajectoryDev[6];
+     
+     // From Config File
+     double range_EarthRangeCutoff;
+     double range_AnglesCutoff;
+     
+     // Spacecraft Position
+     double r_E_SC[3];
+     double velSC[3];
+     
+     // From Estimated range from earth
+     double range_estimate;
+     */
+    
     
     logFile = nullptr;
 }
@@ -53,8 +78,6 @@ GNC::~GNC() {
     delete captureImageMessage;
     delete solutionMessage;
     delete pointRequest;
-    delete[] covariance;
-    delete[] trajectoryDev;
     
     // Close Log File
     if (logFile)
@@ -160,7 +183,7 @@ void GNC::handleTimeout() {
         }
         
         if ((cameraController != nullptr) && (cameraController->isConnected())) {
-            captureImageMessage->update(point, latestPosition);
+            captureImageMessage->update(point, r_E_SC);
             cameraController -> sendMessage(captureImageMessage);
             fprintf(logFile, "Sent Message: CaptureImageMessage to CameraController\n");
         }
@@ -180,26 +203,13 @@ void GNC::handleTimeout() {
 void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procMessage) {
     // Check Inputs <- unecessary if Cameron does it
     
-    // Stuff I am storing for cameron
-   // double* covariance;
-   // double* trajectoryDev;
-    // double r_SC_body[3];
-    
-    double velSC[3];
-    double phi[36];
-    // Read in values from config file
-    double range_EarthRangeCutoff;
-    double range_AnglesCutoff;
-    
-    
-    double range_estimate;
+
     
     if (range_estimate < range_EarthRangeCutoff) {
         // Earth Ranging to find Position
-        
-        
-        // Earth Range
         Position_From_Earth_Range(dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage->theta, r_E_SC);
+        
+        Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);
         
     } else if ( range_estimate < range_AnglesCutoff) {
         // Angles Method to find Position
@@ -219,54 +229,19 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         
         Position_From_Angles_Slew(moonEphem, earthQuat, moonQuat, procMessage->alpha, procMessage->beta, velSC, procMessage->theta, r_E_SC1, r_E_SC2);
         
-        //****************************
-        // Call Kalman filter Twice
-        //****************************
-        // 'x_hat_0'. -> Trajectory Dev
-        // 'phi' -> State Transition Matrix
-        // 'P_0'. -> Coveriance
-        // Y -> State Observation
-        double X_ref[6]; // 'X_ref' -> Reference Trajectory
-        double R[9]; // R -> State Error Coveriance
-        double X_est[6]; // OUTPUT: Postion / Velocity
-        double x_hat_remove[6]; // Trajectory Deviation, same as DVO
-        double P_remove[36]; // Same as Coveriance
-        double residuals_ignore[3]; // Residuals (Ignore)
+        // Kalman Filter Position 1
+        Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);        // 'x_hat_0'. -> Trajectory Dev
         
-        Kalman_Filter_Iteration(trajectoryDev, phi, covariance, r_E_SC, X_ref, R, X_est, x_hat_remove, P_remove, residuals_ignore);
-        // 'x_hat_0'. -> Trajectory Dev
-        // 'phi' -> State Transition Matrix
-        // 'P_0'. -> Coveriance
-        // Y -> State Observation
-        double X_ref[6]; // 'X_ref' -> Reference Trajectory
-        double R[9]; // R -> State Error Coveriance
-        double X_est[6]; // OUTPUT: Postion / Velocity
-        double x_hat_remove[6]; // Trajectory Deviation, same as DVO
-        double P_remove[36]; // Same as Coveriance
-        double residuals_ignore[3]; // Residuals (Ignore)
-        
-        Kalman_Filter_Iteration(trajectoryDev, phi, covariance, r_E_SC, X_ref, R, X_est, x_hat_remove, P_remove, residuals_ignore);
+        // Kalman Filter Position 2
+        Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);
         
         
     } else {
         // Moon Ranging to find Position
-        double r_E_SC[3]; // Calculated Range Vector
-        
-          Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, r_E_SC);
-        
-        // 'x_hat_0'. -> Trajectory Dev
-        // 'phi' -> State Transition Matrix
-        // 'P_0'. -> Coveriance
-        // Y -> State Observation
-        double X_ref[6]; // 'X_ref' -> Reference Trajectory
-        double R[9]; // R -> State Error Coveriance
-        double X_est[6]; // OUTPUT: Postion / Velocity
-        double x_hat_remove[6]; // Trajectory Deviation, same as DVO
-        double P_remove[36]; // Same as Coveriance
-        double residuals_ignore[3]; // Residuals (Ignore)
-        
-        Kalman_Filter_Iteration(trajectoryDev, phi, covariance, r_E_SC, X_ref, R, X_est, x_hat_remove, P_remove, residuals_ignore);
-        
+        Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, r_E_SC);
+
+        Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);
+
     }
     
     // Send Solution Message
@@ -278,7 +253,7 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     double earthScMoonAngle {180};
     
     // Update Solution Message
-    solutionMessage->update(X_est[0], positionError, X_est[3], velocityError, earthScMoonAngle);
+    solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
 }
 
 void GNC::readReferenceTrajectory() {
@@ -337,7 +312,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     // Compute Solution and Update Solution Message
     try {
         computeSolution(scData, msg);
-                
+        
     } catch(std::exception &exception) {
         fprintf(logFile, "Error: HandleProcessedImageMessage() Exception Caught: %s\n", exception.what());
         localError = PE_invalidData;

@@ -5,7 +5,7 @@
 // File: main.cpp
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 09-Mar-2017 10:09:18
+// C/C++ source code generated on  : 09-Mar-2017 13:26:09
 //
 
 //***********************************************************************
@@ -33,7 +33,6 @@
 //
 //***********************************************************************
 // Include Files
-#include "Earth_SC_Moon_Angle.h"
 #include "Kalman_Filter_Iteration.h"
 #include "Position_From_Angles_Slew.h"
 #include "Position_From_Earth_Range.h"
@@ -41,8 +40,8 @@
 #include "Quaternion_To_Attitude.h"
 #include "State_Error.h"
 #include "main.h"
-#include "Earth_SC_Moon_Angle_terminate.h"
-#include "Earth_SC_Moon_Angle_initialize.h"
+#include "Kalman_Filter_Iteration_terminate.h"
+#include "Kalman_Filter_Iteration_initialize.h"
 
 // Function Declarations
 static void argInit_3x1_real_T(double result[3]);
@@ -51,7 +50,6 @@ static void argInit_4x1_real_T(double result[4]);
 static void argInit_6x1_real_T(double result[6]);
 static void argInit_6x6_real_T(double result[36]);
 static double argInit_real_T();
-static void main_Earth_SC_Moon_Angle();
 static void main_Kalman_Filter_Iteration();
 static void main_Position_From_Angles_Slew();
 static void main_Position_From_Earth_Range();
@@ -160,33 +158,14 @@ static double argInit_real_T()
 // Arguments    : void
 // Return Type  : void
 //
-static void main_Earth_SC_Moon_Angle()
-{
-  double dv0[3];
-  double dv1[3];
-  double angle_Earth_SC_Moon;
-
-  // Initialize function 'Earth_SC_Moon_Angle' input arguments.
-  // Initialize function input argument 'r_E_SC'.
-  // Initialize function input argument 'r_E_M'.
-  // Call the entry-point 'Earth_SC_Moon_Angle'.
-  argInit_3x1_real_T(dv0);
-  argInit_3x1_real_T(dv1);
-  angle_Earth_SC_Moon = Earth_SC_Moon_Angle(dv0, dv1);
-}
-
-//
-// Arguments    : void
-// Return Type  : void
-//
 static void main_Kalman_Filter_Iteration()
 {
   double x_hat[6];
   double phi[36];
   double P[36];
-  double dv2[3];
-  double dv3[6];
-  double dv4[9];
+  double dv0[3];
+  double dv1[6];
+  double dv2[9];
   double X_est[6];
 
   // Initialize function 'Kalman_Filter_Iteration' input arguments.
@@ -203,10 +182,10 @@ static void main_Kalman_Filter_Iteration()
   // Initialize function input argument 'X_ref'.
   // Initialize function input argument 'R'.
   // Call the entry-point 'Kalman_Filter_Iteration'.
-  argInit_3x1_real_T(dv2);
-  argInit_6x1_real_T(dv3);
-  argInit_3x3_real_T(dv4);
-  Kalman_Filter_Iteration(x_hat, phi, P, dv2, dv3, dv4, X_est);
+  argInit_3x1_real_T(dv0);
+  argInit_6x1_real_T(dv1);
+  argInit_3x3_real_T(dv2);
+  Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);
 }
 
 //
@@ -215,10 +194,10 @@ static void main_Kalman_Filter_Iteration()
 //
 static void main_Position_From_Angles_Slew()
 {
-  double dv5[3];
-  double dv6[4];
-  double dv7[4];
-  double dv8[3];
+  double dv3[3];
+  double dv4[4];
+  double dv5[4];
+  double dv6[3];
   double r_E_SC1[3];
   double r_E_SC2[3];
 
@@ -228,12 +207,12 @@ static void main_Position_From_Angles_Slew()
   // Initialize function input argument 'q_M'.
   // Initialize function input argument 'vel'.
   // Call the entry-point 'Position_From_Angles_Slew'.
-  argInit_3x1_real_T(dv5);
-  argInit_4x1_real_T(dv6);
-  argInit_4x1_real_T(dv7);
-  argInit_3x1_real_T(dv8);
-  Position_From_Angles_Slew(dv5, dv6, dv7, argInit_real_T(), argInit_real_T(),
-    dv8, argInit_real_T(), r_E_SC1, r_E_SC2);
+  argInit_3x1_real_T(dv3);
+  argInit_4x1_real_T(dv4);
+  argInit_4x1_real_T(dv5);
+  argInit_3x1_real_T(dv6);
+  Position_From_Angles_Slew(dv3, dv4, dv5, argInit_real_T(), argInit_real_T(),
+    dv6, argInit_real_T(), r_E_SC1, r_E_SC2);
 }
 
 //
@@ -242,14 +221,14 @@ static void main_Position_From_Angles_Slew()
 //
 static void main_Position_From_Earth_Range()
 {
-  double dv9[4];
+  double dv7[4];
   double r_E_SC[3];
 
   // Initialize function 'Position_From_Earth_Range' input arguments.
   // Initialize function input argument 'q_E'.
   // Call the entry-point 'Position_From_Earth_Range'.
-  argInit_4x1_real_T(dv9);
-  Position_From_Earth_Range(dv9, argInit_real_T(), argInit_real_T(),
+  argInit_4x1_real_T(dv7);
+  Position_From_Earth_Range(dv7, argInit_real_T(), argInit_real_T(),
     argInit_real_T(), r_E_SC);
 }
 
@@ -259,17 +238,17 @@ static void main_Position_From_Earth_Range()
 //
 static void main_Position_From_Moon_Range()
 {
-  double dv10[3];
-  double dv11[4];
+  double dv8[3];
+  double dv9[4];
   double r_E_SC[3];
 
   // Initialize function 'Position_From_Moon_Range' input arguments.
   // Initialize function input argument 'r_E_M'.
   // Initialize function input argument 'q_M'.
   // Call the entry-point 'Position_From_Moon_Range'.
-  argInit_3x1_real_T(dv10);
-  argInit_4x1_real_T(dv11);
-  Position_From_Moon_Range(dv10, dv11, argInit_real_T(), argInit_real_T(),
+  argInit_3x1_real_T(dv8);
+  argInit_4x1_real_T(dv9);
+  Position_From_Moon_Range(dv8, dv9, argInit_real_T(), argInit_real_T(),
     argInit_real_T(), r_E_SC);
 }
 
@@ -279,14 +258,14 @@ static void main_Position_From_Moon_Range()
 //
 static void main_Quaternion_To_Attitude()
 {
-  double dv12[4];
+  double dv10[4];
   double r_SC_body[3];
 
   // Initialize function 'Quaternion_To_Attitude' input arguments.
   // Initialize function input argument 'q'.
   // Call the entry-point 'Quaternion_To_Attitude'.
-  argInit_4x1_real_T(dv12);
-  Quaternion_To_Attitude(dv12, r_SC_body);
+  argInit_4x1_real_T(dv10);
+  Quaternion_To_Attitude(dv10, r_SC_body);
 }
 
 //
@@ -295,8 +274,8 @@ static void main_Quaternion_To_Attitude()
 //
 static void main_State_Error()
 {
-  double dv13[6];
-  double dv14[6];
+  double dv11[6];
+  double dv12[6];
   double posError[3];
   double velError[3];
 
@@ -304,9 +283,9 @@ static void main_State_Error()
   // Initialize function input argument 'X_ref'.
   // Initialize function input argument 'X_est'.
   // Call the entry-point 'State_Error'.
-  argInit_6x1_real_T(dv13);
-  argInit_6x1_real_T(dv14);
-  State_Error(dv13, dv14, posError, velError);
+  argInit_6x1_real_T(dv11);
+  argInit_6x1_real_T(dv12);
+  State_Error(dv11, dv12, posError, velError);
 }
 
 //
@@ -318,11 +297,10 @@ int main(int, const char * const [])
 {
   // Initialize the application.
   // You do not need to do this more than one time.
-  Earth_SC_Moon_Angle_initialize();
+  Kalman_Filter_Iteration_initialize();
 
   // Invoke the entry-point functions.
   // You can call entry-point functions multiple times.
-  main_Earth_SC_Moon_Angle();
   main_Kalman_Filter_Iteration();
   main_Position_From_Angles_Slew();
   main_Position_From_Earth_Range();
@@ -332,7 +310,7 @@ int main(int, const char * const [])
 
   // Terminate the application.
   // You do not need to do this more than one time.
-  Earth_SC_Moon_Angle_terminate();
+  Kalman_Filter_Iteration_terminate();
   return 0;
 }
 

@@ -62,20 +62,36 @@ private:
     CaptureImageRequest* captureImageMessage;
     SolutionMessage* solutionMessage;
     
+    // Process Error
+    ProcessError localError;
+    
     // Buffer to hold Data Messages
     CircularBuffer circBuf;
     
     // Where Spacecraft is currently pointing (Earth or Moon)
     PointEarthMoon point;
     
-    // Spacecraft Position
-    double latestPosition[3];
-    
     // GNC Specific Members
-    double* covariance;
-    double* trajectoryDev;
+    double x_hat[6];
+    double phi[36];
+    double P[36];
+    double dv0[3];
+    double dv1[6];
+    double dv2[9];
+    double X_est[6];
+    double covariance[36];
+    double trajectoryDev[6];
     
-    ProcessError localError;
+    // From Config File
+    double range_EarthRangeCutoff;
+    double range_AnglesCutoff;
+    
+    // Spacecraft Position
+    double r_E_SC[3];
+    double velSC[3];
+    
+    // From Estimated range from earth
+    double range_estimate;
 };
 
 #endif

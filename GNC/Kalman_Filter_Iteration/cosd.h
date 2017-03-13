@@ -5,7 +5,7 @@
 // File: cosd.h
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 09-Mar-2017 10:09:18
+// C/C++ source code generated on  : 09-Mar-2017 13:26:09
 //
 #ifndef COSD_H
 #define COSD_H
@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "rtwtypes.h"
-#include "Earth_SC_Moon_Angle_types.h"
+#include "Kalman_Filter_Iteration_types.h"
 
 // Function Declarations
 extern void cosd(double *x);
