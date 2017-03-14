@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <exception>
 #include <stdio.h>
+#include <string>
 
 #include <cmath>
 #include "rt_nonfinite.h"
@@ -17,6 +18,15 @@
 #include "analyzeImage_initialize.h"
 #include "ImageProcessor.h"
 #include "Service.h"
+
+// OpenCV
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+#ifndef
+#define double MOON_RADIUS 1736.0
+#define double EARTH_RADIUS 6371.0
+#endif
 
 ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_ImageProcessor), pollTime(0) {
     setAppl(this);
@@ -126,8 +136,8 @@ void ImageProcessor::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
-void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, double* estimatedPosition, double* moonEphem) {
-	// estimated Position is a double[3] <--- What units, and relative to what? Need estimated distance to Earth and Moon to estimate the radius
+void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, double* estPos, double* moonEphem) {
+	// estimated Position is a double[3] km, ECI frame
 	// Need to Set Variables:
 	// double sensitivity;
 	// double pxDeg[2]; // Pixel Per Degree
@@ -138,10 +148,7 @@ void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, d
 	 - position estimation units and reference frame
 	 - Moon and Earth properties (radius, phase) Phase might not be necessary if we're restricting to only a single trajectory: we can just calculate a
 	 function that gives phase based on estimated position
-	 - FOV is a 1x2 double array, want this to be the pixels/degree
 	*/
-    
-	dv3[0] = 5;
 
 	if (point == PEM_Earth) {
 		// Evaluate on the assumption that we're pointing at the Earth
@@ -151,31 +158,82 @@ void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, d
 		//
 		// Use emperically determined correlation function to determine the necessary sensitivity based on phase of moon and position
 		//
-        
-        // CHEATING PAREMETERS TO DEFINE ELSEWHERE
-        double MOON_RADIUS = 1736;
 
-		double dist = 20000; // km, this needs to be determined from the estimatedPosition
-		double angDiam = atan(MOON_RADIUS / dist) * 180 / M_PI * 2; // [deg], is PI defined in math libraries?
+		double dist = sqrt((moonEphem[0] - estPos[0])^2 + (moonEphem[1] - estPos[1])^2 + (moonEphem[2] - estPos[2])^2); // km
+		double angDiam = atan(MOON_RADIUS / dist) * 180 / M_PI * 2; // [deg]
 		double moonPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Moon in height and width
 
+		// Get radius guess
         double radGuess[2];
-        calcRadGuess(moonPxDiam, estimatedPosition, point, radGuess); // This function needs to be emperically determined
+        calcRadGuess(moonPxDiam, estimatedPosition, point, radGuess);
 
+		// Get analysis sensitivity
 		double sens = calcSens(moonPxDiam, estimatedPosition, point); // This function needs to be emperically determined
 
 	} else if (point == PEM_Moon) {
 		// Evaluate on the assumption that we're pointing at the Moon
-        int a;
+
+		double dist = sqrt(estPos[0] ^ 2 + estPos[1] ^ 2 + estPos[2] ^ 2);
+		double angDiam = atan(EARTH_RADIUS / dist) * 180 / M_PI * 2; // [deg]
+		double earthPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Earth in height and width
+
+		// Get radius guess
+		double radGuess[2];
+		calcRadGuess(earthPxDiam, estPos, point, radGuess);
+
+		// Get analysis sensitivity
+		double sens = calcSens(earthPxDiam, estPos, point); // This function needs to be emperically determined
 	}
 }
 
-void ImageProcessor::calcRadGuess(double* moonPxDiam_, double* estPos_, PointEarthMoon point_, double* ans) {
+/**
+HELPER FUNCTIONS
+*/
+
+/*
+calcRadGuess
+TODO:
+ - Create emperical function describing estimated radius
+ - */
+void ImageProcessor::calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* ans) {
+	if (point == PEM_Earth) {
+		// Plug in estimated position to Earth emperical function
+		ans[0] = pxDiam / 2 - 2;
+		ans[1] = pxDiam / 2 + 2;
+	} else if (point == PEM_Moon) {
+		// Plug in estimated position to Moon emperical function
+		ans[0] = pxDiam / 2 - 2;
+		ans[1] = pxDiam / 2 + 2;
+	}
 }
 
 double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
-    return (double) 1;
+    return (double) 0.97;
     
+}
+void ImageProcessor::readImage(string imgFilename) {
+	// Get image
+	cv::Mat image;
+	image = cv::imread(imgFilename, IMREAD_COLOR);
+
+	// Allocate variables
+	unsigned char imIn[2428800]; // <--- Change this to be compatible with msg
+	cv::Vec3b intensity;
+
+	int counter = 0;
+	// Loop through image and convert
+	for (int i = 0; i < image.cols; i++) {
+		for (int j = 0; j < image.rows; j++) {
+			intensity = image.at<Vec3b>(j, i);
+			uchar blue = intensity.val[0];
+			uchar green = intensity.val[1];
+			uchar red = intensity.val[2];
+			imIn[counter] = red;
+			imIn[counter + 809600] = green;
+			imIn[counter + 2 * 809600] = blue;
+			counter++;
+		}
+	}
 }
 
 void ImageProcessor::processImage(ImageMessage* msg) {
