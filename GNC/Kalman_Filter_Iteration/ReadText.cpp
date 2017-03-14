@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 
-int main(){
+int read_referencTraj(){
     using namespace std;
 
     vector<double> time;

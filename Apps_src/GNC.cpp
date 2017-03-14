@@ -201,9 +201,6 @@ void GNC::handleTimeout() {
 
 // TODO: Waiting On Cameron to Complete
 void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procMessage) {
-    // Check Inputs <- unecessary if Cameron does it
-    
-
     
     if (range_estimate < range_EarthRangeCutoff) {
         // Earth Ranging to find Position
@@ -239,10 +236,58 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     } else {
         // Moon Ranging to find Position
         Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, r_E_SC);
-
+        
         Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);
-
+        
     }
+    
+    // Function Definitions
+    
+    //
+    // Spacecraft-Moon position vector
+    // Arguments    : const double r_E_SC[3]
+    //                const double r_E_M[3]
+    // Return Type  : double
+    //
+    double Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3])
+    {
+        double c;
+        double r_SC_M[3];
+        double r_SC_E[3];
+        int k;
+        double b_r_SC_M;
+        
+        //  Earth-Spacecraft-Moon Angle Function
+        //   Calculates the Earth-Spacecraft-Moon angle from the spacecraft and moon
+        //   positions.
+        //
+        //   Author:   Cameron Maywood
+        //   Created:  3/8/2017
+        //   Modified: 3/8/2017
+        //             _____________________________________________________________
+        //   Inputs:  |          r_E_SC         |  Spacecraft ECI position vector   |
+        //            |          r_E_M          |  Moon ECI position vector         |
+        //            |_________________________|___________________________________|
+        //   Outputs: |   angle_Earth_SC_Moon   |   Earth-spacecraft-moon angle     |
+        //            |_________________________|___________________________________|
+        //  Spacecraft-Earth position vector
+        //  Earth-spacecraft-Moon angle
+        c = 0.0;
+        for (k = 0; k < 3; k++) {
+            b_r_SC_M = r_E_M[k] - r_E_SC[k];
+            c += b_r_SC_M * -r_E_SC[k];
+            r_SC_M[k] = b_r_SC_M;
+            r_SC_E[k] = -r_E_SC[k];
+        }
+        
+        return 57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)));
+    }
+    
+    //
+    // File trailer for Earth_SC_Moon_Angle.cpp
+    //
+    // [EOF]
+    //
     
     // Send Solution Message
     
@@ -255,6 +300,134 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     // Update Solution Message
     solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
 }
+
+//
+// Academic License - for use in teaching, academic research, and meeting
+// course requirements at degree granting institutions only.  Not for
+// government, commercial, or other organizational use.
+// File: State_Error.cpp
+//
+// MATLAB Coder version            : 3.2
+// C/C++ source code generated on  : 09-Mar-2017 13:26:09
+//
+
+// Include Files
+#include "Kalman_Filter_Iteration.h"
+#include "Position_From_Angles_Slew.h"
+#include "Position_From_Earth_Range.h"
+#include "Position_From_Moon_Range.h"
+#include "Quaternion_To_Attitude.h"
+#include "State_Error.h"
+
+// Function Definitions
+
+//
+// Arguments    : const double X_ref[6]
+//                const double X_est[6]
+//                double posError[3]
+//                double velError[3]
+// Return Type  : void
+//
+void State_Error(const double X_ref[6], const double X_est[6], double posError[3],
+                 double velError[3])
+{
+    int i;
+    
+    //  State Error Function
+    //   Calculates the state error given the reference state and estimated
+    //   state.
+    //
+    //   Author:   Cameron Maywood
+    //   Created:  3/9/2017
+    //   Modified: 3/9/2017
+    //             _________________________________________________
+    //   Inputs:  |     X_ref     |   Spacecraft reference state.   |
+    //            |     X_est     |   Spacecraft estimated state.   |
+    //            |_______________|_________________________________|
+    //   Outputs: |    posError   |   Spacecraft position error.    |
+    //            |    velError   |   Spacecraft velocity error.    |
+    //            |_______________|_________________________________|
+    for (i = 0; i < 3; i++) {
+        posError[i] = X_ref[i] - X_est[i];
+        velError[i] = X_ref[i + 3] - X_est[i + 3];
+    }
+}
+
+//
+// File trailer for State_Error.cpp
+//
+// [EOF]
+//
+
+struct reference_struct {
+    
+    vector<double> time;
+    vector<double> X;
+    vector<double> Y;
+    vector<double> Z;
+    vector<double> VX;
+    vector<double> VY;
+    vector<double> VZ;
+};
+
+int read_referencTraj(){
+    
+    reference_struct ref_traj;
+    
+    using namespace std;
+    
+    vector<double> time;
+    vector<double> X;
+    vector<double> Y;
+    vector<double> Z;
+    vector<double> VX;
+    vector<double> VY;
+    vector<double> VZ;
+    
+    double number;
+    int column = 1;
+    
+    ifstream file("Skyfire_J2000_7_ECI_Epsecs_Short.txt");
+    if(file.is_open()){
+        while(file >> number){
+            if(column == 1){
+                ref_traj.time.push_back(number);
+                ++column;
+            }
+            else if(column == 2){
+                X.push_back(number);
+                ++column;
+            }
+            else if(column == 3){
+                Y.push_back(number);
+                ++column;
+            }
+            else if(column == 4){
+                Z.push_back(number);
+                ++column;
+            }
+            else if(column == 5){
+                VX.push_back(number);
+                ++column;
+            }
+            else if(column == 6){
+                VY.push_back(number);
+                ++column;
+            }
+            else{
+                VZ.push_back(number);
+                column = 1;
+            }
+        }
+    }
+    
+    for(int i = 0; i < X.size(); ++i){
+        cout << time[i] << '\n';
+    }
+    
+}
+
+
 
 void GNC::readReferenceTrajectory() {
     std::cout << "Need To Implement: readReferenceTrajectory" << std::endl;

@@ -15,7 +15,7 @@
 #include "Position_From_Moon_Range.h"
 #include "Quaternion_To_Attitude.h"
 #include "State_Error.h"
-
+#include "../../include/structs/Referance_Trajectory.h"
 // Function Definitions
 
 //
@@ -30,7 +30,7 @@
 // Return Type  : void
 //
 void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36],
-  const double Y[3], const double X_ref[6], const double R[9], double X_est[6])
+  const double Y[3], const double X_ref[6], const double R[9], Referance_Trajectory ref_traj double X_est[6])
 {
   double b_phi[36];
   int p3;
@@ -294,6 +294,9 @@ void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36]
     X_est[p1] = X_ref[p1] + x_hat[p1];
   }
 }
+
+
+
 
 //
 // File trailer for Kalman_Filter_Iteration.cpp

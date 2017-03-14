@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-void Navigation_Config(int angles_start, ing angles_end){
+void Navigation_Config(int angles_start, int angles_end){
     // Angles method starting distance
     angles_start = 50000;
 
