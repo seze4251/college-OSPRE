@@ -146,7 +146,7 @@ void CameraController::captureImage() {
 void CameraController::readImage(std::string imgFilename) {
     // Get image
     cv::Mat image;
-    image = cv::imread(imgFilename, IMREAD_COLOR);
+    image = cv::imread(imgFilename, cv::IMREAD_COLOR);
     
     // Allocate variables
     unsigned char* imIn = (unsigned char*) imageMessage->getImagePointer(); // <--- Change this to be compatible with msg
@@ -156,7 +156,7 @@ void CameraController::readImage(std::string imgFilename) {
     // Loop through image and convert
     for (int i = 0; i < image.cols; i++) {
         for (int j = 0; j < image.rows; j++) {
-            intensity = image.at<Vec3b>(j, i);
+            intensity = image.at<cv::Vec3b>(j, i);
             uchar blue = intensity.val[0];
             uchar green = intensity.val[1];
             uchar red = intensity.val[2];
@@ -224,7 +224,7 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     if (canCaptureImage(msg) == true || readImageFile) {
         
         if (readImageFile == true) {
-            readImage();
+            readImage("imagefile.jpg");
         } else {
             captureImage();
         }
