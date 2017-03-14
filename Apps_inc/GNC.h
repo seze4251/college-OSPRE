@@ -20,6 +20,7 @@
 #include "PointEarthMoon.h"
 #include "CircularBuffer.h"
 #include "OSPRE_Exceptions.h"
+#include "Referance_Trajectory.h"
 
 class GNC : public ServerInternal {
 public:
@@ -36,7 +37,7 @@ public:
     
     // Applicaiton Functionality
     void computeSolution(DataMessage*, ProcessedImageMessage*);
-    void readReferenceTrajectory();
+    void read_referencTraj(std::string);
     
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
@@ -76,13 +77,15 @@ private:
     double phi[36];
     double P[36];
     double Y[3];
-    double X_ref[6];
     double R[9];
     double X_est[6];
     double covariance[36];
     double trajectoryDev[6];
     
-        // From Config File
+    // Reference trajectory
+    Reference_Trajectory ref_traj;
+    
+    // From Config File
     double range_EarthRangeCutoff;
     double range_AnglesCutoff;
     

@@ -18,11 +18,10 @@
 #include <string.h>
 #include "rtwtypes.h"
 #include "Kalman_Filter_Iteration_types.h"
+#include "../../include/structs/Referance_Trajectory.h"
 
 // Function Declarations
-extern void Kalman_Filter_Iteration(double x_hat[6], const double phi[36],
-  double P[36], const double Y[3], const double X_ref[6], const double R[9],
-  double X_est[6]);
+extern void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36], const double Y[3], const double R[9], Reference_Trajectory ref_traj, double time, double X_est[6]);
 
 #endif
 

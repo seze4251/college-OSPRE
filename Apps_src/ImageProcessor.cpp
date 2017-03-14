@@ -19,8 +19,8 @@
 #include "ImageProcessor.h"
 #include "Service.h"
 
-#define double MOON_RADIUS 1736.0
-#define double EARTH_RADIUS 6371.0
+#define MOON_RADIUS 1736.0
+#define EARTH_RADIUS 6371.0
 
 ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_ImageProcessor), pollTime(0) {
     setAppl(this);
@@ -153,21 +153,21 @@ void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, d
 		// Use emperically determined correlation function to determine the necessary sensitivity based on phase of moon and position
 		//
 
-		double dist = sqrt((moonEphem[0] - estPos[0])^2 + (moonEphem[1] - estPos[1])^2 + (moonEphem[2] - estPos[2])^2); // km
+		double dist = sqrt(pow((moonEphem[0] - estPos[0]),2) + pow((moonEphem[1] - estPos[1]),2) + pow((moonEphem[2] - estPos[2]),2)); // km
 		double angDiam = atan(MOON_RADIUS / dist) * 180 / M_PI * 2; // [deg]
 		double moonPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Moon in height and width
 
 		// Get radius guess
         double radGuess[2];
-        calcRadGuess(moonPxDiam, estimatedPosition, point, radGuess);
+        calcRadGuess(moonPxDiam, estPos, point, radGuess);
 
 		// Get analysis sensitivity
-		double sens = calcSens(moonPxDiam, estimatedPosition, point); // This function needs to be emperically determined
+		double sens = calcSens(moonPxDiam, estPos, point); // This function needs to be emperically determined
 
 	} else if (point == PEM_Moon) {
 		// Evaluate on the assumption that we're pointing at the Moon
 
-		double dist = sqrt(estPos[0] ^ 2 + estPos[1] ^ 2 + estPos[2] ^ 2);
+		double dist = sqrt(pow(estPos[0],2) + pow(estPos[1], 2) + pow(estPos[2], 2));
 		double angDiam = atan(EARTH_RADIUS / dist) * 180 / M_PI * 2; // [deg]
 		double earthPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Earth in height and width
 
@@ -192,12 +192,12 @@ TODO:
 void ImageProcessor::calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* ans) {
 	if (point == PEM_Earth) {
 		// Plug in estimated position to Earth emperical function
-		ans[0] = pxDiam / 2 - 2;
-		ans[1] = pxDiam / 2 + 2;
+		ans[0] = pxDiam[0] / 2 - 2;
+		ans[1] = pxDiam[1] / 2 + 2;
 	} else if (point == PEM_Moon) {
 		// Plug in estimated position to Moon emperical function
-		ans[0] = pxDiam / 2 - 2;
-		ans[1] = pxDiam / 2 + 2;
+		ans[0] = pxDiam[0] / 2 - 2;
+		ans[1] = pxDiam[1] / 2 + 2;
 	}
 }
 

@@ -6,6 +6,7 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 #include <iostream>
+#include <fstream>
 #include <exception>
 #include <stdio.h>
 
@@ -39,8 +40,7 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     // Initialize localError to healthy
     localError = PE_AllHealthy;
     
-    // Application Specific Member Initializations
-    readReferenceTrajectory();
+    logFile = nullptr;
     
     // Initialize All GNC specific app members
     
@@ -67,9 +67,6 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
      // From Estimated range from earth
      double range_estimate;
      */
-    
-    
-    logFile = nullptr;
 }
 
 GNC::~GNC() {
@@ -206,7 +203,7 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         // Earth Ranging to find Position
         Position_From_Earth_Range(dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage->theta, r_E_SC);
         
-        Kalman_Filter_Iteration(x_hat, phi, P, Y, X_ref, R, X_est);
+        Kalman_Filter_Iteration(x_hat, phi, P, Y, R, ref_traj, dataMessage->satTime, X_est);
         
     } else if ( range_estimate < range_AnglesCutoff) {
         // Angles Method to find Position
@@ -226,69 +223,22 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         
         Position_From_Angles_Slew(moonEphem, earthQuat, moonQuat, procMessage->alpha, procMessage->beta, velSC, procMessage->theta, r_E_SC1, r_E_SC2);
         
-        // Kalman Filter Position 1
-        Kalman_Filter_Iteration(x_hat, phi, P, Y, X_ref, R, X_est);        // 'x_hat_0'. -> Trajectory Dev
+        double time1;
+        double time2;
         
+        // Kalman Filter Position 1
+        Kalman_Filter_Iteration(x_hat, phi, P, Y, R, ref_traj, dataMessage1.satTime, X_est);
         // Kalman Filter Position 2
-        Kalman_Filter_Iteration(x_hat, phi, P, Y, X_ref, R, X_est);
+        Kalman_Filter_Iteration(x_hat, phi, P, Y, R, ref_traj, dataMessage->satTime, X_est);
         
         
     } else {
         // Moon Ranging to find Position
         Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, r_E_SC);
         
-        Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);
+        Kalman_Filter_Iteration(x_hat, phi, P, Y, R, ref_traj, dataMessage->satTime, X_est);
         
     }
-    
-    // Function Definitions
-    
-    //
-    // Spacecraft-Moon position vector
-    // Arguments    : const double r_E_SC[3]
-    //                const double r_E_M[3]
-    // Return Type  : double
-    //
-    double Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3])
-    {
-        double c;
-        double r_SC_M[3];
-        double r_SC_E[3];
-        int k;
-        double b_r_SC_M;
-        
-        //  Earth-Spacecraft-Moon Angle Function
-        //   Calculates the Earth-Spacecraft-Moon angle from the spacecraft and moon
-        //   positions.
-        //
-        //   Author:   Cameron Maywood
-        //   Created:  3/8/2017
-        //   Modified: 3/8/2017
-        //             _____________________________________________________________
-        //   Inputs:  |          r_E_SC         |  Spacecraft ECI position vector   |
-        //            |          r_E_M          |  Moon ECI position vector         |
-        //            |_________________________|___________________________________|
-        //   Outputs: |   angle_Earth_SC_Moon   |   Earth-spacecraft-moon angle     |
-        //            |_________________________|___________________________________|
-        //  Spacecraft-Earth position vector
-        //  Earth-spacecraft-Moon angle
-        c = 0.0;
-        for (k = 0; k < 3; k++) {
-            b_r_SC_M = r_E_M[k] - r_E_SC[k];
-            c += b_r_SC_M * -r_E_SC[k];
-            r_SC_M[k] = b_r_SC_M;
-            r_SC_E[k] = -r_E_SC[k];
-        }
-        
-        return 57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)));
-    }
-    
-    //
-    // File trailer for Earth_SC_Moon_Angle.cpp
-    //
-    // [EOF]
-    //
-    
     // Send Solution Message
     
     // TEMPORARY FIX:
@@ -302,24 +252,50 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
 }
 
 //
-// Academic License - for use in teaching, academic research, and meeting
-// course requirements at degree granting institutions only.  Not for
-// government, commercial, or other organizational use.
-// File: State_Error.cpp
-//
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 09-Mar-2017 13:26:09
+// Spacecraft-Moon position vector
+// Arguments    : const double r_E_SC[3]
+//                const double r_E_M[3]
+// Return Type  : double
 //
 
-// Include Files
-#include "Kalman_Filter_Iteration.h"
-#include "Position_From_Angles_Slew.h"
-#include "Position_From_Earth_Range.h"
-#include "Position_From_Moon_Range.h"
-#include "Quaternion_To_Attitude.h"
-#include "State_Error.h"
+double norm(double* vec) {
+    return sqrt(pow(vec[0],2) + pow(vec[1],2) + pow(vec[2],2));
+}
 
-// Function Definitions
+double Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3])
+{
+    double c;
+    double r_SC_M[3];
+    double r_SC_E[3];
+    int k;
+    double b_r_SC_M;
+    
+    //  Earth-Spacecraft-Moon Angle Function
+    //   Calculates the Earth-Spacecraft-Moon angle from the spacecraft and moon
+    //   positions.
+    //
+    //   Author:   Cameron Maywood
+    //   Created:  3/8/2017
+    //   Modified: 3/8/2017
+    //             _____________________________________________________________
+    //   Inputs:  |          r_E_SC         |  Spacecraft ECI position vector   |
+    //            |          r_E_M          |  Moon ECI position vector         |
+    //            |_________________________|___________________________________|
+    //   Outputs: |   angle_Earth_SC_Moon   |   Earth-spacecraft-moon angle     |
+    //            |_________________________|___________________________________|
+    //  Spacecraft-Earth position vector
+    //  Earth-spacecraft-Moon angle
+    c = 0.0;
+    for (k = 0; k < 3; k++) {
+        b_r_SC_M = r_E_M[k] - r_E_SC[k];
+        c += b_r_SC_M * -r_E_SC[k];
+        r_SC_M[k] = b_r_SC_M;
+        r_SC_E[k] = -r_E_SC[k];
+    }
+    
+    return 57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)));
+}
+
 
 //
 // Arguments    : const double X_ref[6]
@@ -353,26 +329,8 @@ void State_Error(const double X_ref[6], const double X_est[6], double posError[3
     }
 }
 
-//
-// File trailer for State_Error.cpp
-//
-// [EOF]
-//
-
-struct reference_struct {
-    
-    vector<double> time;
-    vector<double> X;
-    vector<double> Y;
-    vector<double> Z;
-    vector<double> VX;
-    vector<double> VY;
-    vector<double> VZ;
-};
-
-int read_referencTraj(){
-    
-    reference_struct ref_traj;
+// Read Reference Trajectory
+void GNC::read_referencTraj(std::string){
     
     using namespace std;
     
@@ -395,44 +353,39 @@ int read_referencTraj(){
                 ++column;
             }
             else if(column == 2){
-                X.push_back(number);
+                ref_traj.X.push_back(number);
                 ++column;
             }
             else if(column == 3){
-                Y.push_back(number);
+                ref_traj.Y.push_back(number);
                 ++column;
             }
             else if(column == 4){
-                Z.push_back(number);
+                ref_traj.Z.push_back(number);
                 ++column;
             }
             else if(column == 5){
-                VX.push_back(number);
+                ref_traj.VX.push_back(number);
                 ++column;
             }
             else if(column == 6){
-                VY.push_back(number);
+                ref_traj.VY.push_back(number);
                 ++column;
             }
             else{
-                VZ.push_back(number);
+                ref_traj.VZ.push_back(number);
                 column = 1;
             }
         }
     }
     
     for(int i = 0; i < X.size(); ++i){
-        cout << time[i] << '\n';
+        cout << ref_traj.time[i] << '\n';
     }
     
 }
 
 
-
-void GNC::readReferenceTrajectory() {
-    std::cout << "Need To Implement: readReferenceTrajectory" << std::endl;
-    //fprintf(logFile, "Need To Implement: readReferenceTrajectory\n");
-}
 
 // *******************************
 //

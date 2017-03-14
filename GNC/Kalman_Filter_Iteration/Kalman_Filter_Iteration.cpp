@@ -15,8 +15,26 @@
 #include "Position_From_Moon_Range.h"
 #include "Quaternion_To_Attitude.h"
 #include "State_Error.h"
-#include "../../include/structs/Referance_Trajectory.h"
 // Function Definitions
+
+void get_Reference_Trajectory(double X_ref[6], Reference_Trajectory ref_traj, double time){
+    // Need GNC data message time to interpolate ref_traj state
+    
+    // Declare state components
+    //*********************
+    // TODO: FIX
+    // Take Time and find Index
+    // TODO FIX!
+    //**************
+    int index;
+    X_ref[0] = ref_traj.X[index];
+    X_ref[1] = ref_traj.Y[index];
+    X_ref[2] = ref_traj.Z[index];
+    X_ref[3] = ref_traj.VX[index];
+    X_ref[4] = ref_traj.VY[index];
+    X_ref[5] = ref_traj.VZ[index];
+}
+
 
 //
 // Time Update
@@ -30,9 +48,10 @@
 // Return Type  : void
 //
 void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36],
-  const double Y[3], const double X_ref[6], const double R[9], Reference_Trajectory ref_traj, double X_est[6])
+  const double Y[3], const double R[9], Reference_Trajectory ref_traj, double time, double X_est[6])
 {
-  get_Reference_Trajectory(X_ref, ref_traj);
+    double X_ref[6];
+  get_Reference_Trajectory(X_ref, ref_traj, time);
 
   double b_phi[36];
   int p3;
