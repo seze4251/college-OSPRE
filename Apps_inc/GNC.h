@@ -75,14 +75,14 @@ private:
     double x_hat[6];
     double phi[36];
     double P[36];
-    double dv0[3];
-    double dv1[6];
-    double dv2[9];
+    double Y[3];
+    double X_ref[6];
+    double R[9];
     double X_est[6];
     double covariance[36];
     double trajectoryDev[6];
     
-    // From Config File
+        // From Config File
     double range_EarthRangeCutoff;
     double range_AnglesCutoff;
     

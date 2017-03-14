@@ -11,6 +11,10 @@
 #include "CameraController.h"
 #include "Service.h"
 
+// OpenCV
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
 
 CameraController::CameraController(std::string hostName, int localPort, bool readImageFile) : ServerInternal(hostName, localPort, P_CameraController), pollTime(0), readImageFile(readImageFile) {
     setAppl(this);
@@ -139,10 +143,32 @@ void CameraController::captureImage() {
     fprintf(logFile, "TODO: Need to Implement captureImage\n");
 }
 
-// TODO: Seth Implement
-void CameraController::readImage() {
-    fprintf(logFile, "TODO: Need To Implement readImage\n");
+void CameraController::readImage(std::string imgFilename) {
+    // Get image
+    cv::Mat image;
+    image = cv::imread(imgFilename, IMREAD_COLOR);
+    
+    // Allocate variables
+    unsigned char* imIn = (unsigned char*) imageMessage->getImagePointer(); // <--- Change this to be compatible with msg
+    cv::Vec3b intensity;
+    
+    int counter = 0;
+    // Loop through image and convert
+    for (int i = 0; i < image.cols; i++) {
+        for (int j = 0; j < image.rows; j++) {
+            intensity = image.at<Vec3b>(j, i);
+            uchar blue = intensity.val[0];
+            uchar green = intensity.val[1];
+            uchar red = intensity.val[2];
+            imIn[counter] = red;
+            imIn[counter + 809600] = green;
+            imIn[counter + 2 * 809600] = blue;
+            counter++;
+        }
+    }
 }
+
+
 
 //TODO: Waiting on Dylan for how to implement, might not need
 void CameraController::adjustCameraSettings(ImageAdjustment* msg) {

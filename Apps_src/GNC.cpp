@@ -206,7 +206,7 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         // Earth Ranging to find Position
         Position_From_Earth_Range(dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage->theta, r_E_SC);
         
-        Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);
+        Kalman_Filter_Iteration(x_hat, phi, P, Y, X_ref, R, X_est);
         
     } else if ( range_estimate < range_AnglesCutoff) {
         // Angles Method to find Position
@@ -227,10 +227,10 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         Position_From_Angles_Slew(moonEphem, earthQuat, moonQuat, procMessage->alpha, procMessage->beta, velSC, procMessage->theta, r_E_SC1, r_E_SC2);
         
         // Kalman Filter Position 1
-        Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);        // 'x_hat_0'. -> Trajectory Dev
+        Kalman_Filter_Iteration(x_hat, phi, P, Y, X_ref, R, X_est);        // 'x_hat_0'. -> Trajectory Dev
         
         // Kalman Filter Position 2
-        Kalman_Filter_Iteration(x_hat, phi, P, dv0, dv1, dv2, X_est);
+        Kalman_Filter_Iteration(x_hat, phi, P, Y, X_ref, R, X_est);
         
         
     } else {

@@ -6,12 +6,19 @@
 //  Copyright © 2016 Seth. All rights reserved.
 //
 
+#ifndef REFERENCE_TRAJECTORY_H
+#define REFERENCE_TRAJECTORY_H
+
+
+#include <vector>
 struct Reference_Trajectory {
-    vector<double> time;
-    vector<double> X;
-    vector<double> Y;
-    vector<double> Z;
-    vector<double> VX;
-    vector<double> VY;
-    vector<double> VZ;
+    std::vector<double> time;
+    std::vector<double> X;
+    std::vector<double> Y;
+    std::vector<double> Z;
+    std::vector<double> VX;
+    std::vector<double> VY;
+    std::vector<double> VZ;
 };
+
+#endif

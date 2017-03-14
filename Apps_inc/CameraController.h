@@ -36,7 +36,7 @@ public:
     // Applicaiton Functionality
     bool canCaptureImage(CaptureImageRequest* msg);
     void captureImage();
-    void readImage();
+    void readImage(std::string);
     void adjustCameraSettings(ImageAdjustment* msg);
     
     // Message Handlers

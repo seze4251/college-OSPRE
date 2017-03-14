@@ -19,14 +19,8 @@
 #include "ImageProcessor.h"
 #include "Service.h"
 
-// OpenCV
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-
-#ifndef
 #define double MOON_RADIUS 1736.0
 #define double EARTH_RADIUS 6371.0
-#endif
 
 ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_ImageProcessor), pollTime(0) {
     setAppl(this);
@@ -211,30 +205,7 @@ double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, P
     return (double) 0.97;
     
 }
-void ImageProcessor::readImage(string imgFilename) {
-	// Get image
-	cv::Mat image;
-	image = cv::imread(imgFilename, IMREAD_COLOR);
 
-	// Allocate variables
-	unsigned char imIn[2428800]; // <--- Change this to be compatible with msg
-	cv::Vec3b intensity;
-
-	int counter = 0;
-	// Loop through image and convert
-	for (int i = 0; i < image.cols; i++) {
-		for (int j = 0; j < image.rows; j++) {
-			intensity = image.at<Vec3b>(j, i);
-			uchar blue = intensity.val[0];
-			uchar green = intensity.val[1];
-			uchar red = intensity.val[2];
-			imIn[counter] = red;
-			imIn[counter + 809600] = green;
-			imIn[counter + 2 * 809600] = blue;
-			counter++;
-		}
-	}
-}
 
 void ImageProcessor::processImage(ImageMessage* msg) {
     setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
