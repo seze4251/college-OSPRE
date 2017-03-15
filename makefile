@@ -101,7 +101,7 @@ $(TARGET_ScComms): $(OBJECTS) $(MAINOBJ_DIR)/mainScComms.o Build_Apps/ScComms.o
 $(TARGET_CameraController): $(OBJECTS) $(MAINOBJ_DIR)/mainCameraController.o Build_Apps/CameraController.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_CameraController)\n"; $(CC) $^ -o $(TARGET_CameraController)
+	@echo "	 Linking $(TARGET_CameraController)\n"; $(CC) $^ -o $(TARGET_CameraController) -I /usr/local/include/ -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs
 
 #IMAGE PROCCESSOR
 $(TARGET_IMAGEPROC): $(OBJECTS) $(MAINOBJ_DIR)/mainImageProcessor.o Build_Apps/ImageProcessor.o

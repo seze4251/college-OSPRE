@@ -217,39 +217,28 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     // Decide if Camera Controller can Capture Image or if it can read an image
     if (data.sleep) {
         fprintf(logFile, "Sleep: bool sleep = true, Camera Controller not capturing images\n");
-        // Send something to WatchDog?
+        localError = PE_SleepMode;
         return;
     }
     
-    if (canCaptureImage(msg) == true || readImageFile) {
-        
-        if (readImageFile == true) {
-            readImage("imagefile.jpg");
-        } else {
-            captureImage();
-        }
-        
-        // Update Image Message
-        //********************************
-        //TEMP TEMP Need to fix when readimage function is created
-        int currentImageSize = IMAGE_SIZE;
-        double pix_deg[2] {75, 75};
-        int cameraWidth = 150;
-        int cameraHeight = 100;
-        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight);
-        
-        //TEMP TEMP Need to fix when readimage function is created
-        //******************************
-        
-        // Send Image Message to Image Processor
-        if (imageProc != nullptr) {
-            imageProc->sendMessage(imageMessage);
-            fprintf(logFile, "Sent Message: ImageMessage to ImageProcessor\n");
-        }
-        
-    } else {
-        // Update Process Status, potenially do this in canCaptureImage()
-        //status.push_back()
+    readImage("samplePic.jpg");
+    
+    // Update Image Message
+    //********************************
+    //TEMP TEMP Need to fix when readimage function is created
+    int currentImageSize = IMAGE_SIZE;
+    double pix_deg[2] {75, 75};
+    int cameraWidth = 150;
+    int cameraHeight = 100;
+    imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight);
+    
+    //TEMP TEMP Need to fix when readimage function is created
+    //******************************
+    
+    // Send Image Message to Image Processor
+    if (imageProc != nullptr) {
+        imageProc->sendMessage(imageMessage);
+        fprintf(logFile, "Sent Message: ImageMessage to ImageProcessor\n");
     }
 }
 

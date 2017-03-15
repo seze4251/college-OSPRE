@@ -25,7 +25,8 @@ enum ProcessError {
     PE_IP_noBodyInImage = 4,
     PE_CC_angularVelocityToHigh = 5,
     PE_invalidData = 6,
-    PE_divideByZero = 7
+    PE_divideByZero = 7,
+    PE_SleepMode = 8
 };
 
 static void printProcessError(ProcessError p) {
@@ -56,6 +57,9 @@ static void printProcessError(ProcessError p) {
             break;
         case PE_divideByZero:
             std::cout << "Error: Divide By 0" << std::endl;
+            break;
+        case PE_SleepMode:
+            std::cout << "Error: Sleep Mode" << std::endl;
             break;
         default:
             std::cout << "Error: Unknown Value of Process Error" << std::endl;

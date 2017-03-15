@@ -55,7 +55,7 @@ ImageProcessor::~ImageProcessor() {
     
     // Close Log File
     if (logFile)
-    fclose(logFile);
+        fclose(logFile);
 }
 
 // *******************************
@@ -131,74 +131,74 @@ void ImageProcessor::handleTimeout() {
 //
 // ********************************
 void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, double* estPos, double* moonEphem) {
-	// estimated Position is a double[3] km, ECI frame
-	// Need to Set Variables:
-	// double sensitivity;
-	// double pxDeg[2]; // Pixel Per Degree
-	// double dv3[2]; //Pixel Radius Guess from estimated Position
-
-	/*
-	NEEDS:
-	 - position estimation units and reference frame
-	 - Moon and Earth properties (radius, phase) Phase might not be necessary if we're restricting to only a single trajectory: we can just calculate a
-	 function that gives phase based on estimated position
-	*/
-
-	if (point == PEM_Earth) {
-		// Evaluate on the assumption that we're pointing at the Earth
-		//
-		// Need to take estimated position, calculate expected angular diameter of celestial body, use image properties to turn this value
-		// into an estimated pixel radius
-		//
-		// Use emperically determined correlation function to determine the necessary sensitivity based on phase of moon and position
-		//
-
-		double dist = sqrt(pow((moonEphem[0] - estPos[0]),2) + pow((moonEphem[1] - estPos[1]),2) + pow((moonEphem[2] - estPos[2]),2)); // km
-		double angDiam = atan(MOON_RADIUS / dist) * 180 / M_PI * 2; // [deg]
-		double moonPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Moon in height and width
-
-		// Get radius guess
+    // estimated Position is a double[3] km, ECI frame
+    // Need to Set Variables:
+    // double sensitivity;
+    // double pxDeg[2]; // Pixel Per Degree
+    // double dv3[2]; //Pixel Radius Guess from estimated Position
+    
+    /*
+     NEEDS:
+     - position estimation units and reference frame
+     - Moon and Earth properties (radius, phase) Phase might not be necessary if we're restricting to only a single trajectory: we can just calculate a
+     function that gives phase based on estimated position
+     */
+    
+    if (point == PEM_Earth) {
+        // Evaluate on the assumption that we're pointing at the Earth
+        //
+        // Need to take estimated position, calculate expected angular diameter of celestial body, use image properties to turn this value
+        // into an estimated pixel radius
+        //
+        // Use emperically determined correlation function to determine the necessary sensitivity based on phase of moon and position
+        //
+        
+        double dist = sqrt(pow((moonEphem[0] - estPos[0]),2) + pow((moonEphem[1] - estPos[1]),2) + pow((moonEphem[2] - estPos[2]),2)); // km
+        double angDiam = atan(MOON_RADIUS / dist) * 180 / M_PI * 2; // [deg]
+        double moonPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Moon in height and width
+        
+        // Get radius guess
         double radGuess[2];
         calcRadGuess(moonPxDiam, estPos, point, radGuess);
-
-		// Get analysis sensitivity
-		double sens = calcSens(moonPxDiam, estPos, point); // This function needs to be emperically determined
-
-	} else if (point == PEM_Moon) {
-		// Evaluate on the assumption that we're pointing at the Moon
-
-		double dist = sqrt(pow(estPos[0],2) + pow(estPos[1], 2) + pow(estPos[2], 2));
-		double angDiam = atan(EARTH_RADIUS / dist) * 180 / M_PI * 2; // [deg]
-		double earthPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Earth in height and width
-
-		// Get radius guess
-		double radGuess[2];
-		calcRadGuess(earthPxDiam, estPos, point, radGuess);
-
-		// Get analysis sensitivity
-		double sens = calcSens(earthPxDiam, estPos, point); // This function needs to be emperically determined
-	}
+        
+        // Get analysis sensitivity
+        double sens = calcSens(moonPxDiam, estPos, point); // This function needs to be emperically determined
+        
+    } else if (point == PEM_Moon) {
+        // Evaluate on the assumption that we're pointing at the Moon
+        
+        double dist = sqrt(pow(estPos[0],2) + pow(estPos[1], 2) + pow(estPos[2], 2));
+        double angDiam = atan(EARTH_RADIUS / dist) * 180 / M_PI * 2; // [deg]
+        double earthPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Earth in height and width
+        
+        // Get radius guess
+        double radGuess[2];
+        calcRadGuess(earthPxDiam, estPos, point, radGuess);
+        
+        // Get analysis sensitivity
+        double sens = calcSens(earthPxDiam, estPos, point); // This function needs to be emperically determined
+    }
 }
 
 /**
-HELPER FUNCTIONS
-*/
+ HELPER FUNCTIONS
+ */
 
 /*
-calcRadGuess
-TODO:
+ calcRadGuess
+ TODO:
  - Create emperical function describing estimated radius
  - */
 void ImageProcessor::calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* ans) {
-	if (point == PEM_Earth) {
-		// Plug in estimated position to Earth emperical function
-		ans[0] = pxDiam[0] / 2 - 2;
-		ans[1] = pxDiam[1] / 2 + 2;
-	} else if (point == PEM_Moon) {
-		// Plug in estimated position to Moon emperical function
-		ans[0] = pxDiam[0] / 2 - 2;
-		ans[1] = pxDiam[1] / 2 + 2;
-	}
+    if (point == PEM_Earth) {
+        // Plug in estimated position to Earth emperical function
+        ans[0] = pxDiam[0] / 2 - 2;
+        ans[1] = pxDiam[1] / 2 + 2;
+    } else if (point == PEM_Moon) {
+        // Plug in estimated position to Moon emperical function
+        ans[0] = pxDiam[0] / 2 - 2;
+        ans[1] = pxDiam[1] / 2 + 2;
+    }
 }
 
 double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
@@ -210,9 +210,16 @@ double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, P
 void ImageProcessor::processImage(ImageMessage* msg) {
     setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
     
-
+    
+    fprintf(logFile, "Analyze Image: Starting Call to Analyze Image\n");
+    
     analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, pxDeg, msg->cameraWidth, msg->cameraHeight);
     
+    fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
+    
+    if (numCirc > 0) {
+        fprintf(logFile, "Analyze Image: BODY HAS BEEN FOUND!!!!\n");
+    }
     
     // Update ProcessedImageMessage
     processedImageMessage->update(alpha, beta, theta, pixel_error, msg->point, msg->timeStamp);
