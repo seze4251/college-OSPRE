@@ -38,6 +38,7 @@
 #include "main.h"
 #include "analyzeImage_terminate.h"
 #include "analyzeImage_initialize.h"
+#include <stdio.h>
 
 // OpenCV
 #include <opencv2/core/core.hpp>
@@ -61,23 +62,23 @@ static void argInit_736x1100x3_uint8_T(unsigned char);
 // Unused but it may be useful for decyphering how Matlab handles images
 //
 /*
-static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
-{
-  int idx0;
-  int idx1;
-  int idx2;
-
-  // Loop over the array to initialize each element.
-  for (idx0 = 0; idx0 < 736; idx0++) {
-    for (idx1 = 0; idx1 < 1100; idx1++) {
-      for (idx2 = 0; idx2 < 3; idx2++) {
-        // Set the value of the array element.
-        // Change this value to the value that the application requires.
-        result[(idx0 + 736 * idx1) + 809600 * idx2] = argInit_uint8_T();
-      }
-    }
-  }
-} */
+ static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
+ {
+ int idx0;
+ int idx1;
+ int idx2;
+ 
+ // Loop over the array to initialize each element.
+ for (idx0 = 0; idx0 < 736; idx0++) {
+ for (idx1 = 0; idx1 < 1100; idx1++) {
+ for (idx2 = 0; idx2 < 3; idx2++) {
+ // Set the value of the array element.
+ // Change this value to the value that the application requires.
+ result[(idx0 + 736 * idx1) + 809600 * idx2] = argInit_uint8_T();
+ }
+ }
+ }
+ } */
 
 //
 // Call analyzeImage
@@ -87,39 +88,39 @@ static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
 //
 static void main_analyzeImage(unsigned char uv3[2428800])
 {
-  // Initialize variables
-//  static unsigned char uv3[2428800];
-  double dv3[2] = {157, 167};
-  double centerPt_data[2];
-  int centerPt_size[2];
-  double radius;
-  double numCirc;
-  double sensVal = 0.99;
-  double alpha; double beta; double theta;
-  double pxDeg[2] = {67, 67};
-  int imgWidth = 4160; int imgHeight = 3120; // These need to be updated to retrieve them from CameraController
-
-  std::clock_t start;
-
-  // Initialize function 'analyzeImage' input arguments.
-  // Initialize function input argument 'imIn'.
-  // Initialize function input argument 'radiusRangeGuess'.
-  // Call the entry-point 'analyzeImage'.
-std::cout << "Starting Analyze Image Call" << std::endl;
-  start = std::clock();
-  analyzeImage(uv3, dv3, sensVal, centerPt_data, centerPt_size, &radius,
-               &numCirc, alpha, beta, theta, pxDeg, imgWidth, imgHeight);
-  std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
-std::cout << "Finished Analyze Image Call" << std::endl;
-
-  // Print info
-  if(!numCirc){
-    std::cout << "No objects found" << std::endl;
-  } else {
-    std::cout << "Found " << numCirc << " object(s)!" << std::endl;
-    std::cout << "Center: " << centerPt_data[0] << ", " << centerPt_data[1] << std::endl;
-    std::cout << "Radius: " << radius << std::endl;
-  }
+    // Initialize variables
+    //  static unsigned char uv3[2428800];
+    double dv3[2] = {157, 167};
+    double centerPt_data[2];
+    int centerPt_size[2];
+    double radius;
+    double numCirc;
+    double sensVal = 0.99;
+    double alpha; double beta; double theta;
+    double pxDeg[2] = {67, 67};
+    int imgWidth = 4160; int imgHeight = 3120; // These need to be updated to retrieve them from CameraController
+    
+    std::clock_t start;
+    
+    // Initialize function 'analyzeImage' input arguments.
+    // Initialize function input argument 'imIn'.
+    // Initialize function input argument 'radiusRangeGuess'.
+    // Call the entry-point 'analyzeImage'.
+    std::cout << "Starting Analyze Image Call" << std::endl;
+    start = std::clock();
+    analyzeImage(uv3, dv3, sensVal, centerPt_data, centerPt_size, &radius,
+                 &numCirc, alpha, beta, theta, pxDeg, imgWidth, imgHeight);
+    std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
+    std::cout << "Finished Analyze Image Call" << std::endl;
+    
+    // Print info
+    if(!numCirc){
+        std::cout << "No objects found" << std::endl;
+    } else {
+        std::cout << "Found " << numCirc << " object(s)!" << std::endl;
+        std::cout << "Center: " << centerPt_data[0] << ", " << centerPt_data[1] << std::endl;
+        std::cout << "Radius: " << radius << std::endl;
+    }
 }
 
 //
@@ -129,47 +130,51 @@ std::cout << "Finished Analyze Image Call" << std::endl;
 //
 int main(int argc, char** argv)
 {
-  // Get image
-  Mat image;
-  image = imread(argv[1], IMREAD_COLOR);
-
-  // Initialize blank image
-  unsigned char imIn[2428800];
-  Vec3b intensity;
-  
-  if(!image.data){
-    std::cout << "Could not open or find the image" << std::endl;
-    return -1;
-  }
-
-//  unsigned char* dataMat = image.data;
-
-  int counter = 0;
-  // Loop through image and convert
-  for (int i=0; i < image.cols; i++){
-    for (int j=0; j < image.rows; j++){
-      intensity = image.at<Vec3b>(j,i);
-      uchar blue = intensity.val[0];
-      uchar green = intensity.val[1];
-      uchar red = intensity.val[2];
-      imIn[counter] = red;
-      imIn[counter + 809600] = green;
-      imIn[counter + 2*809600] = blue;
-      counter++;
+    // Get image
+    Mat image;
+    image = imread(argv[1], IMREAD_COLOR);
+    
+    // Initialize blank image
+    unsigned char imIn[2428800];
+    Vec3b intensity;
+    
+    if(!image.data){
+        std::cout << "Could not open or find the image" << std::endl;
+        return -1;
     }
-  }
-  // Initialize the application.
-  // You do not need to do this more than one time.
-  analyzeImage_initialize();
-
-  // Invoke the entry-point functions.
-  // You can call entry-point functions multiple times.
-  main_analyzeImage(imIn);
-
-  // Terminate the application.
-  // You do not need to do this more than one time.
-  analyzeImage_terminate();
-  return 0;
+    
+    //  unsigned char* dataMat = image.data;
+    
+    int counter = 0;
+    // Loop through image and convert
+    for (int i=0; i < image.cols; i++){
+        for (int j=0; j < image.rows; j++){
+            intensity = image.at<Vec3b>(j,i);
+            uchar blue = intensity.val[0];
+            uchar green = intensity.val[1];
+            uchar red = intensity.val[2];
+            imIn[counter] = red;
+            imIn[counter + 809600] = green;
+            imIn[counter + 2*809600] = blue;
+            counter++;
+        }
+    }
+    
+    std::cout << "Image Values" << std::endl;
+    printf("%04x", imIn[23342]);
+    
+    // Initialize the application.
+    // You do not need to do this more than one time.
+    //analyzeImage_initialize();
+    
+    // Invoke the entry-point functions.
+    // You can call entry-point functions multiple times.
+    main_analyzeImage(imIn);
+    
+    // Terminate the application.
+    // You do not need to do this more than one time.
+    // analyzeImage_terminate();
+    return 0;
 }
 
 //

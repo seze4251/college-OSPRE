@@ -145,8 +145,17 @@ void CameraController::captureImage() {
 
 void CameraController::readImage(std::string imgFilename) {
     // Get image
+    fprintf(logFile, "Read Image: Starting Image Read\n");
     cv::Mat image;
     image = cv::imread(imgFilename, cv::IMREAD_COLOR);
+    
+    
+    if(!image.data){
+        fprintf(logFile, "Read Image ERROR: Could not open or find the image\n");
+        return;
+    } else {
+        fprintf(logFile, "Read Image: Image Name Valid\n");
+    }
     
     // Allocate variables
     unsigned char* imIn = (unsigned char*) imageMessage->getImagePointer(); // <--- Change this to be compatible with msg
@@ -166,6 +175,9 @@ void CameraController::readImage(std::string imgFilename) {
             counter++;
         }
     }
+    
+    imageMessage -> currentImageSize = 2428800;
+    fprintf(logFile, "Read Image: Finished Image Read\n");
 }
 
 
@@ -215,11 +227,11 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     fprintf(logFile, "Received Message: CaptureImageRequest from GNC\n");
     
     // Decide if Camera Controller can Capture Image or if it can read an image
-    if (data.sleep) {
-        fprintf(logFile, "Sleep: bool sleep = true, Camera Controller not capturing images\n");
-        localError = PE_SleepMode;
-        return;
-    }
+   // if (data.sleep) {
+    //    fprintf(logFile, "Sleep: bool sleep = true, Camera Controller not capturing images\n");
+       // localError = PE_SleepMode;
+      //  return;
+    //}
     
     readImage("samplePic.jpg");
     

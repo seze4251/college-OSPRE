@@ -437,7 +437,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     
     // Compute Solution and Update Solution Message
     try {
-        computeSolution(scData, msg);
+     //   computeSolution(scData, msg);
         
     } catch(std::exception &exception) {
         fprintf(logFile, "Error: HandleProcessedImageMessage() Exception Caught: %s\n", exception.what());

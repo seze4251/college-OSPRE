@@ -7,7 +7,7 @@
 //
 
 #include <unistd.h>
-
+#include <stdio.h>
 #include "ServerInternal.h"
 
 ServiceInternal* ServerInternal::connections[ServerInternal::MaxClients];
@@ -57,6 +57,7 @@ void ServerInternal::handleConnectionRequest(int fd) {
     if (connections[avail] == nullptr) {
         if ((p_ID_Static == P_CameraController) || (p_ID_Static == P_ImageProcessor)) {
             connections[avail] = new ServiceInternal(getAppl()->getSelector(), -1, IMAGE_SIZE * 4);
+            fprintf(getAppl()->getLogFileID(), "Client Connection: New Client Conenction to Server\n");
         } else {
             connections[avail] = new ServiceInternal(getAppl()->getSelector());
         }

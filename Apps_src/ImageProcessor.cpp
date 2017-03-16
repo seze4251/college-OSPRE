@@ -208,16 +208,27 @@ double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, P
 
 
 void ImageProcessor::processImage(ImageMessage* msg) {
-    setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
+   // setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
     
     
     fprintf(logFile, "Analyze Image: Starting Call to Analyze Image\n");
     
-    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, pxDeg, msg->cameraWidth, msg->cameraHeight);
+    double dv3[2] = {157, 167};
+    double centerPt_data[2];
+    int centerPt_size[2];
+    double radius;
+    double numCirc;
+    double sensVal = 0.99;
+    double alphaA; double betaB; double thetaT;
+    double pxDeg[2] = {67, 67};
+    int imgWidth = 4160; int imgHeight = 3120; // These need to be updated to retrieve them from CameraController
+    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensVal, centerPt_data, centerPt_size, &radius, &numCirc, alphaA, betaB, thetaT, pxDeg, imgWidth, imgHeight);
+    
+  //  analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, pxDeg, msg->cameraWidth, msg->cameraHeight);
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
-    if (numCirc > 0) {
+    if (numCirc) {
         fprintf(logFile, "Analyze Image: BODY HAS BEEN FOUND!!!!\n");
     }
     

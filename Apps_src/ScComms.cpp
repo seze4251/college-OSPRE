@@ -250,7 +250,7 @@ void ScComms::handleExternalDataMessage(External_DataMessage* msg, ServiceExtern
     for (int i = 0; i < MaxClients; i++) {
         if ((connections[i] != nullptr) && (connections[i]->isConnected())) {
             connections[i]->sendMessage(dataMessage);
-            fprintf(logFile, "Sent Message: DataMessage to Client[%d}\n", i);
+            fprintf(logFile, "Sent Message: DataMessage to Client[%d]\n", i);
         }
     }
 }
