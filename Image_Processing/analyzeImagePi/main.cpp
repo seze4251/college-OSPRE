@@ -96,7 +96,7 @@ static void main_analyzeImage(unsigned char uv3[2428800])
     double radius;
     double numCirc;
     double sensVal = 0.99;
-    double alpha; double beta; double theta;
+    double alpha = -1; double beta = -1; double theta = -1;
     double pxDeg[2] = {67, 67};
     int imgWidth = 4160; int imgHeight = 3120; // These need to be updated to retrieve them from CameraController
     
@@ -120,7 +120,8 @@ static void main_analyzeImage(unsigned char uv3[2428800])
         std::cout << "Found " << numCirc << " object(s)!" << std::endl;
         std::cout << "Center: " << centerPt_data[0] << ", " << centerPt_data[1] << std::endl;
         std::cout << "Radius: " << radius << std::endl;
-    }
+    	std::cout << "Alpha: " << alpha << " Beta: " << beta << " Theta: " << theta << std::endl;
+	}
 }
 
 //

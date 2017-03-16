@@ -236,12 +236,12 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     readImage("samplePic.jpg");
     
     // Update Image Message
-    //********************************
+    //******************************** 
     //TEMP TEMP Need to fix when readimage function is created
     int currentImageSize = IMAGE_SIZE;
-    double pix_deg[2] {75, 75};
-    int cameraWidth = 150;
-    int cameraHeight = 100;
+    double pix_deg[2] {67, 67};
+    int cameraWidth = 4160;
+    int cameraHeight = 3120;
     imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight);
     
     //TEMP TEMP Need to fix when readimage function is created

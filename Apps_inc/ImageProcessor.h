@@ -64,7 +64,6 @@ private:
     // Application Specific Members
     // INPUTS: Set in funciton before Analyze Image Call
     double sensitivity;
-    double pxDeg[2]; // Pixel Per Degree
     double dv3[2]; //Pixel Radius Guess from estimated Position
     
     // OUTPUTS:

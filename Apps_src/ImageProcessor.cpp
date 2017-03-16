@@ -158,11 +158,10 @@ void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, d
         double moonPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Moon in height and width
         
         // Get radius guess
-        double radGuess[2];
-        calcRadGuess(moonPxDiam, estPos, point, radGuess);
+        calcRadGuess(moonPxDiam, estPos, point, dv3);
         
         // Get analysis sensitivity
-        double sens = calcSens(moonPxDiam, estPos, point); // This function needs to be emperically determined
+        sensitivity = calcSens(moonPxDiam, estPos, point); // This function needs to be emperically determined
         
     } else if (point == PEM_Moon) {
         // Evaluate on the assumption that we're pointing at the Moon
@@ -171,12 +170,10 @@ void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, d
         double angDiam = atan(EARTH_RADIUS / dist) * 180 / M_PI * 2; // [deg]
         double earthPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Earth in height and width
         
-        // Get radius guess
-        double radGuess[2];
-        calcRadGuess(earthPxDiam, estPos, point, radGuess);
+        calcRadGuess(earthPxDiam, estPos, point, dv3);
         
         // Get analysis sensitivity
-        double sens = calcSens(earthPxDiam, estPos, point); // This function needs to be emperically determined
+        sensitivity = calcSens(earthPxDiam, estPos, point); // This function needs to be emperically determined
     }
 }
 
@@ -190,48 +187,53 @@ void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, d
  - Create emperical function describing estimated radius
  - */
 void ImageProcessor::calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* ans) {
-    if (point == PEM_Earth) {
-        // Plug in estimated position to Earth emperical function
-        ans[0] = pxDiam[0] / 2 - 2;
-        ans[1] = pxDiam[1] / 2 + 2;
-    } else if (point == PEM_Moon) {
-        // Plug in estimated position to Moon emperical function
-        ans[0] = pxDiam[0] / 2 - 2;
-        ans[1] = pxDiam[1] / 2 + 2;
-    }
+    /*if (point == PEM_Earth) {
+     // Plug in estimated position to Earth emperical function
+     ans[0] = pxDiam[0] / 2 - 2;
+     ans[1] = pxDiam[1] / 2 + 2;
+     } else if (point == PEM_Moon) {
+     // Plug in estimated position to Moon emperical function
+     ans[0] = pxDiam[0] / 2 - 2;
+     ans[1] = pxDiam[1] / 2 + 2;
+     } */
+    
+    ans[0] = 157;
+    ans[1] = 167;
+    
 }
 
 double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
-    return (double) 0.97;
+    return (double) 0.99;
     
 }
 
 
 void ImageProcessor::processImage(ImageMessage* msg) {
-   // setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
+    setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
     
     
     fprintf(logFile, "Analyze Image: Starting Call to Analyze Image\n");
     
-    double dv3[2] = {157, 167};
-    double centerPt_data[2];
-    int centerPt_size[2];
-    double radius;
-    double numCirc;
-    double sensVal = 0.99;
-    double alphaA; double betaB; double thetaT;
-    double pxDeg[2] = {67, 67};
-    int imgWidth = 4160; int imgHeight = 3120; // These need to be updated to retrieve them from CameraController
-    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensVal, centerPt_data, centerPt_size, &radius, &numCirc, alphaA, betaB, thetaT, pxDeg, imgWidth, imgHeight);
+    //analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensVal, centerPt_data, centerPt_size, &radius, &numCirc, alphaA, betaB, thetaT, pxDeg, imgWidth, imgHeight);
     
-  //  analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, pxDeg, msg->cameraWidth, msg->cameraHeight);
+    fprintf(logFile, "Analyze Image Inputs:\n");
+    
+    fprintf(logFile, "dv3 = %f  %f, sens = %f, \npix_deg %f  %f, camera Width %d  camera height %d\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], msg->cameraWidth, msg->cameraHeight);
+    
+    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, msg->pix_deg, msg->cameraWidth, msg->cameraHeight);
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
     if (numCirc) {
         fprintf(logFile, "Analyze Image: BODY HAS BEEN FOUND!!!!\n");
+        fprintf(logFile, "Found %1.2f Object(s)\n", numCirc);
+        fprintf(logFile, "Center (%f,%f)\n ", centerPt_data[0],centerPt_data[1]);
+        fprintf(logFile, "Radius %f\n", radius);
+        fprintf(logFile, "Alpha = %f, Beta = %f,  Theta = %f\n", alpha, beta, theta);\
     }
     
+    // TEMP
+    pixel_error = 0;
     // Update ProcessedImageMessage
     processedImageMessage->update(alpha, beta, theta, pixel_error, msg->point, msg->timeStamp);
 }
