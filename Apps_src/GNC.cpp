@@ -29,7 +29,7 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     cameraController = nullptr;
     
     // Initialize Pointing Destination
-    point = PEM_NA;
+    point = PEM_Earth;
     
     // Allocate Memory for Messages to Send
     processHealthMessage = new ProcessHealthAndStatusResponse();
@@ -186,14 +186,6 @@ void GNC::handleTimeout() {
     
     // Send Poll
     if (currentTime > pollTime) {
-        if (point == PEM_NA) {
-            point = PEM_Earth;
-        } else if (point == PEM_Earth) {
-            point = PEM_Moon;
-        } else {
-            point = PEM_Earth;
-        }
-        
         if ((scComms != nullptr) && (scComms -> isConnected())) {
             pointRequest->update(point);
             scComms -> sendMessage(pointRequest);
@@ -223,6 +215,9 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     if (norm(r_E_SC) < range_EarthRangeCutoff) {
         std::cout << "Start: Earth Ranging" << std::endl;
         fprintf(logFile, "ComputeSolution: Earth Ranging\n");
+        
+        // Set Pointing
+        point = PEM_Earth;
         
         get_Reference_Trajectory(X_ref, ref_traj, procMessage->timeStamp);
         // Log Reference Trajectory
@@ -270,6 +265,12 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         
     } else if ( norm(r_E_SC) < range_AnglesCutoff) {
         // Angles Method to find Position
+        // Change Pointing
+        if (procMessage->point == PEM_Earth) {
+            point = PEM_Moon;
+        } else {
+            point = PEM_Earth;
+        }
         
         if (firstImage == true) {
             fprintf(logFile, "ComputeSolution: Angles Method, First Image == TRUE, Saving Data and Leaving Angles Method\n");
@@ -298,7 +299,6 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
             procEarth = &procMessage_FirstImage ;
             dataMoon = dataMessage;
             procMoon = procMessage;
-            
         }
         
         double r_E_SC1[3]; // OUTPUT(ECI Position of First Picture)
@@ -306,49 +306,54 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         
         std::cout << "Start: Position From ANGLES" << std::endl;
         Position_From_Angles_Slew(dataMoon->ephem, dataEarth->quat, dataMoon->quat, procMoon->alpha, procMoon->beta, procEarth->alpha, procEarth->beta, velSC, (double) (procMoon->timeStamp - procEarth->timeStamp), r_E_SC1, r_E_SC2);
-        
         std::cout << "End: Position From ANGLES" << std::endl;
         
-        // Kalman Filter Position 1
+        // Kalman Filter Pic 1
         std::cout << "Start: Kalman Filter Iteration 1" << std::endl;
         
+        // get and log reference trajectory
         get_Reference_Trajectory(X_ref, ref_traj, procMessage_FirstImage.timeStamp);
-        // Log Reference Trajectory
         fprintf(logFile, "ComputeSolution: Earth Ranging: Reference Trajectory: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
         
         Kalman_Filter_Iteration(x_hat, phi, P, r_E_SC1, R, X_ref, dataMessage_FirstImage.satTime, X_est);
         std::cout << "End: Kalman Filter Iteration 1" << std::endl;
         
+        // Find E/Sc/M angle for Pic 1
         earthScMoonAngle = Earth_SC_Moon_Angle(X_est, dataMessage->ephem);
         fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
         
+        // Find State Error for Pic 1
         State_Error(X_ref, X_est, positionError, velocityError);
         fprintf(logFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
         
-        // Update Solution Message
+        // Update Solution Message for Pic 1
         std::cout << "Updateing Solution Message" << std::endl;
         solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
         
-        std::cout << "Sending Solution Message" << std::endl;
+        // Send Solution Message for Pic 1
         if (scComms != nullptr) {
+            std::cout << "Sending Solution Message to ScComms" << std::endl;
             scComms -> sendMessage(solutionMessage);
             fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
         }
         
         
-        // Kalman Filter Position 2
+        // Kalman Filter Position for Pic 2
         std::cout << "Start: Kalman Filter Iteration" << std::endl;
         
+        // Find and Log Reference Trajectory for Pic 2
         get_Reference_Trajectory(X_ref, ref_traj, procMessage->timeStamp);
-        // Log Reference Trajectory
         fprintf(logFile, "ComputeSolution: Earth Ranging: Reference Trajectory: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
         
+        // Call Kalman Filter for Pic 2
         Kalman_Filter_Iteration(x_hat, phi, P, r_E_SC2, R, X_ref, dataMessage->satTime, X_est);
         std::cout << "End: Kalman Filter Iteration" << std::endl;
         
+        // Find and Log E/Sc/M angle for Pic 2
         earthScMoonAngle = Earth_SC_Moon_Angle(X_est, dataMessage->ephem);
         fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
         
+        // Find State Error and Log it for Pic 2
         State_Error(X_ref, X_est, positionError, velocityError);
         fprintf(logFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
         
@@ -366,30 +371,41 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
             fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
         }
         
-        
+        firstImage = true;
+
     } else {
-        fprintf(logFile, "ComputeSolution: Moon Ranging\n");
         // Moon Ranging to find Position
-        std::cout << "Start: MOON RANGING: Position From Moon Range" << std::endl;
+        fprintf(logFile, "ComputeSolution: Moon Ranging\n");
         
+        // Set Pointing
+        point = PEM_Moon;
+        
+        // find and log reference trajectory
         get_Reference_Trajectory(X_ref, ref_traj, procMessage->timeStamp);
-        // Log Reference Trajectory
         fprintf(logFile, "ComputeSolution: Earth Ranging: Reference Trajectory: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
         
+        // Log Inputs to Moon Range
         fprintf(logFile, "ComputeSolution: Moon Ranging: INPUTS: quat: [%f, %f, %f, %f],\n alpha = %f, beta = %f, theta = %f \n", dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, procMessage->beta, procMessage->theta);
         
+        // Get Moon Range
+        std::cout << "Start: MOON RANGING: Position From Moon Range" << std::endl;
         Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, r_E_SC);
-        
         std::cout << "End: MOON RANGING: Position From Moon Range" << std::endl;
+        
+        // Log Outputs for Moon Range
         fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, r_E_SC[0], r_E_SC[1], r_E_SC[2]);
+        
+        // Start Kalman Filter Call
         std::cout << "Start: Kalman Filter Iteration" << std::endl;
         Kalman_Filter_Iteration(x_hat, phi, P, r_E_SC, R, X_ref, dataMessage->satTime, X_est);
         fprintf(logFile, "ComputeSolution: Moon Range: Kalman Filter Results: X =  %f Y = %f, Z = %f, V_X =  %f V_Y = %f, V_Z = %f,\n", X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5]);
         std::cout << "End: Kalman Filter Iteration" << std::endl;
         
+        // Find E/Sc/M angle and log it
         earthScMoonAngle = Earth_SC_Moon_Angle(X_est, dataMessage->ephem);
         fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
         
+        // Find State Error and Log it
         State_Error(X_ref, X_est, positionError, velocityError);
         fprintf(logFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
         
