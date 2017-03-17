@@ -109,7 +109,7 @@ static void main_analyzeImage(unsigned char uv3[2428800])
     std::cout << "Starting Analyze Image Call" << std::endl;
     start = std::clock();
     analyzeImage(uv3, dv3, sensVal, centerPt_data, centerPt_size, &radius,
-                 &numCirc, alpha, beta, theta, pxDeg, imgWidth, imgHeight);
+                 &numCirc, &alpha, &beta, &theta, pxDeg, imgWidth, imgHeight);
     std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
     std::cout << "Finished Analyze Image Call" << std::endl;
     

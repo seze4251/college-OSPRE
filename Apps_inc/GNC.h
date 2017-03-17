@@ -35,8 +35,7 @@ public:
     
     virtual void handleTimeout();
     
-    // Applicaiton Functionality
-    void computeSolution(DataMessage*, ProcessedImageMessage*);
+
     void read_referencTraj(std::string);
     
     // Message Handlers
@@ -76,11 +75,11 @@ private:
     double x_hat[6];
     double phi[36];
     double P[36];
-    double Y[3];
     double R[9];
     double X_est[6];
     double covariance[36];
     double trajectoryDev[6];
+    double X_ref[6];
     
     // Reference trajectory
     Reference_Trajectory ref_traj;
@@ -89,12 +88,23 @@ private:
     double range_EarthRangeCutoff;
     double range_AnglesCutoff;
     
-    // Spacecraft Position
+    // Outputs
     double r_E_SC[3];
     double velSC[3];
+    double earthScMoonAngle;
+    double positionError[3]; // km
+    double velocityError[3]; // km/s
     
-    // From Estimated range from earth
-    double range_estimate;
+    // From Angles Method
+    bool firstImage;
+    DataMessage dataMessage_FirstImage;
+    ProcessedImageMessage procMessage_FirstImage;
+    
+    // Applicaiton Functionality
+    void computeSolution(DataMessage*, ProcessedImageMessage*);
+    double norm(double*);
+    double Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3]);
+    void State_Error(const double X_ref[6], const double X_est[6], double posError[3], double velError[3]);
 };
 
 #endif

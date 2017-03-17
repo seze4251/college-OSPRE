@@ -17,7 +17,7 @@
 #include "State_Error.h"
 // Function Definitions
 
-void get_Reference_Trajectory(double X_ref[6], Reference_Trajectory ref_traj, double time){
+void get_Reference_Trajectory(double X_ref[6], Reference_Trajectory ref_traj, double time) {
     // Need GNC data message time to interpolate ref_traj state
     
     // Declare state components
@@ -26,7 +26,7 @@ void get_Reference_Trajectory(double X_ref[6], Reference_Trajectory ref_traj, do
     // Take Time and find Index
     // TODO FIX!
     //**************
-    int index;
+    int index = 1;
     X_ref[0] = ref_traj.X[index];
     X_ref[1] = ref_traj.Y[index];
     X_ref[2] = ref_traj.Z[index];
@@ -47,11 +47,8 @@ void get_Reference_Trajectory(double X_ref[6], Reference_Trajectory ref_traj, do
 //                double X_est[6]
 // Return Type  : void
 //
-void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36],
-  const double Y[3], const double R[9], Reference_Trajectory ref_traj, double time, double X_est[6])
+void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36], const double Y[3], const double R[9], double X_ref[6], double time, double X_est[6])
 {
-    double X_ref[6];
-  get_Reference_Trajectory(X_ref, ref_traj, time);
 
   double b_phi[36];
   int p3;

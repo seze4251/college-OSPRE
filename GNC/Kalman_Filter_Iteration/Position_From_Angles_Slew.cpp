@@ -53,9 +53,7 @@
 //                double r_E_SC2[3]
 // Return Type  : void
 //
-void Position_From_Angles_Slew(const double r_E_M[3], const double q_E[4], const
-  double q_M[4], double alpha, double beta, const double vel[3], double time,
-  double r_E_SC1[3], double r_E_SC2[3])
+void Position_From_Angles_Slew(const double r_E_M[3], const double q_E[4],const double q_M[4], double alpha_M, double beta_M, double alpha_E, double beta_E, const double vel[3], double time, double r_E_SC1[3], double r_E_SC2[3])
 {
   double d0;
   double d1;
@@ -78,7 +76,17 @@ void Position_From_Angles_Slew(const double r_E_M[3], const double q_E[4], const
 
   //
   //  Quaternion error rotation matrix
-  d0 = alpha;
+  //d0 = alpha;
+    
+    //*********************
+    //TEMP TEMP TEMP CAMERON TEMP
+    //**********************
+    double alpha;
+    double beta;
+    //*********************
+    //TEMP TEMP TEMP CAMERON TEMP
+    //**********************
+    
   cosd(&d0);
   d1 = beta;
   cosd(&d1);

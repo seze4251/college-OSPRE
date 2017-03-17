@@ -233,7 +233,7 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
       //  return;
     //}
     
-    readImage("samplePic.jpg");
+    readImage("Images/samplePic.jpg");
     
     // Update Image Message
     //******************************** 

@@ -26,7 +26,7 @@
 extern void analyzeImage(const unsigned char imIn[2428800], const double
   radiusRangeGuess[2], double sensVal, double centerPt_data[], int
   centerPt_size[2], double *radius, double *numCirc,
-  double alpha, double beta, double theta,
+  double* alpha, double* beta, double* theta,
   double pxDeg[2], int imgWidth, int imgHeight);
 
 #endif

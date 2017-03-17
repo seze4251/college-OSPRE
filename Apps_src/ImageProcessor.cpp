@@ -213,14 +213,11 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     
     
     fprintf(logFile, "Analyze Image: Starting Call to Analyze Image\n");
-    
-    //analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensVal, centerPt_data, centerPt_size, &radius, &numCirc, alphaA, betaB, thetaT, pxDeg, imgWidth, imgHeight);
-    
     fprintf(logFile, "Analyze Image Inputs:\n");
     
     fprintf(logFile, "dv3 = %f  %f, sens = %f, \npix_deg %f  %f, camera Width %d  camera height %d\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], msg->cameraWidth, msg->cameraHeight);
     
-    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, alpha, beta, theta, msg->pix_deg, msg->cameraWidth, msg->cameraHeight);
+    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta, msg->pix_deg, msg->cameraWidth, msg->cameraHeight);
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
@@ -231,6 +228,7 @@ void ImageProcessor::processImage(ImageMessage* msg) {
         fprintf(logFile, "Radius %f\n", radius);
         fprintf(logFile, "Alpha = %f, Beta = %f,  Theta = %f\n", alpha, beta, theta);\
     }
+    
     
     // TEMP
     pixel_error = 0;

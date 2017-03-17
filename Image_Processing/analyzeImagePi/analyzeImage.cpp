@@ -46,7 +46,7 @@
 void analyzeImage(const unsigned char imIn[2428800], const double
                   radiusRangeGuess[2], double sensVal, double centerPt_data[],
                   int centerPt_size[2], double *radius, double *numCirc,
-				  double alpha, double beta, double theta,
+				  double* alpha, double* beta, double* theta,
 				  double pxDeg[2], int imgWidth, int imgHeight)
 {
   static unsigned char im[809600];
@@ -252,13 +252,13 @@ void analyzeImage(const unsigned char imIn[2428800], const double
     }
 	
 	// Calculate output pointing values
-	alpha = (b_centers[0]-xCenter)/pxDeg[0];
-	beta = (b_centers[1]-yCenter)/pxDeg[1];
+	*alpha = (b_centers[0]-xCenter)/pxDeg[0];
+	*beta = (b_centers[1]-yCenter)/pxDeg[1];
 	
 	// Calculate angular diameter of body in x and y, and average the two for output
 	thetaX = (*radius)/pxDeg[0];
 	thetaY = (*radius)/pxDeg[1];
-	theta = 0.5*(thetaX + thetaY);
+	*theta = 0.5*(thetaX + thetaY);
 
     *numCirc = i;
   }
