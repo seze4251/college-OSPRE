@@ -59,12 +59,14 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     
     //
     // From Config File
-    range_EarthRangeCutoff = 90000;
-    range_AnglesCutoff = 300000;
-    
-    // Spacecraft Position
-    double r_E_SC[3]{5000, 5000, 5000};
-    double velSC[3]{8,0,0};
+    range_EarthRangeCutoff = -1;
+    range_AnglesCutoff = -1;
+    r_E_SC[0] = -1;
+    r_E_SC[1] = -1;
+    r_E_SC[2] = -1;
+    velSC[0] = -1;
+    velSC[1] = -1;
+    velSC[2] = -1;
     
     // Angles Method
     firstImage = true;
@@ -124,7 +126,7 @@ void GNC::open() {
         fprintf(logFile, "Error: Unable to Connect to CameraController\n");
     }
     
-    // Read Input File
+    // Read Reference Trajectory File
     fprintf(logFile, "Reading Reference Trajectory: Attempting to Read Reference Trajectory\n");
     try {
         read_referencTraj("Text_Data/Skyfire_J2000_7_ECI_Epsecs.txt");
@@ -140,6 +142,24 @@ void GNC::open() {
         
     } catch (...) {
         fprintf(logFile, "Error: ReadReferenceTrajectory Unknown Type of Exception Caught\n");
+        throw;
+    }
+    
+    // Read Config File
+    fprintf(logFile, "Reading Config File: Attempting to Configuration File\n");
+    try {
+        read_ConfigFile("Text_Data/GNC_Config.txt");
+         fprintf(logFile, "Config File: Initial Pos: (%f,%f,%f), Earth Range Cutoff: %f, Angles Cutoff: %f\n", r_E_SC[0], r_E_SC[1], r_E_SC[2], range_EarthRangeCutoff, range_AnglesCutoff);
+    } catch (const char* e) {
+        fprintf(logFile, "Error: read_ConfigFile Exception Caught: %s\n",e);
+        throw;
+        
+    } catch(std::exception &exception) {
+        fprintf(logFile, "Error: read_ConfigFile Exception Caught: %s\n", exception.what());
+        throw;
+        
+    } catch (...) {
+        fprintf(logFile, "Error: read_ConfigFile Unknown Type of Exception Caught\n");
         throw;
     }
     flushLog();
@@ -372,7 +392,7 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         }
         
         firstImage = true;
-
+        
     } else {
         // Moon Ranging to find Position
         fprintf(logFile, "ComputeSolution: Moon Ranging\n");
@@ -424,7 +444,7 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         }
     }
     
-     std::cout << "Ending Compute Solution" << std::endl;
+    std::cout << "Ending Compute Solution" << std::endl;
 }
 
 //
@@ -511,12 +531,34 @@ void GNC::State_Error(const double X_ref[6], const double X_est[6], double posEr
     std::cout << "Ending State Error" << std::endl;
 }
 
+void GNC::read_ConfigFile(std::string config_file) {
+    std::ifstream file(config_file);
+    
+    if (!file) {
+        fprintf(logFile, "Error: read Config File File %s could not be opened for reading\n", config_file.c_str());
+        throw "File Could Not Be Opened for Reading";
+    }
+    
+    std::string line;
+    std::getline(file, line);
+    file >> r_E_SC[0];
+    file >> r_E_SC[1];
+    file >> r_E_SC[2];
+    
+    std::getline(file, line);
+    std::getline(file, line);
+    file >> range_EarthRangeCutoff;
+    
+    std::getline(file, line);
+    std::getline(file, line);
+    file >> range_AnglesCutoff;
+}
 // Read Reference Trajectory
 void GNC::read_referencTraj(std::string ref_trajectory_file) {
     std::ifstream file(ref_trajectory_file);
     
     if (!file) {
-        fprintf(logFile, "Error: File %s could not be opened for reading\n", ref_trajectory_file.c_str());
+        fprintf(logFile, "Error: ReadReference Trajectory: File %s could not be opened for reading\n", ref_trajectory_file.c_str());
         throw "File Could Not Be Opened for Reading";
     }
     

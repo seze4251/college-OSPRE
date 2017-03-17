@@ -35,9 +35,6 @@ public:
     
     virtual void handleTimeout();
     
-
-    void read_referencTraj(std::string);
-    
     // Message Handlers
     virtual void handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service);
     virtual void handleDataMessage(DataMessage* msg, ServiceInternal* service);
@@ -105,6 +102,9 @@ private:
     double norm(double*);
     double Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3]);
     void State_Error(const double X_ref[6], const double X_est[6], double posError[3], double velError[3]);
+    void read_referencTraj(std::string);
+    void read_ConfigFile(std::string);
+
 };
 
 #endif
