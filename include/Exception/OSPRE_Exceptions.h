@@ -6,6 +6,8 @@
 //  Copyright © 2017 Seth. All rights reserved.
 //
 
+// Link to all std::exceptions
+// http://en.cppreference.com/w/cpp/error/exception
 
 #ifndef OSPREEXCEPTIONS_H
 #define OSPREEXCEPTIONS_H
@@ -13,42 +15,42 @@
 #include <string>
 #include <exception> // for std::exception
 
-class CannotLocateBodyInImage {
+class OSPRE_Exception {
 public:
-    CannotLocateBodyInImage(std::string error) : m_error() {}
+    OSPRE_Exception(std::string error) : m_error(error) {}
     
-    
-    const char* what() const { return m_error.c_str(); } // return the std::string as a const C-style string
+    const char* what() const { return m_error.c_str(); }
     
 private:
     std::string m_error;
 };
 
+class NoBodyInImage : public OSPRE_Exception {
+    NoBodyInImage(std::string error) : OSPRE_Exception(error) {}
+};
 
-// Link to all std::exceptions
-// http://en.cppreference.com/w/cpp/error/exception
-/*
-void pretendMain() {
-    // Example Throws:
-    try {
-        //Throw Exception Class
-        throw CannotLocateBodyInImage("Earth is not in Image");
-        
-        // Throw defualt std::exception
-        throw std::runtime_error("Error Case hit");
-        
-    } catch (CannotLocateBodyInImage &e) {
-        std::cout << "Catches only CannotLocateBodyInImage Exception";
-        std::cerr << "Prints String With Expecion: (" << e.what() << ")\n";
-    } catch (std::exception &e) {
-        std::cout << "Catchs All std::exception exceptions";
-        std::cerr << "Prints String With Expecion: (" << e.what() << ")\n";
-        
-    } catch (...) {
-        std::cout << "Catchs Any Error and Re-Throws it using throw; command";
-        throw;
-    }
-    
-}
-*/
+class InvalidInputs : public OSPRE_Exception {
+    InvalidInputs(std::string error) : OSPRE_Exception(error) {}
+};
+
+class InvalidAlphaBetaTheta : public OSPRE_Exception {
+    InvalidAlphaBetaTheta(std::string error) : OSPRE_Exception(error) {}
+};
+
+class InvalidPosition : public OSPRE_Exception {
+    InvalidPosition(std::string error) : OSPRE_Exception(error) {}
+};
+
+class InvalidFileName : public OSPRE_Exception {
+    InvalidFileName(std::string error) : OSPRE_Exception(error) {}
+};
+
+
+class InvalidImageDimensions : public OSPRE_Exception {
+    InvalidImageDimensions(std::string error) : OSPRE_Exception(error) {}
+};
+
+
+
+
 #endif
