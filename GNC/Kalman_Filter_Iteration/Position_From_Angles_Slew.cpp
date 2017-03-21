@@ -5,7 +5,7 @@
 // File: Position_From_Angles_Slew.cpp
 //
 // MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 09-Mar-2017 13:26:09
+// C/C++ source code generated on  : 21-Mar-2017 13:20:47
 //
 
 // Include Files
@@ -45,15 +45,19 @@
 // Arguments    : const double r_E_M[3]
 //                const double q_E[4]
 //                const double q_M[4]
-//                double alpha
-//                double beta
+//                double alpha_M
+//                double beta_M
+//                double alpha_E
+//                double beta_E
 //                const double vel[3]
 //                double time
 //                double r_E_SC1[3]
 //                double r_E_SC2[3]
 // Return Type  : void
 //
-void Position_From_Angles_Slew(const double r_E_M[3], const double q_E[4],const double q_M[4], double alpha_M, double beta_M, double alpha_E, double beta_E, const double vel[3], double time, double r_E_SC1[3], double r_E_SC2[3])
+void Position_From_Angles_Slew(const double r_E_M[3], const double q_E[4], const
+  double q_M[4], double alpha_M, double beta_M, double alpha_E, double beta_E,
+  const double vel[3], double time, double r_E_SC1[3], double r_E_SC2[3])
 {
   double d0;
   double d1;
@@ -67,77 +71,101 @@ void Position_From_Angles_Slew(const double r_E_M[3], const double q_E[4],const 
   double d5;
   double d6;
   double d7;
-  double ROT_Q[9];
   double b[3];
+  double dv0[9];
   int i0;
   int k;
+  double dv1[9];
   double a[3];
   double r_SC_M[3];
 
   //
-  //  Quaternion error rotation matrix
-  //d0 = alpha;
-    
-    //*********************
-    //TEMP TEMP TEMP CAMERON TEMP
-    //**********************
-    double alpha;
-    double beta;
-    //*********************
-    //TEMP TEMP TEMP CAMERON TEMP
-    //**********************
-    
-  cosd(&d0);
-  d1 = beta;
-  cosd(&d1);
-  c = alpha;
-  sind(&c);
-  d_E_M = alpha;
-  cosd(&d_E_M);
-  theta_int = beta;
-  sind(&theta_int);
-  y = alpha;
-  sind(&y);
-  d2 = beta;
-  cosd(&d2);
-  d3 = alpha;
-  cosd(&d3);
-  d4 = alpha;
-  sind(&d4);
-  d5 = beta;
-  sind(&d5);
-  d6 = beta;
-  sind(&d6);
-  d7 = beta;
-  cosd(&d7);
-  ROT_Q[0] = d0 * d1;
-  ROT_Q[3] = -c;
-  ROT_Q[6] = d_E_M * theta_int;
-  ROT_Q[1] = y * d2;
-  ROT_Q[4] = d3;
-  ROT_Q[7] = d4 * d5;
-  ROT_Q[2] = -d6;
-  ROT_Q[5] = 0.0;
-  ROT_Q[8] = d7;
-
+  //  Earth Quaternion error rotation matrix
   //  Spacecraft-Earth attitude unit vector
+  d0 = alpha_E;
+  cosd(&d0);
+  d1 = beta_E;
+  cosd(&d1);
+  c = alpha_E;
+  sind(&c);
+  d_E_M = alpha_E;
+  cosd(&d_E_M);
+  theta_int = beta_E;
+  sind(&theta_int);
+  y = alpha_E;
+  sind(&y);
+  d2 = beta_E;
+  cosd(&d2);
+  d3 = alpha_E;
+  cosd(&d3);
+  d4 = alpha_E;
+  sind(&d4);
+  d5 = beta_E;
+  sind(&d5);
+  d6 = beta_E;
+  sind(&d6);
+  d7 = beta_E;
+  cosd(&d7);
   Quaternion_To_Attitude(q_E, b);
+  dv0[0] = d0 * d1;
+  dv0[3] = -c;
+  dv0[6] = d_E_M * theta_int;
+  dv0[1] = y * d2;
+  dv0[4] = d3;
+  dv0[7] = d4 * d5;
+  dv0[2] = -d6;
+  dv0[5] = 0.0;
+  dv0[8] = d7;
   for (i0 = 0; i0 < 3; i0++) {
     r_E_SC1[i0] = 0.0;
     for (k = 0; k < 3; k++) {
-      r_E_SC1[i0] += ROT_Q[i0 + 3 * k] * b[k];
+      r_E_SC1[i0] += dv0[i0 + 3 * k] * b[k];
     }
   }
 
+  //  Moon Quaternion error rotation matrix
   //  Spacecraft-Moon attitude unit vector
+  d0 = alpha_M;
+  cosd(&d0);
+  d1 = beta_M;
+  cosd(&d1);
+  c = alpha_M;
+  sind(&c);
+  d_E_M = alpha_M;
+  cosd(&d_E_M);
+  theta_int = beta_M;
+  sind(&theta_int);
+  y = alpha_M;
+  sind(&y);
+  d2 = beta_M;
+  cosd(&d2);
+  d3 = alpha_M;
+  cosd(&d3);
+  d4 = alpha_M;
+  sind(&d4);
+  d5 = beta_M;
+  sind(&d5);
+  d6 = beta_M;
+  sind(&d6);
+  d7 = beta_M;
+  cosd(&d7);
   Quaternion_To_Attitude(q_M, b);
+  dv1[0] = d0 * d1;
+  dv1[3] = -c;
+  dv1[6] = d_E_M * theta_int;
+  dv1[1] = y * d2;
+  dv1[4] = d3;
+  dv1[7] = d4 * d5;
+  dv1[2] = -d6;
+  dv1[5] = 0.0;
+  dv1[8] = d7;
 
   //  Angle between inteception of both spacecraft unit vectors
   c = 0.0;
   for (k = 0; k < 3; k++) {
     r_SC_M[k] = 0.0;
     for (i0 = 0; i0 < 3; i0++) {
-      r_SC_M[k] += ROT_Q[k + 3 * i0] * b[i0];
+      r_SC_M[k] += dv1[k + 3 * i0] * b[i0];
     }
 
     c += r_E_SC1[k] * r_SC_M[k];

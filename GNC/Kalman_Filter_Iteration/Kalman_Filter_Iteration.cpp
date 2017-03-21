@@ -21,18 +21,30 @@ void get_Reference_Trajectory(double X_ref[6], Reference_Trajectory ref_traj, do
     // Need GNC data message time to interpolate ref_traj state
     
     // Declare state components
-    //*********************
-    // TODO: FIX
-    // Take Time and find Index
-    // TODO FIX!
-    //**************
-    int index = 1;
-    X_ref[0] = ref_traj.X[index];
-    X_ref[1] = ref_traj.Y[index];
-    X_ref[2] = ref_traj.Z[index];
-    X_ref[3] = ref_traj.VX[index];
-    X_ref[4] = ref_traj.VY[index];
-    X_ref[5] = ref_traj.VZ[index];
+
+    // Create array of differences between current time and reference trajectory times
+    int time_diff [size(ref_traj.time];
+    for(int i = 0; i < size(ref_traj.time); i++){
+	time_diff[i] = abs(time - ref_traj.time[i]);
+    }
+
+    // Find smallest time difference and index of smallest time difference
+    int smallest = time_diff[0];
+    int smallest_index = 0;
+    for(int i = 1; i < size(time_diff); i++){
+	if(time_diff[i] < smallest){
+	    smallest = time_diff[i];
+	    smallest_index = i;
+	}
+    }
+
+    // Use closest reference trajectory
+    X_ref[0] = ref_traj.X[smallest_index];
+    X_ref[1] = ref_traj.Y[smallest_index];
+    X_ref[2] = ref_traj.Z[smallest_index];
+    X_ref[3] = ref_traj.VX[smallest_index];
+    X_ref[4] = ref_traj.VY[smallest_index];
+    X_ref[5] = ref_traj.VZ[smallest_index];
 }
 
 
