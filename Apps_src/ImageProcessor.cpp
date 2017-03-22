@@ -97,6 +97,7 @@ void ImageProcessor::open() {
         fprintf(logFile, "Connection: Connected to GNC\n");
     } else {
         fprintf(logFile, "Error: Unable to Connect to GNC\n");
+        localError = PE_notConnected;
     }
 }
 
@@ -119,6 +120,7 @@ void ImageProcessor::handleTimeout() {
             fprintf(logFile, "Connection: Connected to GNC\n");
         } else {
             fprintf(logFile, "Error: Unable to Connect to GNC\n");
+            localError = PE_notConnected;
         }
     }
     
@@ -273,10 +275,26 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     try {
         processImage(msg);
         
-    } catch(std::exception &exception) {
-        // TODO: Need to Update to be Image Processor Specific
-        fprintf(logFile, "Error: HandleImageMessage() Exception Caught: %s\n", exception.what());
+    } catch (NoBodyInImage &e) {
+        fprintf(logFile, "Error: HandleImageMessage() NoBodyInImage Exception Caught: %s\n", e.what());
         localError = PE_IP_noBodyInImage;
+        
+    } catch (InvalidInputs &e) {
+        fprintf(logFile, "Error: HandleImageMessage() InvalidInputs Exception Caught: %s\n", e.what());
+        localError = PE_InvalidInputs;
+        
+    } catch (InvalidAlphaBetaTheta &e) {
+        fprintf(logFile, "Error: HandleImageMessage() InvalidAlphaBetaTheta Exception Caught: %s\n", e.what());
+        localError = PE_InvalidOutputs;
+        
+    } catch (InvalidPosition &e) {
+        fprintf(logFile, "Error: HandleImageMessage() InvalidPosition Exception Caught: %s\n", e.what());
+        localError = PE_IP_InvalidPosition;
+        
+    } catch(std::exception &exception) {
+        fprintf(logFile, "Error: HandleImageMessage() Exception Caught: %s\n", exception.what());
+        localError = PE_NotHealthy;
+        throw;
         
     } catch (...) {
         fprintf(logFile, "Error: HandleImageMessage() Unknown Type of Exception Caught\n");

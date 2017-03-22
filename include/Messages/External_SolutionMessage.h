@@ -35,8 +35,8 @@ public:
     }
     
     // Print Message
-    void print() {
-        printHeader();
+    void print(FILE* logFile) {
+        printHeader(FILE* logFile);
         
         std::cout << "Position = ";
         for (int i = 0; i < 3; i++) {

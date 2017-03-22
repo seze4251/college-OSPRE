@@ -117,6 +117,7 @@ void GNC::open() {
         fprintf(logFile, "Connection: Connected to ScComms\n");
     } else {
         fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+        localError = PE_notConnected;
     }
     
     // Connect to Camera Controller
@@ -124,6 +125,7 @@ void GNC::open() {
         fprintf(logFile, "Connection: Connected to Camera Controller\n");
     } else {
         fprintf(logFile, "Error: Unable to Connect to CameraController\n");
+        localError = PE_notConnected;
     }
     
     // Read Reference Trajectory File
@@ -187,6 +189,7 @@ void GNC::handleTimeout() {
             fprintf(logFile, "Connection: Connected to ScComms\n");
         } else {
             fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+            localError = PE_notConnected;
         }
     }
     
@@ -197,6 +200,7 @@ void GNC::handleTimeout() {
             fprintf(logFile, "Connection: Connected to CameraController\n");
         } else {
             fprintf(logFile, "Error: Unable to Connect to CameraController\n");
+            localError = PE_notConnected;
         }
     }
     
@@ -628,6 +632,7 @@ void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg
  */
 void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: DataMessage from ScComms\n");
+    
     // Put Data Into Circular Buffer
     circBuf.put(msg);
 }
@@ -642,6 +647,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     std::cout << "STARTING: Handle Processed Image Message" << std::endl;
     DataMessage* scData;
     std::cout << "Attempting to Find Data Message" << std::endl;
+    
     try {
         scData = circBuf.get(msg->timeStamp);
         fprintf(logFile, "HandleProcessedImageMessage: Corresponding Data Message Found\n");

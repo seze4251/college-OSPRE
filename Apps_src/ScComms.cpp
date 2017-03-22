@@ -132,6 +132,7 @@ void ScComms::handleExternalConnection(int fd) {
     // If the spacecraft is already connected, close current connection only one instance of client (spacecraft) is allowed
     if (spacecraft->isConnected()) {
         spacecraft->closeConnection();
+        fprintf(logFile, "Error: Spacecraft is already connected to OSPRE, cannot have two spacecraft connections\n");
     }
     
     spacecraft->open(fd);

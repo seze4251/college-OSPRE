@@ -52,8 +52,8 @@ public:
         std::cout << " (km)" << std::endl;
     }
     
-    void update(PointEarthMoon point, int currentImageSize, double* pix_deg, double* estimatedPosition, double* moonEphem, int cameraWidth, int cameraHeight) {
-        this->timeStamp = time(0);
+    void update(PointEarthMoon point, int currentImageSize, double* pix_deg, double* estimatedPosition, double* moonEphem, int cameraWidth, int cameraHeight, time_t satTime) {
+        this->timeStamp = satTime;
         this->point = point;
         this->currentImageSize = currentImageSize;
         memcpy(this->pix_deg, pix_deg, 2 * sizeof(double));

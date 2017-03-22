@@ -30,8 +30,8 @@ public:
     }
     
     // Print Message
-    void print() {
-        printHeader();
+    void print(FILE* logFile) {
+        printHeader(FILE* logFile);
         printEarthMoon(point);
     }
     

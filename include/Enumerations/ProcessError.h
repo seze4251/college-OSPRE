@@ -22,11 +22,16 @@ enum ProcessError {
     // Individual Errors
     PE_requestTimeOut = 2,
     PE_notConnected = 3,
-    PE_IP_noBodyInImage = 4,
-    PE_CC_angularVelocityToHigh = 5,
-    PE_invalidData = 6,
-    PE_divideByZero = 7,
-    PE_SleepMode = 8
+    PE_InvalidInputs = 4,
+    PE_InvalidOutputs = 5,
+    PE_IP_InvalidPosition = 6,
+    PE_IP_noBodyInImage = 7,
+    PE_CC_InvalidFileName = 8,
+    PE_CC_InvalidImageDimensions = 9,
+    PE_CC_angularVelocityToHigh = 10,
+    PE_invalidData = 11,
+    PE_divideByZero = 12,
+    PE_SleepMode = 13
 };
 
 static void printProcessError(ProcessError p) {
@@ -46,8 +51,23 @@ static void printProcessError(ProcessError p) {
         case PE_notConnected:
             std::cout << "Error: Process Not Connected" << std::endl;
             break;
+        case PE_InvalidInputs:
+            std::cout << "Error: Invalid Inputs" << std::endl;
+            break;
+        case PE_InvalidOutputs:
+            std::cout << "Error: Invalid Outputs" << std::endl;
+            break;
+        case PE_IP_InvalidPosition:
+            std::cout << "Error: Invalid Position" << std::endl;
+            break;
         case PE_IP_noBodyInImage:
             std::cout << "Error: No Body In Image" << std::endl;
+            break;
+        case PE_CC_InvalidFileName:
+            std::cout << "Error: Invalid File Name" << std::endl;
+            break;
+        case PE_CC_InvalidImageDimensions:
+            std::cout << "Error: Invalid Image Dimensions" << std::endl;
             break;
         case PE_CC_angularVelocityToHigh:
             std::cout << "Error: Angular Velocity To High to Capture Image" << std::endl;

@@ -25,27 +25,32 @@ private:
     std::string m_error;
 };
 
+//Image Processor
 class NoBodyInImage : public OSPRE_Exception {
     NoBodyInImage(std::string error) : OSPRE_Exception(error) {}
 };
 
+//Image Processor
 class InvalidInputs : public OSPRE_Exception {
     InvalidInputs(std::string error) : OSPRE_Exception(error) {}
 };
 
+//Image Processor
 class InvalidAlphaBetaTheta : public OSPRE_Exception {
     InvalidAlphaBetaTheta(std::string error) : OSPRE_Exception(error) {}
 };
 
+//Image Processor
 class InvalidPosition : public OSPRE_Exception {
     InvalidPosition(std::string error) : OSPRE_Exception(error) {}
 };
 
+//Camera Controller
 class InvalidFileName : public OSPRE_Exception {
     InvalidFileName(std::string error) : OSPRE_Exception(error) {}
 };
 
-
+//Camera Controller
 class InvalidImageDimensions : public OSPRE_Exception {
     InvalidImageDimensions(std::string error) : OSPRE_Exception(error) {}
 };

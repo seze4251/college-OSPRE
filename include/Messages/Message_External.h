@@ -10,6 +10,8 @@
 #ifndef MESSAGE_EXTERNAL
 #define MESSAGE_EXTERNAL
 
+#include <stdio.h>
+
 #include "MessageID.h"
 
 class Message_External {
@@ -44,18 +46,15 @@ public:
         this->iden = iden;
     }
     
-    void printHeader() {
-        printMessageID(iden);
-        std::cout << "Printing Message Header:" << std::endl;
-        std::cout << "packetVersionNumber = " << header.header_struct.packetVersionNumber << std::endl;
-        std::cout << "PacketType = " << header.header_struct.packetType << std::endl;
-        std::cout << "SecondaryHeader = " << header.header_struct.secondaryHeader << std::endl;
-        std::cout << "ApplicationProcessID = " << header.header_struct.applicationProcessID << std::endl;
-        std::cout << "SequenceFlags = " << header.header_struct.sequenceFlags << std::endl;
-        std::cout << "PacketSequence = " << header.header_struct.packetSequence << std::endl;
-        std::cout << "PacketDataLength = " << header.header_struct.packetDataLength << std::endl;
-        
-        std::cout<< std::endl << std::endl;
+    void printHeader(FILE* logFile) {
+        printMessageID(iden, logFile);
+        fprintf(logFile, "Printing Message Header:\n");
+        fprintf(logFile, "PacketType = %u\n",header.header_struct.packetVersionNumber);
+        fprintf(logFile, "SecondaryHeader = %u\n",header.header_struct.secondaryHeader);
+        fprintf(logFile, "ApplicationProcessID = %u\n",header.header_struct.applicationProcessID);
+        fprintf(logFile, "SequenceFlags = %u\n",header.header_struct.sequenceFlags);
+        fprintf(logFile, "PacketSequence = %u\n",header.header_struct.packetSequence);
+        fprintf(logFile, "PacketDataLength = %u\n",header.header_struct.packetDataLength );
     }
     
     // Data Members

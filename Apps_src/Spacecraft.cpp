@@ -80,14 +80,14 @@ void Spacecraft::handleTimeout() {
     if (scComms->isConnected() == false) {
         scComms->open(ospreHostName, osprePort);
         scComms->registerCallback(handleExternalMessage);
-        if (scComms->isConnected() == false) {
+        if (scComms->isConnected() == true) {
             fprintf(logFile, "Connection: Connected to ScComms\n");
         } else {
             fprintf(logFile, "Error: Unable to Connect to ScComms\n");
         }
     }
     
-    // Send Timed Capture Image Requests to Camera
+    // Send Timed Data Messages to OSPRE
     time_t currentTime = time(NULL);
     
     if (currentTime > pollTime) {
@@ -95,6 +95,7 @@ void Spacecraft::handleTimeout() {
         if (scComms -> isConnected()) {
             
             // BS data members to start
+            // TODO: UPDATE THESE TO REAL VALUES
             double ephem[3] {4, 5, 6};
             double quat[4] {0.25, 0.55, 0.75, 1.5};
             double angularVelocity[3] {1, 2, 3};
@@ -147,23 +148,23 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
 
 void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {
     fprintf(logFile, "Received Message: ExternalOSPREStatus Message from ScComms\n");
-    //msg->print();
+    msg->print(logFile);
 }
 
 void Spacecraft::handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
     fprintf(logFile, "Received Message: ExternalPointing Message from ScComms\n");
-    // msg->print();
+     msg->print(logFile);
 }
 
 void Spacecraft::handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
     fprintf(logFile, "Received Message: ExternalSolution Message from ScComms\n");
-    //msg->print();
+    msg->print(logFile);
     
 }
 
 void Spacecraft::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
     fprintf(logFile, "Error: Invalid Message Recived: ExternalDataMessage, Closing Connection\n");
-    scComms->closeConnection();
+    scComms->closeConnection(logFile);
 }
 
 

@@ -39,8 +39,8 @@ public:
     }
     
     // Print Message
-    void print() {
-        printHeader();
+    void print(FILE* logFile) {
+        printHeader(FILE* logFile);
         printProcessError(totalHealth);
         std::cout << "Number of Processes with Errors: " << numProblemProcesses << std::endl;
         

@@ -82,6 +82,7 @@ void CameraController::open() {
         fprintf(logFile, "Connection: Connected to ScComms\n");
     } else {
         fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+        localError = PE_notConnected;
     }
     
     // Connect to ImageProcessing
@@ -89,6 +90,7 @@ void CameraController::open() {
         fprintf(logFile, "Connection: Connected to Image Processing\n");
     } else {
         fprintf(logFile, "Error: Unable to Connect to ImageProcessor\n");
+        localError = PE_notConnected;
     }
 }
 
@@ -112,6 +114,7 @@ void CameraController::handleTimeout() {
             fprintf(logFile, "Connection: Connected to ScComms\n");
         } else {
             fprintf(logFile, "Error: Unable to Connect to ScComms\n");
+            localError = PE_notConnected;
         }
     }
     
@@ -121,6 +124,7 @@ void CameraController::handleTimeout() {
             fprintf(logFile, "Connection: Connected to Image Processing\n");
         } else {
             fprintf(logFile, "Error: Unable to Connect to ImageProcessing\n");
+            localError = PE_notConnected;
         }
     }
     flushLog();
@@ -132,17 +136,6 @@ void CameraController::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
-//TODO: Needs Implementation
-bool CameraController::canCaptureImage(CaptureImageRequest* msg) {
-    fprintf(logFile, "TODO: Need to Implement canCaptureImage()\n");
-    return false;
-}
-
-// TODO: Waiting on Dylan for Implementation
-void CameraController::captureImage() {
-    fprintf(logFile, "TODO: Need to Implement captureImage\n");
-}
-
 void CameraController::readImage(std::string imgFilename) {
     // Get image
     fprintf(logFile, "Read Image: Starting Image Read\n");
@@ -187,6 +180,17 @@ void CameraController::adjustCameraSettings(ImageAdjustment* msg) {
     fprintf(logFile, "TODO: Need To Implement adjustCameraSettings\n");
 }
 
+// TODO: Waiting on Dylan for Implementation
+void CameraController::captureImage() {
+    fprintf(logFile, "TODO: Need to Implement CaptureImage\n");
+}
+
+//TODO: Needs Implementation
+bool CameraController::canCaptureImage(CaptureImageRequest* msg) {
+    fprintf(logFile, "TODO: Need to Implement canCaptureImage()\n");
+    return false;
+}
+
 
 // *******************************
 //
@@ -226,24 +230,46 @@ void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatu
 void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: CaptureImageRequest from GNC\n");
     
-    // Decide if Camera Controller can Capture Image or if it can read an image
-   // if (data.sleep) {
-    //    fprintf(logFile, "Sleep: bool sleep = true, Camera Controller not capturing images\n");
-       // localError = PE_SleepMode;
-      //  return;
-    //}
+    // FOR FUTURE IMPLEMENTATION:
+    // TODO HERE:
+    // Test to see if Camera Controller can take image and if not throw an exception:
+    // CameraController::canCaptureImage(CaptureImageRequest* msg)
+    // Take an Image
+    // void CameraController::captureImage()
+    // Send the Image the same as done below
     
-    readImage("Images/samplePic.jpg");
     
+    // TODO: Update readImage call to not be hardcoded
+    try {
+        readImage("Images/samplePic.jpg");
+        
+    } catch (InvalidFileName &e) {
+        fprintf(logFile, "Error: readImage() InvalidFileName Exception Caught: %s\n", e.what());
+        localError = PE_CC_InvalidFileName;
+        
+    } catch (InvalidImageDimensions &e) {
+        fprintf(logFile, "Error: readImage() InvalidImageDimensions Exception Caught: %s\n", e.what());
+        localError = PE_CC_InvalidImageDimensions;
+        
+    } catch(std::exception &exception) {
+        fprintf(logFile, "Error: readImage() Exception Caught: %s\n", exception.what());
+        localError = PE_NotHealthy;
+        throw;
+        
+    } catch (...) {
+        fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");
+        throw;
+    }
+    
+    // TODO: Need to get these parameters from somewhere, maybe config file?
     // Update Image Message
-    //******************************** 
+    //********************************
     //TEMP TEMP Need to fix when readimage function is created
     int currentImageSize = IMAGE_SIZE;
     double pix_deg[2] {67, 67};
     int cameraWidth = 4160;
     int cameraHeight = 3120;
-    imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight);
-    
+    imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, data.satTime);
     //TEMP TEMP Need to fix when readimage function is created
     //******************************
     
@@ -261,7 +287,7 @@ void CameraController::handleDataMessage(DataMessage* msg, ServiceInternal* serv
 
 // TODO: Decide is this Needed?
 void CameraController::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
-    fprintf(logFile, "Received Message: ImageAdjustmentMessage from ImageProcessing\n");
+    fprintf(logFile, "ERROR:Received Message: ImageAdjustmentMessage, NOT SUPPORTED\n");
     adjustCameraSettings(msg);
 }
 
