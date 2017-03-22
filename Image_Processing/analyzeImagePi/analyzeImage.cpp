@@ -20,7 +20,10 @@
 #include "imhist.h"
 #include "analyzeImage_rtwutil.h"
 //#include <exception>
-#include <stdexcept>
+//#include <stdexcept>
+#include <stdio.h>
+#include <ctime>
+#include "../../include/Exception/OSPRE_Exceptions.h"
 
 // Function Definitions
 
@@ -86,16 +89,10 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   double thetaX;
   double thetaY;
 
-  //  Anthony Torres
-  //  OSPRE
-  //  analyzeImage.m
-  //  Created: 1/13/17
-  //  Modified: 2/16/17
 
   // First level fail tests
-  if (b_imIn == NULL) {
-	  throw std::invalid_argument("Image is null");
-  }
+  // TODO:
+  // - Determine whether inputs are bad
 
   /*
   To Do:
@@ -229,7 +226,12 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   //  Check for valid find
   if ((centers->size[0] == 0) || (centers->size[1] == 0)) {
     // If no objects throw error
-    throw std::domain_error("No objects found in image");
+    char logString[50];
+    sprintf("Excpetion Time = %f, Expected to find celestial body but did not find anything; \
+            radius guess: [%d %d], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
+            sensVal);
+    throw NoBodyInImage(logString);
+
   } else {
     //  Return found information
     b_centers[0] = centers->data[0];
@@ -252,13 +254,46 @@ void analyzeImage(const unsigned char imIn[2428800], const double
     }
 	
 	// Calculate output pointing values
+  // TODO:
+  // - Can validAlpha, validBeta, and validTheta be pre-calculated somewhere?
 	*alpha = (b_centers[0]-xCenter)/pxDeg[0];
+  double validAlpha = imgWidth/pxDeg[0];
 	*beta = (b_centers[1]-yCenter)/pxDeg[1];
+  double validBeta = imgHeight/pxDeg[1];
 	
 	// Calculate angular diameter of body in x and y, and average the two for output
 	thetaX = (*radius)/pxDeg[0];
 	thetaY = (*radius)/pxDeg[1];
 	*theta = 0.5*(thetaX + thetaY);
+  double validTheta = radiusRangeGuess[1]*(pxDeg[0] + pxDeg[1])*0.5; // Calculate average valid theta
+  double validThetaDelta = (radiusRangeGuess[1]-radiusRangeGuess[0])*(pxDeg[0] + pxDeg[1])*0.5; // Calculate the change in theta to calculate valide range space
+
+  // TODO:
+  // - combine this into it's own function
+  if(*alpha > validAlpha){
+    // throw alpha out of range
+    char logString[50];
+    sprintf("Excpetion Time = %f, Invalid alpha found; alpha: %f \
+            radius guess: [%d %d], sensVal: %f", time(0), *alpha, radiusRangeGuess[0], radiusRangeGuess[1],
+            sensVal);
+    throw InvalidAlphaBetaTheta(logString);
+  }
+  if(*beta > validBeta){
+    // throw beta out of range
+    char logString[50];
+    sprintf("Excpetion Time = %f, Invalid beta found; beta: %f \
+            radius guess: [%d %d], sensVal: %f", time(0), *beta, radiusRangeGuess[0], radiusRangeGuess[1],
+            sensVal);
+    throw InvalidAlphaBetaTheta(logString);
+  }
+  if(*theta > (validTheta + validThetaDelta) || *theta < (validTheta - validThetaDelta)){
+    // throw theta out of range error
+    char logString[50];
+    sprintf("Excpetion Time = %f, Invalid theta found; theta: %f \
+            radius guess: [%d %d], sensVal: %f", time(0), *theta, radiusRangeGuess[0], radiusRangeGuess[1],
+            sensVal);
+    throw InvalidAlphaBetaTheta(logString);
+  }
 
     *numCirc = i;
   }
