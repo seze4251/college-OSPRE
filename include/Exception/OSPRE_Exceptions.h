@@ -45,7 +45,18 @@ class InvalidPosition : public OSPRE_Exception {
     InvalidPosition(std::string error) : OSPRE_Exception(error) {}
 };
 
-//Camera Controller
+// GNC
+class TextFileImproperFormat : public OSPRE_Exception {
+    TextFileImproperFormat(std::string error) : OSPRE_Exception(error) {}
+};
+
+// GNC
+class InvalidOutput : public OSPRE_Exception {
+    InvalidEarthScMoonAngleRange(std::string error) : OSPRE_Exception(error) {}
+};
+
+// GNC
+// Camera Controller
 class InvalidFileName : public OSPRE_Exception {
     InvalidFileName(std::string error) : OSPRE_Exception(error) {}
 };
@@ -56,6 +67,10 @@ class InvalidImageDimensions : public OSPRE_Exception {
 };
 
 
-
-
 #endif
+
+
+
+
+
+
