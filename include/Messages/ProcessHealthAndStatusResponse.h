@@ -30,14 +30,11 @@ public:
         this->error = error;
     }
     
-    void print() {
-        printMessageHeader();
+    void print(FILE* logFile) {
+        fprintf(logFile, "Printing Process Health and Status Response Message\n");
+        printMessageHeader(logFile);
         
-        printProcessError(error);
-        
-        if (error == PE_NotHealthy) {
-            printProcessError(error);
-        }
+        printProcessError(error, logFile);
     }
     
     // Process Health

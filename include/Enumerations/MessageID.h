@@ -9,7 +9,7 @@
 #ifndef MESSAGEID_H
 #define MESSAGEID_H
 
-#include <iostream>
+#include <stdio.h>
 
 enum MessageID {
     NA = -1,
@@ -29,66 +29,68 @@ enum MessageID {
     E_SpacecraftDataMessage = 14
 };
 
-static void printMessageID(MessageID ID) {
+static void printMessageID(MessageID ID, FILE* logFile) {
+    fprintf(logFile, "Printing Message ID Enumeration:\n");
+    
     switch (ID) {
         case NA:
-            std::cout << "Message Type N/A";
+            fprintf(logFile, "Message Type N/A\n");
             break;
             
         case I_CaptureImageRequest:
-            std::cout << "Capture Image Request Message" << std::endl;
+            fprintf(logFile, "Capture Image Request Message\n");
             break;
             
         case I_DataMessage:
-            std::cout << "Data Message" << std::endl;
+            fprintf(logFile, "Data Message\n");
             break;
             
         case I_ImageAdjustment:
-            std::cout << "Image Adjustment Message" << std::endl;
+            fprintf(logFile, "Image Adjustment Message\n");
             break;
             
         case I_ImageMessage:
-            std::cout << "Image Message" << std::endl;
+            fprintf(logFile, "Image Message\n");
             break;
             
         case I_OSPREStatus:
-            std::cout << "OSPRE Status Message" << std::endl;
+            fprintf(logFile, "OSPRE Status Message\n");
             break;
             
         case I_PointingRequest:
-            std::cout << "Pointing Request Message" << std::endl;
+            fprintf(logFile, "Pointing Request Message\n");
             break;
             
         case I_ProcessHealthAndStatusRequest:
-            std::cout << "Process Health and Status Request Message" << std::endl;
+            fprintf(logFile, "Process Health and Status Request Message\n");
             break;
             
         case I_ProcessHealthAndStatusResponse:
-            std::cout << "Process Health and Status Response Message";
+            fprintf(logFile, "Process Health and Status Response Message\n");
             break;
             
         case I_SolutionMessage:
-            std::cout << "Solution Message" << std::endl;
+            fprintf(logFile, "Solution Message\n");
             break;
             
         case E_OSPREStatus:
-            std::cout << "External OSPRE Status Message" << std::endl;
+            fprintf(logFile, "External OSPRE Status Message\n");
             break;
             
         case E_PointingRequest:
-            std::cout << "External Pointing Request Message" << std::endl;
+            fprintf(logFile, "External Pointing Request Message\n");
             break;
             
         case E_SolutionMessage:
-            std::cout << "External Solution Message" << std::endl;
+            fprintf(logFile, "External Solution Message\n");
             break;
             
         case E_SpacecraftDataMessage:
-            std::cout << "External Spacecraft Data Message" << std::endl;
+            fprintf(logFile, "External Spacecraft Data Message\n");
             break;
             
         default:
-            std::cout << "Error: Unknown Value of Message ID" << std::endl;
+            fprintf(logFile, "Error: Unknown Value of Message ID\n");
             break;
     }
 }

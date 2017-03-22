@@ -37,15 +37,15 @@ public:
     
     // Print Message
     void print(FILE* logFile) {
-        printHeader(FILE* logFile);
         fprintf(logFile, "Printing External_DataMessage");
+        printHeader(logFile);
         fprintf(logFile, "Ephem = ");
         for (int i = 0; i < 3; i++) {
             fprintf(logFile, "%f ", ephem[i]);
         }
         fprintf(logFile, " (km)\n");
         
-       
+        
         fprintf(logFile, "Quat = ");
         for (int i = 0; i < 4; i++) {
             fprintf(logFile, "%f ", quat[i]);
@@ -85,6 +85,6 @@ public:
     // Sleep Mode, when == true go to sleep
     bool sleep;
     
-    };
+};
 
 #endif

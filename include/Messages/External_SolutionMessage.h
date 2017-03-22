@@ -36,34 +36,35 @@ public:
     
     // Print Message
     void print(FILE* logFile) {
-        printHeader(FILE* logFile);
+        fprintf(logFile, "Printing External Solution Message\n");
+        printHeader(logFile);
         
-        std::cout << "Position = ";
+        fprintf(logFile, "Position = ");
         for (int i = 0; i < 3; i++) {
-            std::cout << position[i] << " ";
+            fprintf(logFile, " %f", position[i]);
         }
-        std::cout << " (km)" << std::endl;
+        fprintf(logFile, " (km)\n");
         
-        std::cout << "Position Error = ";
+        fprintf(logFile, "Position Error = ");
         for (int i = 0; i < 3; i++) {
-            std::cout << positionError[i] << " ";
+            fprintf(logFile, " %f", positionError[i]);
         }
-        std::cout << " (km)" << std::endl;
+        fprintf(logFile, " (km)\n");
         
-        std::cout << "Velocity = ";
+        fprintf(logFile, "Velocity = ");
         for (int i = 0; i < 3; i++) {
+            fprintf(logFile, " %f", velocity[i]);
             std::cout << velocity[i] << " ";
         }
-        std::cout << " (m/s)" << std::endl;
+        fprintf(logFile, " (m/s)\n");
         
-        std::cout << "Velocity Error = ";
+        fprintf(logFile, "Velocity Error = ");
         for (int i = 0; i < 3; i++) {
-            std::cout << velocityError[i] << " ";
+            fprintf(logFile, " %f", velocityError[i]);
         }
-        std::cout << " (m/s)" << std::endl;
+        fprintf(logFile, " (m/s)\n");
         
-        std::cout << "Earth-SC-Moon Angle = " << earthScMoonAngle << " (degrees)" << std::endl;
-        
+        fprintf(logFile, "Earth-SC-Moon Angle = %f (degrees)", earthScMoonAngle);
     }
     
     // Specific Data Members

@@ -19,10 +19,10 @@ class ProcessErrorStructure {
 public:
     ProcessErrorStructure() {}
     
-    void print() {
-        std::cout << "Process Error Structure:" << std::endl;
-        printProcessError(error);
-        printProcessID(iden);
+    void print(FILE* logFile) {
+        fprintf(logFile, "Printing Processed Error Structure\n");
+        printProcessError(error, logFile);
+        printProcessID(iden, logFile);
     }
     
     // Members

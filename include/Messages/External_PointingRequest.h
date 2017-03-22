@@ -31,8 +31,9 @@ public:
     
     // Print Message
     void print(FILE* logFile) {
-        printHeader(FILE* logFile);
-        printEarthMoon(point);
+        fprintf(logFile, "Printing External Pointing Request\n");
+        printHeader(logFile);
+        printEarthMoon(point, logFile);
     }
     
     // Specific Data Members

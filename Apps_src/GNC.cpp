@@ -615,6 +615,7 @@ void GNC::read_referencTraj(std::string ref_trajectory_file) {
  */
 void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: ProcessHealthAndStatusRequest from WatchDog\n");
+    msg->print(logFile);
     
     // Update ProcessHealthAndStatusResponse Message
     processHealthMessage->update(localError);
@@ -632,6 +633,7 @@ void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg
  */
 void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: DataMessage from ScComms\n");
+    //msg->print(logFile);
     
     // Put Data Into Circular Buffer
     circBuf.put(msg);
@@ -644,6 +646,8 @@ void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
  */
 void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: ProcessedImageMessage from ScComms\n");
+    msg->print(logFile);
+    
     std::cout << "STARTING: Handle Processed Image Message" << std::endl;
     DataMessage* scData;
     std::cout << "Attempting to Find Data Message" << std::endl;

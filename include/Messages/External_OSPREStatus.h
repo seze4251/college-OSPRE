@@ -40,16 +40,17 @@ public:
     
     // Print Message
     void print(FILE* logFile) {
-        printHeader(FILE* logFile);
-        printProcessError(totalHealth);
-        std::cout << "Number of Processes with Errors: " << numProblemProcesses << std::endl;
+        fprintf(logFile, "Printing External OSPRE Status\n");
+        printHeader(logFile);
+        printProcessError(totalHealth, logFile);
+        fprintf(logFile, "Number of Processes with Errors = %d\n", numProblemProcesses);
         
         std::vector<ProcessID>::iterator itPID;
         std::vector<ProcessError>::iterator itPError;
 
         for (itPID = pID.begin(), itPError = error.begin(); itPError != error.end(); itPID++, itPError++ ) {
-            printProcessID(*itPID);
-            printProcessError(*itPError);
+            printProcessID(*itPID, logFile);
+            printProcessError(*itPError, logFile);
         }
     }
     

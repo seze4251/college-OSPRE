@@ -36,7 +36,7 @@ public:
         } header_struct;
         char bytes[6];
     };
-
+    
     // Constructor
     Message_External(unsigned int applicationProcessID, MessageID iden) {
         header.header_struct.applicationProcessID = applicationProcessID;
@@ -62,22 +62,22 @@ public:
     
     // Message ID
     MessageID iden;
-
+    
     
 };
 
 
 #endif
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+

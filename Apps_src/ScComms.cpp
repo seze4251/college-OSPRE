@@ -172,6 +172,7 @@ void ScComms::handleExternalMessage(Message_External* msg, ServiceExternal* serv
 
 void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: ProcessHealthAndStatusRequest from WatchDog\n");
+    msg->print(logFile);
     
     processHealthMessage->update(localError);
     
@@ -188,6 +189,7 @@ void ScComms::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest*
  */
 void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: OSPREStatus Message from WatchDog\n");
+    msg->print(logFile);
     
     // Convert OSPRE Status to External OSPRE Status
     externalOspreStatusMessage->update(msg);
@@ -203,7 +205,7 @@ void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
  */
 void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: PointingRequest from GNC\n");
-    
+    msg->print(logFile);
     // Convert Pointing Request to External Pointing Request
     externalPointingMessage->update(msg->point);
     
@@ -220,7 +222,7 @@ void ScComms::handlePointingRequest(PointingRequest* msg, ServiceInternal* servi
  */
 void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
     fprintf(logFile, "Received Message: SolutionMessage from GNC\n");
-    
+    msg->print(logFile);
     // Convert Internal Solution Message to External Solution Message
     externalSolutionMessage->update(msg->position, msg->positionError, msg->velocity, msg->velocityError, msg->earthScMoonAngle);
     
@@ -243,6 +245,7 @@ void ScComms::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* servi
  */
 void ScComms::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
     fprintf(logFile, "Received Message: ExternalDataMessage from Spacecraft\n");
+    msg->print(logFile);
     
     // Conver External Data Message to internal Data Message
     dataMessage->update(msg->ephem, msg->quat, msg->angularVelocity, msg->satTime, msg->sunAngle, msg->sleep);

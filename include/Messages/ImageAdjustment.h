@@ -19,8 +19,9 @@ public:
     
     MessageID getMessageID() { return I_ImageAdjustment; }
     
-    void print() {
-        printMessageHeader();
+    void print(FILE* logFile) {
+        fprintf(logFile, "Printing Image Adjustment Message\n");
+        printMessageHeader(logFile);
     }
 };
 

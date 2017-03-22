@@ -13,6 +13,7 @@
 #include <ctime>
 #include <string.h>
 #include <iostream>
+#include <stdio.h>
 
 #include "PointEarthMoon.h"
 #include "MessageID.h"
@@ -25,9 +26,9 @@ public:
     time_t timeStamp;
     MessageID iden;
     
-    void printMessageHeader() {
-        printMessageID(iden);
-        std::cout << "Time = " << timeStamp << " (s)" << std::endl;
+    void printMessageHeader(FILE* logFile) {
+        printMessageID(iden, logFile);
+        fprintf(logFile, "Message.timeStamp = %f (s)", timeStamp);
     }
 };
 

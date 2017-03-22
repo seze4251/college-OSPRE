@@ -27,16 +27,16 @@ public:
         memcpy(this->estimatedPosition, estimatedPosition, 3 * sizeof(double));
     }
     
-    void print() {
-        printMessageHeader();
+    void print(FILE* logFile) {
+        printMessageHeader(FILE* logFile);
         
-        std::cout << "Estimated Position = ";
+        fprintf(logFile, "Estimated Position = ");
         for (int i = 0; i < 3; i++) {
-            std::cout << estimatedPosition[i] << " ";
+            fprintf(logFile, " %f", estimatedPosition[i]);
         }
-        std::cout << " (km)" << std::endl;
+        fprintf(logFile, "(km)\n");
         
-        printEarthMoon(point);
+        printEarthMoon(point, logFile);
     }
     
     // Specific Data Members

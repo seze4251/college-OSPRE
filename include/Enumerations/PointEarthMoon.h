@@ -9,7 +9,7 @@
 #ifndef POINTEARTHMOON_H
 #define POINTEARTHMOON_H
 
-#include <iostream>
+#include <stdio.h>
 
 enum PointEarthMoon{
     PEM_NA = -1,
@@ -17,15 +17,17 @@ enum PointEarthMoon{
     PEM_Moon = 2
 };
 
-static void printEarthMoon(PointEarthMoon pem) {
+static void printEarthMoon(PointEarthMoon pem, FILE* logFile) {
+    fprintf(logFile, "Printing Point Earth Moon Enumeration:\n");
     if (pem == PEM_NA) {
-        std::cout << "Point at N/A" << std::endl;
+        fprintf(logFile, "Point at N/A\n");
     } else if (pem == PEM_Earth) {
-        std::cout << "Point at Earth" << std::endl;
+        fprintf(logFile, "Point at Earth\n");
     } else if (pem == PEM_Moon) {
-        std::cout << "Point at Moon" << std::endl;
+        fprintf(logFile, "Point at Moon\n");
     } else {
-        std::cerr << "Point is undefined value" << std::endl;
+        fprintf(logFile, "Point is undefined value\n");
+        throw "Pointing at an undefined value (Not Part of ENUM)\n";
     }
 }
 

@@ -22,9 +22,10 @@ public:
         this->point = point;
     }
     
-    void print() {
-        printMessageHeader();
-        printEarthMoon(point);
+    void print(FILE* logFile) {
+        fprintf(logFile, "Printing Pointing Request Message\n");
+        printMessageHeader(logFile);
+        printEarthMoon(point, logFile);
     }
     
     // Specific Data Members

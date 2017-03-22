@@ -229,7 +229,7 @@ void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatu
 
 void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: CaptureImageRequest from GNC\n");
-    
+    msg->print(logFile);
     // FOR FUTURE IMPLEMENTATION:
     // TODO HERE:
     // Test to see if Camera Controller can take image and if not throw an exception:
@@ -241,7 +241,11 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
     
     // TODO: Update readImage call to not be hardcoded
     try {
-        readImage("Images/samplePic.jpg");
+        if (data.sleep == false) {
+            readImage("Images/samplePic.jpg");
+        } else {
+            localError = PE_SleepMode;
+        }
         
     } catch (InvalidFileName &e) {
         fprintf(logFile, "Error: readImage() InvalidFileName Exception Caught: %s\n", e.what());
@@ -282,12 +286,15 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
 
 void CameraController::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: DataMessage from ScComms\n");
+    //msg->print(logFile);
     data.update(msg->ephem, msg->quat, msg->angularVelocity, msg->satTime, msg->sunAngle, msg->sleep);
 }
 
 // TODO: Decide is this Needed?
 void CameraController::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
     fprintf(logFile, "ERROR:Received Message: ImageAdjustmentMessage, NOT SUPPORTED\n");
+    msg->print(logFile);
+    throw "RECIVED IMAGE ADJUSTMENT MESSAGE, NOT SUPPORTED YET!!";
     adjustCameraSettings(msg);
 }
 

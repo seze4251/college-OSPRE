@@ -22,8 +22,9 @@ public:
         this->timeStamp = time(0);
     }
     
-    void print() {
-        printMessageHeader();
+    void print(FILE* logFile) {
+        fprintf(logFile, "Printing Process Health and Status Request Message\n");
+        printMessageHeader(logFile);
     }
 };
 #endif

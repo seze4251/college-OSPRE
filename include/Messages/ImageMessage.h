@@ -27,29 +27,29 @@ public:
     
     MessageID getMessageID() { return I_ImageMessage; }
     
-    void print() {
-        printMessageHeader();
-        printEarthMoon(point);
-        std::cout << "Current Image Size = " << currentImageSize << std::endl;
-        std::cout << "Total Buffer Size = " << imageBufferSize << std::endl;
-        
-        std::cout << "pix_deg = ";
+    void print(FILE* logFile) {
+        fprintf(logFile, "Printing Image Message\n");
+        printMessageHeader(logFile);
+        printEarthMoon(point, logFile);
+        fprintf(logFile, "Current Image Size = %d, Total Buffer Size = %d\n", currentImageSize, imageBufferSize);
+
+        fprintf(logFile, "pix_deg = ");
         for (int i = 0; i < 2; i++) {
-            std::cout << pix_deg[i] << " ";
+            fprintf(logFile, " %f", pix_deg[i]);
         }
-        std::cout << " (pix/deg)" << std::endl;
+        fprintf(logFile, " (pix/deg)\n");
         
-        std::cout << "estimatedPosition = ";
+        fprintf(logFile, "estimatedPosition = ");
         for (int i = 0; i < 3; i++) {
-            std::cout << estimatedPosition[i] << " ";
+            fprintf(logFile, " %f", estimatedPosition[i]);
         }
-        std::cout << " (km)" << std::endl;
+        fprintf(logFile, " (km)\n");
         
-        std::cout << "Moon Ephem = ";
+        fprintf(logFile, "Moon Ephem = ");
         for (int i = 0; i < 3; i++) {
-            std::cout << moonEphem[i] << " ";
+            fprintf(logFile, " %f", moonEphem[i]);
         }
-        std::cout << " (km)" << std::endl;
+        fprintf(logFile, " (km)\n");
     }
     
     void update(PointEarthMoon point, int currentImageSize, double* pix_deg, double* estimatedPosition, double* moonEphem, int cameraWidth, int cameraHeight, time_t satTime) {

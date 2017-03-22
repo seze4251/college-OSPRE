@@ -224,6 +224,8 @@ void WatchDog::handleTimeout() {
  When a response message is recived, diagnose if there are any issues with the processess and store them for the creation of the OSPRE status message
  */
 void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
+    fprintf(logFile, "Received Message: ProcessHealthAndStatusResponse from *\n");
+    msg->print(logFile);
     
     //Determine which client sent the message
     if (service == cameraControl) {

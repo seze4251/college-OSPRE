@@ -9,7 +9,7 @@
 #ifndef PROCESSERROR_H
 #define PROCESSERROR_H
 
-#include "iostream"
+#include <stdio.h>
 
 enum ProcessError {
     // Process Error Not Defined
@@ -34,70 +34,63 @@ enum ProcessError {
     PE_SleepMode = 13
 };
 
-static void printProcessError(ProcessError p) {
+static void printProcessError(ProcessError p, FILE* logFile) {
+    fprintf(logFile, "Printing ProcessError Enumeration:\n");
     switch (p) {
         case PE_NA:
-            std::cout << "Error: N/A";
+            fprintf(logFile, "Error: N/A\n");
             break;
         case PE_AllHealthy:
-            std::cout << "OSPRE is Healthy" << std::endl;
+            fprintf(logFile, "OSPRE is Healthy\n");
             break;
         case PE_NotHealthy:
-            std::cout << "OSPRE is Sick" << std::endl;
+            fprintf(logFile, "OSPRE is Sick\n");
             break;
         case PE_requestTimeOut:
-            std::cout << "Error: Request Time Out" << std::endl;
+            fprintf(logFile, "Error: Request Time Out\n");
             break;
         case PE_notConnected:
-            std::cout << "Error: Process Not Connected" << std::endl;
+            fprintf(logFile, "Error: Process Not Connected\n");
             break;
         case PE_InvalidInputs:
-            std::cout << "Error: Invalid Inputs" << std::endl;
+            fprintf(logFile, "Error: Invalid Inputs\n");
             break;
         case PE_InvalidOutputs:
-            std::cout << "Error: Invalid Outputs" << std::endl;
+            fprintf(logFile, "Error: Invalid Outputs\n");
             break;
         case PE_IP_InvalidPosition:
-            std::cout << "Error: Invalid Position" << std::endl;
+            fprintf(logFile, "Error: Invalid Position\n");
             break;
         case PE_IP_noBodyInImage:
-            std::cout << "Error: No Body In Image" << std::endl;
+            fprintf(logFile, "Error: No Body In Image\n");
             break;
         case PE_CC_InvalidFileName:
-            std::cout << "Error: Invalid File Name" << std::endl;
+            fprintf(logFile, "Error: Invalid File Name\n");
             break;
         case PE_CC_InvalidImageDimensions:
-            std::cout << "Error: Invalid Image Dimensions" << std::endl;
+            fprintf(logFile, "Error: Invalid Image Dimensions\n");
             break;
         case PE_CC_angularVelocityToHigh:
-            std::cout << "Error: Angular Velocity To High to Capture Image" << std::endl;
+            fprintf(logFile, "Error: Angular Velocity To High to Capture Image\n");
             break;
         case PE_invalidData:
-            std::cout << "Error: Invalid Data" << std::endl;
+            fprintf(logFile, "Error: Invalid Data\n");
             break;
         case PE_divideByZero:
-            std::cout << "Error: Divide By 0" << std::endl;
+            fprintf(logFile, "Error: Divide By 0\n");
             break;
         case PE_SleepMode:
-            std::cout << "Error: Sleep Mode" << std::endl;
+            fprintf(logFile, "Error: Sleep Mode\n");
             break;
         default:
-            std::cout << "Error: Unknown Value of Process Error" << std::endl;
+            fprintf(logFile, "Error: Unknown Value of Process Error\n");
+            throw "Error: Unknown Value of Process Error";"
             break;
     }
 }
 
 
 #endif
-
-// Case 1:
-// All good -> 0
-
-// Case 2: GNC is down b/c of unknown reason
-// PE_GEN_ProcessDown -> Process ID GNC -> Reason/Unknown
-
-// ProcessID, ReasonCode
-
 
 
 

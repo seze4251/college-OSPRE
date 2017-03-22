@@ -251,6 +251,7 @@ void ImageProcessor::processImage(ImageMessage* msg) {
  */
 void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: ProcessHealthAndStatusRequest from WatchDog\n");
+    msg->print(logFile);
     
     processHealthMessage->update(localError);
     
@@ -270,7 +271,7 @@ void ImageProcessor::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusR
  */
 void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
     fprintf(logFile, "Received Message: ImageMessage from CameraController\n");
-    
+    msg->print(logFile);
     
     try {
         processImage(msg);

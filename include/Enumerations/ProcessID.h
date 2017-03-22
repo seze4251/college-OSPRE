@@ -9,7 +9,7 @@
 #ifndef PROCESSID_H
 #define PROCESSID_H
 
-#include "iostream"
+#include <stdio.h>
 
 enum ProcessID {
     P_NA = -1,
@@ -21,31 +21,33 @@ enum ProcessID {
     P_Spacecraft = 6,
 };
 
-static void printProcessID(ProcessID p) {
+static void printProcessID(ProcessID p, FILE* logFile) {
+    fprintf(logFile, "Printing ProcessID Enumeration:\n");
     switch (p) {
         case P_NA:
-            std::cout << "Process is N/A";
+            fprintf(logFile, "Process is N/A\n");
             break;
         case P_CameraController:
-            std::cout << "Camera Controller" << std::endl;
+            fprintf(logFile, "Camera Controller\n");
             break;
         case P_ScComms:
-            std::cout << "ScComms" << std::endl;
+            fprintf(logFile, "ScComms\n");
             break;
         case P_GNC:
-            std::cout << "GNC" << std::endl;
+            fprintf(logFile, "GNC\n");
             break;
         case P_ImageProcessor:
-            std::cout << "Image Processor" << std::endl;
+            fprintf(logFile, "Image Processor\n");
             break;
         case P_WatchDog:
-            std::cout << "WatchDog" << std::endl;
+            fprintf(logFile, "WatchDog\n");
             break;
         case P_Spacecraft:
-            std::cout << "Spacecraft" << std::endl;
+            fprintf(logFile, "Spacecraft\n");
             break;
         default:
-            std::cout << "Invalid value for Process ID" << std::endl;
+            fprintf(logFile, "Invalid value for Process ID\n");
+            throw "Invalid value for Process ID";
             break;
     }
 }

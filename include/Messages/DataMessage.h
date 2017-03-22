@@ -31,36 +31,35 @@ public:
         this->sleep = sleep;
     }
     
-    void print() {
-        printMessageHeader();
+    void print(FILE* logFile) {
+        fprintf(logFile, "Printing DataMessage");
+        printMessageHeader(logFile);
         
-        std::cout << "Ephem = ";
+        fprintf(logFile, "Ephem = ");
         for (int i = 0; i < 3; i++) {
-            std::cout << ephem[i] << " ";
+            fprintf(logFile, "%f ", ephem[i]);
         }
-        std::cout << " (km)" << std::endl;
+        fprintf(logFile, " (km)\n");
         
-        std::cout << "quat = ";
+        
+        fprintf(logFile, "Quat = ");
         for (int i = 0; i < 4; i++) {
-            std::cout << quat[i] << " ";
+            fprintf(logFile, "%f ", quat[i]);
         }
-        std::cout << std::endl;
+        fprintf(logFile, " \n");
         
-        std::cout << "Angular Velocity = ";
+        fprintf(logFile, "Angular Velocity = ");
         for (int i = 0; i < 3; i++) {
-            std::cout << angularVelocity[i] << " ";
+            fprintf(logFile, "%f ", angularVelocity[i]);
         }
-        std::cout << " (rad/s)" << std::endl;
-        
-        std::cout << "Sun Angle = " << sunAngle << " (degrees)" << std::endl;
-        std::cout << "satTime = " << satTime << " (s)" << std::endl;
+        fprintf(logFile, " (rad/s)\n");
+        fprintf(logFile, "Sun Angle = %f (degrees), satTime = %f(s)\n", sunAngle, satTime);
         
         if (sleep == true) {
-            std::cout << "Sleeping, no Capturing Data" << std::endl;
+            fprintf(logFile, "Sleeping, no Capturing Data");
         } else {
-            std::cout << "Can Capture Data" << std::endl;
+            fprintf(logFile, "Capturing Data Mode");
         }
-        
     }
     
     // Specific Data Members
