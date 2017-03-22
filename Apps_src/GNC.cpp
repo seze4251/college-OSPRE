@@ -666,9 +666,18 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
         fprintf(logFile, "HandleProcessedImageMessage: Calling Compute Solution\n");
         computeSolution(scData, msg);
         
+    } catch (InvalidInputs &e) {
+        fprintf(logFile, "Error: HandleProcessedImageMessage() InvalidInputs Exception Caught: %s\n", e.what());
+        localError = PE_InvalidInputs;
+        
+    } catch (InvalidOutput &e) {
+        fprintf(logFile, "Error: HandleProcessedImageMessage() InvalidOutput Exception Caught: %s\n", e.what());
+        localError = PE_InvalidOutput;
+        
     } catch(std::exception &exception) {
         fprintf(logFile, "Error: HandleProcessedImageMessage() Exception Caught: %s\n", exception.what());
-        localError = PE_invalidData;
+        localError = PE_NotHealthy;
+        throw;
         
     } catch (...) {
         fprintf(logFile, "Error: HandleProcessedImageMessage() Unknown Type of Exception Caught\n");

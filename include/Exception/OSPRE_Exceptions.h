@@ -27,42 +27,50 @@ private:
 
 //Image Processor
 class NoBodyInImage : public OSPRE_Exception {
+public:
     NoBodyInImage(std::string error) : OSPRE_Exception(error) {}
 };
 
 //Image Processor
 class InvalidInputs : public OSPRE_Exception {
+public:
     InvalidInputs(std::string error) : OSPRE_Exception(error) {}
 };
 
 //Image Processor
 class InvalidAlphaBetaTheta : public OSPRE_Exception {
+public:
     InvalidAlphaBetaTheta(std::string error) : OSPRE_Exception(error) {}
 };
 
 //Image Processor
 class InvalidPosition : public OSPRE_Exception {
+public:
     InvalidPosition(std::string error) : OSPRE_Exception(error) {}
 };
 
 // GNC
 class TextFileImproperFormat : public OSPRE_Exception {
+public:
     TextFileImproperFormat(std::string error) : OSPRE_Exception(error) {}
 };
 
 // GNC
 class InvalidOutput : public OSPRE_Exception {
-    InvalidEarthScMoonAngleRange(std::string error) : OSPRE_Exception(error) {}
+public:
+    InvalidOutput(std::string error) : OSPRE_Exception(error) {}
 };
 
 // GNC
 // Camera Controller
 class InvalidFileName : public OSPRE_Exception {
+public:
     InvalidFileName(std::string error) : OSPRE_Exception(error) {}
 };
 
 //Camera Controller
 class InvalidImageDimensions : public OSPRE_Exception {
+public:
     InvalidImageDimensions(std::string error) : OSPRE_Exception(error) {}
 };
 

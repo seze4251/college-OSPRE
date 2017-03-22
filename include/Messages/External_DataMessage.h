@@ -57,7 +57,7 @@ public:
             fprintf(logFile, "%f ", angularVelocity[i]);
         }
         fprintf(logFile, " (rad/s)\n");
-        fprintf(logFile, "Sun Angle = %f (degrees), satTime = %f(s)\n", sunAngle, satTime);
+        fprintf(logFile, "Sun Angle = %f (degrees), satTime = %ld(s)\n", sunAngle, satTime);
         
         if (sleep == true) {
             fprintf(logFile, "Sleeping, no Capturing Data");

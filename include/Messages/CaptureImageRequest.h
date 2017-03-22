@@ -28,7 +28,7 @@ public:
     }
     
     void print(FILE* logFile) {
-        printMessageHeader(FILE* logFile);
+        printMessageHeader(logFile);
         
         fprintf(logFile, "Estimated Position = ");
         for (int i = 0; i < 3; i++) {

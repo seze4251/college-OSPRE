@@ -164,7 +164,7 @@ void Spacecraft::handleExternalSolutionMessage(External_SolutionMessage* msg, Se
 
 void Spacecraft::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
     fprintf(logFile, "Error: Invalid Message Recived: ExternalDataMessage, Closing Connection\n");
-    scComms->closeConnection(logFile);
+    scComms->closeConnection();
 }
 
 

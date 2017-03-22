@@ -31,7 +31,8 @@ enum ProcessError {
     PE_CC_angularVelocityToHigh = 10,
     PE_invalidData = 11,
     PE_divideByZero = 12,
-    PE_SleepMode = 13
+    PE_SleepMode = 13,
+    PE_InvalidOutput = 14
 };
 
 static void printProcessError(ProcessError p, FILE* logFile) {
@@ -82,9 +83,12 @@ static void printProcessError(ProcessError p, FILE* logFile) {
         case PE_SleepMode:
             fprintf(logFile, "Error: Sleep Mode\n");
             break;
+        case PE_InvalidOutput:
+            fprintf(logFile, "Error: Invalid Output\n");
+            break;
         default:
             fprintf(logFile, "Error: Unknown Value of Process Error\n");
-            throw "Error: Unknown Value of Process Error";"
+            throw "Error: Unknown Value of Process Error";
             break;
     }
 }

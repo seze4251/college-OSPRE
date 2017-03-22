@@ -28,7 +28,7 @@ public:
     
     void printMessageHeader(FILE* logFile) {
         printMessageID(iden, logFile);
-        fprintf(logFile, "Message.timeStamp = %f (s)", timeStamp);
+        fprintf(logFile, "Message.timeStamp = %ld (s)", timeStamp);
     }
 };
 

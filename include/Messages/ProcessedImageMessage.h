@@ -33,7 +33,7 @@ public:
     void print(FILE* logFile) {
         fprintf(logFile, "Printing Processed Image Message\n");
         printMessageHeader(logFile);
-        fprintf(logFile, "alpha = %f, beta = %f, theta = %f, Pixel Error = %f, TimeStep = %f\n", alpha, beta, theta, pixel_error, timeStamp);
+        fprintf(logFile, "alpha = %f, beta = %f, theta = %f, Pixel Error = %f, TimeStep = %ld\n", alpha, beta, theta, pixel_error, timeStamp);
         printEarthMoon(point, logFile);
     }
     
