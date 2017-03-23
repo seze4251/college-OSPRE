@@ -34,12 +34,12 @@ void State_Error(const double X_ref[6], const double X_est[6], double posError[3
   // INPUT EXCEPTIONS
   if (sqrt(pow(X_ref[0], 2) + pow(X_ref[1], 2) + pow(X_ref[2], 2)) < 6378.137) {
       char logString[100];
-      sprintf("ERROR IN: State_Error.cpp\nReference state cannot be within the radius of Earth.", logString);
+      sprintf(logString, "ERROR IN: State_Error.cpp\nReference state cannot be within the radius of Earth.");
       throw InvalidInputs(logString);
   }
   if (sqrt(pow(X_est[0], 2) + pow(X_est[1], 2) + pow(X_est[2], 2)) < 6378.137) {
       char logString[100];
-      sprintf("ERROR IN: State_Error.cpp\nEstimated state cannot be within the radius of Earth.", logString);
+      sprintf(logString, "ERROR IN: State_Error.cpp\nEstimated state cannot be within the radius of Earth.");
       throw InvalidInputs(logString);
   }
 

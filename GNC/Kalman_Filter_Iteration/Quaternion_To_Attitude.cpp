@@ -41,7 +41,7 @@ void Quaternion_To_Attitude(const double q[4], double r_SC_body[3])
   // INPUT EXCEPTIONS
   if (sqrt(pow(q[0], 2) + pow(q[1], 2) + pow(q[2], 2) + pow(q[3], 2)) != 1) {
       char logString[100];
-      sprintf("ERROR IN: Quaternion_To_Attitude.cpp\nInvalid spacecraft quaternion.", logString);
+      sprintf(logString, "ERROR IN: Quaternion_To_Attitude.cpp\nInvalid spacecraft quaternion.");
       throw InvalidInputs(logString);
   }
 
@@ -71,7 +71,7 @@ void Quaternion_To_Attitude(const double q[4], double r_SC_body[3])
   // OUTPUT EXCEPTIONS
   if (sqrt(pow(r_SC_body[0], 2) + pow(r_SC_body[1], 2) + pow(r_SC_body[2], 2)) != 1) {
       char logString[100];
-      sprintf("ERROR IN: Quaternion_To_Attitude.cpp\nInvalid spacecraft unit vector.", logString);
+      sprintf(logString, "ERROR IN: Quaternion_To_Attitude.cpp\nInvalid spacecraft unit vector.");
       throw InvalidOutput(logString);
   }
 }

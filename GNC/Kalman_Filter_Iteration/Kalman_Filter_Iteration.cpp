@@ -66,7 +66,7 @@ void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36]
   // INPUT EXCEPTIONS
   if (sqrt(pow(X_ref[0], 2) + pow(X_ref[1], 2) + pow(X_ref[2], 2)) < 6378.137) {
       char logString[100];
-      sprintf("ERROR IN: Kalman_Filter_Iteration.cpp\nReference state cannot be within the radius of Earth.", logString);
+      sprintf(logString, "ERROR IN: Kalman_Filter_Iteration.cpp\nReference state cannot be within the radius of Earth.");
       throw InvalidInputs(logString);
   }
 
@@ -335,7 +335,7 @@ void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36]
   // OUTPUT EXCEPTIONS
   if (sqrt(pow(X_est[0], 2) + pow(X_est[1], 2) + pow(X_est[2], 2)) < 6378.137) {
       char logString[100];
-      sprintf("ERROR IN: Kalman_Filter_Iteration.cpp\nEstimated state cannot be within the radius of Earth.", logString);
+      sprintf(logString, "ERROR IN: Kalman_Filter_Iteration.cpp\nEstimated state cannot be within the radius of Earth.");
       throw InvalidOutput(logString);
   }
 }
