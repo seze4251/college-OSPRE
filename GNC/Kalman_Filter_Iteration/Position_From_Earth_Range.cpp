@@ -18,6 +18,8 @@
 #include "sind.h"
 #include "cosd.h"
 #include "tand.h"
+#include <stdio.h>
+#include "../../include/Exception/OSPRE_Exceptions.h"
 
 // Function Definitions
 
@@ -45,6 +47,29 @@
 void Position_From_Earth_Range(const double q_E[4], double alpha, double beta,
   double theta, double r_E_SC[3])
 {
+
+  // INPUT EXCEPTIONS
+  if (sqrt(pow(q_E[0], 2) + pow(q_E[1], 2) + pow(q_E[2], 2) + pow(q_E[3], 2)) != 1) {
+      char logString[100];
+      sprintf("ERROR IN: Position_From_Earth_Range.cpp\nInvalid spacecraft-Earth quaternion.", logString);
+      throw InvalidInputs(logString);
+  }
+  if (alpha < 0 | alpha > 360) {
+      char logString[100];
+      sprintf("ERROR IN: Position_From_Earth_Range.cpp\nEarth alpha angle not in valid range.", logString);
+      throw InvalidInputs(logString);
+  }
+  if (beta < 0 | beta > 360) {
+      char logString[100];
+      sprintf("ERROR IN: Position_From_Earth_Range.cpp\nEarth beta angle not in valid range.", logString);
+      throw InvalidInputs(logString);
+  }
+  if (theta < 0 | theta > 180) {
+      char logString[100];
+      sprintf("ERROR IN: Position_From_Earth_Range.cpp\nEarth theta angle not in valid range.", logString);
+      throw InvalidInputs(logString);
+  }
+
   double r_SC_E[3];
   double d8;
   double d9;

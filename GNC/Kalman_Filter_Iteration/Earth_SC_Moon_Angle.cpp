@@ -1,4 +1,6 @@
 #include "norm.h"
+#include <stdio.h>
+#include "../../include/Exception/OSPRE_Exceptions.h"
 
 // Function Definitions
 
@@ -10,6 +12,14 @@
 //
 double Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3])
 {
+
+  // INPUT EXCEPTIONS
+  if (sqrt(pow(r_E_SC[0], 2) + pow(r_E_SC[1], 2) + pow(r_E_SC[2], 2)) < 6378.137) {
+      char logString[100];
+      sprintf("ERROR IN: Earth_SC_Moon_Angle.cpp\nSpacecraft state cannot be within the radius of Earth.", logString);
+      throw InvalidInputs(logString);
+  }
+
   double c;
   double r_SC_M[3];
   double r_SC_E[3];
@@ -39,7 +49,16 @@ double Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3])
     r_SC_E[k] = -r_E_SC[k];
   }
 
+  // OUTPUT EXCEPTIONS
+  if ((57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)))) < 0 | (57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)))) > 360) {
+      char logString[100];
+      sprintf("ERROR IN: Earth_SC_Moon_Angle.cpp\nEarth-spacecraft-Moon angle not in valid range.", logString);
+      throw InvalidOutput(logString);
+
   return 57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)));
+
+
+  }
 }
 
 //
