@@ -30,6 +30,14 @@ int main(int argc, char **argv) {
 	time_t rawtime;
 	struct tm * timinfo;
 
+	// Set up analysis variables
+	double pix_deg[2] = {72, 72};
+	double estPos[3] = {21212.105392, 25545.913981, 7945.349932};
+	double moonEphem[3] = {-20878.747372, 347641.764991, 132624.248850};
+	PointEarthMoon emPt = PEM_Earth;
+
+
+
 	//rawtime = time(0);
 	//timeinfo = localtime(&rawtime);
 	//strftime(buffer, 80, "./log/ImageProcessorLog_%d-%m-%Y.log", timeinfo);
@@ -42,6 +50,7 @@ int main(int argc, char **argv) {
 
 	//// Set Timeout to 1 minute
 	//setTimeoutTime(60, 0);
+
 }
 
 // *******************************
@@ -126,7 +135,7 @@ double calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon po
 }
 
 
-void processImage(ImageMessage* msg) {
+void processImage(void) {
 	setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
 
 
@@ -191,6 +200,3 @@ void readImage(std::string imgFilename) {
 	imageMessage->currentImageSize = 2428800;
 	fprintf(logFile, "Read Image: Finished Image Read\n");
 }
-
-}
-
