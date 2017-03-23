@@ -36,7 +36,8 @@ int main(int argc, char **argv) {
 	double moonEphem[3] = {-20878.747372, 347641.764991, 132624.248850};
 	PointEarthMoon emPt = PEM_Earth;
 
-
+	double sensitivity;
+	double radGuessIn[2];
 
 	//rawtime = time(0);
 	//timeinfo = localtime(&rawtime);
@@ -51,6 +52,9 @@ int main(int argc, char **argv) {
 	//// Set Timeout to 1 minute
 	//setTimeoutTime(60, 0);
 
+	analyzeImage((unsigned char*)msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, 
+		&radius, &numCirc, &alpha, &beta, &theta, msg->pix_deg, msg->cameraWidth, msg->cameraHeight);
+
 }
 
 // *******************************
@@ -58,12 +62,13 @@ int main(int argc, char **argv) {
 // Application Functionality:
 //
 // ********************************
-void setImageParameters(PointEarthMoon point, double* pix_deg, double* estPos, double* moonEphem) {
+void setImageParameters(PointEarthMoon point, double* pix_deg, double* estPos, double* moonEphem,
+                        double* sensitivity, double* radGuessIn) {
 	// estimated Position is a double[3] km, ECI frame
 	// Need to Set Variables:
 	// double sensitivity;
 	// double pxDeg[2]; // Pixel Per Degree
-	// double dv3[2]; //Pixel Radius Guess from estimated Position
+	// double radGuessIn[2]; //Pixel Radius Guess from estimated Position
 
 	if (point == PEM_Earth) {
 		// Evaluate on the assumption that we're pointing at the Earth
@@ -79,7 +84,7 @@ void setImageParameters(PointEarthMoon point, double* pix_deg, double* estPos, d
 		double moonPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Moon in height and width
 
 																		   // Get radius guess
-		calcRadGuess(moonPxDiam, estPos, point, dv3);
+		calcRadGuess(moonPxDiam, estPos, point, radGuessIn);
 
 		// Get analysis sensitivity
 		sensitivity = calcSens(moonPxDiam, estPos, point); // This function needs to be emperically determined
@@ -135,34 +140,6 @@ double calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon po
 }
 
 
-void processImage(void) {
-	setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
-
-
-	fprintf(logFile, "Analyze Image: Starting Call to Analyze Image\n");
-	fprintf(logFile, "Analyze Image Inputs:\n");
-
-	fprintf(logFile, "dv3 = %f  %f, sens = %f, \npix_deg %f  %f, camera Width %d  camera height %d\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], msg->cameraWidth, msg->cameraHeight);
-
-	analyzeImage((unsigned char*)msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta, msg->pix_deg, msg->cameraWidth, msg->cameraHeight);
-
-	fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
-
-	if (numCirc) {
-		fprintf(logFile, "Analyze Image: BODY HAS BEEN FOUND!!!!\n");
-		fprintf(logFile, "Found %1.2f Object(s)\n", numCirc);
-		fprintf(logFile, "Center (%f,%f)\n ", centerPt_data[0], centerPt_data[1]);
-		fprintf(logFile, "Radius %f\n", radius);
-		fprintf(logFile, "Alpha = %f, Beta = %f,  Theta = %f\n", alpha, beta, theta); \
-	}
-
-
-	// TEMP
-	pixel_error = 0;
-	// Update ProcessedImageMessage
-	processedImageMessage->update(alpha, beta, theta, pixel_error, msg->point, msg->timeStamp);
-}
-
 void readImage(std::string imgFilename) {
 	// Get image
 	fprintf(logFile, "Read Image: Starting Image Read\n");
@@ -179,7 +156,7 @@ void readImage(std::string imgFilename) {
 	}
 
 	// Allocate variables
-	unsigned char* imIn = (unsigned char*)imageMessage->getImagePointer(); // <--- Change this to be compatible with msg
+	unsigned char* imIn = (unsigned char*)imageMessage->getImagePointer();
 	cv::Vec3b intensity;
 
 	int counter = 0;
