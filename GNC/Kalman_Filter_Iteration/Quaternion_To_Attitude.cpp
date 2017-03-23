@@ -15,6 +15,8 @@
 #include "Position_From_Moon_Range.h"
 #include "Quaternion_To_Attitude.h"
 #include "State_Error.h"
+#include <stdio.h>
+#include "../../include/Exception/OSPRE_Exceptions.h"
 
 // Function Definitions
 
@@ -35,6 +37,14 @@
 //
 void Quaternion_To_Attitude(const double q[4], double r_SC_body[3])
 {
+
+  // INPUT EXCEPTIONS
+  if (sqrt(pow(q[0], 2) + pow(q[1], 2) + pow(q[2], 2) + pow(q[3], 2)) != 1) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Quaternion_To_Attitude.cpp\nInvalid spacecraft quaternion.");
+      throw InvalidInputs(logString);
+  }
+
   double b_q[9];
   int i1;
   int i2;
@@ -56,6 +66,13 @@ void Quaternion_To_Attitude(const double q[4], double r_SC_body[3])
     for (i2 = 0; i2 < 3; i2++) {
       r_SC_body[i1] += b_q[i1 + 3 * i2] * (double)b[i2];
     }
+  }
+
+  // OUTPUT EXCEPTIONS
+  if (sqrt(pow(r_SC_body[0], 2) + pow(r_SC_body[1], 2) + pow(r_SC_body[2], 2)) != 1) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Quaternion_To_Attitude.cpp\nInvalid spacecraft unit vector.");
+      throw InvalidOutput(logString);
   }
 }
 

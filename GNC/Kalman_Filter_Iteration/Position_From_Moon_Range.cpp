@@ -18,6 +18,8 @@
 #include "sind.h"
 #include "cosd.h"
 #include "tand.h"
+#include <stdio.h>
+#include "../../include/Exception/OSPRE_Exceptions.h"
 
 // Function Definitions
 
@@ -47,6 +49,29 @@
 void Position_From_Moon_Range(const double r_E_M[3], const double q_M[4], double
   alpha, double beta, double theta, double r_E_SC[3])
 {
+
+  // INPUT EXCEPTIONS
+  if (sqrt(pow(q_M[0], 2) + pow(q_M[1], 2) + pow(q_M[2], 2) + pow(q_M[3], 2)) != 1) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Moon_Range.cpp\nInvalid spacecraft-Moon quaternion.");
+      throw InvalidInputs(logString);
+  }
+  if (alpha < 0 | alpha > 360) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Moon_Range.cpp\nMoon alpha angle not in valid range.");
+      throw InvalidInputs(logString);
+  }
+  if (beta < 0 | beta > 360) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Moon_Range.cpp\nMoon beta angle not in valid range.");
+      throw InvalidInputs(logString);
+  }
+  if (theta < 0 | theta > 180) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Moon_Range.cpp\nMoon theta angle not in valid range.");
+      throw InvalidInputs(logString);
+  }
+
   double r_SC_M[3];
   double d13;
   double d14;

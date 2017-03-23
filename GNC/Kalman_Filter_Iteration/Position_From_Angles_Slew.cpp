@@ -18,6 +18,8 @@
 #include "norm.h"
 #include "sind.h"
 #include "cosd.h"
+#include <stdio.h>
+#include "../../include/Exception/OSPRE_Exceptions.h"
 
 // Function Definitions
 
@@ -59,6 +61,45 @@ void Position_From_Angles_Slew(const double r_E_M[3], const double q_E[4], const
   double q_M[4], double alpha_M, double beta_M, double alpha_E, double beta_E,
   const double vel[3], double time, double r_E_SC1[3], double r_E_SC2[3])
 {
+
+  // INPUT EXCEPTIONS
+  if (time < 0) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nTime cannot be negative.");
+      throw InvalidInputs(logString);
+  }
+  if (sqrt(pow(q_E[0], 2) + pow(q_E[1], 2) + pow(q_E[2], 2) + pow(q_E[3], 2)) != 1) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nInvalid spacecraft-Earth quaternion.");
+      throw InvalidInputs(logString);
+  }
+  if (sqrt(pow(q_M[0], 2) + pow(q_M[1], 2) + pow(q_M[2], 2) + pow(q_M[3], 2)) != 1) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nInvalid spacecraft-Moon quaternion.");
+      throw InvalidInputs(logString);
+  }
+  if (alpha_M < 0 | alpha_M > 360) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nMoon alpha angle not in valid range.");
+      throw InvalidInputs(logString);
+  }
+  if (alpha_E < 0 | alpha_E > 360) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nEarth alpha angle not in valid range.");
+      throw InvalidInputs(logString);
+  }
+  if (beta_M < 0 | beta_M > 360) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nMoon beta angle not in valid range.");
+      throw InvalidInputs(logString);
+  }
+  if (beta_E < 0 | beta_E > 360) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nEarth beta angle not in valid range.");
+      throw InvalidInputs(logString);
+  }
+
+
   double d0;
   double d1;
   double c;

@@ -15,23 +15,24 @@
 #include "Position_From_Moon_Range.h"
 #include "Quaternion_To_Attitude.h"
 #include "State_Error.h"
+#include <stdio.h>
+#include "../../include/Exception/OSPRE_Exceptions.h"
+
 // Function Definitions
 
 void get_Reference_Trajectory(double X_ref[6], Reference_Trajectory ref_traj, double time) {
-    // Need GNC data message time to interpolate ref_traj state
     
-    // Declare state components
-
     // Create array of differences between current time and reference trajectory times
-    int time_diff [size(ref_traj.time];
-    for(int i = 0; i < size(ref_traj.time); i++){
+    int ref_traj_size = sizeof(ref_traj.time)/sizeof(ref_traj.time[0]);
+    double time_diff [ref_traj_size];
+    for(int i = 0; i < ref_traj_size; i++){
 	time_diff[i] = abs(time - ref_traj.time[i]);
     }
 
     // Find smallest time difference and index of smallest time difference
-    int smallest = time_diff[0];
+    double smallest = time_diff[0];
     int smallest_index = 0;
-    for(int i = 1; i < size(time_diff); i++){
+    for(int i = 1; i < ref_traj_size; i++){
 	if(time_diff[i] < smallest){
 	    smallest = time_diff[i];
 	    smallest_index = i;
@@ -61,6 +62,13 @@ void get_Reference_Trajectory(double X_ref[6], Reference_Trajectory ref_traj, do
 //
 void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36], const double Y[3], const double R[9], double X_ref[6], double time, double X_est[6])
 {
+
+  // INPUT EXCEPTIONS
+  if (sqrt(pow(X_ref[0], 2) + pow(X_ref[1], 2) + pow(X_ref[2], 2)) < 6378.137) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Kalman_Filter_Iteration.cpp\nReference state cannot be within the radius of Earth.");
+      throw InvalidInputs(logString);
+  }
 
   double b_phi[36];
   int p3;
@@ -322,6 +330,13 @@ void Kalman_Filter_Iteration(double x_hat[6], const double phi[36], double P[36]
     }
 
     X_est[p1] = X_ref[p1] + x_hat[p1];
+  }
+
+  // OUTPUT EXCEPTIONS
+  if (sqrt(pow(X_est[0], 2) + pow(X_est[1], 2) + pow(X_est[2], 2)) < 6378.137) {
+      char logString[100];
+      sprintf(logString, "ERROR IN: Kalman_Filter_Iteration.cpp\nEstimated state cannot be within the radius of Earth.");
+      throw InvalidOutput(logString);
   }
 }
 
