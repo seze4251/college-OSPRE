@@ -79,6 +79,9 @@ void ImageProcessor::open() {
     // Log Application Starting
     fprintf(logFile, "Image Processor Application Started, Time = %ld\n", time(0));
     
+    // Read in OSPRE CONFIG File
+    readOSPREServerConfigFile();
+    
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     

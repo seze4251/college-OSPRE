@@ -100,6 +100,9 @@ void GNC::open() {
     // Log Application Starting
     fprintf(logFile, "GNC Application Started, Time = %ld\n", time(0));
     
+    // Read in OSPRE CONFIG File
+    readOSPREServerConfigFile();
+    
     // Set Timeout to 1 minute
     setTimeoutTime(10, 0);
     

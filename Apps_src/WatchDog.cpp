@@ -57,6 +57,9 @@ void WatchDog::open() {
     // Log Application Starting
     fprintf(logFile, "WatchDog Application Started, Time = %ld\n", time(0));
     
+    // Read in OSPRE CONFIG File
+    readOSPREServerConfigFile();
+    
     // Set Timeout
     setTimeoutTime(1, 0);
     

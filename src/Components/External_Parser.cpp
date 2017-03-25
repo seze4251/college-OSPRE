@@ -104,7 +104,12 @@ Message_External* External_Parser::parseExternal_DataMessage() {
     }
     
     data->satTime = buf.getLong();
-    data->sunAngle = buf.getDouble();
+    
+    for (int i = 0; i < 3; i++) {
+        data->sunAngle[i] = buf.getDouble();
+    }
+    
+    
     data->sleep = (bool) buf.get();
     
     return data;

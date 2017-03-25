@@ -14,7 +14,7 @@
 
 ServiceExternal* Spacecraft::scComms;
 
-Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : pollTime(0), ospreHostName(ospreHostName), osprePort(osprePort) {
+Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : scDataReader(Spacecraft_APPL_ID), pollTime(0), ospreHostName(ospreHostName), osprePort(osprePort) {
     setAppl(this);
     
     // Initialize scComms
@@ -56,6 +56,24 @@ void Spacecraft::open() {
     // Log Application Starting
     fprintf(logFile, "Spacecraft Application Started, Time = %ld\n", time(0));
     
+    // Read in OSPRE CONFIG File
+    readOSPREServerConfigFile();
+    
+    // Read in Spacecraft DataFile
+    scDataReader.readDataFile("OSPRE_Test_DIR/Test_Data/Satellite_Data.txt");
+    dataMessage = scDataReader.getNextDataMessage();
+    dataMessage->print(logFile);
+    dataMessage = scDataReader.getNextDataMessage();
+    dataMessage->print(logFile);
+    fprintf(logFile, "EXITING, Spacecraft Processing Exiting for testing\n");
+    exit(0);
+    dataMessage = scDataReader.getNextDataMessage();
+    dataMessage->print(logFile);
+    dataMessage = scDataReader.getNextDataMessage();
+    dataMessage->print(logFile);
+    dataMessage = scDataReader.getNextDataMessage();
+    dataMessage->print(logFile);
+    
     // Set Timeout to half a second
     setTimeoutTime(0, 500000);
     
@@ -72,6 +90,7 @@ void Spacecraft::open() {
     } else {
         fprintf(logFile, "Error: Unable to Connect to ScComms\n");
     }
+    
     
 }
 
@@ -100,7 +119,7 @@ void Spacecraft::handleTimeout() {
             double quat[4] {0.25, 0.55, 0.75, 1.5};
             double angularVelocity[3] {1, 2, 3};
             time_t satTime = time(0);
-            double sunAngle = 5;
+            double sunAngle[3] {5,6,7};
             bool sleep = false;
             
             // Update Data Message
@@ -153,7 +172,7 @@ void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, Ser
 
 void Spacecraft::handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
     fprintf(logFile, "Received Message: ExternalPointing Message from ScComms\n");
-     msg->print(logFile);
+    msg->print(logFile);
 }
 
 void Spacecraft::handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
@@ -166,15 +185,6 @@ void Spacecraft::handleExternalDataMessage(External_DataMessage* msg, ServiceExt
     fprintf(logFile, "Error: Invalid Message Recived: ExternalDataMessage, Closing Connection\n");
     scComms->closeConnection();
 }
-
-
-
-
-
-
-
-
-
 
 
 

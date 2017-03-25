@@ -21,13 +21,13 @@ public:
     
     MessageID getMessageID() { return I_DataMessage; }
     
-    void update(double* ephem, double* quat, double* angularVelocity, time_t satTime, double sunAngle, bool sleep) {
+    void update(double* ephem, double* quat, double* angularVelocity, time_t satTime, double* sunAngle, bool sleep) {
         this->timeStamp = time(0);
         memcpy(this->ephem, ephem, 3 * sizeof(double));
         memcpy(this->quat, quat, 4 * sizeof(double));
         memcpy(this->angularVelocity, angularVelocity, 3 * sizeof(double));
         this->satTime = satTime;
-        this->sunAngle = sunAngle;
+        memcpy(this->sunAngle, sunAngle, 3 * sizeof(double));
         this->sleep = sleep;
     }
     
@@ -52,8 +52,16 @@ public:
         for (int i = 0; i < 3; i++) {
             fprintf(logFile, "%f ", angularVelocity[i]);
         }
-        fprintf(logFile, " (rad/s)\n");
-        fprintf(logFile, "Sun Angle = %f (degrees), satTime = %ld(s)\n", sunAngle, satTime);
+        fprintf(logFile, " (deg/s)\n");
+        
+        fprintf(logFile, "Sun Angle = ");
+        for (int i = 0; i < 3; i++) {
+            fprintf(logFile, "%f ", sunAngle[i]);
+        }
+        
+        fprintf(logFile, " (degrees)\n");
+        
+        fprintf(logFile, "satTime = %ld(s)\n", satTime);
         
         if (sleep == true) {
             fprintf(logFile, "Sleeping, no Capturing Data");
@@ -76,7 +84,7 @@ public:
     time_t satTime;
     
     // Sun Angle
-    double sunAngle;
+    double sunAngle[3];
     
     bool sleep;
     

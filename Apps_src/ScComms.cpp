@@ -65,6 +65,9 @@ void ScComms::open() {
     // Log Application Starting
     fprintf(logFile, "ScComms Application Started, Time = %ld", time(0));
     
+    // Read in OSPRE CONFIG File
+    readOSPREServerConfigFile();
+    
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     
@@ -307,6 +310,7 @@ void ScComms::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
     fprintf(logFile, "Error: Invalid Message Recived: DataMessage, Closing Connection\n");
     service->closeConnection();
 }
+
 
 
 

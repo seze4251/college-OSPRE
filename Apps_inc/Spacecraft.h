@@ -16,6 +16,8 @@
 
 #include "Server.h"
 #include "ServiceExternal.h"
+#include "External_Messages.h"
+#include "SpacecraftDataReader.h"
 
 class Spacecraft : public Server {
 public:
@@ -60,6 +62,8 @@ private:
     
     // Pointer To Hold Messages that Are being sent
     External_DataMessage* dataMessage;
+    
+    SpacecraftDataReader scDataReader;
 };
 
 #endif

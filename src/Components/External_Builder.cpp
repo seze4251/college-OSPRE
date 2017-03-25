@@ -51,7 +51,9 @@ void External_Builder::buildExternal_DataMessage(External_DataMessage&msg) {
     buf.putLong(msg.satTime);
     
     // Sun Angle
-    buf.putDouble(msg.sunAngle);
+    for (int i = 0; i < 3; i++) {
+         buf.putDouble(msg.sunAngle[i]);
+    }
     
     // Sleep
     buf.put(msg.sleep);

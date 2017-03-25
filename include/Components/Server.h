@@ -38,9 +38,15 @@ protected:
     timeval t_val;
     FILE* logFile;
     
+    // Additions for testing
+    bool liveMode;
+    std::string testDIR;
+    void readOSPREServerConfigFile();
+    
 private:
     Selector sel;
     int flushTime;
+    
 };
 
 #endif

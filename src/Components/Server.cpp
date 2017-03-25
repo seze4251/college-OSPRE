@@ -20,6 +20,7 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 #include <ctime>
+#include <fstream>
 
 #include "Server.h"
 
@@ -92,26 +93,45 @@ int Server::run() {
     return 0;
 }
 
-/*
-// in the file you are registering the signal handler
- #include <signal.h>
- 
- //before the function where you want to register the handler
- extern bool flag = false;
- 
- void signalHandler(int) {
-    flag = true;
- }
+void Server::readOSPREServerConfigFile() {
+    std::ifstream file("Text_Data/OSPRE_Server_Config.txt");
+    
+    if (!file) {
+        fprintf(logFile, "Error: read Config File: Text_Data/OSPRE_Server_Config.txt could not be opened for reading\n");
+        throw "Server Config File Could Not Be Opened for Reading";
+    }
+    
+    std::string line;
+    int holder;
+    std::getline(file, line);
+    
+    // Read in bool to determine whether we are in config mode or live mode
+    file >> holder;
+    if (holder == 1) {
+        liveMode = true;
+        printf("MODE Choice: OSPRE in LIVE mode\n");
+        return;
+    } else if (holder == 2) {
+        liveMode = false;
+        printf("MODE Choice: OSPRE in SIM mode\n");
+        
+    } else {
+        throw "ServerInternal::readOSPREServerConfigFile, invalid mode input, please put 1 or 2";
+    }
+    
+    std::getline(file, line);
+    std::getline(file, line);
+    
+    file >> testDIR;
+    
+    if (testDIR.empty() == true) {
+        //   fprintf(logFile, "Error: ServerInternal::readOSPREServerConfigFile() test dir string is empty");
+        throw "ServerInternal::readOSPREServerConfigFile() test dir string is empty";
+    }
+    
+    printf("TEST_DIR: TestDIR = %s\n", testDIR.c_str());
+}
 
- //register the signal handler
- signal(SIGTERM, signalHandler);
- 
- //check flag to see if the signal has been received. If non-fatal then reset the flag back to false.
- if (flag == true) {
-    flag = false;
-    doSomething();  // possibly break out of your mainloop()
- }
- 
- // Notes: signalHandler() will get called upon receipt of this signal. It can happen anytime at any point in time. You want to do the very minimum inside a signal handler.
- // Also, between the time the flag is checked and the time it is reset to false, the signalHandler() might have been invoked again.
-*/
+
+
+

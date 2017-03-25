@@ -87,7 +87,7 @@ Message* Parser::parseMessage(bool* partialMessage) {
     
     timeStamp = (time_t) buf.getLong();
     Message* msg = nullptr;
-
+    
     switch (messageID) {
         case I_CaptureImageRequest:
             msg = parseCaptureImageRequest();
@@ -196,7 +196,7 @@ Message* Parser::parseDataMessage() {
     if (data == nullptr) {
         data = new DataMessage();
     }
-
+    
     data->timeStamp = timeStamp;
     data->iden = messageID;
     
@@ -214,7 +214,11 @@ Message* Parser::parseDataMessage() {
     }
     
     data->satTime = buf.getLong();
-    data->sunAngle = buf.getDouble();
+    
+    for (int i = 0; i < 3; i++) {
+        data->sunAngle[i] = buf.getDouble();
+    }
+    
     data->sleep = (bool) buf.get();
     
     return data;
@@ -296,7 +300,7 @@ Message* Parser::parseImageMessage() {
     
     image->cameraWidth = buf.getInt();
     image->cameraHeight = buf.getInt();
-
+    
     for (int i = 0; i < 2; i++) {
         image->pix_deg[i] = buf.getDouble();
     }
@@ -318,7 +322,7 @@ Message* Parser::parseImageMessage() {
     
     image->currentImageSize = imageLength;
     buf.get(image->getImagePointer(), imageLength);
-
+    
     return image;
 }
 

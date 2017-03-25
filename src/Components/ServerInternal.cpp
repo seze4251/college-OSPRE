@@ -8,6 +8,8 @@
 
 #include <unistd.h>
 #include <stdio.h>
+
+
 #include "ServerInternal.h"
 
 ServiceInternal* ServerInternal::connections[ServerInternal::MaxClients];
@@ -21,6 +23,7 @@ ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_
         connections[i] = nullptr;
     }
     p_ID_Static = p_ID;
+    
 }
 
 //Destructor
@@ -183,5 +186,8 @@ void ServerInternal::handleMessage(Message* msg, ServiceInternal* service) {
             service->closeConnection();
     }
 }
+
+
+
 
 

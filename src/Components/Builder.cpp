@@ -69,7 +69,7 @@ void Builder::buildCaptureImageRequest(CaptureImageRequest &msg) {
 }
 
 void Builder::buildDataMessage(DataMessage &msg) {
-    int messageSize = HEADER_MESSAGE_SIZE + 12*sizeof(long) + 1;
+    int messageSize = HEADER_MESSAGE_SIZE + 14*sizeof(long) + 1;
     
     // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
@@ -97,7 +97,9 @@ void Builder::buildDataMessage(DataMessage &msg) {
     buf.putLong(msg.satTime);
     
     // sunAngle
-    buf.putDouble(msg.sunAngle);
+    for (int i = 0; i < 3; i++) {
+        buf.putDouble(msg.sunAngle[i]);
+    }
     
     buf.put((char) msg.sleep);
     

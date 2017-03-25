@@ -10,6 +10,8 @@
 #ifndef SERVERINTERNAL_H
 #define SERVERINTERNAL_H
 
+#include <string>
+
 #include "Server.h"
 #include "ServiceInternal.h"
 #include "Internal_Messages.h"
@@ -56,11 +58,10 @@ public:
     
 protected:
     Acceptor accept;
-    
     std::string hostName;
     int localPort;
-    
     static ServiceInternal *connections[MaxClients];
+    
     
 private:
     

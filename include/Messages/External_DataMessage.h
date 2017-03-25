@@ -22,16 +22,16 @@ public:
         header.header_struct.packetType = 0;
         header.header_struct.sequenceFlags = 3;
         header.header_struct.packetSequence = 0;
-        header.header_struct.packetDataLength = (8 * 12 + 5) - 1;
+        header.header_struct.packetDataLength = (8 * 14 + 5) - 1;
     }
     
     // Update Data Message
-    void update(double* ephem, double* quat, double* angularVelocity, time_t satTime, double sunAngle, bool sleep) {
+    void update(double* ephem, double* quat, double* angularVelocity, time_t satTime, double* sunAngle, bool sleep) {
         memcpy(this->ephem, ephem, 3*sizeof(double));
         memcpy(this->quat, quat, 4*sizeof(double));
         memcpy(this->angularVelocity, angularVelocity, 3*sizeof(double));
         this->sleep = sleep;
-        this->sunAngle = sunAngle;
+        memcpy(this->sunAngle, sunAngle, 3 * sizeof(double));
         this->satTime = satTime;
     }
     
@@ -56,8 +56,17 @@ public:
         for (int i = 0; i < 3; i++) {
             fprintf(logFile, "%f ", angularVelocity[i]);
         }
-        fprintf(logFile, " (rad/s)\n");
-        fprintf(logFile, "Sun Angle = %f (degrees), satTime = %ld(s)\n", sunAngle, satTime);
+        fprintf(logFile, " (deg/s)\n");
+
+        
+        fprintf(logFile, "Sun Angle = ");
+        for (int i = 0; i < 3; i++) {
+            fprintf(logFile, "%f ", sunAngle[i]);
+        }
+        
+        fprintf(logFile, " (degrees)\n");
+        
+        fprintf(logFile, "satTime = %ld(s)\n", satTime);
         
         if (sleep == true) {
             fprintf(logFile, "Sleeping, no Capturing Data");
@@ -80,7 +89,7 @@ public:
     time_t satTime;
     
     // Sun Angle
-    double sunAngle;
+    double sunAngle[3];
     
     // Sleep Mode, when == true go to sleep
     bool sleep;
