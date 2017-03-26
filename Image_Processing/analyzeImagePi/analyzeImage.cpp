@@ -227,8 +227,8 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   if ((centers->size[0] == 0) || (centers->size[1] == 0)) {
     // If no objects throw error
     char logString[50];
-    sprintf(logString,"Excpetion Time = %ld, Expected to find celestial body but did not find anything; \
-            radius guess: [%f %f], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
+    sprintf(logString,"Exception Time = %ld, Expected to find celestial body but did not find anything; \
+            radius guess: [%d %d], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
             sensVal);
     throw NoBodyInImage(logString);
 
