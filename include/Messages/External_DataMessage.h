@@ -69,9 +69,9 @@ public:
         fprintf(logFile, "satTime = %ld(s)\n", satTime);
         
         if (sleep == true) {
-            fprintf(logFile, "Sleeping, no Capturing Data");
+            fprintf(logFile, "Sleeping, no Capturing Data\n");
         } else {
-            fprintf(logFile, "Capturing Data Mode");
+            fprintf(logFile, "Capturing Data Mode\n");
         }
     }
     

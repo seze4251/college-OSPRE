@@ -67,6 +67,7 @@ void CameraController::open() {
     
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
+    fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);

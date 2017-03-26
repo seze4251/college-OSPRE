@@ -90,7 +90,7 @@ static void printMessageID(MessageID ID, FILE* logFile) {
             break;
             
         default:
-            fprintf(logFile, "Error: Unknown Value of Message ID\n");
+            fprintf(logFile, "Error: Unknown Value of Message ID, ID = %d\n", (int) ID);
             break;
     }
 }

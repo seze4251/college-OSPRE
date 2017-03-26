@@ -81,6 +81,7 @@ void ImageProcessor::open() {
     
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
+    fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
@@ -279,6 +280,13 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     try {
         processImage(msg);
         
+        // Send Processed Image Message to GNC
+        if (gnc != nullptr) {
+            gnc->sendMessage(processedImageMessage);
+            fprintf(logFile, "Sent Message: ProcessedImageMessage to GNC\n");
+        }
+        
+        
     } catch (NoBodyInImage &e) {
         fprintf(logFile, "Error: HandleImageMessage() NoBodyInImage Exception Caught: %s\n", e.what());
         localError = PE_IP_noBodyInImage;
@@ -303,12 +311,6 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     } catch (...) {
         fprintf(logFile, "Error: HandleImageMessage() Unknown Type of Exception Caught\n");
         throw;
-    }
-    
-    // Send Processed Image Message to GNC
-    if (gnc != nullptr) {
-        gnc->sendMessage(processedImageMessage);
-        fprintf(logFile, "Sent Message: ProcessedImageMessage to GNC\n");
     }
 }
 

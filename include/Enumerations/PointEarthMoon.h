@@ -26,7 +26,7 @@ static void printEarthMoon(PointEarthMoon pem, FILE* logFile) {
     } else if (pem == PEM_Moon) {
         fprintf(logFile, "Point at Moon\n");
     } else {
-        fprintf(logFile, "Point is undefined value\n");
+        fprintf(logFile, "Point is undefined value, PEM = %d\n", (int) pem);
         throw "Pointing at an undefined value (Not Part of ENUM)\n";
     }
 }

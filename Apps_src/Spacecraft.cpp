@@ -20,16 +20,10 @@ Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : scDataReader(
     // Initialize scComms
     scComms = nullptr;
     
-    // Allocate Memory for Messages to Send
-    dataMessage = new External_DataMessage(Spacecraft_APPL_ID);
-    
     logFile = nullptr;
 }
 
 Spacecraft::~Spacecraft() {
-    //Free Messages from Memory
-    delete dataMessage;
-    
     // Free ServiceExternal
     if (scComms != nullptr) {
         delete scComms;
@@ -58,21 +52,11 @@ void Spacecraft::open() {
     
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
+    fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Read in Spacecraft DataFile
     scDataReader.readDataFile("OSPRE_Test_DIR/Test_Data/Satellite_Data.txt");
-    dataMessage = scDataReader.getNextDataMessage();
-    dataMessage->print(logFile);
-    dataMessage = scDataReader.getNextDataMessage();
-    dataMessage->print(logFile);
-    fprintf(logFile, "EXITING, Spacecraft Processing Exiting for testing\n");
-    exit(0);
-    dataMessage = scDataReader.getNextDataMessage();
-    dataMessage->print(logFile);
-    dataMessage = scDataReader.getNextDataMessage();
-    dataMessage->print(logFile);
-    dataMessage = scDataReader.getNextDataMessage();
-    dataMessage->print(logFile);
+    fprintf(logFile, "File Input: Read Spacecraft Data File\n");
     
     // Set Timeout to half a second
     setTimeoutTime(0, 500000);
@@ -112,18 +96,9 @@ void Spacecraft::handleTimeout() {
     if (currentTime > pollTime) {
         // Send Poll
         if (scComms -> isConnected()) {
+            dataMessage = scDataReader.getNextDataMessage();
+            dataMessage->sleep =  false;
             
-            // BS data members to start
-            // TODO: UPDATE THESE TO REAL VALUES
-            double ephem[3] {4, 5, 6};
-            double quat[4] {0.25, 0.55, 0.75, 1.5};
-            double angularVelocity[3] {1, 2, 3};
-            time_t satTime = time(0);
-            double sunAngle[3] {5,6,7};
-            bool sleep = false;
-            
-            // Update Data Message
-            dataMessage->update(ephem, quat, angularVelocity, satTime, sunAngle, sleep);
             fprintf(logFile, "Sent Message: ExternalDataMessage to ScComms\n");
             scComms->sendMessage(dataMessage);
             pollTime = currentTime + 1;

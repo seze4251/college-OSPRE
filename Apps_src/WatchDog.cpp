@@ -59,6 +59,7 @@ void WatchDog::open() {
     
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
+    fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Set Timeout
     setTimeoutTime(1, 0);

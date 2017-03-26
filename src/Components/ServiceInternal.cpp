@@ -152,6 +152,10 @@ void ServiceInternal::sendMessage(Message* msg) {
         return;
     }
     
+    if (msg == nullptr) {
+        throw "ServiceInternal::sendMessage() Message = nullptr";
+    }
+    
     switch (msg->iden) {
         case I_CaptureImageRequest:
             build.buildCaptureImageRequest(*((CaptureImageRequest*) msg));

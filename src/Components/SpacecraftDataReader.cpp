@@ -15,8 +15,15 @@
 SpacecraftDataReader::SpacecraftDataReader(unsigned int applicationProcessID) : messageNum(0) {}
 
 External_DataMessage* SpacecraftDataReader::getNextDataMessage() {
-    External_DataMessage* msg = &data.at(messageNum);
-    messageNum++;
+    External_DataMessage* msg;
+    try {
+        msg = &data.at(messageNum);
+        messageNum++;
+        
+    } catch ( std::out_of_range e) {
+        msg = nullptr;
+    }
+    
     return msg;
 }
 
@@ -39,7 +46,7 @@ void SpacecraftDataReader::readDataFile(std::string fileName) {
     
     while(file){
         file >> number;
-
+        
         if(column == 1) {
             tempMessage.satTime = number;
             column++;

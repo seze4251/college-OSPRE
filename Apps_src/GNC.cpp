@@ -102,6 +102,7 @@ void GNC::open() {
     
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
+    fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Set Timeout to 1 minute
     setTimeoutTime(10, 0);
@@ -606,13 +607,11 @@ void GNC::read_referencTraj(std::string ref_trajectory_file) {
 }
 
 
-
-// *******************************
+//*******************************
 //
 // Message Handlers: Supported by GNC
 //
-// ********************************
-
+//********************************
 /*
  Send Status to WatchDog
  */
@@ -686,10 +685,6 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
         fprintf(logFile, "Error: HandleProcessedImageMessage() Unknown Type of Exception Caught\n");
         throw;
     }
-    
-    std::cout << "Attempting to Send Solution Message" << std::endl;
-    // Send Solution Message
-    std::cout << "ENDING: Handle Processed Image Message" << std::endl;
 }
 
 

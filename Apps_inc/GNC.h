@@ -104,7 +104,6 @@ private:
     void State_Error(const double X_ref[6], const double X_est[6], double posError[3], double velError[3]);
     void read_referencTraj(std::string);
     void read_ConfigFile(std::string);
-
 };
 
 #endif

@@ -149,6 +149,10 @@ void ServiceExternal::sendMessage(Message_External* msg) {
         return;
     }
     
+    if (msg == nullptr) {
+        throw "ServiceExternal::sendMessage() Message = nullptr";
+    }
+    
     switch (msg->iden) {
         case E_OSPREStatus:
             build.buildExternal_OSPREStatus(*((External_OSPREStatus*) msg));

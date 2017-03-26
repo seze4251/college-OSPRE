@@ -227,8 +227,8 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   if ((centers->size[0] == 0) || (centers->size[1] == 0)) {
     // If no objects throw error
     char logString[50];
-    sprintf(logString,"Excpetion Time = %f, Expected to find celestial body but did not find anything; \
-            radius guess: [%d %d], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
+    sprintf(logString,"Excpetion Time = %ld, Expected to find celestial body but did not find anything; \
+            radius guess: [%f %f], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
             sensVal);
     throw NoBodyInImage(logString);
 
@@ -273,24 +273,24 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   if(*alpha > validAlpha){
     // throw alpha out of range
     char logString[50];
-    sprintf(logString, "Excpetion Time = %f, Invalid alpha found; alpha: %f \
-            radius guess: [%d %d], sensVal: %f", time(0), *alpha, radiusRangeGuess[0], radiusRangeGuess[1],
+    sprintf(logString, "Excpetion Time = %ld, Invalid alpha found; alpha: %f \
+            radius guess: [%f %f], sensVal: %f", time(0), *alpha, radiusRangeGuess[0], radiusRangeGuess[1],
             sensVal);
     throw InvalidAlphaBetaTheta(logString);
   }
   if(*beta > validBeta){
     // throw beta out of range
     char logString[50];
-    sprintf(logString,"Excpetion Time = %f, Invalid beta found; beta: %f \
-            radius guess: [%d %d], sensVal: %f", time(0), *beta, radiusRangeGuess[0], radiusRangeGuess[1],
+    sprintf(logString,"Excpetion Time = %ld, Invalid beta found; beta: %f \
+            radius guess: [%f %f], sensVal: %f", time(0), *beta, radiusRangeGuess[0], radiusRangeGuess[1],
             sensVal);
     throw InvalidAlphaBetaTheta(logString);
   }
   if(*theta > (validTheta + validThetaDelta) || *theta < (validTheta - validThetaDelta)){
     // throw theta out of range error
     char logString[50];
-    sprintf(logString,"Excpetion Time = %f, Invalid theta found; theta: %f \
-            radius guess: [%d %d], sensVal: %f", time(0), *theta, radiusRangeGuess[0], radiusRangeGuess[1],
+    sprintf(logString,"Excpetion Time = %ld, Invalid theta found; theta: %f \
+            radius guess: [%f %f], sensVal: %f", time(0), *theta, radiusRangeGuess[0], radiusRangeGuess[1],
             sensVal);
     throw InvalidAlphaBetaTheta(logString);
   }
