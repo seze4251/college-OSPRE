@@ -54,9 +54,43 @@ int main(int argc, char **argv) {
 	double cameraWidth = 4120.0;
 	double cameraHeight = 3260.0;
 
-	analyzeImage(imIn, radGuessIn, sensitivity, centerPt_data, centerPt_size, 
-		&radius, &numCirc, &alpha, &beta, &theta, pix_deg, cameraWidth, cameraHeight);
+	try{
+		analyzeImage(imIn, radGuessIn, sensitivity, centerPt_data, centerPt_size, 
+			&radius, &numCirc, &alpha, &beta, &theta, pix_deg, cameraWidth, cameraHeight);
+	} catch (const char*){
+		std::cout << "Call to analyzeImage failed" << std::endl;
+		return -1;
+	}
 
+	// Test that radius is within acceptable range
+	if(radius<(59.8545-1e-4) || radius>(59.8545+1e-4)){
+		std::cout << "Calculated radius is incorrect." << std::endl;
+		std::cout << "Expected 59.8545 +/- 1e-4, but instead found: " << radius << std::endl;
+	}
+
+	// Test the calculated center point
+	if(centerPt_data[0] < (2078.8762-1e-4) || centerPt_data[0] > (2078.8762+1e-4)){
+		std::count << "Calculated X center point is incorrect" << std::endl;
+		std::count << "Expected 2078.8762 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+	}
+	if(centerPt_data[1] < (1559.0764-1e-4) || centerPt_data[1] > (1559.0764+1e-4)){
+		std::count << "Calculated Y center point is incorrect" << std::endl;
+		std::count << "Expected 1559.0764 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+	}
+
+	//Test alpha, beta, theta
+	if(alpha < (-0.0168-1e-4) || alpha > (-0.0168+1e-4)){
+		std::count << "Calculated alpha is incorrect" << std::endl;
+		std::count << "Expected -0.0168 +/- 1e-4 but instead found: " << alpha << std::endl;
+	}
+	if(beta < (-0.0138-1e-4) || beta > (-0.0138+1e-4)){
+		std::count << "Calculated beta is incorrect" << std::endl;
+		std::count << "Expected -0.0138 +/- 1e-4 but instead found: " << beta << std::endl;
+	}
+	if(theta < (1.7867-1e-4) || beta > (1.7867+1e-4)){
+		std::count << "Calculated theta is incorrect" << std::endl;
+		std::count << "Expected 1.7867 +/- 1e-4 but instead found: " << theta << std::endl;
+	}
 }
 
 // *******************************

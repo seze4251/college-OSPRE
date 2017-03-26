@@ -265,7 +265,7 @@ void analyzeImage(const unsigned char imIn[2428800], const double
 	thetaX = (*radius)/pxDeg[0];
 	thetaY = (*radius)/pxDeg[1];
 	*theta = 0.5*(thetaX + thetaY);
-  double validTheta = radiusRangeGuess[1]*(pxDeg[0] + pxDeg[1])*0.5; // Calculate average valid theta
+  double validTheta = radiusRangeGuess[1]*(pxDeg[0] + pxDeg[1]); // Calculate average valid theta
   double validThetaDelta = (radiusRangeGuess[1]-radiusRangeGuess[0])*(pxDeg[0] + pxDeg[1])*0.5; // Calculate the change in theta to calculate valide range space
 
   // TODO:
