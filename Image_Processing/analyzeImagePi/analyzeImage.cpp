@@ -227,8 +227,8 @@ void analyzeImage(const unsigned char imIn[2428800], const double
   if ((centers->size[0] == 0) || (centers->size[1] == 0)) {
     // If no objects throw error
     char logString[50];
-    sprintf(logString,"Excpetion Time = %ld, Expected to find celestial body but did not find anything; \
-            radius guess: [%f %f], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
+    sprintf(logString,"Exception Time = %ld, Expected to find celestial body but did not find anything; \
+            radius guess: [%d %d], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
             sensVal);
     throw NoBodyInImage(logString);
 
@@ -265,7 +265,7 @@ void analyzeImage(const unsigned char imIn[2428800], const double
 	thetaX = (*radius)/pxDeg[0];
 	thetaY = (*radius)/pxDeg[1];
 	*theta = 0.5*(thetaX + thetaY);
-  double validTheta = radiusRangeGuess[1]*(pxDeg[0] + pxDeg[1])*0.5; // Calculate average valid theta
+  double validTheta = radiusRangeGuess[1]*(pxDeg[0] + pxDeg[1]); // Calculate average valid theta
   double validThetaDelta = (radiusRangeGuess[1]-radiusRangeGuess[0])*(pxDeg[0] + pxDeg[1])*0.5; // Calculate the change in theta to calculate valide range space
 
   // TODO:

@@ -36,25 +36,61 @@ int main(int argc, char **argv) {
 	double moonEphem[3] = {-20878.747372, 347641.764991, 132624.248850};
 	PointEarthMoon emPt = PEM_Earth;
 
-	double sensitivity;
-	double radGuessIn[2];
+	double sensitivity = 0.97;
+	double radGuessIn[2] = {58, 63};
 
-	//rawtime = time(0);
-	//timeinfo = localtime(&rawtime);
-	//strftime(buffer, 80, "./log/ImageProcessorLog_%d-%m-%Y.log", timeinfo);
+	//setImageParameters(emPt, pix_deg, estPos, moonEphem, sensitivity, radGuessIn);
 
-	//// Open Log File
-	//logFile = fopen(buffer, "a+");
+	unsigned char* imIn[2428800];
 
-	//// Log Application Starting
-	//fprintf(logFile, "Image Processor Application Started, Time = %ld\n", time(0));
+	readImage("TestImages/moonTest.jpg", imIn);
 
-	//// Set Timeout to 1 minute
-	//setTimeoutTime(60, 0);
+	//Output variables
+	double centerPt_data[2];
+	int centerPt_size[2];
+	double radius;
+	double numCirc;
+	double alpha, beat, theta;
+	double cameraWidth = 4120.0;
+	double cameraHeight = 3260.0;
 
-	analyzeImage((unsigned char*)msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, 
-		&radius, &numCirc, &alpha, &beta, &theta, msg->pix_deg, msg->cameraWidth, msg->cameraHeight);
+	try{
+		analyzeImage(imIn, radGuessIn, sensitivity, centerPt_data, centerPt_size, 
+			&radius, &numCirc, &alpha, &beta, &theta, pix_deg, cameraWidth, cameraHeight);
+	} catch (const char*){
+		std::cout << "Call to analyzeImage failed" << std::endl;
+		return -1;
+	}
 
+	// Test that radius is within acceptable range
+	if(radius<(59.8545-1e-4) || radius>(59.8545+1e-4)){
+		std::cout << "Calculated radius is incorrect." << std::endl;
+		std::cout << "Expected 59.8545 +/- 1e-4, but instead found: " << radius << std::endl;
+	}
+
+	// Test the calculated center point
+	if(centerPt_data[0] < (2078.8762-1e-4) || centerPt_data[0] > (2078.8762+1e-4)){
+		std::count << "Calculated X center point is incorrect" << std::endl;
+		std::count << "Expected 2078.8762 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+	}
+	if(centerPt_data[1] < (1559.0764-1e-4) || centerPt_data[1] > (1559.0764+1e-4)){
+		std::count << "Calculated Y center point is incorrect" << std::endl;
+		std::count << "Expected 1559.0764 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+	}
+
+	//Test alpha, beta, theta
+	if(alpha < (-0.0168-1e-4) || alpha > (-0.0168+1e-4)){
+		std::count << "Calculated alpha is incorrect" << std::endl;
+		std::count << "Expected -0.0168 +/- 1e-4 but instead found: " << alpha << std::endl;
+	}
+	if(beta < (-0.0138-1e-4) || beta > (-0.0138+1e-4)){
+		std::count << "Calculated beta is incorrect" << std::endl;
+		std::count << "Expected -0.0138 +/- 1e-4 but instead found: " << beta << std::endl;
+	}
+	if(theta < (1.7867-1e-4) || beta > (1.7867+1e-4)){
+		std::count << "Calculated theta is incorrect" << std::endl;
+		std::count << "Expected 1.7867 +/- 1e-4 but instead found: " << theta << std::endl;
+	}
 }
 
 // *******************************
@@ -70,7 +106,7 @@ void setImageParameters(PointEarthMoon point, double* pix_deg, double* estPos, d
 	// double pxDeg[2]; // Pixel Per Degree
 	// double radGuessIn[2]; //Pixel Radius Guess from estimated Position
 
-	if (point == PEM_Earth) {
+	if (point == PEM_Moon) {
 		// Evaluate on the assumption that we're pointing at the Earth
 		//
 		// Need to take estimated position, calculate expected angular diameter of celestial body, use image properties to turn this value
@@ -90,14 +126,14 @@ void setImageParameters(PointEarthMoon point, double* pix_deg, double* estPos, d
 		sensitivity = calcSens(moonPxDiam, estPos, point); // This function needs to be emperically determined
 
 	}
-	else if (point == PEM_Moon) {
+	else if (point == PEM_Earth) {
 		// Evaluate on the assumption that we're pointing at the Moon
 
 		double dist = sqrt(pow(estPos[0], 2) + pow(estPos[1], 2) + pow(estPos[2], 2));
 		double angDiam = atan(EARTH_RADIUS / dist) * 180 / M_PI * 2; // [deg]
 		double earthPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Earth in height and width
 
-		calcRadGuess(earthPxDiam, estPos, point, dv3);
+		calcRadGuess(earthPxDiam, estPos, point, radGuessIn);
 
 		// Get analysis sensitivity
 		sensitivity = calcSens(earthPxDiam, estPos, point); // This function needs to be emperically determined
@@ -140,7 +176,7 @@ double calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon po
 }
 
 
-void readImage(std::string imgFilename) {
+void readImage(std::string imgFilename, unsigned char* imIn[2428800]) {
 	// Get image
 	fprintf(logFile, "Read Image: Starting Image Read\n");
 	cv::Mat image;
@@ -156,7 +192,9 @@ void readImage(std::string imgFilename) {
 	}
 
 	// Allocate variables
-	unsigned char* imIn = (unsigned char*)imageMessage->getImagePointer();
+	// TODO:
+	// - Verify that this is correct
+	//unsigned char* imIn = (unsigned char*)imageMessage->getImagePointer();
 	cv::Vec3b intensity;
 
 	int counter = 0;
