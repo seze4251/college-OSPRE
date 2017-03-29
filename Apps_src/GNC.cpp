@@ -671,10 +671,12 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     } catch (InvalidInputs &e) {
         fprintf(logFile, "Error: HandleProcessedImageMessage() InvalidInputs Exception Caught: %s\n", e.what());
         localError = PE_InvalidInputs;
+        return;
         
     } catch (InvalidOutput &e) {
         fprintf(logFile, "Error: HandleProcessedImageMessage() InvalidOutput Exception Caught: %s\n", e.what());
         localError = PE_InvalidOutput;
+        return;
         
     } catch(std::exception &exception) {
         fprintf(logFile, "Error: HandleProcessedImageMessage() Exception Caught: %s\n", exception.what());

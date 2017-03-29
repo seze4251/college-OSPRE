@@ -290,18 +290,22 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     } catch (NoBodyInImage &e) {
         fprintf(logFile, "Error: HandleImageMessage() NoBodyInImage Exception Caught: %s\n", e.what());
         localError = PE_IP_noBodyInImage;
+        return;
         
     } catch (InvalidInputs &e) {
         fprintf(logFile, "Error: HandleImageMessage() InvalidInputs Exception Caught: %s\n", e.what());
         localError = PE_InvalidInputs;
+        return;
         
     } catch (InvalidAlphaBetaTheta &e) {
         fprintf(logFile, "Error: HandleImageMessage() InvalidAlphaBetaTheta Exception Caught: %s\n", e.what());
         localError = PE_InvalidOutputs;
+        return;
         
     } catch (InvalidPosition &e) {
         fprintf(logFile, "Error: HandleImageMessage() InvalidPosition Exception Caught: %s\n", e.what());
         localError = PE_IP_InvalidPosition;
+        return;
         
     } catch(std::exception &exception) {
         fprintf(logFile, "Error: HandleImageMessage() Exception Caught: %s\n", exception.what());

@@ -2,9 +2,10 @@
 rm log/*
 mkdir log
 ulimit -c unlimited
-bin/CameraController &
-bin/GNC &
-bin/ImageProcessor &
 bin/ScComms &
+bin/GNC &
+sleep 3
 bin/Spacecraft &
+bin/CameraController &
+bin/ImageProcessor &
 bin/WatchDog &

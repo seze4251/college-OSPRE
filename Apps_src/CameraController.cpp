@@ -69,6 +69,11 @@ void CameraController::open() {
     readOSPREServerConfigFile();
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
+    // Read in list of Image Files
+    if (liveMode == false) {
+        imageReader.loadImageNames(testDIR);
+    }
+    
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     
@@ -143,13 +148,21 @@ void CameraController::handleTimeout() {
 void CameraController::readImage(std::string imgFilename) {
     // Get image
     fprintf(logFile, "Read Image: Starting Image Read\n");
+    
+    if (imgFilename.empty() == true) {
+        fprintf(logFile, "Read Image: Input is empty string, all images have been read and processed in current test directory\n");
+        throw "CameraController::readImage(), image name empty, no more images to read";
+    } else {
+        fprintf(logFile, "Read Image: Input String: %s\n", imgFilename.c_str());
+    }
+    
     cv::Mat image;
     image = cv::imread(imgFilename, cv::IMREAD_COLOR);
     
     
     if(!image.data){
         fprintf(logFile, "Read Image ERROR: Could not open or find the image\n");
-        return;
+        throw InvalidFileName("ReadImage() no Image Name in directory");
     } else {
         fprintf(logFile, "Read Image: Image Name Valid\n");
     }
@@ -232,59 +245,66 @@ void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatu
  */
 
 void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-    fprintf(logFile, "Received Message: CaptureImageRequest from GNC\n");
-    msg->print(logFile);
-    // FOR FUTURE IMPLEMENTATION:
-    // TODO HERE:
-    // Test to see if Camera Controller can take image and if not throw an exception:
-    // CameraController::canCaptureImage(CaptureImageRequest* msg)
-    // Take an Image
-    // void CameraController::captureImage()
-    // Send the Image the same as done below
     
-    
-    // TODO: Update readImage call to not be hardcoded
-    try {
-        if (data.sleep == false) {
-            readImage("Images/samplePic.jpg");
-        } else {
-            localError = PE_SleepMode;
+    if (liveMode == false) {
+        fprintf(logFile, "Received Message: SIM MODE, CaptureImageRequest from GNC, \n");
+        msg->print(logFile);
+        
+        // TODO: Update readImage call to not be hardcoded
+        try {
+            if (data.sleep == false) {
+                readImage(imageReader.getNextImageName());
+            } else {
+                localError = PE_SleepMode;
+                return;
+            }
+            
+        } catch (InvalidFileName &e) {
+            fprintf(logFile, "Error: readImage() InvalidFileName Exception Caught: %s\n", e.what());
+            localError = PE_CC_InvalidFileName;
+            return;
+            
+        } catch (InvalidImageDimensions &e) {
+            fprintf(logFile, "Error: readImage() InvalidImageDimensions Exception Caught: %s\n", e.what());
+            localError = PE_CC_InvalidImageDimensions;
+            return;
+            
+        } catch(std::exception &exception) {
+            fprintf(logFile, "Error: readImage() Exception Caught: %s\n", exception.what());
+            localError = PE_NotHealthy;
+            throw;
+            
+        } catch (...) {
+            fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");
+            throw;
         }
         
-    } catch (InvalidFileName &e) {
-        fprintf(logFile, "Error: readImage() InvalidFileName Exception Caught: %s\n", e.what());
-        localError = PE_CC_InvalidFileName;
+        // TODO: Need to get these parameters from somewhere, maybe config file?
+        //********************************
+        int currentImageSize = IMAGE_SIZE;
+        double pix_deg[2] {67, 67};
+        int cameraWidth = 4160;
+        int cameraHeight = 3120;
+        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, data.satTime);
         
-    } catch (InvalidImageDimensions &e) {
-        fprintf(logFile, "Error: readImage() InvalidImageDimensions Exception Caught: %s\n", e.what());
-        localError = PE_CC_InvalidImageDimensions;
+        //******************************
         
-    } catch(std::exception &exception) {
-        fprintf(logFile, "Error: readImage() Exception Caught: %s\n", exception.what());
-        localError = PE_NotHealthy;
-        throw;
+        // Send Image Message to Image Processor
+        if (imageProc != nullptr) {
+            imageProc->sendMessage(imageMessage);
+            fprintf(logFile, "Sent Message: ImageMessage to ImageProcessor\n");
+        }
         
-    } catch (...) {
-        fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");
-        throw;
-    }
-    
-    // TODO: Need to get these parameters from somewhere, maybe config file?
-    // Update Image Message
-    //********************************
-    //TEMP TEMP Need to fix when readimage function is created
-    int currentImageSize = IMAGE_SIZE;
-    double pix_deg[2] {67, 67};
-    int cameraWidth = 4160;
-    int cameraHeight = 3120;
-    imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, data.satTime);
-    //TEMP TEMP Need to fix when readimage function is created
-    //******************************
-    
-    // Send Image Message to Image Processor
-    if (imageProc != nullptr) {
-        imageProc->sendMessage(imageMessage);
-        fprintf(logFile, "Sent Message: ImageMessage to ImageProcessor\n");
+        
+    } else {
+        fprintf(logFile, "Received Message: Live MODE, CaptureImageRequest from GNC, \n");
+        msg->print(logFile);
+        // FOR FUTURE IMPLEMENTATION:
+        // TODO HERE:
+        // Test to see if Camera Controller can take image and if not throw an exception:
+        // CameraController::canCaptureImage(CaptureImageRequest* msg)
+        // Take an Image
+        // void CameraController::captureImage()
     }
 }
 

@@ -109,11 +109,11 @@ void Server::readOSPREServerConfigFile() {
     file >> holder;
     if (holder == 1) {
         liveMode = true;
-        printf("MODE Choice: OSPRE in LIVE mode\n");
+        fprintf(logFile, "MODE Choice: OSPRE in LIVE mode\n");
         return;
     } else if (holder == 2) {
         liveMode = false;
-        printf("MODE Choice: OSPRE in SIM mode\n");
+        fprintf(logFile, "MODE Choice: OSPRE in SIM mode\n");
         
     } else {
         throw "ServerInternal::readOSPREServerConfigFile, invalid mode input, please put 1 or 2";
@@ -125,11 +125,9 @@ void Server::readOSPREServerConfigFile() {
     file >> testDIR;
     
     if (testDIR.empty() == true) {
-        //   fprintf(logFile, "Error: ServerInternal::readOSPREServerConfigFile() test dir string is empty");
+        fprintf(logFile, "Error: ServerInternal::readOSPREServerConfigFile() test dir string is empty");
         throw "ServerInternal::readOSPREServerConfigFile() test dir string is empty";
     }
-    
-    printf("TEST_DIR: TestDIR = %s\n", testDIR.c_str());
 }
 
 

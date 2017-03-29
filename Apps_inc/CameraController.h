@@ -19,6 +19,7 @@
 #include "ProcessID.h"
 #include "ProcessError.h"
 #include "OSPRE_Exceptions.h"
+#include "ImageNameReader.h"
 
 class CameraController : public ServerInternal {
 public:
@@ -71,6 +72,8 @@ private:
     DataMessage data;
     
     ProcessError localError;
+    
+    ImageNameReader imageReader;
 };
 
 #endif
