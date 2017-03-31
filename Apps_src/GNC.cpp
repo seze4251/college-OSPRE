@@ -46,18 +46,7 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     // Initialize All GNC Specific App Members
     //**************************************
     
-    // GNC Specific Members
-    //double x_hat[6];
-    //double phi[36];
-    //double P[36];
-    //double dv0[3];
-    //double dv1[6];
-    //double dv2[9];
-    //double X_est[6];
-    //double covariance[36];
-    //double trajectoryDev[6];
-    
-    //
+    // Potentially TEMP!
     // From Config File
     range_EarthRangeCutoff = -1;
     range_AnglesCutoff = -1;
@@ -67,9 +56,6 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     velSC[0] = -1;
     velSC[1] = -1;
     velSC[2] = -1;
-    
-    // Angles Method
-    firstImage = true;
 }
 
 GNC::~GNC() {
@@ -103,6 +89,14 @@ void GNC::open() {
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
+    
+    // Open Results File
+    std::string resultFileName = testDIR + "/gncResults.txt";
+    resultFile = fopen(resultFileName.c_str(), "a+");
+    
+    // Log Application Starting
+    fprintf(resultFile, "\n\nNew GNC Run: Time = %ld\n", time(0));
+    
     
     // Set Timeout to 1 minute
     setTimeoutTime(10, 0);
@@ -155,7 +149,7 @@ void GNC::open() {
     fprintf(logFile, "Reading Config File: Attempting to Configuration File\n");
     try {
         read_ConfigFile("Text_Data/GNC_Config.txt");
-         fprintf(logFile, "Config File: Initial Pos: (%f,%f,%f), Earth Range Cutoff: %f, Angles Cutoff: %f\n", r_E_SC[0], r_E_SC[1], r_E_SC[2], range_EarthRangeCutoff, range_AnglesCutoff);
+        fprintf(logFile, "Config File: Initial Pos: (%f,%f,%f), Earth Range Cutoff: %f, Angles Cutoff: %f\n", r_E_SC[0], r_E_SC[1], r_E_SC[2], range_EarthRangeCutoff, range_AnglesCutoff);
     } catch (const char* e) {
         fprintf(logFile, "Error: read_ConfigFile Exception Caught: %s\n",e);
         throw;
@@ -237,9 +231,97 @@ void GNC::handleTimeout() {
 //
 // ********************************
 
-// TODO: Waiting On Cameron to Complete
+// ******************************************************
+// TODO: Figure out deal with inputs to Camerons function
+// ** CONST in Func means that you cannot update value in Kalman Filter funciton **
+// We have a problem if we are not setting the values outside of kalman filter funciton and the value is CONST in your function
+// Not Currently Setting:
+// ------------------------------
+// double x_hat[6] (reference trajectory deviance)
+// double phi[36] (state transition matrix)  <----- CONST in Func
+// double P[36] (covariance matrix)
+// double R[9] (state error covariance)     <----- CONST in Func
+
+// Currently Setting:
+// ------------------------------
+// double X_ref[6] (Reference Trajectory from input file)  <----- CONST in Func
+// double Y[3] (Position from 1 of 3 methods)     <----- CONST in Func
+
+// OUTPUT
+// ------------------------------
+// double X_est [6] (Position and Velocity Output)
+// ******************************************************
+
+void GNC::kalmanFilterWrapper(double* x_hat, double* phi, double* P, double* Y, double* R, double satTime, double* ephem) {
+    
+    // Get Reference Trajectory
+    double X_ref[6];
+    get_Reference_Trajectory(X_ref, ref_traj, satTime);
+    fprintf(logFile, "ComputeSolution: Reference Trajectory Results: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
+    
+    // Perform Kalman Filter Call
+    std::cout << "Start: Kalman Filter Call" << std::endl;
+    double X_est[6];
+    Kalman_Filter_Iteration(x_hat, phi, P, Y, R, X_ref, satTime, X_est);
+    std::cout << "End: Kalman Filter Call" << std::endl;
+    
+    // Log Output from Kalman Filter
+    fprintf(logFile, "ComputeSolution(): Kalman Filter Results: X =  %f Y = %f, Z = %f, V_X =  %f V_Y = %f, V_Z = %f,\n", X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5]);
+    
+    fprintf(resultFile, "ComputeSolution(): Kalman Filter Results: Time: %f X =  %f Y = %f, Z = %f, V_X =  %f V_Y = %f, V_Z = %f,\n", satTime, X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5]);
+    
+    // Find E/Sc/M Angle and Log it
+    double earthScMoonAngle = Earth_SC_Moon_Angle(r_E_SC, ephem);
+    fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
+    fprintf(resultFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
+    
+    // Find Error in State and Log Outputs
+    double positionError[3];
+    double velocityError[3];
+    State_Error(X_ref, X_est, positionError, velocityError);
+    fprintf(logFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
+    fprintf(resultFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
+    
+    // Update Solution Message
+    std::cout << "Updating Solution Message" << std::endl;
+    solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
+    
+    // Update Stored Velocity and Stored Position
+    memcpy(velSC, X_est+3, 3* sizeof(double));
+    memcpy(r_E_SC, X_est, 3*sizeof(double));
+    
+    if (scComms != nullptr) {
+        std::cout << "Sending Solution Message" << std::endl;
+        scComms -> sendMessage(solutionMessage);
+        fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
+    }
+}
+
+
+// ******************************************************
+// TODO: Figure out deal with inputs to Camerons function
+// ** CONST in Func means that you cannot update value in Kalman Filter funciton **
+// We have a problem if we are not setting the values outside of kalman filter funciton and the value is CONST in your function
+// Not Currently Setting:
+// ------------------------------
+// double x_hat[6] (reference trajectory deviance)
+// double phi[36] (state transition matrix)  <----- CONST in Func
+// double P[36] (covariance matrix)
+// double R[9] (state error covariance)     <----- CONST in Func
+
+// Currently Setting:
+// ------------------------------
+// double X_ref[6] (Reference Trajectory from input file)  <----- CONST in Func
+// double Y[3] (Position from 1 of 3 methods)     <----- CONST in Func
+
+// OUTPUT
+// ------------------------------
+// double X_est [6] (Position and Velocity Output)
+// ******************************************************
+
 void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procMessage) {
     std::cout << "Starting Compute Solution" << std::endl;
+    
     if (norm(r_E_SC) < range_EarthRangeCutoff) {
         std::cout << "Start: Earth Ranging" << std::endl;
         fprintf(logFile, "ComputeSolution: Earth Ranging\n");
@@ -247,159 +329,86 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         // Set Pointing
         point = PEM_Earth;
         
-        get_Reference_Trajectory(X_ref, ref_traj, procMessage->timeStamp);
-        // Log Reference Trajectory
-        fprintf(logFile, "ComputeSolution: Earth Ranging: Reference Trajectory: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
+        // Perform Earth Ranging
+        double earthRangePosition[3];
+        Position_From_Earth_Range(dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage->theta, earthRangePosition);
         
-        // Log Inputs to Position_From_Earth_Range
-        fprintf(logFile, "ComputeSolution: Earth Ranging: INPUTS: quat: [%f, %f, %f, %f],\n alpha = %f, beta = %f, theta = %f \n", dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, procMessage->beta, procMessage->theta);
+        // Log Position Earth Range Output
+        fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, earthRangePosition[0], earthRangePosition[1], earthRangePosition[2]);
         
-        Position_From_Earth_Range(dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage->theta, r_E_SC);
         
-        std::cout << "End: Earth Ranging" << std::endl;
+        //************************
+        // TODO: SET THESE VARS:
+        // Not Currently Setting:
+        // ------------------------------
+        // double x_hat[6] (reference trajectory deviance)
+        // double phi[36] (state transition matrix)  <----- CONST in Func
+        // double P[36] (covariance matrix)
+        // double R[9] (state error covariance)     <----- CONST in Func
         
-        // Log Output From Position Earth Range
-        fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, r_E_SC[0], r_E_SC[1], r_E_SC[2]);
+        double x_hat[6];
+        double phi[36];
+        double P[36];
+        double R[9];
+        //************************
         
-        // Perform Kalman Filter Call
-        std::cout << "Start: Kalman Filter Call : Earth Range" << std::endl;
-        Kalman_Filter_Iteration(x_hat, phi, P, r_E_SC, R, X_ref, dataMessage->satTime, X_est);
-        std::cout << "End: Kalman Filter Call : Earth Range" << std::endl;
-        
-        // Log Output from Kalman Filter
-        fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Results: X =  %f Y = %f, Z = %f, V_X =  %f V_Y = %f, V_Z = %f,\n", X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5]);
-        
-        // Find E/Sc/M Angle and Log it
-        earthScMoonAngle = Earth_SC_Moon_Angle(r_E_SC, dataMessage->ephem);
-        fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
-        
-        // Find Error in State and Log Outputs
-        State_Error(X_ref, X_est, positionError, velocityError);
-        fprintf(logFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
-        
-        // Update Solution Message
-        std::cout << "Updateing SOlution Message" << std::endl;
-        solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
-        
-        // Update Stored Velocity and Stored Position
-        memcpy(velSC, X_est+3, 3* sizeof(double));
-        memcpy(r_E_SC, X_est, 3*sizeof(double));
-        
-        if (scComms != nullptr) {
-            std::cout << "Sending Solution Message" << std::endl;
-            scComms -> sendMessage(solutionMessage);
-            fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
-        }
+        // Call Kalman Filter Iteration Wrapper Function With Proper Inputs
+        kalmanFilterWrapper(x_hat, phi, P, earthRangePosition, R, (double) dataMessage->satTime, dataMessage->ephem);
         
     } else if ( norm(r_E_SC) < range_AnglesCutoff) {
         // Angles Method to find Position
         // Change Pointing
         if (procMessage->point == PEM_Earth) {
+            fprintf(logFile, "ComputeSolution: Angles Method, First Image, Saving Data and Leaving Angles Method\n");
             point = PEM_Moon;
-        } else {
-            point = PEM_Earth;
-        }
-        
-        if (firstImage == true) {
-            fprintf(logFile, "ComputeSolution: Angles Method, First Image == TRUE, Saving Data and Leaving Angles Method\n");
             memcpy((void*) &dataMessage_FirstImage, (void*) dataMessage, sizeof(DataMessage));
             memcpy((void*) &procMessage_FirstImage, (void*) procMessage, sizeof(ProcessedImageMessage));
-            firstImage = false;
             return;
         }
         
-        fprintf(logFile, "ComputeSolution: Angles Method, First Image == FALSE, Computing Solution\n");
+        fprintf(logFile, "ComputeSolution: Angles Method, Second Image, Computing Solution\n");
         
-        // Need to Determine Which Messages Point At Moon / Earth
-        DataMessage* dataEarth;
-        DataMessage* dataMoon;
-        ProcessedImageMessage* procEarth;
-        ProcessedImageMessage* procMoon;
+        // Point back at earth
+        point = PEM_Earth;
         
-        if (procMessage->point == PEM_Earth) {
-            dataEarth = dataMessage;
-            procEarth = procMessage;
-            dataMoon = &dataMessage_FirstImage;
-            procMoon = &procMessage_FirstImage;
-            
-        } else {
-            dataEarth = &dataMessage_FirstImage;
-            procEarth = &procMessage_FirstImage ;
-            dataMoon = dataMessage;
-            procMoon = procMessage;
-        }
+        // ASSUMPTION: dataMessage_FirstImage / procMessage_FirstImage == First Image == Point at Earth
+        // ASSUMPTION: dataMessage / procMessage == Second Image == Pointing at Moon
         
-        double r_E_SC1[3]; // OUTPUT(ECI Position of First Picture)
-        double r_E_SC2[3]; // OUTPUT(ECI Position of Second Picture)
-        
+        double pictureOnePosition[3];
+        double pictureTwoPosition[3];
         std::cout << "Start: Position From ANGLES" << std::endl;
-        Position_From_Angles_Slew(dataMoon->ephem, dataEarth->quat, dataMoon->quat, procMoon->alpha, procMoon->beta, procEarth->alpha, procEarth->beta, velSC, (double) (procMoon->timeStamp - procEarth->timeStamp), r_E_SC1, r_E_SC2);
-        std::cout << "End: Position From ANGLES" << std::endl;
+        Position_From_Angles_Slew(dataMessage->ephem, dataMessage_FirstImage.quat, dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage_FirstImage.alpha, procMessage_FirstImage.beta, velSC, (double) (procMessage->timeStamp - procMessage_FirstImage.timeStamp), pictureOnePosition, pictureTwoPosition);
+        std::cout << "END: Position From ANGLES" << std::endl;
         
-        // Kalman Filter Pic 1
-        std::cout << "Start: Kalman Filter Iteration 1" << std::endl;
+        // First Image
+        //************************
+        // TODO: SET THESE VARS:
+        // Not Currently Setting:
+        // ------------------------------
+        // double x_hat[6] (reference trajectory deviance)
+        // double phi[36] (state transition matrix)  <----- CONST in Func
+        // double P[36] (covariance matrix)
+        // double R[9] (state error covariance)     <----- CONST in Func
         
-        // get and log reference trajectory
-        get_Reference_Trajectory(X_ref, ref_traj, procMessage_FirstImage.timeStamp);
-        fprintf(logFile, "ComputeSolution: Earth Ranging: Reference Trajectory: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
+        double x_hat[6];
+        double phi[36];
+        double P[36];
+        double R[9];
+        //************************
         
-        Kalman_Filter_Iteration(x_hat, phi, P, r_E_SC1, R, X_ref, dataMessage_FirstImage.satTime, X_est);
-        std::cout << "End: Kalman Filter Iteration 1" << std::endl;
+        kalmanFilterWrapper(x_hat, phi, P, pictureOnePosition, R, (double) procMessage_FirstImage.timeStamp, dataMessage_FirstImage.ephem);
         
-        // Find E/Sc/M angle for Pic 1
-        earthScMoonAngle = Earth_SC_Moon_Angle(X_est, dataMessage->ephem);
-        fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
+        //************************
+        // TODO: SET THESE VARS:
+        // Not Currently Setting:
+        // ------------------------------
+        // double x_hat[6] (reference trajectory deviance)
+        // double phi[36] (state transition matrix)  <----- CONST in Func
+        // double P[36] (covariance matrix)
+        // double R[9] (state error covariance)     <----- CONST in Func
+        //************************
         
-        // Find State Error for Pic 1
-        State_Error(X_ref, X_est, positionError, velocityError);
-        fprintf(logFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
-        
-        // Update Solution Message for Pic 1
-        std::cout << "Updateing Solution Message" << std::endl;
-        solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
-        
-        // Send Solution Message for Pic 1
-        if (scComms != nullptr) {
-            std::cout << "Sending Solution Message to ScComms" << std::endl;
-            scComms -> sendMessage(solutionMessage);
-            fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
-        }
-        
-        
-        // Kalman Filter Position for Pic 2
-        std::cout << "Start: Kalman Filter Iteration" << std::endl;
-        
-        // Find and Log Reference Trajectory for Pic 2
-        get_Reference_Trajectory(X_ref, ref_traj, procMessage->timeStamp);
-        fprintf(logFile, "ComputeSolution: Earth Ranging: Reference Trajectory: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
-        
-        // Call Kalman Filter for Pic 2
-        Kalman_Filter_Iteration(x_hat, phi, P, r_E_SC2, R, X_ref, dataMessage->satTime, X_est);
-        std::cout << "End: Kalman Filter Iteration" << std::endl;
-        
-        // Find and Log E/Sc/M angle for Pic 2
-        earthScMoonAngle = Earth_SC_Moon_Angle(X_est, dataMessage->ephem);
-        fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
-        
-        // Find State Error and Log it for Pic 2
-        State_Error(X_ref, X_est, positionError, velocityError);
-        fprintf(logFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
-        
-        // Update Solution Message
-        std::cout << "Updateing SOlution Message" << std::endl;
-        solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
-        
-        // Update Stored Velocity and Stored Position
-        memcpy(velSC, X_est+3, 3* sizeof(double));
-        memcpy(r_E_SC, X_est, 3*sizeof(double));
-        
-        std::cout << "Sending Solution Message" << std::endl;
-        if (scComms != nullptr) {
-            scComms -> sendMessage(solutionMessage);
-            fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
-        }
-        
-        firstImage = true;
+        kalmanFilterWrapper(x_hat, phi, P, pictureTwoPosition, R, (double) procMessage->timeStamp, dataMessage->ephem);
         
     } else {
         // Moon Ranging to find Position
@@ -408,48 +417,35 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         // Set Pointing
         point = PEM_Moon;
         
-        // find and log reference trajectory
-        get_Reference_Trajectory(X_ref, ref_traj, procMessage->timeStamp);
-        fprintf(logFile, "ComputeSolution: Earth Ranging: Reference Trajectory: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
-        
         // Log Inputs to Moon Range
         fprintf(logFile, "ComputeSolution: Moon Ranging: INPUTS: quat: [%f, %f, %f, %f],\n alpha = %f, beta = %f, theta = %f \n", dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, procMessage->beta, procMessage->theta);
         
         // Get Moon Range
         std::cout << "Start: MOON RANGING: Position From Moon Range" << std::endl;
-        Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, r_E_SC);
+        double moonRangePosition[3];
+        Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, moonRangePosition);
         std::cout << "End: MOON RANGING: Position From Moon Range" << std::endl;
         
         // Log Outputs for Moon Range
-        fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, r_E_SC[0], r_E_SC[1], r_E_SC[2]);
+        fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, moonRangePosition[0], moonRangePosition[1], moonRangePosition[2]);
         
-        // Start Kalman Filter Call
-        std::cout << "Start: Kalman Filter Iteration" << std::endl;
-        Kalman_Filter_Iteration(x_hat, phi, P, r_E_SC, R, X_ref, dataMessage->satTime, X_est);
-        fprintf(logFile, "ComputeSolution: Moon Range: Kalman Filter Results: X =  %f Y = %f, Z = %f, V_X =  %f V_Y = %f, V_Z = %f,\n", X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5]);
-        std::cout << "End: Kalman Filter Iteration" << std::endl;
+        //************************
+        // TODO: SET THESE VARS:
+        // Not Currently Setting:
+        // ------------------------------
+        // double x_hat[6] (reference trajectory deviance)
+        // double phi[36] (state transition matrix)  <----- CONST in Func
+        // double P[36] (covariance matrix)
+        // double R[9] (state error covariance)     <----- CONST in Func
         
-        // Find E/Sc/M angle and log it
-        earthScMoonAngle = Earth_SC_Moon_Angle(X_est, dataMessage->ephem);
-        fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
+        double x_hat[6];
+        double phi[36];
+        double P[36];
+        double R[9];
+        //************************
         
-        // Find State Error and Log it
-        State_Error(X_ref, X_est, positionError, velocityError);
-        fprintf(logFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
+        kalmanFilterWrapper(x_hat, phi, P, moonRangePosition, R, (double) dataMessage->satTime, dataMessage->ephem);
         
-        // Update Solution Message
-        std::cout << "Updateing SOlution Message" << std::endl;
-        solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
-        
-        // Update Stored Velocity and Stored Position
-        memcpy(velSC, X_est+3, 3* sizeof(double));
-        memcpy(r_E_SC, X_est, 3*sizeof(double));
-        
-        std::cout << "Sending Solution Message" << std::endl;
-        if (scComms != nullptr) {
-            scComms -> sendMessage(solutionMessage);
-            fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
-        }
     }
     
     std::cout << "Ending Compute Solution" << std::endl;

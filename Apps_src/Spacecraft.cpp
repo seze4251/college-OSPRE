@@ -54,6 +54,13 @@ void Spacecraft::open() {
     readOSPREServerConfigFile();
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
+    // Open Results File
+    std::string resultFileName = testDIR + "/spacecraftResults.txt";
+    resultFile = fopen(resultFileName.c_str(), "a+");
+    
+    // Log Application Starting
+    fprintf(resultFile, "\n\nNew New Spacecraft Run: Time = %ld\n", time(0));
+    
     // Read in Spacecraft DataFile
     scDataReader.readDataFile("OSPRE_Test_DIR/Test_Data/Satellite_Data.txt");
     fprintf(logFile, "File Input: Read Spacecraft Data File\n");
@@ -143,16 +150,19 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
 void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {
     fprintf(logFile, "Received Message: ExternalOSPREStatus Message from ScComms\n");
     msg->print(logFile);
+    msg->print(resultFile);
 }
 
 void Spacecraft::handleExternalPointingMessage(External_PointingRequest* msg, ServiceExternal* service) {
     fprintf(logFile, "Received Message: ExternalPointing Message from ScComms\n");
     msg->print(logFile);
+    msg->print(resultFile);
 }
 
 void Spacecraft::handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service) {
     fprintf(logFile, "Received Message: ExternalSolution Message from ScComms\n");
     msg->print(logFile);
+    msg->print(resultFile);
     
 }
 

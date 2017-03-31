@@ -51,6 +51,9 @@ public:
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
 private:
+    // Result File
+    FILE* resultFile;
+    
     time_t pollTime;
     ServiceInternal* gnc;
     

@@ -40,17 +40,8 @@ public:
     void handleExternalSolutionMessage(External_SolutionMessage* msg, ServiceExternal* service);
     
 private:
-    // Load Scenario Data
-    // TODO Implement this method and data memebers
-    
-    /*  void loadScenario();
-     std::vector<double[3]> ephem;
-     std::vector<double[4]> quat;
-     std::vector<double[3]> angularVelocity;
-     std::vector<time_t> satTime;
-     std::vector<double> sunAngle;
-     std::vector<bool> sleep;
-     */
+    // Result File
+    FILE* resultFile;
     
     // Connect to OSPRE
     std::string ospreHostName;

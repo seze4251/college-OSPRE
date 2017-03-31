@@ -83,6 +83,13 @@ void ImageProcessor::open() {
     readOSPREServerConfigFile();
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
+    // Open Results File
+    std::string resultFileName = testDIR + "/imageProcessorResults.txt";
+    resultFile = fopen(resultFileName.c_str(), "a+");
+    
+    // Log Application Starting
+    fprintf(resultFile, "\n\nNew Image Processor Run: Time = %ld\n", time(0));
+
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     
@@ -228,11 +235,20 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
     if (numCirc) {
+        // To Log File
         fprintf(logFile, "Analyze Image: BODY HAS BEEN FOUND!!!!\n");
         fprintf(logFile, "Found %1.2f Object(s)\n", numCirc);
         fprintf(logFile, "Center (%f,%f)\n ", centerPt_data[0],centerPt_data[1]);
         fprintf(logFile, "Radius %f\n", radius);
-        fprintf(logFile, "Alpha = %f, Beta = %f,  Theta = %f\n", alpha, beta, theta);\
+        fprintf(logFile, "Alpha = %f, Beta = %f,  Theta = %f\n", alpha, beta, theta);
+        
+        // To Results File
+        fprintf(resultFile, "Center (%f,%f), ", centerPt_data[0],centerPt_data[1]);
+        fprintf(resultFile, "Radius %f, ", radius);
+        fprintf(resultFile, "Alpha = %f, Beta = %f, Theta = %f\n", alpha, beta, theta);
+        
+    } else {
+        fprintf(logFile, "ERROR ERROR:No Bodies found in Image and exception not thrown, Major Error, statement should never print\n");
     }
     
     
