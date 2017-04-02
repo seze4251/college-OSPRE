@@ -10,17 +10,21 @@
 #include <exception>
 #include <stdio.h>
 #include <string>
-
 #include <cmath>
+
 #include "rt_nonfinite.h"
 #include "analyzeImage.h"
 #include "analyzeImage_terminate.h"
 #include "analyzeImage_initialize.h"
-#include "ImageProcessor.h"
-#include "Service.h"
+#include "PointEarthMoon.h"
 
 #define MOON_RADIUS 1736.0
 #define EARTH_RADIUS 6371.0
+
+// Pre Declare Functions:
+void readImage(std::string imgFilename, unsigned char* imIn[2428800]);
+//double calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point);
+void calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* ans);
 
 /***
 MAIN SCRIPT
@@ -43,14 +47,14 @@ int main(int argc, char **argv) {
 
 	unsigned char* imIn[2428800];
 
-	readImage("TestImages/moonTest.jpg", imIn);
+	readImage("test/TestImages/moonTest.jpg", imIn);
 
 	//Output variables
 	double centerPt_data[2];
 	int centerPt_size[2];
 	double radius;
 	double numCirc;
-	double alpha, beat, theta;
+	double alpha, beta, theta;
 	double cameraWidth = 4120.0;
 	double cameraHeight = 3260.0;
 
@@ -98,6 +102,7 @@ int main(int argc, char **argv) {
 // Application Functionality:
 //
 // ********************************
+/*
 void setImageParameters(PointEarthMoon point, double* pix_deg, double* estPos, double* moonEphem,
                         double* sensitivity, double* radGuessIn) {
 	// estimated Position is a double[3] km, ECI frame
@@ -139,7 +144,7 @@ void setImageParameters(PointEarthMoon point, double* pix_deg, double* estPos, d
 		sensitivity = calcSens(earthPxDiam, estPos, point); // This function needs to be emperically determined
 	}
 }
-
+*/
 /**
 HELPER FUNCTIONS
 */
@@ -170,25 +175,25 @@ void calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* 
 
 }
 
-double calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
+/*double calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
 	return (double) 0.99;
 
-}
+} */
 
 
 void readImage(std::string imgFilename, unsigned char* imIn[2428800]) {
 	// Get image
-	fprintf(logFile, "Read Image: Starting Image Read\n");
+	printf("Read Image: Starting Image Read\n");
 	cv::Mat image;
 	image = cv::imread(imgFilename, cv::IMREAD_COLOR);
 
 
 	if (!image.data) {
-		fprintf(logFile, "Read Image ERROR: Could not open or find the image\n");
+		printf("Read Image ERROR: Could not open or find the image\n");
 		return;
 	}
 	else {
-		fprintf(logFile, "Read Image: Image Name Valid\n");
+		printf("Read Image: Image Name Valid\n");
 	}
 
 	// Allocate variables
@@ -212,6 +217,6 @@ void readImage(std::string imgFilename, unsigned char* imIn[2428800]) {
 		}
 	}
 
-	imageMessage->currentImageSize = 2428800;
-	fprintf(logFile, "Read Image: Finished Image Read\n");
+	//imageMessage->currentImageSize = 2428800;
+	printf("Read Image: Finished Image Read\n");
 }

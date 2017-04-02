@@ -5,6 +5,7 @@ echo "Removing Old Executables"
 rm bin_test/*
 
 # Compiling OSPRE
+mkdir -p build_test
 echo "Compiling OSPRE"
 make -j --file=makeTestScripts bin_test/testAnalyzeImage
 make -j --file=makeTestScripts bin_test/testByteBuffer

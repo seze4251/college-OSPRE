@@ -89,16 +89,16 @@ $(TARGET_testInternalBuilderParser): $(OBJECTS) $(MAINOBJ_DIR)/testInternalBuild
 #testAnalyzeImage
 $(TARGET_AnalyzeImage): $(OBJECTS) $(MAINOBJ_DIR)/testAnalyzeImage.o
 	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) $^ -o $(TARGET_AnalyzeImage) -I./Image_Processing/analyzeImagePi/ -I./Apps_inc/ ./lib/analyzeImage.lib ;
+	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) $^ -o $(TARGET_AnalyzeImage);
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDLIST);
 	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $< ;
 
 # Need to have all dependencies mapped out for building 
-$(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(SRCEXT)
+$(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(MAINOBJ_DIR)
 	@mkdir -p $(BUILDLIST);
-	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -I./Image_Processing/analyzeImagePi/ -I./Apps_inc/ -c -o $@ $< -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs;
+	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -I./Image_Processing/analyzeImagePi/ ./lib/analyzeImage.lib -L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs -c -o $@ $<;
 
 
 clean:
