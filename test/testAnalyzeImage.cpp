@@ -3,7 +3,7 @@
 //  testAnalyzeImage
 //
 //  Created by Anthony on 3/21/2017.
-//  Copyright © 2017 Anthony. All rights reserved.
+//  Copyright ï¿½ 2017 Anthony. All rights reserved.
 //
 #include <iostream>
 #include <unistd.h>
@@ -70,26 +70,26 @@ int main(int argc, char **argv) {
 
 	// Test the calculated center point
 	if(centerPt_data[0] < (2078.8762-1e-4) || centerPt_data[0] > (2078.8762+1e-4)){
-		std::count << "Calculated X center point is incorrect" << std::endl;
-		std::count << "Expected 2078.8762 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+		std::cout << "Calculated X center point is incorrect" << std::endl;
+		std::cout << "Expected 2078.8762 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
 	}
 	if(centerPt_data[1] < (1559.0764-1e-4) || centerPt_data[1] > (1559.0764+1e-4)){
-		std::count << "Calculated Y center point is incorrect" << std::endl;
-		std::count << "Expected 1559.0764 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+		std::cout << "Calculated Y center point is incorrect" << std::endl;
+		std::cout << "Expected 1559.0764 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
 	}
 
 	//Test alpha, beta, theta
 	if(alpha < (-0.0168-1e-4) || alpha > (-0.0168+1e-4)){
-		std::count << "Calculated alpha is incorrect" << std::endl;
-		std::count << "Expected -0.0168 +/- 1e-4 but instead found: " << alpha << std::endl;
+		std::cout << "Calculated alpha is incorrect" << std::endl;
+		std::cout << "Expected -0.0168 +/- 1e-4 but instead found: " << alpha << std::endl;
 	}
 	if(beta < (-0.0138-1e-4) || beta > (-0.0138+1e-4)){
-		std::count << "Calculated beta is incorrect" << std::endl;
-		std::count << "Expected -0.0138 +/- 1e-4 but instead found: " << beta << std::endl;
+		std::cout << "Calculated beta is incorrect" << std::endl;
+		std::cout << "Expected -0.0138 +/- 1e-4 but instead found: " << beta << std::endl;
 	}
 	if(theta < (1.7867-1e-4) || beta > (1.7867+1e-4)){
-		std::count << "Calculated theta is incorrect" << std::endl;
-		std::count << "Expected 1.7867 +/- 1e-4 but instead found: " << theta << std::endl;
+		std::cout << "Calculated theta is incorrect" << std::endl;
+		std::cout << "Expected 1.7867 +/- 1e-4 but instead found: " << theta << std::endl;
 	}
 }
 

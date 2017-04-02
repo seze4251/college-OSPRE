@@ -34,6 +34,10 @@ TARGET_testInternalBuilderParser := $(TARGETDIR)/$(EXECUTABLE_testInternalBuilde
 EXECUTABLE_testExternalBuilderParser := testExternalBuilderParser
 TARGET_testExternalBuilderParser := $(TARGETDIR)/$(EXECUTABLE_testExternalBuilderParser)
 
+#testAnalyzeImage
+EXECUTABLE_AnalyzeImage := testAnalyzeImage
+TARGET_AnalyzeImage := $(TARGETDIR)/$(EXECUTABLE_AnalyzeImage)
+
 #
 # Main OBJS
 MAINDIR := test
@@ -82,14 +86,19 @@ $(TARGET_testInternalBuilderParser): $(OBJECTS) $(MAINOBJ_DIR)/testInternalBuild
 	@mkdir -p $(TARGETDIR);
 	@echo "	 Linking $(TARGET_testInternalBuilderParser)"; $(CC) $^ -o $(TARGET_testInternalBuilderParser);
 
+#testAnalyzeImage
+$(TARGET_AnalyzeImage): $(OBJECTS) $(MAINOBJ_DIR)/testAnalyzeImage.o
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) $^ -o $(TARGET_AnalyzeImage) -I./Image_Processing/analyzeImagePi/ -I./Apps_inc/ ./lib/analyzeImage.lib ;
+
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDLIST);
-	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<;
+	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $< ;
 
 # Need to have all dependencies mapped out for building 
 $(MAINOBJ_DIR)/%.o: $(MAINDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDLIST);
-	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $<;
+	@echo "Compiling $<..."; $(CC) $(CFLAGS) $(INC) -I./Image_Processing/analyzeImagePi/ -I./Apps_inc/ -c -o $@ $< -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs;
 
 
 clean:

@@ -6,6 +6,7 @@ rm bin_test/*
 
 # Compiling OSPRE
 echo "Compiling OSPRE"
+make -j --file=makeTestScripts bin_test/testAnalyzeImage
 make -j --file=makeTestScripts bin_test/testByteBuffer
 make -j --file=makeTestScripts bin_test/testCircularBuffer
 make -j --file=makeTestScripts bin_test/testExternalBuilderParser
