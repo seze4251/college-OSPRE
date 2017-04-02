@@ -12,6 +12,10 @@
 #include <string>
 #include <cmath>
 
+// OpenCV
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
 #include "rt_nonfinite.h"
 #include "analyzeImage.h"
 #include "analyzeImage_terminate.h"
@@ -22,7 +26,7 @@
 #define EARTH_RADIUS 6371.0
 
 // Pre Declare Functions:
-void readImage(std::string imgFilename, unsigned char* imIn[2428800]);
+void readImage(std::string imgFilename, unsigned char* imIn);
 //double calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point);
 void calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* ans);
 
@@ -45,9 +49,9 @@ int main(int argc, char **argv) {
 
 	//setImageParameters(emPt, pix_deg, estPos, moonEphem, sensitivity, radGuessIn);
 
-	unsigned char* imIn[2428800];
+	unsigned char imIn[2428800];
 
-	readImage("test/TestImages/moonTest.jpg", imIn);
+	readImage("test/TestImages/moonTest.jpeg", imIn);
 
 	//Output variables
 	double centerPt_data[2];
@@ -181,7 +185,52 @@ void calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* 
 } */
 
 
-void readImage(std::string imgFilename, unsigned char* imIn[2428800]) {
+/*
+fprintf(logFile, "Read Image: Starting Image Read\n");
+
+if (imgFilename.empty() == true) {
+    fprintf(logFile, "Read Image: Input is empty string, all images have been read and processed in current test directory\n");
+    throw "CameraController::readImage(), image name empty, no more images to read";
+} else {
+    fprintf(logFile, "Read Image: Input String: %s\n", imgFilename.c_str());
+}
+
+cv::Mat image;
+image = cv::imread(imgFilename, cv::IMREAD_COLOR);
+
+
+if(!image.data){
+    fprintf(logFile, "Read Image ERROR: Could not open or find the image\n");
+    throw InvalidFileName("ReadImage() no Image Name in directory");
+} else {
+    fprintf(logFile, "Read Image: Image Name Valid\n");
+}
+
+// Allocate variables
+unsigned char* imIn = (unsigned char*) imageMessage->getImagePointer(); // <--- Change this to be compatible with msg
+cv::Vec3b intensity;
+
+int counter = 0;
+// Loop through image and convert
+for (int i = 0; i < image.cols; i++) {
+    for (int j = 0; j < image.rows; j++) {
+        intensity = image.at<cv::Vec3b>(j, i);
+        uchar blue = intensity.val[0];
+        uchar green = intensity.val[1];
+        uchar red = intensity.val[2];
+        imIn[counter] = red;
+        imIn[counter + 809600] = green;
+        imIn[counter + 2 * 809600] = blue;
+        counter++;
+    }
+}
+
+imageMessage -> currentImageSize = 2428800;
+fprintf(logFile, "Read Image: Finished Image Read\n");
+*/
+
+
+void readImage(std::string imgFilename, unsigned char* imIn) {
 	// Get image
 	printf("Read Image: Starting Image Read\n");
 	cv::Mat image;
@@ -189,33 +238,34 @@ void readImage(std::string imgFilename, unsigned char* imIn[2428800]) {
 
 
 	if (!image.data) {
-		printf("Read Image ERROR: Could not open or find the image\n");
+		printf("Read Image ERROR: Could not open or find the image, Image Name: %s \n", imgFilename.c_str());
 		return;
 	}
 	else {
-		printf("Read Image: Image Name Valid\n");
+		printf("Read Image: Image Name Valid, Image Name: %s\n", imgFilename.c_str());
 	}
 
 	// Allocate variables
 	// TODO:
 	// - Verify that this is correct
 	//unsigned char* imIn = (unsigned char*)imageMessage->getImagePointer();
-	cv::Vec3b intensity;
+    cv::Vec3b intensity;
+    
+    int counter = 0;
+    // Loop through image and convert
+    for (int i = 0; i < image.cols; i++) {
+        for (int j = 0; j < image.rows; j++) {
+            intensity = image.at<cv::Vec3b>(j, i);
+            uchar blue = intensity.val[0];
+            uchar green = intensity.val[1];
+            uchar red = intensity.val[2];
+            imIn[counter] = red;
+            imIn[counter + 809600] = green;
+            imIn[counter + 2 * 809600] = blue;
+            counter++;
+        }
+    }
 
-	int counter = 0;
-	// Loop through image and convert
-	for (int i = 0; i < image.cols; i++) {
-		for (int j = 0; j < image.rows; j++) {
-			intensity = image.at<cv::Vec3b>(j, i);
-			uchar blue = intensity.val[0];
-			uchar green = intensity.val[1];
-			uchar red = intensity.val[2];
-			imIn[counter] = red;
-			imIn[counter + 809600] = green;
-			imIn[counter + 2 * 809600] = blue;
-			counter++;
-		}
-	}
 
 	//imageMessage->currentImageSize = 2428800;
 	printf("Read Image: Finished Image Read\n");

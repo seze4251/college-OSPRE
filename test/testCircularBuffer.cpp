@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
     double ephem[3]{1, 2, 3};
     double quat[4] {4, 5, 6, 7};
     double angularVelocity[3]{0.1, 0.2, 0.3};
-    double satTime = time(0), sunAngle = 3;
+    double satTime = time(0), sunAngle[3] {3, 2, 1};
     bool sleep = false;
     msg1.update(ephem, quat, angularVelocity, satTime, sunAngle, sleep);
     
