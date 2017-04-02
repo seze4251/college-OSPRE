@@ -84,7 +84,7 @@ void ImageProcessor::open() {
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Open Results File
-    std::string resultFileName = testDIR + "/imageProcessorResults.txt";
+    std::string resultFileName = testDIR + "/OSPRE_Results/imageProcessorResults.txt";
     resultFile = fopen(resultFileName.c_str(), "a+");
     
     // Log Application Starting
@@ -216,7 +216,7 @@ void ImageProcessor::calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon
 }
 
 double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
-    return (double) 0.99;
+    return (double) 0.97;
     
 }
 
@@ -228,7 +228,17 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     fprintf(logFile, "Analyze Image: Starting Call to Analyze Image\n");
     fprintf(logFile, "Analyze Image Inputs:\n");
     
+    // TEMP HARDCODE
+    //**************
+    dv3[0] = 58;
+    dv3[1] = 63;
+    //**************
+    
+    
     fprintf(logFile, "dv3 = %f  %f, sens = %f, \npix_deg %f  %f, camera Width %d  camera height %d\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], msg->cameraWidth, msg->cameraHeight);
+    
+    
+
     
     analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta, msg->pix_deg, msg->cameraWidth, msg->cameraHeight);
     

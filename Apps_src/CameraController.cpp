@@ -282,10 +282,10 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         // TODO: Need to get these parameters from somewhere, maybe config file?
         //********************************
         int currentImageSize = IMAGE_SIZE;
-        double pix_deg[2] {67, 67};
+        double pix_deg[2] {72, 72};
         int cameraWidth = 4160;
         int cameraHeight = 3120;
-        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, data.satTime);
+        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
         
         //******************************
         

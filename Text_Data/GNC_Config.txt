@@ -1,6 +1,6 @@
 # Initial Position Guess (km)
-40000 10 5
+21212.105392 25545.913981 7945.349932
 #Earth Ranging Cutoff (km)
-100000
+80000
 #Angles Ranging Cutoff (km)
 350000

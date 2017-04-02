@@ -21,6 +21,7 @@ CircularBuffer::CircularBuffer(int numDataMessage) {
     
     bufferHead = new DataMessage[numDataMessage];
     insert = bufferHead;
+    nextSimMessage = bufferHead;
     buffSize = numDataMessage;
     
     // Initalize Loop Parameters
@@ -85,6 +86,17 @@ DataMessage* CircularBuffer::get(time_t satTime) {
     }
     
     return it;
+}
+
+//**************************
+// ASSUMPTIONS
+// 1: We will not have enough DataMessages in SIM mode to overflow the Circular Buffer
+// 2: Every DataMessage in SIM mode corresponds to the next image that is going to be read in
+// 3:  This method is only going to be used for SIM cases, not livemode in order to make testing easier
+//***************************
+DataMessage* CircularBuffer::getNextSimMessage() {
+    return nextSimMessage++;
+    
 }
 
 // This method is used to verify the ciruclar buffer

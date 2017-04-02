@@ -23,12 +23,14 @@ public:
     // Public Methods
     void put(DataMessage* msg);
     DataMessage* get(time_t timeStamp);
+    DataMessage* getNextSimMessage();
     void printBuffer();
     
 private:
     // Buffer Pointers
     DataMessage* bufferHead;
     DataMessage* insert;
+    DataMessage* nextSimMessage;
     
     //Buffer Constants
     int buffSize;

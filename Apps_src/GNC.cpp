@@ -91,7 +91,7 @@ void GNC::open() {
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Open Results File
-    std::string resultFileName = testDIR + "/gncResults.txt";
+    std::string resultFileName = testDIR + "/OSPRE_Results/gncResults.txt";
     resultFile = fopen(resultFileName.c_str(), "a+");
     
     // Log Application Starting
@@ -215,9 +215,19 @@ void GNC::handleTimeout() {
         }
         
         if ((cameraController != nullptr) && (cameraController->isConnected())) {
-            captureImageMessage->update(point, r_E_SC);
-            cameraController -> sendMessage(captureImageMessage);
-            fprintf(logFile, "Sent Message: CaptureImageMessage to CameraController\n");
+            if (liveMode == true) {
+                // LIVE MODE
+                captureImageMessage->update(point, r_E_SC);
+                cameraController -> sendMessage(captureImageMessage);
+                fprintf(logFile, "Sent Message: CaptureImageMessage to CameraController, Live Version\n");
+            } else {
+                // SIM MODE
+                DataMessage* tempMessage = circBuf.getNextSimMessage();
+                captureImageMessage->update(point, r_E_SC);
+                captureImageMessage->timeStamp = tempMessage->satTime;
+                cameraController -> sendMessage(captureImageMessage);
+                fprintf(logFile, "Sent Message: CaptureImageMessage to CameraController, SIM Version (Altered Timestamp)\n");
+            }
         }
         
         pollTime = currentTime + 20;
@@ -295,6 +305,14 @@ void GNC::kalmanFilterWrapper(double* x_hat, double* phi, double* P, double* Y, 
         scComms -> sendMessage(solutionMessage);
         fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
     }
+    
+    //*************************
+    // TODO: COMPLETE
+    //*************************
+    if (liveMode == false) {
+        // Need to Reset Kalman Filter Matrixes to what they where before
+    }
+    //*************************
 }
 
 

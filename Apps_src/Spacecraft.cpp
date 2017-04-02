@@ -55,7 +55,7 @@ void Spacecraft::open() {
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Open Results File
-    std::string resultFileName = testDIR + "/spacecraftResults.txt";
+    std::string resultFileName = testDIR + "/OSPRE_Results/spacecraftResults.txt";
     resultFile = fopen(resultFileName.c_str(), "a+");
     
     // Log Application Starting
@@ -81,8 +81,6 @@ void Spacecraft::open() {
     } else {
         fprintf(logFile, "Error: Unable to Connect to ScComms\n");
     }
-    
-    
 }
 
 void Spacecraft::handleTimeout() {
@@ -104,13 +102,19 @@ void Spacecraft::handleTimeout() {
         // Send Poll
         if (scComms -> isConnected()) {
             dataMessage = scDataReader.getNextDataMessage();
-            dataMessage->sleep =  false;
             
-            fprintf(logFile, "Sent Message: ExternalDataMessage to ScComms\n");
-            scComms->sendMessage(dataMessage);
+            if (dataMessage == nullptr) {
+                fprintf(logFile, "No More Input: All Data Messages read and sent, no more data messages to send\n");
+            } else {
+                dataMessage->sleep = false;
+                fprintf(logFile, "Sent Message: ExternalDataMessage to ScComms\n");
+                scComms->sendMessage(dataMessage);
+            }
+            
             pollTime = currentTime + 1;
         }
     }
+    
     flushLog();
 }
 
@@ -147,8 +151,7 @@ void Spacecraft::handleExternalMessage(Message_External* msg, ServiceExternal* s
 // ********************************
 
 
-void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {
-    fprintf(logFile, "Received Message: ExternalOSPREStatus Message from ScComms\n");
+void Spacecraft::handleExternalOSPREStatusMessage(External_OSPREStatus* msg, ServiceExternal* service) {    fprintf(logFile, "Received Message: ExternalOSPREStatus Message from ScComms\n");
     msg->print(logFile);
     msg->print(resultFile);
 }
