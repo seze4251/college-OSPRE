@@ -9,6 +9,9 @@ echo "Making Libraries"
 ./Image_Processing/analyzeImagePi/makeImageLib.sh
 ./GNC/Kalman_Filter_Iteration/makeGNCLib.sh
 
+mkdir -p build
+mkdir -p bin
+
 # Compile OSPRE
 echo "Compiling OSPRE"
 make -j bin/WatchDog
