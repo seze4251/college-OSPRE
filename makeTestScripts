@@ -90,7 +90,7 @@ $(TARGET_testInternalBuilderParser): $(OBJECTS) $(MAINOBJ_DIR)/testInternalBuild
 #testAnalyzeImage
 $(TARGET_AnalyzeImage):
 	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) -o $(TARGET_AnalyzeImage) test/testAnalyzeImage.cpp $(INC) -I./Image_Processing/analyzeImagePi ./lib/analyzeImage.lib -I/usr/local/include/ -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs
+	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) -o $(TARGET_AnalyzeImage) test/testAnalyzeImage.cpp $(INC) -I./Image_Processing/analyzeImagePi ./lib/analyzeImage.lib -I/usr/local/include/ -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml #-lopencv_imgcodecs
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDLIST);
