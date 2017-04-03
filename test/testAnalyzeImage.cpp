@@ -5,6 +5,11 @@
 //  Created by Anthony on 3/21/2017.
 //  Copyright � 2017 Anthony. All rights reserved.
 //
+/**
+TODO:
+ - Merge newly generated analyzeImage code that deals with 13MP images
+**/
+ 
 #include <iostream>
 #include <unistd.h>
 #include <exception>
