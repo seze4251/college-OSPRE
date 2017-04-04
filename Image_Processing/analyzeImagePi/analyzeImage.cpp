@@ -363,7 +363,7 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double radiusRangeGuess[2]
     // If no objects throw error
     char logString[50];
     sprintf(logString,"Exception Time = %ld, Expected to find celestial body but did not find anything; \
-            radius guess: [%d %d], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
+            radius guess: [%f %f], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
             sensVal);
     throw NoBodyInImage(logString);
   } else {
