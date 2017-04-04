@@ -52,7 +52,10 @@ void analyzeImage(const unsigned char imIn[2428800], const double
 				  double* alpha, double* beta, double* theta,
 				  double pxDeg[2], int imgWidth, int imgHeight)
 {
-  static unsigned char im[809600];
+  static unsigned char im = new char[];
+  unsgined char* im_temp = im;
+  delete[] im;
+
   int i;
   unsigned char b_imIn[3];
   double sigma_b_squared[256];
