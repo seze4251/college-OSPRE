@@ -10,8 +10,8 @@
 #include <exception>
 #include <stdio.h>
 #include <string>
-
 #include <cmath>
+
 #include "rt_nonfinite.h"
 #include "analyzeImage.h"
 #include "analyzeImage_terminate.h"

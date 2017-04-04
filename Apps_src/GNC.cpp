@@ -10,7 +10,7 @@
 #include <exception>
 #include <stdio.h>
 
-#include "main.h"
+//#include "main.h"
 #include "Kalman_Filter_Iteration.h"
 #include "Position_From_Angles_Slew.h"
 #include "Position_From_Earth_Range.h"
