@@ -162,8 +162,8 @@ static void main_analyzeImage()
   // Initialize function input argument 'radiusRangeGuess'.
   // Initialize function input argument 'pxDeg'.
   // Call the entry-point 'analyzeImage'.
-  argInit_1x2_real_T(dv1);
-  argInit_1x2_real_T(dv2);
+  //argInit_1x2_real_T(dv1);
+  //argInit_1x2_real_T(dv2);
 
   std::cout << "Starting analyze image call" << std::endl;
   start = std::clock();
