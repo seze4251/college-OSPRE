@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: unique.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef UNIQUE_H
 #define UNIQUE_H
@@ -23,7 +23,7 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void count_nonfinites(const emxArray_real32_T *b, int *nMInf, int
+extern void count_nonfinites(const emxArray_real32_T *b, int nb, int *nMInf, int
   *nFinite, int *nPInf, int *nNaN);
 
 #endif

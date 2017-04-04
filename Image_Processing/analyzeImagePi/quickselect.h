@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: quickselect.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef QUICKSELECT_H
 #define QUICKSELECT_H
@@ -23,9 +23,8 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void quickselect(double v_data[], int v_size[1], int n, int vlen, double *
-  vn, int *nfirst, int *nlast);
-extern int thirdOfFive(const double v[25], int ia, int ib);
+extern void quickselect(double v_data[], int n, int vlen, double *vn, int
+  *nfirst, int *nlast);
 
 #endif
 

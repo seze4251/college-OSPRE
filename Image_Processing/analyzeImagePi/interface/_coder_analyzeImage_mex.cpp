@@ -4,8 +4,8 @@
  * government, commercial, or other organizational use.
  * File: _coder_analyzeImage_mex.cpp
  *
- * MATLAB Coder version            : 3.2
- * C/C++ source code generated on  : 14-Feb-2017 14:49:57
+ * MATLAB Coder version            : 3.3
+ * C/C++ source code generated on  : 02-Apr-2017 22:04:47
  */
 
 /* Include Files */
@@ -13,40 +13,35 @@
 #include "_coder_analyzeImage_mex.h"
 
 /* Function Declarations */
-static void analyzeImage_mexFunction(int32_T nlhs, mxArray *plhs[3], int32_T
-  nrhs, const mxArray *prhs[3]);
+static void analyzeImage_mexFunction(int32_T nlhs, mxArray *plhs[6], int32_T
+  nrhs, const mxArray *prhs[6]);
 
 /* Function Definitions */
 
 /*
  * Arguments    : int32_T nlhs
- *                const mxArray *plhs[3]
+ *                const mxArray *plhs[6]
  *                int32_T nrhs
- *                const mxArray *prhs[3]
+ *                const mxArray *prhs[6]
  * Return Type  : void
  */
-static void analyzeImage_mexFunction(int32_T nlhs, mxArray *plhs[3], int32_T
-  nrhs, const mxArray *prhs[3])
+static void analyzeImage_mexFunction(int32_T nlhs, mxArray *plhs[6], int32_T
+  nrhs, const mxArray *prhs[6])
 {
   int32_T n;
-  const mxArray *inputs[3];
-  const mxArray *outputs[3];
+  const mxArray *inputs[6];
+  const mxArray *outputs[6];
   int32_T b_nlhs;
-  emlrtStack st = { NULL,              /* site */
-    NULL,                              /* tls */
-    NULL                               /* prev */
-  };
-
-  st.tls = emlrtRootTLSGlobal;
 
   /* Check for proper number of arguments. */
-  if (nrhs != 3) {
-    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:WrongNumberOfInputs", 5, 12, 3, 4,
-                        12, "analyzeImage");
+  if (nrhs != 6) {
+    emlrtErrMsgIdAndTxt(emlrtRootTLSGlobal, "EMLRT:runTime:WrongNumberOfInputs",
+                        5, 12, 6, 4, 12, "analyzeImage");
   }
 
-  if (nlhs > 3) {
-    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:TooManyOutputArguments", 3, 4, 12,
+  if (nlhs > 6) {
+    emlrtErrMsgIdAndTxt(emlrtRootTLSGlobal,
+                        "EMLRT:runTime:TooManyOutputArguments", 3, 4, 12,
                         "analyzeImage");
   }
 

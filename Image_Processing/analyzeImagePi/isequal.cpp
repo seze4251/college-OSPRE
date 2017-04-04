@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: isequal.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
@@ -16,27 +16,36 @@
 // Function Definitions
 
 //
-// Arguments    : const boolean_T varargin_1[809600]
-//                const boolean_T varargin_2[809600]
+// Arguments    : const emxArray_boolean_T *varargin_1
+//                const emxArray_boolean_T *varargin_2
 // Return Type  : boolean_T
 //
-boolean_T isequal(const boolean_T varargin_1[809600], const boolean_T
-                  varargin_2[809600])
+boolean_T isequal(const emxArray_boolean_T *varargin_1, const emxArray_boolean_T
+                  *varargin_2)
 {
   boolean_T p;
   boolean_T b_p;
   int k;
   boolean_T exitg1;
   p = false;
-  b_p = true;
-  k = 0;
-  exitg1 = false;
-  while ((!exitg1) && (k < 809600)) {
-    if (varargin_1[k] != varargin_2[k]) {
-      b_p = false;
-      exitg1 = true;
-    } else {
-      k++;
+  b_p = false;
+  if ((varargin_1->size[0] != varargin_2->size[0]) || (varargin_1->size[1] !=
+       varargin_2->size[1])) {
+  } else {
+    b_p = true;
+  }
+
+  if (b_p && (!((varargin_1->size[0] == 0) || (varargin_1->size[1] == 0))) &&
+      (!((varargin_2->size[0] == 0) || (varargin_2->size[1] == 0)))) {
+    k = 0;
+    exitg1 = false;
+    while ((!exitg1) && (k <= varargin_2->size[0] * varargin_2->size[1] - 1)) {
+      if (varargin_1->data[k] != varargin_2->data[k]) {
+        b_p = false;
+        exitg1 = true;
+      } else {
+        k++;
+      }
     }
   }
 

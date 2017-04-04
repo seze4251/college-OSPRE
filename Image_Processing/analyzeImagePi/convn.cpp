@@ -4,44 +4,67 @@
 // government, commercial, or other organizational use.
 // File: convn.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
 #include "rt_nonfinite.h"
 #include "analyzeImage.h"
 #include "convn.h"
+#include "analyzeImage_emxutil.h"
 
 // Function Definitions
 
 //
-// Arguments    : const double A[813276]
-//                const double B[9]
-//                double C[813276]
+// Arguments    : const emxArray_real_T *A
+//                emxArray_real_T *C
 // Return Type  : void
 //
-void b_convn(const double A[813276], const double B[9], double C[813276])
+void b_convn(const emxArray_real_T *A, emxArray_real_T *C)
 {
+  int firstRowA;
+  short iv1[2];
+  int aidx;
+  int cEnd;
+  int cEnd1;
+  int ma;
+  int na;
   int j;
   int lastColA;
   int k;
   int b_j;
   int iC;
-  int c;
+  int iA;
   int iB;
   int i;
-  int firstRowA;
   int b_i;
   int a_length;
-  int cidx;
   int r;
-  memset(&C[0], 0, 813276U * sizeof(double));
+  static const signed char iv2[9] = { -1, -2, -1, 0, 0, 0, 1, 2, 1 };
+
+  for (firstRowA = 0; firstRowA < 2; firstRowA++) {
+    iv1[firstRowA] = (short)A->size[firstRowA];
+  }
+
+  firstRowA = C->size[0] * C->size[1];
+  C->size[0] = iv1[0];
+  C->size[1] = iv1[1];
+  emxEnsureCapacity((emxArray__common *)C, firstRowA, sizeof(double));
+  aidx = iv1[0] * iv1[1];
+  for (firstRowA = 0; firstRowA < aidx; firstRowA++) {
+    C->data[firstRowA] = 0.0;
+  }
+
+  cEnd = iv1[1];
+  cEnd1 = iv1[0];
+  ma = A->size[0];
+  na = A->size[1] - 1;
   for (j = 0; j < 3; j++) {
-    if (j + 1101 < 1102) {
-      lastColA = 1101;
+    if (j + na < cEnd) {
+      lastColA = na;
     } else {
-      lastColA = 1102 - j;
+      lastColA = cEnd - j;
     }
 
     for (k = (j < 1); k <= lastColA; k++) {
@@ -51,24 +74,24 @@ void b_convn(const double A[813276], const double B[9], double C[813276])
         b_j = 0;
       }
 
-      iC = b_j * 738;
-      c = k * 738;
+      iC = b_j * cEnd1;
+      iA = k * ma;
       iB = j * 3;
       for (i = 0; i < 3; i++) {
         firstRowA = (i < 1);
-        if (i + 738 <= 738) {
-          b_i = 738;
+        if (i + ma <= cEnd1) {
+          b_i = ma;
         } else {
-          b_i = 739 - i;
+          b_i = (cEnd1 - i) + 1;
         }
 
         a_length = b_i - firstRowA;
-        firstRowA += c;
-        cidx = iC;
+        aidx = iA + firstRowA;
+        firstRowA = iC;
         for (r = 1; r <= a_length; r++) {
-          C[cidx] += B[iB] * A[firstRowA];
+          C->data[firstRowA] += (double)iv2[iB] * A->data[aidx];
+          aidx++;
           firstRowA++;
-          cidx++;
         }
 
         iB++;
@@ -81,32 +104,153 @@ void b_convn(const double A[813276], const double B[9], double C[813276])
 }
 
 //
-// Arguments    : const double A[820652]
-//                const double B[36]
-//                double C[820652]
+// Arguments    : const emxArray_real_T *A
+//                emxArray_real_T *C
 // Return Type  : void
 //
-void convn(const double A[820652], const double B[36], double C[820652])
+void c_convn(const emxArray_real_T *A, emxArray_real_T *C)
 {
+  int firstRowA;
+  short iv3[2];
+  int aidx;
+  int cEnd;
+  int cEnd1;
+  int ma;
+  int na;
   int j;
   int lastColA;
   int k;
   int b_j;
   int iC;
-  int c;
+  int iA;
   int iB;
   int i;
-  int firstRowA;
   int b_i;
   int a_length;
-  int cidx;
   int r;
-  memset(&C[0], 0, 820652U * sizeof(double));
-  for (j = 0; j < 6; j++) {
-    if (j + 1105 < 1108) {
-      lastColA = 1105;
+  static const signed char iv4[9] = { -1, 0, 1, -2, 0, 2, -1, 0, 1 };
+
+  for (firstRowA = 0; firstRowA < 2; firstRowA++) {
+    iv3[firstRowA] = (short)A->size[firstRowA];
+  }
+
+  firstRowA = C->size[0] * C->size[1];
+  C->size[0] = iv3[0];
+  C->size[1] = iv3[1];
+  emxEnsureCapacity((emxArray__common *)C, firstRowA, sizeof(double));
+  aidx = iv3[0] * iv3[1];
+  for (firstRowA = 0; firstRowA < aidx; firstRowA++) {
+    C->data[firstRowA] = 0.0;
+  }
+
+  cEnd = iv3[1];
+  cEnd1 = iv3[0];
+  ma = A->size[0];
+  na = A->size[1] - 1;
+  for (j = 0; j < 3; j++) {
+    if (j + na < cEnd) {
+      lastColA = na;
     } else {
-      lastColA = 1108 - j;
+      lastColA = cEnd - j;
+    }
+
+    for (k = (j < 1); k <= lastColA; k++) {
+      if (j + k > 1) {
+        b_j = (j + k) - 1;
+      } else {
+        b_j = 0;
+      }
+
+      iC = b_j * cEnd1;
+      iA = k * ma;
+      iB = j * 3;
+      for (i = 0; i < 3; i++) {
+        firstRowA = (i < 1);
+        if (i + ma <= cEnd1) {
+          b_i = ma;
+        } else {
+          b_i = (cEnd1 - i) + 1;
+        }
+
+        a_length = b_i - firstRowA;
+        aidx = iA + firstRowA;
+        firstRowA = iC;
+        for (r = 1; r <= a_length; r++) {
+          C->data[firstRowA] += (double)iv4[iB] * A->data[aidx];
+          aidx++;
+          firstRowA++;
+        }
+
+        iB++;
+        if (i >= 1) {
+          iC++;
+        }
+      }
+    }
+  }
+}
+
+//
+// Arguments    : const emxArray_real_T *A
+//                emxArray_real_T *C
+// Return Type  : void
+//
+void convn(const emxArray_real_T *A, emxArray_real_T *C)
+{
+  int firstRowA;
+  short iv0[2];
+  int aidx;
+  int cEnd;
+  int cEnd1;
+  int ma;
+  int na;
+  int j;
+  int lastColA;
+  int k;
+  int b_j;
+  int iC;
+  int iA;
+  int iB;
+  int i;
+  int b_i;
+  int a_length;
+  int r;
+  static const double dv0[36] = { 0.0047877655273893928, 0.011645882737980777,
+    0.018163192368528008, 0.018163192368528008, 0.011645882737980777,
+    0.0047877655273893928, 0.011645882737980777, 0.028327741609508444,
+    0.044180611448322686, 0.044180611448322686, 0.028327741609508444,
+    0.011645882737980777, 0.018163192368528008, 0.044180611448322686,
+    0.068905119753439215, 0.068905119753439215, 0.044180611448322686,
+    0.018163192368528008, 0.018163192368528008, 0.044180611448322686,
+    0.068905119753439215, 0.068905119753439215, 0.044180611448322686,
+    0.018163192368528008, 0.011645882737980777, 0.028327741609508444,
+    0.044180611448322686, 0.044180611448322686, 0.028327741609508444,
+    0.011645882737980777, 0.0047877655273893928, 0.011645882737980777,
+    0.018163192368528008, 0.018163192368528008, 0.011645882737980777,
+    0.0047877655273893928 };
+
+  for (firstRowA = 0; firstRowA < 2; firstRowA++) {
+    iv0[firstRowA] = (short)A->size[firstRowA];
+  }
+
+  firstRowA = C->size[0] * C->size[1];
+  C->size[0] = iv0[0];
+  C->size[1] = iv0[1];
+  emxEnsureCapacity((emxArray__common *)C, firstRowA, sizeof(double));
+  aidx = iv0[0] * iv0[1];
+  for (firstRowA = 0; firstRowA < aidx; firstRowA++) {
+    C->data[firstRowA] = 0.0;
+  }
+
+  cEnd = iv0[1] + 2;
+  cEnd1 = iv0[0];
+  ma = A->size[0];
+  na = A->size[1] - 1;
+  for (j = 0; j < 6; j++) {
+    if (j + na < cEnd) {
+      lastColA = na;
+    } else {
+      lastColA = cEnd - j;
     }
 
     if (j < 3) {
@@ -122,8 +266,8 @@ void convn(const double A[820652], const double B[36], double C[820652])
         b_j = 0;
       }
 
-      iC = b_j * 742;
-      c = k * 742;
+      iC = b_j * cEnd1;
+      iA = k * ma;
       iB = j * 6;
       for (i = 0; i < 6; i++) {
         if (i < 3) {
@@ -132,19 +276,19 @@ void convn(const double A[820652], const double B[36], double C[820652])
           firstRowA = 0;
         }
 
-        if (i + 742 <= 744) {
-          b_i = 742;
+        if (i + ma <= cEnd1 + 2) {
+          b_i = ma;
         } else {
-          b_i = 745 - i;
+          b_i = (cEnd1 - i) + 3;
         }
 
         a_length = b_i - firstRowA;
-        firstRowA += c;
-        cidx = iC;
+        aidx = iA + firstRowA;
+        firstRowA = iC;
         for (r = 1; r <= a_length; r++) {
-          C[cidx] += B[iB] * A[firstRowA];
+          C->data[firstRowA] += dv0[iB] * A->data[aidx];
+          aidx++;
           firstRowA++;
-          cidx++;
         }
 
         iB++;

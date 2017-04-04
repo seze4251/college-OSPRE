@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: mergesort.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:22:46
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
@@ -38,7 +38,7 @@ void b_mergesort(emxArray_int32_T *idx, const emxArray_real32_T *x, int n)
   emxInit_int32_T(&iwork, 1);
   k = iwork->size[0];
   iwork->size[0] = idx->size[0];
-  emxEnsureCapacity((emxArray__common *)iwork, k, (int)sizeof(int));
+  emxEnsureCapacity((emxArray__common *)iwork, k, sizeof(int));
   for (k = 1; k <= n - 1; k += 2) {
     if ((x->data[k - 1] <= x->data[k]) || rtIsNaNF(x->data[k])) {
       p = true;

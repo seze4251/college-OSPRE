@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: regionprops.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef REGIONPROPS_H
 #define REGIONPROPS_H
@@ -23,8 +23,8 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void regionprops(const boolean_T varargin_1[809600], const double
-  varargin_2[809600], emxArray_struct_T *outstats);
+extern void regionprops(const emxArray_boolean_T *varargin_1, const
+  emxArray_real_T *varargin_2, emxArray_struct_T *outstats);
 
 #endif
 

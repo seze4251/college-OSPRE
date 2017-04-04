@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: sum.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef SUM_H
 #define SUM_H
@@ -25,7 +25,7 @@
 // Function Declarations
 extern double b_sum(const double x[256]);
 extern double c_sum(const emxArray_real_T *x);
-extern double sum(const boolean_T x[1100]);
+extern double sum(const boolean_T x_data[], const int x_size[1]);
 
 #endif
 

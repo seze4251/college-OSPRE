@@ -2,8 +2,8 @@
 ## Makefile generated for MATLAB file/project 'analyzeImage'. 
 ## 
 ## Makefile     : analyzeImage_rtw.mk
-## Generated on : Tue Feb 14 14:50:45 2017
-## MATLAB Coder version: 3.2 (R2016b)
+## Generated on : Sun Apr 02 22:05:08 2017
+## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
 ## 
@@ -21,7 +21,7 @@
 # MAKEFILE                Name of this makefile
 # COMPUTER                Computer type. See the MATLAB "computer" command.
 
-PRODUCT_NAME              = ../lib/analyzeImage
+PRODUCT_NAME              = analyzeImage
 MAKEFILE                  = analyzeImage_rtw.mk
 COMPUTER                  = GLNX
 MATLAB_ROOT               = .
@@ -31,6 +31,8 @@ MASTER_ANCHOR_DIR         =
 START_DIR                 = /home/ubuntu
 ARCH                      = glnx
 RELATIVE_PATH_TO_ANCHOR   = .
+C_STANDARD_OPTS           = 
+CPP_STANDARD_OPTS         = 
 
 ###########################################################################
 ## TOOLCHAIN SPECIFICATIONS
@@ -38,7 +40,7 @@ RELATIVE_PATH_TO_ANCHOR   = .
 
 # Toolchain Name:          GNU GCC Raspberry Pi v1.0 | gmake (64-bit Windows)
 # Supported Version(s):    
-# ToolchainInfo Version:   R2016b
+# ToolchainInfo Version:   R2017a
 # Specification Revision:  1.0
 # 
 
@@ -124,14 +126,15 @@ CFLAGS               = -c \
                        -O0
 CPPFLAGS             = -c \
                        -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -O2 \
-                       -std=c++0x
+                       -O2
 CPP_LDFLAGS          = -lrt -lpthread -ldl
 CPP_SHAREDLIB_LDFLAGS  = -shared  \
                          -lrt -lpthread -ldl
 DOWNLOAD_FLAGS       =
 EXECUTE_FLAGS        =
 LDFLAGS              = -lrt -lpthread -ldl
+MEX_CPPFLAGS         =
+MEX_CPPLDFLAGS       =
 MEX_CFLAGS           =
 MEX_LDFLAGS          =
 MAKE_FLAGS           = -f $(MAKEFILE)
@@ -166,7 +169,6 @@ MAKE_EXT            = .mk
 ###########################################################################
 
 PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)/analyzeImage.lib
-#PRODUCT = ../lib/analyzeImage.lib
 PRODUCT_TYPE = "static-library"
 BUILD_TYPE = "Static Library"
 
@@ -192,7 +194,7 @@ DEFINES = $(DEFINES_) $(DEFINES_SKIPFORSIL) $(DEFINES_STANDARD)
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = analyzeImage_rtwutil.cpp analyzeImage_initialize.cpp analyzeImage_terminate.cpp analyzeImage.cpp imhist.cpp isfinite.cpp padarray.cpp imreconstruct.cpp isequal.cpp sum.cpp bsxfun.cpp imfindcircles.cpp chaccum.cpp all.cpp imfilter.cpp convn.cpp multithresh.cpp im2uint8.cpp unique.cpp sortIdx.cpp nullAssignment.cpp sort1.cpp log.cpp chcenters.cpp medfilt2.cpp quickselect.cpp sort3.cpp imhmax.cpp imregionalmax.cpp regionprops.cpp bwconncomp.cpp round1.cpp analyzeImage_emxutil.cpp rt_nonfinite.cpp rtGetNaN.cpp rtGetInf.cpp
+SRCS = analyzeImage_rtwutil.cpp analyzeImage_initialize.cpp analyzeImage_terminate.cpp analyzeImage.cpp isequal.cpp eps.cpp imhist.cpp isfinite.cpp isrow.cpp padarray.cpp repmat.cpp imreconstruct.cpp sum.cpp bsxfun.cpp imfindcircles.cpp chaccum.cpp all.cpp imfilter.cpp convn.cpp hypot.cpp multithresh.cpp sort1.cpp sortIdx.cpp im2uint8.cpp unique.cpp mergesort.cpp nullAssignment.cpp log.cpp exp.cpp chcenters.cpp medfilt2.cpp median.cpp sort3.cpp quickselect.cpp imhmax.cpp imregionalmax.cpp regionprops.cpp bwconncomp.cpp round.cpp chradiiphcode.cpp analyzeImage_emxutil.cpp analyzeImage_emxAPI.cpp rt_nonfinite.cpp rtGetNaN.cpp rtGetInf.cpp
 
 ALL_SRCS = $(SRCS)
 
@@ -200,7 +202,7 @@ ALL_SRCS = $(SRCS)
 ## OBJECTS
 ###########################################################################
 
-OBJS = analyzeImage_rtwutil.cpp.o analyzeImage_initialize.cpp.o analyzeImage_terminate.cpp.o analyzeImage.cpp.o imhist.cpp.o isfinite.cpp.o padarray.cpp.o imreconstruct.cpp.o isequal.cpp.o sum.cpp.o bsxfun.cpp.o imfindcircles.cpp.o chaccum.cpp.o all.cpp.o imfilter.cpp.o convn.cpp.o multithresh.cpp.o im2uint8.cpp.o unique.cpp.o sortIdx.cpp.o nullAssignment.cpp.o sort1.cpp.o log.cpp.o chcenters.cpp.o medfilt2.cpp.o quickselect.cpp.o sort3.cpp.o imhmax.cpp.o imregionalmax.cpp.o regionprops.cpp.o bwconncomp.cpp.o round1.cpp.o analyzeImage_emxutil.cpp.o rt_nonfinite.cpp.o rtGetNaN.cpp.o rtGetInf.cpp.o
+OBJS = analyzeImage_rtwutil.cpp.o analyzeImage_initialize.cpp.o analyzeImage_terminate.cpp.o analyzeImage.cpp.o isequal.cpp.o eps.cpp.o imhist.cpp.o isfinite.cpp.o isrow.cpp.o padarray.cpp.o repmat.cpp.o imreconstruct.cpp.o sum.cpp.o bsxfun.cpp.o imfindcircles.cpp.o chaccum.cpp.o all.cpp.o imfilter.cpp.o convn.cpp.o hypot.cpp.o multithresh.cpp.o sort1.cpp.o sortIdx.cpp.o im2uint8.cpp.o unique.cpp.o mergesort.cpp.o nullAssignment.cpp.o log.cpp.o exp.cpp.o chcenters.cpp.o medfilt2.cpp.o median.cpp.o sort3.cpp.o quickselect.cpp.o imhmax.cpp.o imregionalmax.cpp.o regionprops.cpp.o bwconncomp.cpp.o round.cpp.o chradiiphcode.cpp.o analyzeImage_emxutil.cpp.o analyzeImage_emxAPI.cpp.o rt_nonfinite.cpp.o rtGetNaN.cpp.o rtGetInf.cpp.o
 
 ALL_OBJS = $(OBJS)
 
@@ -230,51 +232,17 @@ SYSTEM_LIBS =
 # C Compiler
 #---------------
 
-CFLAGS_SKIPFORSIL =  
 CFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 
-CFLAGS += $(CFLAGS_SKIPFORSIL) $(CFLAGS_BASIC)
+CFLAGS += $(CFLAGS_BASIC)
 
 #-----------------
 # C++ Compiler
 #-----------------
 
-CPPFLAGS_SKIPFORSIL =  
 CPPFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 
-CPPFLAGS += $(CPPFLAGS_SKIPFORSIL) $(CPPFLAGS_BASIC)
-
-#---------------
-# C++ Linker
-#---------------
-
-CPP_LDFLAGS_SKIPFORSIL =  
-
-CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
-
-#------------------------------
-# C++ Shared Library Linker
-#------------------------------
-
-CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL =  
-
-CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
-
-#-----------
-# Linker
-#-----------
-
-LDFLAGS_SKIPFORSIL =  
-
-LDFLAGS += $(LDFLAGS_SKIPFORSIL)
-
-#--------------------------
-# Shared Library Linker
-#--------------------------
-
-SHAREDLIB_LDFLAGS_SKIPFORSIL =  
-
-SHAREDLIB_LDFLAGS += $(SHAREDLIB_LDFLAGS_SKIPFORSIL)
+CPPFLAGS += $(CPPFLAGS_BASIC)
 
 ###########################################################################
 ## INLINED COMMANDS
@@ -339,63 +307,63 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 #---------------------
 
 %.c.o : %.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+	$(CC) $(CFLAGS) -o $@ $<
 
 
 %.s.o : %.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
+	$(AS) $(ASFLAGS) -o $@ $<
 
 
 %.cpp.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+	$(CPP) $(CPPFLAGS) -o $@ $<
 
 
 %.c.o : %.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+	$(CC) $(CFLAGS) -o $@ $<
 
 
 %.s.o : %.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
+	$(AS) $(ASFLAGS) -o $@ $<
 
 
 %.cpp.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+	$(CPP) $(CPPFLAGS) -o $@ $<
 
 
 %.c.o : %.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+	$(CC) $(CFLAGS) -o $@ $<
 
 
 %.s.o : %.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
+	$(AS) $(ASFLAGS) -o $@ $<
 
 
 %.cpp.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+	$(CPP) $(CPPFLAGS) -o $@ $<
 
 
 %.c.o : %.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+	$(CC) $(CFLAGS) -o $@ $<
 
 
 %.s.o : %.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
+	$(AS) $(ASFLAGS) -o $@ $<
 
 
 %.cpp.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+	$(CPP) $(CPPFLAGS) -o $@ $<
 
 
 %.c.o : %.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
+	$(CC) $(CFLAGS) -o $@ $<
 
 
 %.s.o : %.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
+	$(AS) $(ASFLAGS) -o $@ $<
 
 
 %.cpp.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+	$(CPP) $(CPPFLAGS) -o $@ $<
 
 
 ###########################################################################
@@ -430,7 +398,9 @@ info :
 	echo "### CPP_SHAREDLIB_LDFLAGS = $(CPP_SHAREDLIB_LDFLAGS)"
 	echo "### ARFLAGS = $(ARFLAGS)"
 	echo "### MEX_CFLAGS = $(MEX_CFLAGS)"
+	echo "### MEX_CPPFLAGS = $(MEX_CPPFLAGS)"
 	echo "### MEX_LDFLAGS = $(MEX_LDFLAGS)"
+	echo "### MEX_CPPLDFLAGS = $(MEX_CPPLDFLAGS)"
 	echo "### DOWNLOAD_FLAGS = $(DOWNLOAD_FLAGS)"
 	echo "### EXECUTE_FLAGS = $(EXECUTE_FLAGS)"
 	echo "### MAKE_FLAGS = $(MAKE_FLAGS)"

@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: all.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
@@ -16,23 +16,23 @@
 // Function Definitions
 
 //
-// Arguments    : const boolean_T x[809600]
+// Arguments    : const emxArray_boolean_T *x
 // Return Type  : boolean_T
 //
-boolean_T all(const boolean_T x[809600])
+boolean_T all(const emxArray_boolean_T *x)
 {
   boolean_T y;
-  int k;
+  int ix;
   boolean_T exitg1;
   y = true;
-  k = 0;
+  ix = 1;
   exitg1 = false;
-  while ((!exitg1) && (k < 809600)) {
-    if (!x[k]) {
+  while ((!exitg1) && (ix <= x->size[0])) {
+    if (!x->data[ix - 1]) {
       y = false;
       exitg1 = true;
     } else {
-      k++;
+      ix++;
     }
   }
 

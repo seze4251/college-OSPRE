@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: padarray.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef PADARRAY_H
 #define PADARRAY_H
@@ -23,8 +23,7 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void padarray(const unsigned char varargin_1[809600], unsigned char b
-                     [813276]);
+extern void padarray(const emxArray_uint8_T *varargin_1, emxArray_uint8_T *b);
 
 #endif
 

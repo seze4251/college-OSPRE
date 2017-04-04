@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: analyzeImage_rtwutil.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef ANALYZEIMAGE_RTWUTIL_H
 #define ANALYZEIMAGE_RTWUTIL_H
@@ -23,6 +23,7 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
+extern int div_s32(int numerator, int denominator);
 extern double rt_remd_snf(double u0, double u1);
 extern double rt_roundd_snf(double u);
 

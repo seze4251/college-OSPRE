@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: analyzeImage_emxutil.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
@@ -106,7 +106,7 @@ static void emxCopy_real_T(emxArray_real_T **dst, emxArray_real_T * const *src)
     (*dst)->size[i] = (*src)->size[i];
   }
 
-  emxEnsureCapacity((emxArray__common *)*dst, numElDst, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)*dst, numElDst, sizeof(double));
   for (i = 0; i < numElSrc; i++) {
     (*dst)->data[i] = (*src)->data[i];
   }
@@ -133,7 +133,7 @@ static void emxCopy_real_T1(emxArray_real_T **dst, emxArray_real_T * const *src)
     (*dst)->size[i] = (*src)->size[i];
   }
 
-  emxEnsureCapacity((emxArray__common *)*dst, numElDst, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)*dst, numElDst, sizeof(double));
   for (i = 0; i < numElSrc; i++) {
     (*dst)->data[i] = (*src)->data[i];
   }
@@ -233,10 +233,11 @@ void emxCopyStruct_struct_T(b_struct_T *dst, const b_struct_T *src)
 //
 // Arguments    : emxArray__common *emxArray
 //                int oldNumel
-//                int elementSize
+//                unsigned int elementSize
 // Return Type  : void
 //
-void emxEnsureCapacity(emxArray__common *emxArray, int oldNumel, int elementSize)
+void emxEnsureCapacity(emxArray__common *emxArray, int oldNumel, unsigned int
+  elementSize)
 {
   int newNumel;
   int i;
@@ -264,9 +265,9 @@ void emxEnsureCapacity(emxArray__common *emxArray, int oldNumel, int elementSize
       }
     }
 
-    newData = calloc((unsigned int)i, (unsigned int)elementSize);
+    newData = calloc((unsigned int)i, elementSize);
     if (emxArray->data != NULL) {
-      memcpy(newData, emxArray->data, (unsigned int)(elementSize * oldNumel));
+      memcpy(newData, emxArray->data, elementSize * oldNumel);
       if (emxArray->canFreeData) {
         free(emxArray->data);
       }
@@ -285,11 +286,11 @@ void emxEnsureCapacity(emxArray__common *emxArray, int oldNumel, int elementSize
 //
 void emxEnsureCapacity_struct_T(b_emxArray_struct_T *emxArray, int oldNumel)
 {
-  int elementSize;
+  unsigned int elementSize;
   int newNumel;
   int i;
   void *newData;
-  elementSize = (int)sizeof(b_struct_T);
+  elementSize = sizeof(b_struct_T);
   if (oldNumel < 0) {
     oldNumel = 0;
   }
@@ -313,10 +314,9 @@ void emxEnsureCapacity_struct_T(b_emxArray_struct_T *emxArray, int oldNumel)
       }
     }
 
-    newData = calloc((unsigned int)i, (unsigned int)elementSize);
+    newData = calloc((unsigned int)i, elementSize);
     if (emxArray->data != NULL) {
-      memcpy(newData, (void *)emxArray->data, (unsigned int)(elementSize *
-              oldNumel));
+      memcpy(newData, (void *)emxArray->data, elementSize * oldNumel);
       if (emxArray->canFreeData) {
         free((void *)emxArray->data);
       }
@@ -395,6 +395,24 @@ void emxFree_int32_T(emxArray_int32_T **pEmxArray)
     free((void *)(*pEmxArray)->size);
     free((void *)*pEmxArray);
     *pEmxArray = (emxArray_int32_T *)NULL;
+  }
+}
+
+//
+// Arguments    : emxArray_int8_T **pEmxArray
+// Return Type  : void
+//
+void emxFree_int8_T(emxArray_int8_T **pEmxArray)
+{
+  if (*pEmxArray != (emxArray_int8_T *)NULL) {
+    if (((*pEmxArray)->data != (signed char *)NULL) && (*pEmxArray)->canFreeData)
+    {
+      free((void *)(*pEmxArray)->data);
+    }
+
+    free((void *)(*pEmxArray)->size);
+    free((void *)*pEmxArray);
+    *pEmxArray = (emxArray_int8_T *)NULL;
   }
 }
 
@@ -641,6 +659,27 @@ void emxInit_int32_T1(emxArray_int32_T **pEmxArray, int numDimensions)
 }
 
 //
+// Arguments    : emxArray_int8_T **pEmxArray
+//                int numDimensions
+// Return Type  : void
+//
+void emxInit_int8_T(emxArray_int8_T **pEmxArray, int numDimensions)
+{
+  emxArray_int8_T *emxArray;
+  int i;
+  *pEmxArray = (emxArray_int8_T *)malloc(sizeof(emxArray_int8_T));
+  emxArray = *pEmxArray;
+  emxArray->data = (signed char *)NULL;
+  emxArray->numDimensions = numDimensions;
+  emxArray->size = (int *)malloc((unsigned int)(sizeof(int) * numDimensions));
+  emxArray->allocatedSize = 0;
+  emxArray->canFreeData = true;
+  for (i = 0; i < numDimensions; i++) {
+    emxArray->size[i] = 0;
+  }
+}
+
+//
 // Arguments    : emxArray_real32_T **pEmxArray
 //                int numDimensions
 // Return Type  : void
@@ -772,6 +811,48 @@ void emxInit_struct_T1(b_emxArray_struct_T **pEmxArray, int numDimensions)
 // Return Type  : void
 //
 void emxInit_uint8_T(emxArray_uint8_T **pEmxArray, int numDimensions)
+{
+  emxArray_uint8_T *emxArray;
+  int i;
+  *pEmxArray = (emxArray_uint8_T *)malloc(sizeof(emxArray_uint8_T));
+  emxArray = *pEmxArray;
+  emxArray->data = (unsigned char *)NULL;
+  emxArray->numDimensions = numDimensions;
+  emxArray->size = (int *)malloc((unsigned int)(sizeof(int) * numDimensions));
+  emxArray->allocatedSize = 0;
+  emxArray->canFreeData = true;
+  for (i = 0; i < numDimensions; i++) {
+    emxArray->size[i] = 0;
+  }
+}
+
+//
+// Arguments    : emxArray_uint8_T **pEmxArray
+//                int numDimensions
+// Return Type  : void
+//
+void emxInit_uint8_T1(emxArray_uint8_T **pEmxArray, int numDimensions)
+{
+  emxArray_uint8_T *emxArray;
+  int i;
+  *pEmxArray = (emxArray_uint8_T *)malloc(sizeof(emxArray_uint8_T));
+  emxArray = *pEmxArray;
+  emxArray->data = (unsigned char *)NULL;
+  emxArray->numDimensions = numDimensions;
+  emxArray->size = (int *)malloc((unsigned int)(sizeof(int) * numDimensions));
+  emxArray->allocatedSize = 0;
+  emxArray->canFreeData = true;
+  for (i = 0; i < numDimensions; i++) {
+    emxArray->size[i] = 0;
+  }
+}
+
+//
+// Arguments    : emxArray_uint8_T **pEmxArray
+//                int numDimensions
+// Return Type  : void
+//
+void emxInit_uint8_T2(emxArray_uint8_T **pEmxArray, int numDimensions)
 {
   emxArray_uint8_T *emxArray;
   int i;

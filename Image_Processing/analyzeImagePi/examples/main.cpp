@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: main.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 //***********************************************************************
@@ -37,11 +37,12 @@
 #include "analyzeImage.h"
 #include "main.h"
 #include "analyzeImage_terminate.h"
+#include "analyzeImage_emxAPI.h"
 #include "analyzeImage_initialize.h"
 
 // Function Declarations
 static void argInit_1x2_real_T(double result[2]);
-static void argInit_736x1100x3_uint8_T(unsigned char result[2428800]);
+static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T();
 static double argInit_real_T();
 static unsigned char argInit_uint8_T();
 static void main_analyzeImage();
@@ -65,25 +66,35 @@ static void argInit_1x2_real_T(double result[2])
 }
 
 //
-// Arguments    : unsigned char result[2428800]
-// Return Type  : void
+// Arguments    : void
+// Return Type  : emxArray_uint8_T *
 //
-static void argInit_736x1100x3_uint8_T(unsigned char result[2428800])
+static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T()
 {
+  emxArray_uint8_T *result;
+  static int iv5[3] = { 2, 2, 3 };
+
   int idx0;
   int idx1;
   int idx2;
 
+  // Set the size of the array.
+  // Change this size to the value that the application requires.
+  result = emxCreateND_uint8_T(3, *(int (*)[3])&iv5[0]);
+
   // Loop over the array to initialize each element.
-  for (idx0 = 0; idx0 < 736; idx0++) {
-    for (idx1 = 0; idx1 < 1100; idx1++) {
+  for (idx0 = 0; idx0 < result->size[0U]; idx0++) {
+    for (idx1 = 0; idx1 < result->size[1U]; idx1++) {
       for (idx2 = 0; idx2 < 3; idx2++) {
         // Set the value of the array element.
         // Change this value to the value that the application requires.
-        result[(idx0 + 736 * idx1) + 809600 * idx2] = argInit_uint8_T();
+        result->data[(idx0 + result->size[0] * idx1) + result->size[0] *
+          result->size[1] * idx2] = argInit_uint8_T();
       }
     }
   }
+
+  return result;
 }
 
 //
@@ -110,21 +121,30 @@ static unsigned char argInit_uint8_T()
 //
 static void main_analyzeImage()
 {
-  static unsigned char uv3[2428800];
-  double dv3[2];
+  emxArray_uint8_T *imIn;
+  double dv1[2];
+  double dv2[2];
   double centerPt_data[2];
   int centerPt_size[2];
   double radius;
   double numCirc;
+  double alpha;
+  double beta;
+  double theta;
 
   // Initialize function 'analyzeImage' input arguments.
   // Initialize function input argument 'imIn'.
+  imIn = argInit_d3120xd4160x3_uint8_T();
+
   // Initialize function input argument 'radiusRangeGuess'.
+  // Initialize function input argument 'pxDeg'.
   // Call the entry-point 'analyzeImage'.
-  argInit_736x1100x3_uint8_T(uv3);
-  argInit_1x2_real_T(dv3);
-  analyzeImage(uv3, dv3, argInit_real_T(), centerPt_data, centerPt_size, &radius,
-               &numCirc);
+  argInit_1x2_real_T(dv1);
+  argInit_1x2_real_T(dv2);
+  analyzeImage(imIn, dv1, argInit_real_T(), dv2, argInit_real_T(),
+               argInit_real_T(), centerPt_data, centerPt_size, &radius, &numCirc,
+               &alpha, &beta, &theta);
+  emxDestroyArray_uint8_T(imIn);
 }
 
 //

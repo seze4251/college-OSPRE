@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: im2uint8.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
@@ -27,7 +27,7 @@ void im2uint8(const emxArray_real32_T *img, emxArray_uint8_T *u)
   float val;
   b_index = u->size[0];
   u->size[0] = img->size[0];
-  emxEnsureCapacity((emxArray__common *)u, b_index, (int)sizeof(unsigned char));
+  emxEnsureCapacity((emxArray__common *)u, b_index, sizeof(unsigned char));
   for (b_index = 0; b_index < img->size[0]; b_index++) {
     val = img->data[b_index] * 255.0F;
     if (val < 0.0F) {

@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: sum.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
@@ -52,16 +52,21 @@ double c_sum(const emxArray_real_T *x)
 }
 
 //
-// Arguments    : const boolean_T x[1100]
+// Arguments    : const boolean_T x_data[]
+//                const int x_size[1]
 // Return Type  : double
 //
-double sum(const boolean_T x[1100])
+double sum(const boolean_T x_data[], const int x_size[1])
 {
   double y;
   int k;
-  y = x[0];
-  for (k = 0; k < 1099; k++) {
-    y += (double)x[k + 1];
+  if (x_size[0] == 0) {
+    y = 0.0;
+  } else {
+    y = x_data[0];
+    for (k = 2; k <= x_size[0]; k++) {
+      y += (double)x_data[k - 1];
+    }
   }
 
   return y;

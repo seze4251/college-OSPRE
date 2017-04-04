@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: imreconstruct.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef IMRECONSTRUCT_H
 #define IMRECONSTRUCT_H
@@ -23,8 +23,7 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void imreconstruct(unsigned char marker[813276], const unsigned char
-  mask[813276]);
+extern void imreconstruct(emxArray_uint8_T *marker, const emxArray_uint8_T *mask);
 
 #endif
 

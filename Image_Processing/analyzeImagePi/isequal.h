@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: isequal.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef ISEQUAL_H
 #define ISEQUAL_H
@@ -23,8 +23,8 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern boolean_T isequal(const boolean_T varargin_1[809600], const boolean_T
-  varargin_2[809600]);
+extern boolean_T isequal(const emxArray_boolean_T *varargin_1, const
+  emxArray_boolean_T *varargin_2);
 
 #endif
 
