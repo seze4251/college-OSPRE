@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: analyzeImage.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef ANALYZEIMAGE_H
 #define ANALYZEIMAGE_H
@@ -23,11 +23,10 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void analyzeImage(const unsigned char imIn[2428800], const double
-  radiusRangeGuess[2], double sensVal, double centerPt_data[], int
-  centerPt_size[2], double *radius, double *numCirc,
-  double* alpha, double* beta, double* theta,
-  double pxDeg[2], int imgWidth, int imgHeight);
+extern void analyzeImage(const emxArray_uint8_T *imIn, const double
+  radiusRangeGuess[2], double sensVal, const double pxDeg[2], double imgWidth,
+  double imgHeight, double centerPt_data[], int centerPt_size[2], double *radius,
+  double *numCirc, double *alpha, double *beta, double *theta);
 
 #endif
 

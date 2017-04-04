@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: analyzeImage_types.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef ANALYZEIMAGE_TYPES_H
 #define ANALYZEIMAGE_TYPES_H
@@ -58,10 +58,10 @@ struct emxArray_real_T_1x0
 
 #endif                                 //struct_emxArray_real_T_1x0
 
-#ifndef struct_stMMP2c8Zj6Qe4u3FQAfWOB
-#define struct_stMMP2c8Zj6Qe4u3FQAfWOB
+#ifndef struct_sIDhrNAaM1gFltZvsygdTzB
+#define struct_sIDhrNAaM1gFltZvsygdTzB
 
-struct stMMP2c8Zj6Qe4u3FQAfWOB
+struct sIDhrNAaM1gFltZvsygdTzB
 {
   double Area;
   double Centroid[2];
@@ -89,14 +89,14 @@ struct stMMP2c8Zj6Qe4u3FQAfWOB
   double SubarrayIdxLengths[2];
 };
 
-#endif                                 //struct_stMMP2c8Zj6Qe4u3FQAfWOB
+#endif                                 //struct_sIDhrNAaM1gFltZvsygdTzB
 
-typedef stMMP2c8Zj6Qe4u3FQAfWOB b_struct_T;
+typedef sIDhrNAaM1gFltZvsygdTzB b_struct_T;
 
-#ifndef struct_b_emxArray_struct_T
-#define struct_b_emxArray_struct_T
+#ifndef struct_c_emxArray_sIDhrNAaM1gFltZvsygd
+#define struct_c_emxArray_sIDhrNAaM1gFltZvsygd
 
-struct b_emxArray_struct_T
+struct c_emxArray_sIDhrNAaM1gFltZvsygd
 {
   b_struct_T *data;
   int *size;
@@ -105,7 +105,9 @@ struct b_emxArray_struct_T
   boolean_T canFreeData;
 };
 
-#endif                                 //struct_b_emxArray_struct_T
+#endif                                 //struct_c_emxArray_sIDhrNAaM1gFltZvsygd
+
+typedef c_emxArray_sIDhrNAaM1gFltZvsygd b_emxArray_struct_T;
 
 #ifndef struct_emxArray__common
 #define struct_emxArray__common
@@ -162,6 +164,20 @@ struct emxArray_int32_T
 };
 
 #endif                                 //struct_emxArray_int32_T
+
+#ifndef struct_emxArray_int8_T
+#define struct_emxArray_int8_T
+
+struct emxArray_int8_T
+{
+  signed char *data;
+  int *size;
+  int allocatedSize;
+  int numDimensions;
+  boolean_T canFreeData;
+};
+
+#endif                                 //struct_emxArray_int8_T
 
 #ifndef struct_emxArray_real32_T
 #define struct_emxArray_real32_T

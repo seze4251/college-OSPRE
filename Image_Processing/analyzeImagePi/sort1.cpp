@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: sort1.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
@@ -24,61 +24,62 @@
 //
 void sort(emxArray_real_T *x, emxArray_int32_T *idx)
 {
+  int bLen;
   int iv6[2];
+  int ib;
+  emxArray_int32_T *b_idx;
+  emxArray_real_T *b_x;
   int b;
   int i;
-  emxArray_real_T *b_x;
-  emxArray_int32_T *b_idx;
+  emxArray_int32_T *iwork;
   double x4[4];
   int idx4[4];
-  emxArray_int32_T *iwork;
-  int preSortLevel;
   emxArray_real_T *xwork;
   int nNaNs;
-  int ib;
   int k;
   int wOffset;
   signed char perm[4];
   int nNonNaN;
+  int i3;
   int i4;
   int nBlocks;
-  int b_iwork[256];
-  double b_xwork[256];
-  int bLen;
   int bLen2;
   int nPairs;
+  int b_iwork[256];
+  double b_xwork[256];
   int exitg1;
-  for (b = 0; b < 2; b++) {
-    iv6[b] = x->size[b];
+  for (bLen = 0; bLen < 2; bLen++) {
+    iv6[bLen] = x->size[bLen];
   }
 
-  b = idx->size[0] * idx->size[1];
+  bLen = idx->size[0] * idx->size[1];
   idx->size[0] = iv6[0];
   idx->size[1] = 1;
-  emxEnsureCapacity((emxArray__common *)idx, b, (int)sizeof(int));
-  i = iv6[0];
-  for (b = 0; b < i; b++) {
-    idx->data[b] = 0;
-  }
-
-  emxInit_real_T1(&b_x, 1);
-  i = x->size[0];
-  b = b_x->size[0];
-  b_x->size[0] = i;
-  emxEnsureCapacity((emxArray__common *)b_x, b, (int)sizeof(double));
-  for (b = 0; b < i; b++) {
-    b_x->data[b] = x->data[b];
+  emxEnsureCapacity((emxArray__common *)idx, bLen, sizeof(int));
+  ib = iv6[0];
+  for (bLen = 0; bLen < ib; bLen++) {
+    idx->data[bLen] = 0;
   }
 
   emxInit_int32_T(&b_idx, 1);
-  i = idx->size[0];
-  b = b_idx->size[0];
-  b_idx->size[0] = i;
-  emxEnsureCapacity((emxArray__common *)b_idx, b, (int)sizeof(int));
-  for (b = 0; b < i; b++) {
-    b_idx->data[b] = idx->data[b];
+  ib = idx->size[0];
+  bLen = b_idx->size[0];
+  b_idx->size[0] = ib;
+  emxEnsureCapacity((emxArray__common *)b_idx, bLen, sizeof(int));
+  for (bLen = 0; bLen < ib; bLen++) {
+    b_idx->data[bLen] = idx->data[bLen];
   }
 
+  emxInit_real_T1(&b_x, 1);
+  ib = x->size[0];
+  bLen = b_x->size[0];
+  b_x->size[0] = ib;
+  emxEnsureCapacity((emxArray__common *)b_x, bLen, sizeof(double));
+  for (bLen = 0; bLen < ib; bLen++) {
+    b_x->data[bLen] = x->data[bLen];
+  }
+
+  bLen = x->size[0];
   b = x->size[0];
   for (i = 0; i < 4; i++) {
     x4[i] = 0.0;
@@ -86,29 +87,29 @@ void sort(emxArray_real_T *x, emxArray_int32_T *idx)
   }
 
   emxInit_int32_T(&iwork, 1);
-  preSortLevel = idx->size[0];
-  i = iwork->size[0];
-  iwork->size[0] = preSortLevel;
-  emxEnsureCapacity((emxArray__common *)iwork, i, (int)sizeof(int));
-  i = iwork->size[0];
-  preSortLevel = iwork->size[0];
+  i = idx->size[0];
+  ib = iwork->size[0];
   iwork->size[0] = i;
-  emxEnsureCapacity((emxArray__common *)iwork, preSortLevel, (int)sizeof(int));
-  for (preSortLevel = 0; preSortLevel < i; preSortLevel++) {
-    iwork->data[preSortLevel] = 0;
+  emxEnsureCapacity((emxArray__common *)iwork, ib, sizeof(int));
+  ib = iwork->size[0];
+  i = iwork->size[0];
+  iwork->size[0] = ib;
+  emxEnsureCapacity((emxArray__common *)iwork, i, sizeof(int));
+  for (i = 0; i < ib; i++) {
+    iwork->data[i] = 0;
   }
 
   emxInit_real_T1(&xwork, 1);
-  preSortLevel = x->size[0];
-  i = xwork->size[0];
-  xwork->size[0] = preSortLevel;
-  emxEnsureCapacity((emxArray__common *)xwork, i, (int)sizeof(double));
-  i = xwork->size[0];
-  preSortLevel = xwork->size[0];
+  i = x->size[0];
+  ib = xwork->size[0];
   xwork->size[0] = i;
-  emxEnsureCapacity((emxArray__common *)xwork, preSortLevel, (int)sizeof(double));
-  for (preSortLevel = 0; preSortLevel < i; preSortLevel++) {
-    xwork->data[preSortLevel] = 0.0;
+  emxEnsureCapacity((emxArray__common *)xwork, ib, sizeof(double));
+  ib = xwork->size[0];
+  i = xwork->size[0];
+  xwork->size[0] = ib;
+  emxEnsureCapacity((emxArray__common *)xwork, i, sizeof(double));
+  for (i = 0; i < ib; i++) {
+    xwork->data[i] = 0.0;
   }
 
   nNaNs = 0;
@@ -125,55 +126,55 @@ void sort(emxArray_real_T *x, emxArray_int32_T *idx)
       if (ib == 4) {
         i = k - nNaNs;
         if (x4[0] >= x4[1]) {
-          preSortLevel = 1;
-          ib = 2;
-        } else {
-          preSortLevel = 2;
           ib = 1;
+          wOffset = 2;
+        } else {
+          ib = 2;
+          wOffset = 1;
         }
 
         if (x4[2] >= x4[3]) {
-          wOffset = 3;
+          i3 = 3;
           i4 = 4;
         } else {
-          wOffset = 4;
+          i3 = 4;
           i4 = 3;
         }
 
-        if (x4[preSortLevel - 1] >= x4[wOffset - 1]) {
-          if (x4[ib - 1] >= x4[wOffset - 1]) {
-            perm[0] = (signed char)preSortLevel;
+        if (x4[ib - 1] >= x4[i3 - 1]) {
+          if (x4[wOffset - 1] >= x4[i3 - 1]) {
+            perm[0] = (signed char)ib;
+            perm[1] = (signed char)wOffset;
+            perm[2] = (signed char)i3;
+            perm[3] = (signed char)i4;
+          } else if (x4[wOffset - 1] >= x4[i4 - 1]) {
+            perm[0] = (signed char)ib;
+            perm[1] = (signed char)i3;
+            perm[2] = (signed char)wOffset;
+            perm[3] = (signed char)i4;
+          } else {
+            perm[0] = (signed char)ib;
+            perm[1] = (signed char)i3;
+            perm[2] = (signed char)i4;
+            perm[3] = (signed char)wOffset;
+          }
+        } else if (x4[ib - 1] >= x4[i4 - 1]) {
+          if (x4[wOffset - 1] >= x4[i4 - 1]) {
+            perm[0] = (signed char)i3;
             perm[1] = (signed char)ib;
             perm[2] = (signed char)wOffset;
             perm[3] = (signed char)i4;
-          } else if (x4[ib - 1] >= x4[i4 - 1]) {
-            perm[0] = (signed char)preSortLevel;
-            perm[1] = (signed char)wOffset;
-            perm[2] = (signed char)ib;
-            perm[3] = (signed char)i4;
           } else {
-            perm[0] = (signed char)preSortLevel;
-            perm[1] = (signed char)wOffset;
+            perm[0] = (signed char)i3;
+            perm[1] = (signed char)ib;
             perm[2] = (signed char)i4;
-            perm[3] = (signed char)ib;
-          }
-        } else if (x4[preSortLevel - 1] >= x4[i4 - 1]) {
-          if (x4[ib - 1] >= x4[i4 - 1]) {
-            perm[0] = (signed char)wOffset;
-            perm[1] = (signed char)preSortLevel;
-            perm[2] = (signed char)ib;
-            perm[3] = (signed char)i4;
-          } else {
-            perm[0] = (signed char)wOffset;
-            perm[1] = (signed char)preSortLevel;
-            perm[2] = (signed char)i4;
-            perm[3] = (signed char)ib;
+            perm[3] = (signed char)wOffset;
           }
         } else {
-          perm[0] = (signed char)wOffset;
+          perm[0] = (signed char)i3;
           perm[1] = (signed char)i4;
-          perm[2] = (signed char)preSortLevel;
-          perm[3] = (signed char)ib;
+          perm[2] = (signed char)ib;
+          perm[3] = (signed char)wOffset;
         }
 
         b_idx->data[i - 3] = idx4[perm[0] - 1];
@@ -189,8 +190,7 @@ void sort(emxArray_real_T *x, emxArray_int32_T *idx)
     }
   }
 
-  preSortLevel = x->size[0] - 1;
-  wOffset = preSortLevel - nNaNs;
+  wOffset = (b - nNaNs) - 1;
   if (ib > 0) {
     for (i = 0; i < 4; i++) {
       perm[i] = 0;
@@ -242,9 +242,9 @@ void sort(emxArray_real_T *x, emxArray_int32_T *idx)
 
   i = nNaNs >> 1;
   for (k = 1; k <= i; k++) {
-    preSortLevel = b_idx->data[wOffset + k];
+    ib = b_idx->data[wOffset + k];
     b_idx->data[wOffset + k] = b_idx->data[b - k];
-    b_idx->data[b - k] = preSortLevel;
+    b_idx->data[b - k] = ib;
     b_x->data[wOffset + k] = xwork->data[b - k];
     b_x->data[b - k] = xwork->data[wOffset + k];
   }
@@ -253,51 +253,49 @@ void sort(emxArray_real_T *x, emxArray_int32_T *idx)
     b_x->data[(wOffset + i) + 1] = xwork->data[(wOffset + i) + 1];
   }
 
-  b = x->size[0];
-  nNonNaN = b - nNaNs;
-  preSortLevel = 2;
+  nNonNaN = bLen - nNaNs;
+  ib = 2;
   if (nNonNaN > 1) {
-    b = x->size[0];
-    if (b >= 256) {
+    if (bLen >= 256) {
       nBlocks = nNonNaN >> 8;
       if (nBlocks > 0) {
-        for (wOffset = 1; wOffset <= nBlocks; wOffset++) {
-          i4 = ((wOffset - 1) << 8) - 1;
+        for (i3 = 1; i3 <= nBlocks; i3++) {
+          i4 = ((i3 - 1) << 8) - 1;
           for (b = 0; b < 6; b++) {
             bLen = 1 << (b + 2);
             bLen2 = bLen << 1;
             nPairs = 256 >> (b + 3);
             for (k = 1; k <= nPairs; k++) {
-              preSortLevel = i4 + (k - 1) * bLen2;
+              ib = i4 + (k - 1) * bLen2;
               for (i = 1; i <= bLen2; i++) {
-                b_iwork[i - 1] = b_idx->data[preSortLevel + i];
-                b_xwork[i - 1] = b_x->data[preSortLevel + i];
+                b_iwork[i - 1] = b_idx->data[ib + i];
+                b_xwork[i - 1] = b_x->data[ib + i];
               }
 
-              ib = 0;
+              wOffset = 0;
               i = bLen;
               do {
                 exitg1 = 0;
-                preSortLevel++;
-                if (b_xwork[ib] >= b_xwork[i]) {
-                  b_idx->data[preSortLevel] = b_iwork[ib];
-                  b_x->data[preSortLevel] = b_xwork[ib];
-                  if (ib + 1 < bLen) {
-                    ib++;
+                ib++;
+                if (b_xwork[wOffset] >= b_xwork[i]) {
+                  b_idx->data[ib] = b_iwork[wOffset];
+                  b_x->data[ib] = b_xwork[wOffset];
+                  if (wOffset + 1 < bLen) {
+                    wOffset++;
                   } else {
                     exitg1 = 1;
                   }
                 } else {
-                  b_idx->data[preSortLevel] = b_iwork[i];
-                  b_x->data[preSortLevel] = b_xwork[i];
+                  b_idx->data[ib] = b_iwork[i];
+                  b_x->data[ib] = b_xwork[i];
                   if (i + 1 < bLen2) {
                     i++;
                   } else {
-                    i = preSortLevel - ib;
-                    while (ib + 1 <= bLen) {
-                      b_idx->data[(i + ib) + 1] = b_iwork[ib];
-                      b_x->data[(i + ib) + 1] = b_xwork[ib];
-                      ib++;
+                    i = ib - wOffset;
+                    while (wOffset + 1 <= bLen) {
+                      b_idx->data[(i + wOffset) + 1] = b_iwork[wOffset];
+                      b_x->data[(i + wOffset) + 1] = b_xwork[wOffset];
+                      wOffset++;
                     }
 
                     exitg1 = 1;
@@ -308,17 +306,17 @@ void sort(emxArray_real_T *x, emxArray_int32_T *idx)
           }
         }
 
-        i = nBlocks << 8;
-        preSortLevel = nNonNaN - i;
-        if (preSortLevel > 0) {
-          merge_block(b_idx, b_x, i, preSortLevel, 2, iwork, xwork);
+        ib = nBlocks << 8;
+        i = nNonNaN - ib;
+        if (i > 0) {
+          merge_block(b_idx, b_x, ib, i, 2, iwork, xwork);
         }
 
-        preSortLevel = 8;
+        ib = 8;
       }
     }
 
-    merge_block(b_idx, b_x, 0, nNonNaN, preSortLevel, iwork, xwork);
+    merge_block(b_idx, b_x, 0, nNonNaN, ib, iwork, xwork);
   }
 
   if ((nNaNs > 0) && (nNonNaN > 0)) {
@@ -340,15 +338,15 @@ void sort(emxArray_real_T *x, emxArray_int32_T *idx)
 
   emxFree_real_T(&xwork);
   emxFree_int32_T(&iwork);
-  i = b_idx->size[0];
-  for (b = 0; b < i; b++) {
-    idx->data[b] = b_idx->data[b];
+  ib = b_idx->size[0];
+  for (bLen = 0; bLen < ib; bLen++) {
+    idx->data[bLen] = b_idx->data[bLen];
   }
 
   emxFree_int32_T(&b_idx);
-  i = b_x->size[0];
-  for (b = 0; b < i; b++) {
-    x->data[b] = b_x->data[b];
+  ib = b_x->size[0];
+  for (bLen = 0; bLen < ib; bLen++) {
+    x->data[bLen] = b_x->data[bLen];
   }
 
   emxFree_real_T(&b_x);

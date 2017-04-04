@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: imhist.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef IMHIST_H
 #define IMHIST_H
@@ -24,7 +24,7 @@
 
 // Function Declarations
 extern void b_imhist(const emxArray_uint8_T *varargin_1, double yout[256]);
-extern void imhist(const unsigned char varargin_1[809600], double yout[256]);
+extern void imhist(const emxArray_uint8_T *varargin_1, double yout[256]);
 
 #endif
 

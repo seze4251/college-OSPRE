@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: all.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef ALL_H
 #define ALL_H
@@ -23,7 +23,7 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern boolean_T all(const boolean_T x[809600]);
+extern boolean_T all(const emxArray_boolean_T *x);
 
 #endif
 

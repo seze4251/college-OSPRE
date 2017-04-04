@@ -4,75 +4,103 @@
 // government, commercial, or other organizational use.
 // File: multithresh.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
 #include "rt_nonfinite.h"
 #include "analyzeImage.h"
 #include "multithresh.h"
-#include "isfinite.h"
 #include "analyzeImage_emxutil.h"
 #include "nullAssignment.h"
 #include "unique.h"
 #include "sortIdx.h"
+#include "isfinite.h"
 #include "sum.h"
 #include "imhist.h"
 #include "im2uint8.h"
 
-// Function Declarations
-static void checkForDegenerateInput(const float A[809600], boolean_T
-  *isDegenerate, emxArray_real32_T *uniqueVals);
-static void getDegenerateThresholds(const emxArray_real32_T *uniqueVals,
-  emxArray_real32_T *thresh);
-static void map2OriginalScale(const emxArray_real_T *thresh, float minA, float
-  maxA, emxArray_real32_T *sclThresh);
-
 // Function Definitions
 
 //
-// Arguments    : const float A[809600]
+// Arguments    : const emxArray_real32_T *uniqueVals
+//                emxArray_real32_T *thresh
+// Return Type  : void
+//
+void b_getDegenerateThresholds(const emxArray_real32_T *uniqueVals,
+  emxArray_real32_T *thresh)
+{
+  int i25;
+  int loop_ub;
+  if (uniqueVals->size[1] == 0) {
+    i25 = thresh->size[0] * thresh->size[1];
+    thresh->size[0] = 1;
+    thresh->size[1] = 1;
+    emxEnsureCapacity((emxArray__common *)thresh, i25, sizeof(float));
+    thresh->data[0] = 1.0F;
+  } else {
+    i25 = thresh->size[0] * thresh->size[1];
+    thresh->size[0] = 1;
+    thresh->size[1] = uniqueVals->size[1];
+    emxEnsureCapacity((emxArray__common *)thresh, i25, sizeof(float));
+    loop_ub = uniqueVals->size[0] * uniqueVals->size[1];
+    for (i25 = 0; i25 < loop_ub; i25++) {
+      thresh->data[i25] = uniqueVals->data[i25];
+    }
+  }
+}
+
+//
+// Arguments    : const emxArray_real32_T *A
 //                boolean_T *isDegenerate
 //                emxArray_real32_T *uniqueVals
 // Return Type  : void
 //
-static void checkForDegenerateInput(const float A[809600], boolean_T
-  *isDegenerate, emxArray_real32_T *uniqueVals)
+void checkForDegenerateInput(const emxArray_real32_T *A, boolean_T *isDegenerate,
+  emxArray_real32_T *uniqueVals)
 {
   emxArray_real32_T *b;
-  static int idx[809600];
-  int nFinite;
-  int k;
+  emxArray_int32_T *idx;
+  int b_A[1];
+  emxArray_real32_T c_A;
+  int khi;
   int nInf;
+  int k;
   int nNaN;
   int nb;
-  int khi;
   float x;
   int exitg1;
   float absxk;
-  int i8;
+  int i23;
   int exponent;
-  boolean_T p;
-  emxArray_boolean_T *r3;
-  emxArray_boolean_T *r4;
-  emxArray_boolean_T *r5;
+  boolean_T b_isDegenerate;
+  emxArray_boolean_T *r8;
+  emxArray_boolean_T *r9;
+  emxArray_boolean_T *r10;
   emxInit_real32_T1(&b, 1);
-  sortIdx(A, idx);
-  nFinite = b->size[0];
-  b->size[0] = 809600;
-  emxEnsureCapacity((emxArray__common *)b, nFinite, (int)sizeof(float));
-  for (k = 0; k < 809600; k++) {
-    b->data[k] = A[idx[k] - 1];
+  emxInit_int32_T(&idx, 1);
+  b_A[0] = A->size[0] * A->size[1];
+  c_A = *A;
+  c_A.size = (int *)&b_A;
+  c_A.numDimensions = 1;
+  sortIdx(&c_A, idx);
+  khi = A->size[0] * A->size[1];
+  nInf = b->size[0];
+  b->size[0] = khi;
+  emxEnsureCapacity((emxArray__common *)b, nInf, sizeof(float));
+  for (k = 0; k + 1 <= A->size[0] * A->size[1]; k++) {
+    b->data[k] = A->data[idx->data[k] - 1];
   }
 
-  count_nonfinites(b, &k, &nFinite, &nInf, &nNaN);
+  emxFree_int32_T(&idx);
+  count_nonfinites(b, A->size[0] * A->size[1], &k, &khi, &nInf, &nNaN);
   nb = -1;
   if (k > 0) {
     nb = 0;
   }
 
-  khi = k + nFinite;
+  khi += k;
   while (k + 1 <= khi) {
     x = b->data[k];
     do {
@@ -95,12 +123,12 @@ static void checkForDegenerateInput(const float A[809600], boolean_T
 
         if ((std::abs(x - b->data[k]) < absxk) || (rtIsInfF(b->data[k]) &&
              rtIsInfF(x) && ((b->data[k] > 0.0F) == (x > 0.0F)))) {
-          p = true;
+          b_isDegenerate = true;
         } else {
-          p = false;
+          b_isDegenerate = false;
         }
 
-        if (!p) {
+        if (!b_isDegenerate) {
           exitg1 = 1;
         }
       }
@@ -121,60 +149,61 @@ static void checkForDegenerateInput(const float A[809600], boolean_T
     b->data[nb] = b->data[(k + khi) - 1];
   }
 
-  nFinite = b->size[0];
+  nInf = b->size[0];
   if (1 > nb + 1) {
-    i8 = -1;
+    i23 = -1;
   } else {
-    i8 = nb;
+    i23 = nb;
   }
 
-  b->size[0] = i8 + 1;
-  emxEnsureCapacity((emxArray__common *)b, nFinite, (int)sizeof(float));
-  nFinite = uniqueVals->size[0] * uniqueVals->size[1];
+  b->size[0] = i23 + 1;
+  emxEnsureCapacity((emxArray__common *)b, nInf, sizeof(float));
+  nInf = uniqueVals->size[0] * uniqueVals->size[1];
   uniqueVals->size[0] = 1;
   uniqueVals->size[1] = b->size[0];
-  emxEnsureCapacity((emxArray__common *)uniqueVals, nFinite, (int)sizeof(float));
+  emxEnsureCapacity((emxArray__common *)uniqueVals, nInf, sizeof(float));
   khi = b->size[0];
-  for (nFinite = 0; nFinite < khi; nFinite++) {
-    uniqueVals->data[uniqueVals->size[0] * nFinite] = b->data[nFinite];
+  for (nInf = 0; nInf < khi; nInf++) {
+    uniqueVals->data[uniqueVals->size[0] * nInf] = b->data[nInf];
   }
 
   emxFree_real32_T(&b);
-  emxInit_boolean_T(&r3, 2);
-  nFinite = r3->size[0] * r3->size[1];
-  r3->size[0] = 1;
-  r3->size[1] = uniqueVals->size[1];
-  emxEnsureCapacity((emxArray__common *)r3, nFinite, (int)sizeof(boolean_T));
+  emxInit_boolean_T(&r8, 2);
+  nInf = r8->size[0] * r8->size[1];
+  r8->size[0] = 1;
+  r8->size[1] = uniqueVals->size[1];
+  emxEnsureCapacity((emxArray__common *)r8, nInf, sizeof(boolean_T));
   khi = uniqueVals->size[0] * uniqueVals->size[1];
-  for (nFinite = 0; nFinite < khi; nFinite++) {
-    r3->data[nFinite] = rtIsInfF(uniqueVals->data[nFinite]);
+  for (nInf = 0; nInf < khi; nInf++) {
+    r8->data[nInf] = rtIsInfF(uniqueVals->data[nInf]);
   }
 
-  emxInit_boolean_T(&r4, 2);
-  nFinite = r4->size[0] * r4->size[1];
-  r4->size[0] = 1;
-  r4->size[1] = uniqueVals->size[1];
-  emxEnsureCapacity((emxArray__common *)r4, nFinite, (int)sizeof(boolean_T));
+  emxInit_boolean_T(&r9, 2);
+  nInf = r9->size[0] * r9->size[1];
+  r9->size[0] = 1;
+  r9->size[1] = uniqueVals->size[1];
+  emxEnsureCapacity((emxArray__common *)r9, nInf, sizeof(boolean_T));
   khi = uniqueVals->size[0] * uniqueVals->size[1];
-  for (nFinite = 0; nFinite < khi; nFinite++) {
-    r4->data[nFinite] = rtIsNaNF(uniqueVals->data[nFinite]);
+  for (nInf = 0; nInf < khi; nInf++) {
+    r9->data[nInf] = rtIsNaNF(uniqueVals->data[nInf]);
   }
 
-  emxInit_boolean_T(&r5, 2);
-  nFinite = r5->size[0] * r5->size[1];
-  r5->size[0] = 1;
-  r5->size[1] = r3->size[1];
-  emxEnsureCapacity((emxArray__common *)r5, nFinite, (int)sizeof(boolean_T));
-  khi = r3->size[0] * r3->size[1];
-  for (nFinite = 0; nFinite < khi; nFinite++) {
-    r5->data[nFinite] = (r3->data[nFinite] || r4->data[nFinite]);
+  emxInit_boolean_T(&r10, 2);
+  nInf = r10->size[0] * r10->size[1];
+  r10->size[0] = 1;
+  r10->size[1] = r8->size[1];
+  emxEnsureCapacity((emxArray__common *)r10, nInf, sizeof(boolean_T));
+  khi = r8->size[0] * r8->size[1];
+  for (nInf = 0; nInf < khi; nInf++) {
+    r10->data[nInf] = (r8->data[nInf] || r9->data[nInf]);
   }
 
-  emxFree_boolean_T(&r4);
-  emxFree_boolean_T(&r3);
-  nullAssignment(uniqueVals, r5);
-  *isDegenerate = (uniqueVals->size[1] <= 1);
-  emxFree_boolean_T(&r5);
+  emxFree_boolean_T(&r9);
+  emxFree_boolean_T(&r8);
+  nullAssignment(uniqueVals, r10);
+  b_isDegenerate = (uniqueVals->size[1] <= 1);
+  *isDegenerate = b_isDegenerate;
+  emxFree_boolean_T(&r10);
 }
 
 //
@@ -182,25 +211,203 @@ static void checkForDegenerateInput(const float A[809600], boolean_T
 //                emxArray_real32_T *thresh
 // Return Type  : void
 //
-static void getDegenerateThresholds(const emxArray_real32_T *uniqueVals,
+void getDegenerateThresholds(const emxArray_real32_T *uniqueVals,
   emxArray_real32_T *thresh)
 {
-  int i9;
+  int i22;
   int loop_ub;
-  if (uniqueVals->size[1] == 0) {
-    i9 = thresh->size[0] * thresh->size[1];
+  if ((uniqueVals->size[0] == 0) || (uniqueVals->size[1] == 0)) {
+    i22 = thresh->size[0] * thresh->size[1];
     thresh->size[0] = 1;
     thresh->size[1] = 1;
-    emxEnsureCapacity((emxArray__common *)thresh, i9, (int)sizeof(float));
+    emxEnsureCapacity((emxArray__common *)thresh, i22, sizeof(float));
     thresh->data[0] = 1.0F;
   } else {
-    i9 = thresh->size[0] * thresh->size[1];
-    thresh->size[0] = 1;
+    i22 = thresh->size[0] * thresh->size[1];
+    thresh->size[0] = uniqueVals->size[0];
     thresh->size[1] = uniqueVals->size[1];
-    emxEnsureCapacity((emxArray__common *)thresh, i9, (int)sizeof(float));
+    emxEnsureCapacity((emxArray__common *)thresh, i22, sizeof(float));
     loop_ub = uniqueVals->size[0] * uniqueVals->size[1];
-    for (i9 = 0; i9 < loop_ub; i9++) {
-      thresh->data[i9] = uniqueVals->data[i9];
+    for (i22 = 0; i22 < loop_ub; i22++) {
+      thresh->data[i22] = uniqueVals->data[i22];
+    }
+  }
+}
+
+//
+// Arguments    : emxArray_real32_T *A
+//                double p[256]
+//                float *minA
+//                float *maxA
+//                boolean_T *emptyp
+// Return Type  : void
+//
+void getpdf(emxArray_real32_T *A, double p[256], float *minA, float *maxA,
+            boolean_T *emptyp)
+{
+  int idx;
+  int N;
+  int ix;
+  float B;
+  boolean_T exitg1;
+  emxArray_boolean_T *nans;
+  emxArray_int32_T *r7;
+  emxArray_real32_T *b_A;
+  emxArray_uint8_T *c_A;
+  double y;
+  *emptyp = true;
+  idx = 1;
+  N = A->size[0] * A->size[1];
+  while ((idx <= N) && (!c_isfinite(A->data[idx - 1]))) {
+    idx++;
+  }
+
+  if (idx <= N) {
+    *minA = A->data[idx - 1];
+    *maxA = A->data[idx - 1];
+    while (idx + 1 <= N) {
+      if ((A->data[idx] < *minA) && c_isfinite(A->data[idx])) {
+        *minA = A->data[idx];
+      } else {
+        if ((A->data[idx] > *maxA) && c_isfinite(A->data[idx])) {
+          *maxA = A->data[idx];
+        }
+      }
+
+      idx++;
+    }
+
+    if (!(*minA == *maxA)) {
+      B = *maxA - *minA;
+      N = A->size[0] * A->size[1];
+      emxEnsureCapacity((emxArray__common *)A, N, sizeof(float));
+      idx = A->size[0];
+      N = A->size[1];
+      idx *= N;
+      for (N = 0; N < idx; N++) {
+        A->data[N] = (A->data[N] - *minA) / B;
+      }
+
+      emxInit_boolean_T1(&nans, 1);
+      N = nans->size[0];
+      nans->size[0] = A->size[0] * A->size[1];
+      emxEnsureCapacity((emxArray__common *)nans, N, sizeof(boolean_T));
+      idx = A->size[0] * A->size[1];
+      for (N = 0; N < idx; N++) {
+        nans->data[N] = rtIsNaNF(A->data[N]);
+      }
+
+      ix = nans->size[0];
+      idx = 0;
+      for (N = 0; N < ix; N++) {
+        if (!nans->data[N]) {
+          idx++;
+        }
+      }
+
+      if (!(idx == 0)) {
+        ix = nans->size[0] - 1;
+        idx = 0;
+        for (N = 0; N <= ix; N++) {
+          if (!nans->data[N]) {
+            idx++;
+          }
+        }
+
+        emxInit_int32_T(&r7, 1);
+        N = r7->size[0];
+        r7->size[0] = idx;
+        emxEnsureCapacity((emxArray__common *)r7, N, sizeof(int));
+        idx = 0;
+        for (N = 0; N <= ix; N++) {
+          if (!nans->data[N]) {
+            r7->data[idx] = N + 1;
+            idx++;
+          }
+        }
+
+        emxInit_real32_T1(&b_A, 1);
+        N = b_A->size[0];
+        b_A->size[0] = r7->size[0];
+        emxEnsureCapacity((emxArray__common *)b_A, N, sizeof(float));
+        idx = r7->size[0];
+        for (N = 0; N < idx; N++) {
+          b_A->data[N] = A->data[r7->data[N] - 1];
+        }
+
+        emxFree_int32_T(&r7);
+        emxInit_uint8_T1(&c_A, 1);
+        im2uint8(b_A, c_A);
+        b_imhist(c_A, p);
+        y = b_sum(p);
+        emxFree_real32_T(&b_A);
+        emxFree_uint8_T(&c_A);
+        for (N = 0; N < 256; N++) {
+          p[N] /= y;
+        }
+
+        *emptyp = false;
+      }
+
+      emxFree_boolean_T(&nans);
+    }
+  } else {
+    idx = 1;
+    N = A->size[0] * A->size[1];
+    *minA = A->data[0];
+    if (A->size[0] * A->size[1] > 1) {
+      if (rtIsNaNF(A->data[0])) {
+        ix = 2;
+        exitg1 = false;
+        while ((!exitg1) && (ix <= N)) {
+          idx = ix;
+          if (!rtIsNaNF(A->data[ix - 1])) {
+            *minA = A->data[ix - 1];
+            exitg1 = true;
+          } else {
+            ix++;
+          }
+        }
+      }
+
+      if (idx < A->size[0] * A->size[1]) {
+        while (idx + 1 <= N) {
+          if (A->data[idx] < *minA) {
+            *minA = A->data[idx];
+          }
+
+          idx++;
+        }
+      }
+    }
+
+    idx = 1;
+    N = A->size[0] * A->size[1];
+    *maxA = A->data[0];
+    if (A->size[0] * A->size[1] > 1) {
+      if (rtIsNaNF(A->data[0])) {
+        ix = 2;
+        exitg1 = false;
+        while ((!exitg1) && (ix <= N)) {
+          idx = ix;
+          if (!rtIsNaNF(A->data[ix - 1])) {
+            *maxA = A->data[ix - 1];
+            exitg1 = true;
+          } else {
+            ix++;
+          }
+        }
+      }
+
+      if (idx < A->size[0] * A->size[1]) {
+        while (idx + 1 <= N) {
+          if (A->data[idx] > *maxA) {
+            *maxA = A->data[idx];
+          }
+
+          idx++;
+        }
+      }
     }
   }
 }
@@ -212,282 +419,21 @@ static void getDegenerateThresholds(const emxArray_real32_T *uniqueVals,
 //                emxArray_real32_T *sclThresh
 // Return Type  : void
 //
-static void map2OriginalScale(const emxArray_real_T *thresh, float minA, float
-  maxA, emxArray_real32_T *sclThresh)
+void map2OriginalScale(const emxArray_real_T *thresh, float minA, float maxA,
+  emxArray_real32_T *sclThresh)
 {
   double b;
-  int i10;
+  int i26;
   int loop_ub;
   b = (double)maxA - minA;
-  i10 = sclThresh->size[0] * sclThresh->size[1];
+  i26 = sclThresh->size[0] * sclThresh->size[1];
   sclThresh->size[0] = 1;
   sclThresh->size[1] = thresh->size[1];
-  emxEnsureCapacity((emxArray__common *)sclThresh, i10, (int)sizeof(float));
+  emxEnsureCapacity((emxArray__common *)sclThresh, i26, sizeof(float));
   loop_ub = thresh->size[0] * thresh->size[1];
-  for (i10 = 0; i10 < loop_ub; i10++) {
-    sclThresh->data[i10] = (float)(minA + thresh->data[i10] / 255.0 * b);
+  for (i26 = 0; i26 < loop_ub; i26++) {
+    sclThresh->data[i26] = (float)(minA + thresh->data[i26] / 255.0 * b);
   }
-}
-
-//
-// Arguments    : const float varargin_1[809600]
-// Return Type  : float
-//
-float multithresh(const float varargin_1[809600])
-{
-  float thresh;
-  boolean_T isvalid_maxval;
-  double counts[256];
-  int idx;
-  float mtmp;
-  int ix;
-  boolean_T exitg3;
-  float B;
-  static float A[809600];
-  double x[256];
-  static boolean_T nans[809600];
-  boolean_T exitg2;
-  float b_A;
-  double b_x[256];
-  emxArray_int32_T *r2;
-  boolean_T b_nans;
-  double y;
-  emxArray_real32_T *c_A;
-  boolean_T exitg1;
-  emxArray_real32_T *threshout;
-  emxArray_real_T *threshRaw;
-  emxArray_real32_T *uniqueVals;
-  emxArray_uint8_T *d_A;
-  double idxSum;
-  double idxNum;
-  isvalid_maxval = true;
-  idx = 1;
-  while ((idx <= 809600) && (!c_isfinite(varargin_1[idx - 1]))) {
-    idx++;
-  }
-
-  if (idx <= 809600) {
-    thresh = varargin_1[idx - 1];
-    mtmp = varargin_1[idx - 1];
-    while (idx + 1 < 809601) {
-      if ((varargin_1[idx] < thresh) && c_isfinite(varargin_1[idx])) {
-        thresh = varargin_1[idx];
-      } else {
-        if ((varargin_1[idx] > mtmp) && c_isfinite(varargin_1[idx])) {
-          mtmp = varargin_1[idx];
-        }
-      }
-
-      idx++;
-    }
-
-    if (!(thresh == mtmp)) {
-      B = mtmp - thresh;
-      idx = 0;
-      for (ix = 0; ix < 809600; ix++) {
-        b_A = (varargin_1[ix] - thresh) / B;
-        b_nans = rtIsNaNF(b_A);
-        if (!b_nans) {
-          idx++;
-        }
-
-        A[ix] = b_A;
-        nans[ix] = b_nans;
-      }
-
-      if (!(idx == 0)) {
-        emxInit_int32_T(&r2, 1);
-        idx = 0;
-        for (ix = 0; ix < 809600; ix++) {
-          if (!nans[ix]) {
-            idx++;
-          }
-        }
-
-        ix = r2->size[0];
-        r2->size[0] = idx;
-        emxEnsureCapacity((emxArray__common *)r2, ix, (int)sizeof(int));
-        idx = 0;
-        for (ix = 0; ix < 809600; ix++) {
-          if (!nans[ix]) {
-            r2->data[idx] = ix + 1;
-            idx++;
-          }
-        }
-
-        emxInit_real32_T1(&c_A, 1);
-        ix = c_A->size[0];
-        c_A->size[0] = r2->size[0];
-        emxEnsureCapacity((emxArray__common *)c_A, ix, (int)sizeof(float));
-        idx = r2->size[0];
-        for (ix = 0; ix < idx; ix++) {
-          c_A->data[ix] = A[r2->data[ix] - 1];
-        }
-
-        emxFree_int32_T(&r2);
-        emxInit_uint8_T(&d_A, 1);
-        im2uint8(c_A, d_A);
-        b_imhist(d_A, counts);
-        y = b_sum(counts);
-        emxFree_real32_T(&c_A);
-        emxFree_uint8_T(&d_A);
-        for (ix = 0; ix < 256; ix++) {
-          counts[ix] /= y;
-        }
-
-        isvalid_maxval = false;
-      }
-    }
-  } else {
-    idx = 1;
-    thresh = varargin_1[0];
-    if (rtIsNaNF(varargin_1[0])) {
-      ix = 2;
-      exitg3 = false;
-      while ((!exitg3) && (ix < 809601)) {
-        idx = ix;
-        if (!rtIsNaNF(varargin_1[ix - 1])) {
-          thresh = varargin_1[ix - 1];
-          exitg3 = true;
-        } else {
-          ix++;
-        }
-      }
-    }
-
-    if (idx < 809600) {
-      while (idx + 1 < 809601) {
-        if (varargin_1[idx] < thresh) {
-          thresh = varargin_1[idx];
-        }
-
-        idx++;
-      }
-    }
-
-    idx = 1;
-    mtmp = varargin_1[0];
-    if (rtIsNaNF(varargin_1[0])) {
-      ix = 2;
-      exitg2 = false;
-      while ((!exitg2) && (ix < 809601)) {
-        idx = ix;
-        if (!rtIsNaNF(varargin_1[ix - 1])) {
-          mtmp = varargin_1[ix - 1];
-          exitg2 = true;
-        } else {
-          ix++;
-        }
-      }
-    }
-
-    if (idx < 809600) {
-      while (idx + 1 < 809601) {
-        if (varargin_1[idx] > mtmp) {
-          mtmp = varargin_1[idx];
-        }
-
-        idx++;
-      }
-    }
-  }
-
-  if (isvalid_maxval) {
-    if (rtIsNaNF(thresh)) {
-      thresh = 1.0F;
-    }
-  } else {
-    memcpy(&x[0], &counts[0], sizeof(double) << 8);
-    for (idx = 0; idx < 255; idx++) {
-      x[idx + 1] += x[idx];
-    }
-
-    for (ix = 0; ix < 256; ix++) {
-      b_x[ix] = counts[ix] * (1.0 + (double)ix);
-    }
-
-    for (idx = 0; idx < 255; idx++) {
-      b_x[idx + 1] += b_x[idx];
-    }
-
-    for (idx = 0; idx < 256; idx++) {
-      y = b_x[255] * x[idx] - b_x[idx];
-      counts[idx] = y * y / (x[idx] * (1.0 - x[idx]));
-    }
-
-    idx = 1;
-    y = counts[0];
-    if (rtIsNaN(counts[0])) {
-      ix = 2;
-      exitg1 = false;
-      while ((!exitg1) && (ix < 257)) {
-        idx = ix;
-        if (!rtIsNaN(counts[ix - 1])) {
-          y = counts[ix - 1];
-          exitg1 = true;
-        } else {
-          ix++;
-        }
-      }
-    }
-
-    if (idx < 256) {
-      while (idx + 1 < 257) {
-        if (counts[idx] > y) {
-          y = counts[idx];
-        }
-
-        idx++;
-      }
-    }
-
-    isvalid_maxval = ((!rtIsInf(y)) && (!rtIsNaN(y)));
-    emxInit_real32_T(&threshout, 2);
-    emxInit_real_T(&threshRaw, 2);
-    emxInit_real32_T(&uniqueVals, 2);
-    if (isvalid_maxval) {
-      idxSum = 0.0;
-      idxNum = 0.0;
-      for (idx = 0; idx < 256; idx++) {
-        if (counts[idx] == y) {
-          idxSum += 1.0 + (double)idx;
-          idxNum++;
-        }
-      }
-
-      ix = threshRaw->size[0] * threshRaw->size[1];
-      threshRaw->size[0] = 1;
-      threshRaw->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)threshRaw, ix, (int)sizeof(double));
-      threshRaw->data[0] = idxSum / idxNum - 1.0;
-      map2OriginalScale(threshRaw, thresh, mtmp, threshout);
-    } else {
-      checkForDegenerateInput(varargin_1, &b_nans, uniqueVals);
-      getDegenerateThresholds(uniqueVals, threshout);
-      ix = threshRaw->size[0] * threshRaw->size[1];
-      threshRaw->size[0] = 1;
-      threshRaw->size[1] = threshout->size[1];
-      emxEnsureCapacity((emxArray__common *)threshRaw, ix, (int)sizeof(double));
-      idx = threshout->size[0] * threshout->size[1];
-      for (ix = 0; ix < idx; ix++) {
-        threshRaw->data[ix] = threshout->data[ix];
-      }
-
-      checkForDegenerateInput(varargin_1, &b_nans, uniqueVals);
-      if (b_nans) {
-        getDegenerateThresholds(uniqueVals, threshout);
-      } else {
-        map2OriginalScale(threshRaw, thresh, mtmp, threshout);
-      }
-    }
-
-    emxFree_real32_T(&uniqueVals);
-    emxFree_real_T(&threshRaw);
-    thresh = threshout->data[0];
-    emxFree_real32_T(&threshout);
-  }
-
-  return thresh;
 }
 
 //

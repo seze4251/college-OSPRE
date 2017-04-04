@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: imhmax.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef IMHMAX_H
 #define IMHMAX_H
@@ -23,7 +23,7 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void imhmax(const double I[809600], double H, double J[809600]);
+extern void imhmax(const emxArray_real_T *I, double H, emxArray_real_T *J);
 
 #endif
 

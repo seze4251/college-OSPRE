@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: multithresh.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef MULTITHRESH_H
 #define MULTITHRESH_H
@@ -23,7 +23,16 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern float multithresh(const float varargin_1[809600]);
+extern void b_getDegenerateThresholds(const emxArray_real32_T *uniqueVals,
+  emxArray_real32_T *thresh);
+extern void checkForDegenerateInput(const emxArray_real32_T *A, boolean_T
+  *isDegenerate, emxArray_real32_T *uniqueVals);
+extern void getDegenerateThresholds(const emxArray_real32_T *uniqueVals,
+  emxArray_real32_T *thresh);
+extern void getpdf(emxArray_real32_T *A, double p[256], float *minA, float *maxA,
+                   boolean_T *emptyp);
+extern void map2OriginalScale(const emxArray_real_T *thresh, float minA, float
+  maxA, emxArray_real32_T *sclThresh);
 
 #endif
 

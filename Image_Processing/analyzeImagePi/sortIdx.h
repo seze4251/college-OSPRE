@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: sortIdx.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef SORTIDX_H
 #define SORTIDX_H
@@ -25,7 +25,7 @@
 // Function Declarations
 extern void merge_block(emxArray_int32_T *idx, emxArray_real_T *x, int offset,
   int n, int preSortLevel, emxArray_int32_T *iwork, emxArray_real_T *xwork);
-extern void sortIdx(const float x[809600], int idx[809600]);
+extern void sortIdx(const emxArray_real32_T *x, emxArray_int32_T *idx);
 
 #endif
 

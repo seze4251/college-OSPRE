@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: imfindcircles.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef IMFINDCIRCLES_H
 #define IMFINDCIRCLES_H
@@ -23,7 +23,7 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void imfindcircles(const boolean_T varargin_1[809600], const double
+extern void imfindcircles(const emxArray_boolean_T *varargin_1, const double
   varargin_2[2], double varargin_4, emxArray_real_T *centers, emxArray_real_T
   *r_estimated);
 

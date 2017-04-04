@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: imregionalmax.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef IMREGIONALMAX_H
 #define IMREGIONALMAX_H
@@ -23,7 +23,8 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void imregionalmax(const double varargin_1[809600], boolean_T BW[809600]);
+extern void imregionalmax(const emxArray_real_T *varargin_1, emxArray_boolean_T *
+  BW);
 
 #endif
 

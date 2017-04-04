@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: imfilter.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef IMFILTER_H
 #define IMFILTER_H
@@ -23,9 +23,10 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void b_imfilter(const float varargin_1[809600], float b[809600]);
-extern void imfilter(const float varargin_1[809600], float b[809600]);
-extern void padImage(const float a_tmp[809600], float a[820652]);
+extern void b_imfilter(const emxArray_real32_T *varargin_1, emxArray_real32_T *b);
+extern void imfilter(const emxArray_real32_T *varargin_1, emxArray_real32_T *b);
+extern void padImage(const emxArray_real32_T *a_tmp, const double pad[2],
+                     emxArray_real32_T *a);
 
 #endif
 

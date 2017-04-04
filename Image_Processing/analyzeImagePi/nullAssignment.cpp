@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: nullAssignment.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
@@ -49,7 +49,7 @@ void nullAssignment(emxArray_real32_T *x, const emxArray_boolean_T *idx)
     x->size[1] = nxout;
   }
 
-  emxEnsureCapacity((emxArray__common *)x, k0, (int)sizeof(float));
+  emxEnsureCapacity((emxArray__common *)x, k0, sizeof(float));
 }
 
 //

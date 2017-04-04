@@ -4,14 +4,15 @@
 // government, commercial, or other organizational use.
 // File: mergesort.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:22:46
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef MERGESORT_H
 #define MERGESORT_H
 
 // Include Files
 #include <cmath>
+#include <float.h>
 #include <math.h>
 #include <stddef.h>
 #include <stdlib.h>

@@ -4,85 +4,110 @@
 // government, commercial, or other organizational use.
 // File: imregionalmax.cpp
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 
 // Include Files
 #include "rt_nonfinite.h"
 #include "analyzeImage.h"
 #include "imregionalmax.h"
+#include "isrow.h"
 #include "bsxfun.h"
+#include "regionprops.h"
 #include "isequal.h"
+#include "analyzeImage_emxutil.h"
 #include "analyzeImage_rtwutil.h"
 
 // Function Definitions
 
 //
-// Arguments    : const double varargin_1[809600]
-//                boolean_T BW[809600]
+// Arguments    : const emxArray_real_T *varargin_1
+//                emxArray_boolean_T *BW
 // Return Type  : void
 //
-void imregionalmax(const double varargin_1[809600], boolean_T BW[809600])
+void imregionalmax(const emxArray_real_T *varargin_1, emxArray_boolean_T *BW)
 {
-  int np_ImageNeighborLinearOffsets[9];
-  int np_NeighborSubscriptOffsets[18];
-  int ck;
-  boolean_T continuePropagation;
-  static boolean_T bwpre[809600];
-  static boolean_T imParams_bw[809600];
-  int iv3[18];
-  int a[9];
   int i;
+  short np_ImageSize[2];
+  short imSize[2];
+  int loop_ub;
+  boolean_T continuePropagation;
+  emxArray_boolean_T *bwpre;
+  emxArray_boolean_T *imParams_bw;
+  int loffsets[9];
+  int np_ImageNeighborLinearOffsets[9];
   short pixelsPerImPage[2];
-  short iv4[2];
+  int indx;
   int pind;
-  int r;
   signed char subs[2];
-  int imnhSubs[18];
+  int r;
   signed char b_subs[2];
   int pixelSub[2];
-  int y;
+  int imnhSubs[18];
+  int np_NeighborSubscriptOffsets[18];
   int secondInd;
+  int u0;
+  int u1;
   int firstInd;
-  boolean_T out_[736];
+  int minval;
+  boolean_T out__data[3123];
   int av[9];
+  int imnh_size_idx_1;
+  double imnh_data[81];
   double pixel;
-  int x;
-  boolean_T exitg9;
-  short b_pixelSub[2];
-  int c_pixelSub[2];
-  boolean_T isInside[9];
-  int d_pixelSub[2];
-  int trueCount;
-  int b_trueCount;
-  int e_pixelSub[2];
-  boolean_T exitg8;
-  boolean_T exitg6;
-  int c_trueCount;
-  int imnhInds_data[9];
-  int b_imnhInds_data[9];
-  double imnh_data[9];
-  boolean_T exitg4;
-  int d_trueCount;
-  boolean_T exitg7;
-  int c_imnhInds_data[9];
-  boolean_T exitg5;
-  boolean_T exitg2;
-  int d_imnhInds_data[9];
-  boolean_T exitg3;
   boolean_T exitg1;
-  for (ck = 0; ck < 809600; ck++) {
-    BW[ck] = true;
+  double b_pixelSub[2];
+  boolean_T isInside[9];
+  int c_pixelSub[2];
+  int imnhInds_data[9];
+  int tmp_data[9];
+  int d_pixelSub[2];
+  int b_imnhInds_data[9];
+  int e_pixelSub[2];
+  int c_imnhInds_data[9];
+  int d_imnhInds_data[9];
+  for (i = 0; i < 2; i++) {
+    np_ImageSize[i] = (short)varargin_1->size[i];
+  }
+
+  for (i = 0; i < 2; i++) {
+    imSize[i] = (short)varargin_1->size[i];
+  }
+
+  i = BW->size[0] * BW->size[1];
+  BW->size[0] = imSize[0];
+  BW->size[1] = imSize[1];
+  emxEnsureCapacity((emxArray__common *)BW, i, sizeof(boolean_T));
+  loop_ub = imSize[0] * imSize[1];
+  for (i = 0; i < loop_ub; i++) {
+    BW->data[i] = true;
   }
 
   continuePropagation = true;
+  emxInit_boolean_T(&bwpre, 2);
+  emxInit_boolean_T(&imParams_bw, 2);
   while (continuePropagation) {
-    memcpy(&bwpre[0], &BW[0], 809600U * sizeof(boolean_T));
-    memcpy(&imParams_bw[0], &BW[0], 809600U * sizeof(boolean_T));
-    memcpy(&iv3[0], &np_NeighborSubscriptOffsets[0], 18U * sizeof(int));
+    i = bwpre->size[0] * bwpre->size[1];
+    bwpre->size[0] = BW->size[0];
+    bwpre->size[1] = BW->size[1];
+    emxEnsureCapacity((emxArray__common *)bwpre, i, sizeof(boolean_T));
+    loop_ub = BW->size[0] * BW->size[1];
+    for (i = 0; i < loop_ub; i++) {
+      bwpre->data[i] = BW->data[i];
+    }
+
+    i = imParams_bw->size[0] * imParams_bw->size[1];
+    imParams_bw->size[0] = BW->size[0];
+    imParams_bw->size[1] = BW->size[1];
+    emxEnsureCapacity((emxArray__common *)imParams_bw, i, sizeof(boolean_T));
+    loop_ub = BW->size[0] * BW->size[1];
+    for (i = 0; i < loop_ub; i++) {
+      imParams_bw->data[i] = BW->data[i];
+    }
+
     for (i = 0; i < 9; i++) {
-      a[i] = np_ImageNeighborLinearOffsets[i];
+      loffsets[i] = np_ImageNeighborLinearOffsets[i];
     }
 
     //  Process pixels with full neighborhood
@@ -90,442 +115,678 @@ void imregionalmax(const double varargin_1[809600], boolean_T BW[809600])
     //  Process pixels with full neighborhood
     //  Process pixels with partial neighborhood
     pixelsPerImPage[0] = 1;
-    pixelsPerImPage[1] = 736;
-    for (ck = 0; ck < 2; ck++) {
-      iv4[ck] = (short)(364 * ck + 735);
+    pixelsPerImPage[1] = np_ImageSize[0];
+    for (i = 0; i < 2; i++) {
+      imSize[i] = (short)((short)(np_ImageSize[i] + 2) - 3);
     }
 
-    i = 0;
+    indx = 0;
     for (pind = 0; pind < 9; pind++) {
       r = (int)rt_remd_snf((1.0 + (double)pind) - 1.0, 3.0) + 1;
-      subs[1] = (signed char)((int)(((double)(pind - r) + 1.0) / 3.0) + 1);
-      subs[0] = (signed char)r;
+      b_subs[1] = (signed char)((int)(((double)(pind - r) + 1.0) / 3.0) + 1);
       b_subs[0] = (signed char)r;
-      b_subs[1] = (signed char)(subs[1] - 1);
-      for (ck = 0; ck < 2; ck++) {
-        iv3[i + 9 * ck] = subs[ck];
-        pixelSub[ck] = b_subs[ck] * pixelsPerImPage[ck];
+      subs[0] = (signed char)r;
+      subs[1] = (signed char)(b_subs[1] - 1);
+      for (i = 0; i < 2; i++) {
+        np_NeighborSubscriptOffsets[indx + 9 * i] = b_subs[i];
+        pixelSub[i] = subs[i] * pixelsPerImPage[i];
       }
 
-      a[i] = pixelSub[0] + pixelSub[1];
-      i++;
+      loffsets[indx] = (short)pixelSub[0] + (short)pixelSub[1];
+      indx++;
     }
 
-    for (ck = 0; ck < 9; ck++) {
-      a[ck] -= 738;
-    }
-
-    memcpy(&imnhSubs[0], &iv3[0], 18U * sizeof(int));
-    i = 0;
-    for (ck = 0; ck <= 10; ck += 9) {
-      for (y = 0; y < 9; y++) {
-        iv3[ck + y] = imnhSubs[i + y] - 2;
-      }
-
-      i += 9;
+    subs[0] = 2;
+    subs[1] = 1;
+    for (i = 0; i < 2; i++) {
+      pixelSub[i] = subs[i] * pixelsPerImPage[i];
     }
 
     for (i = 0; i < 9; i++) {
-      np_ImageNeighborLinearOffsets[i] = a[i];
+      loffsets[i] = (loffsets[i] - (short)pixelSub[1]) - 2;
     }
 
-    memcpy(&np_NeighborSubscriptOffsets[0], &iv3[0], 18U * sizeof(int));
-    for (secondInd = 1; secondInd + 1 <= iv4[1]; secondInd++) {
-      for (firstInd = 1; firstInd + 1 <= iv4[0]; firstInd++) {
-        pind = secondInd * 736 + firstInd;
+    memcpy(&imnhSubs[0], &np_NeighborSubscriptOffsets[0], 18U * sizeof(int));
+    indx = 0;
+    for (loop_ub = 0; loop_ub <= 10; loop_ub += 9) {
+      for (i = 0; i < 9; i++) {
+        np_NeighborSubscriptOffsets[loop_ub + i] = imnhSubs[indx + i] - 2;
+      }
+
+      indx += 9;
+    }
+
+    for (i = 0; i < 9; i++) {
+      np_ImageNeighborLinearOffsets[i] = loffsets[i];
+    }
+
+    for (secondInd = 1; secondInd + 1 <= imSize[1]; secondInd++) {
+      loop_ub = BW->size[0];
+      for (firstInd = 1; firstInd + 1 <= imSize[0]; firstInd++) {
+        pind = secondInd * np_ImageSize[0] + firstInd;
         for (i = 0; i < 9; i++) {
-          av[i] = (a[i] + pind) + 1;
+          av[i] = (loffsets[i] + pind) + 1;
         }
 
-        pixel = varargin_1[pind];
-        continuePropagation = imParams_bw[pind];
-        if (imParams_bw[pind]) {
+        if (isrow(varargin_1)) {
+          r = 1;
+          imnh_size_idx_1 = 9;
+          for (i = 0; i < 9; i++) {
+            imnh_data[i] = varargin_1->data[av[i] - 1];
+          }
+        } else {
+          r = 9;
+          imnh_size_idx_1 = 1;
+          for (i = 0; i < 9; i++) {
+            imnh_data[i] = varargin_1->data[av[i] - 1];
+          }
+        }
+
+        pixel = varargin_1->data[pind];
+        continuePropagation = imParams_bw->data[pind];
+        if (imParams_bw->data[pind]) {
           //  Pixel has not already been set as non-max
-          ck = 0;
-          exitg9 = false;
-          while ((!exitg9) && (ck < 9)) {
-            if (varargin_1[av[ck] - 1] > pixel) {
+          indx = 0;
+          exitg1 = false;
+          while ((!exitg1) && (indx <= r * imnh_size_idx_1 - 1)) {
+            if (imnh_data[indx] > pixel) {
               //  Set pixel to zero if any neighbor is greater
               continuePropagation = false;
-              exitg9 = true;
-            } else if ((varargin_1[av[ck] - 1] == pixel) && (!imParams_bw[av[ck]
+              exitg1 = true;
+            } else if ((imnh_data[indx] == pixel) && (!imParams_bw->data[av[indx]
                         - 1])) {
               //  Set pixel to zero if any equal neighbor is already set to zero 
               continuePropagation = false;
-              exitg9 = true;
+              exitg1 = true;
             } else {
-              ck++;
+              indx++;
             }
           }
         }
 
-        out_[firstInd] = continuePropagation;
+        out__data[firstInd] = continuePropagation;
       }
 
-      memcpy(&BW[secondInd * 736], &out_[0], 736U * sizeof(boolean_T));
+      for (i = 0; i < loop_ub; i++) {
+        BW->data[i + BW->size[0] * secondInd] = out__data[i];
+      }
     }
 
-    for (firstInd = 0; firstInd < 736; firstInd++) {
-      for (i = 0; i < 9; i++) {
-        av[i] = (a[i] + firstInd) + 1;
-      }
-
-      r = firstInd - 736 * (firstInd / 736);
-      ck = firstInd - r;
-      if (ck >= 0) {
-        y = ck;
-      } else {
-        y = -ck;
-      }
-
-      i = y / 736;
-      x = y - i * 736;
-      if ((x > 0) && (x >= 368)) {
-        i++;
-      }
-
-      if (ck < 0) {
-        i = -i;
-      }
-
-      b_pixelSub[1] = (short)(i + 1);
-      b_pixelSub[0] = (short)(r + 1);
-      for (ck = 0; ck < 2; ck++) {
-        pixelSub[ck] = b_pixelSub[ck];
-      }
-
-      bsxfun(iv3, pixelSub, imnhSubs);
-      for (i = 0; i < 9; i++) {
-        isInside[i] = true;
-      }
-
-      trueCount = 0;
-      for (x = 0; x < 9; x++) {
-        ck = 0;
-        exitg8 = false;
-        while ((!exitg8) && (ck < 2)) {
-          if ((imnhSubs[x + 9 * ck] < 1) || (imnhSubs[x + 9 * ck] > 736 + 364 *
-               ck)) {
-            isInside[x] = false;
-            exitg8 = true;
-          } else {
-            ck++;
-          }
-        }
-
-        if (isInside[x]) {
-          trueCount++;
-        }
-      }
-
-      ck = 0;
-      for (i = 0; i < 9; i++) {
-        if (isInside[i]) {
-          imnhInds_data[ck] = av[i];
-          ck++;
-        }
-      }
-
-      for (ck = 0; ck < trueCount; ck++) {
-        imnh_data[ck] = varargin_1[imnhInds_data[ck] - 1];
-      }
-
-      pixel = varargin_1[firstInd];
-      continuePropagation = imParams_bw[firstInd];
-      if (imParams_bw[firstInd]) {
-        //  Pixel has not already been set as non-max
-        ck = 0;
-        exitg7 = false;
-        while ((!exitg7) && (ck <= trueCount - 1)) {
-          if (imnh_data[ck] > pixel) {
-            //  Set pixel to zero if any neighbor is greater
-            continuePropagation = false;
-            exitg7 = true;
-          } else if ((imnh_data[ck] == pixel) && (!imParams_bw[imnhInds_data[ck]
-                      - 1])) {
-            //  Set pixel to zero if any equal neighbor is already set to zero
-            continuePropagation = false;
-            exitg7 = true;
-          } else {
-            ck++;
-          }
-        }
-      }
-
-      BW[firstInd] = continuePropagation;
+    u0 = np_ImageSize[0];
+    u1 = np_ImageSize[0];
+    if (u0 < u1) {
+      u1 = u0;
     }
 
-    for (secondInd = iv4[1] + 1; secondInd < 1101; secondInd++) {
-      for (firstInd = 0; firstInd < 736; firstInd++) {
-        pind = (secondInd - 1) * 736 + firstInd;
+    if (np_ImageSize[1] > 1) {
+      minval = 1;
+    } else {
+      minval = np_ImageSize[1];
+    }
+
+    secondInd = 0;
+    while (secondInd <= (signed char)minval - 1) {
+      for (firstInd = 0; firstInd + 1 <= u1; firstInd++) {
         for (i = 0; i < 9; i++) {
-          av[i] = (a[i] + pind) + 1;
+          av[i] = (loffsets[i] + firstInd) + 1;
         }
 
-        r = pind - 736 * (pind / 736);
-        ck = pind - r;
-        y = ck / 736;
-        x = ck - y * 736;
-        if ((x > 0) && (x >= 368)) {
-          y++;
+        if (np_ImageSize[0] == 0) {
+          r = 0;
+        } else {
+          r = firstInd - np_ImageSize[0] * div_s32(firstInd, (int)np_ImageSize[0]);
         }
 
-        c_pixelSub[1] = y + 1;
-        c_pixelSub[0] = r + 1;
-        for (ck = 0; ck < 2; ck++) {
-          pixelSub[ck] = c_pixelSub[ck];
+        loop_ub = firstInd - r;
+        if (np_ImageSize[0] == 0) {
+          if (loop_ub == 0) {
+            i = 0;
+          } else if (loop_ub < 0) {
+            i = MIN_int32_T;
+          } else {
+            i = MAX_int32_T;
+          }
+        } else if (np_ImageSize[0] == 1) {
+          i = loop_ub;
+        } else {
+          if (loop_ub >= 0) {
+            indx = loop_ub;
+          } else {
+            indx = -loop_ub;
+          }
+
+          i = div_s32(indx, (int)np_ImageSize[0]);
+          indx -= i * np_ImageSize[0];
+          if ((indx > 0) && (indx >= (np_ImageSize[0] >> 1) + (np_ImageSize[0] &
+                1))) {
+            i++;
+          }
+
+          if (loop_ub < 0) {
+            i = -i;
+          }
         }
 
-        bsxfun(iv3, pixelSub, imnhSubs);
+        b_pixelSub[1] = i + 1;
+        b_pixelSub[0] = (double)r + 1.0;
+        for (i = 0; i < 2; i++) {
+          pixelSub[i] = (int)b_pixelSub[i];
+        }
+
+        bsxfun(np_NeighborSubscriptOffsets, pixelSub, imnhSubs);
         for (i = 0; i < 9; i++) {
           isInside[i] = true;
         }
 
-        b_trueCount = 0;
-        for (x = 0; x < 9; x++) {
-          ck = 0;
-          exitg6 = false;
-          while ((!exitg6) && (ck < 2)) {
-            if ((imnhSubs[x + 9 * ck] < 1) || (imnhSubs[x + 9 * ck] > 736 + 364 *
-                 ck)) {
-              isInside[x] = false;
-              exitg6 = true;
+        loop_ub = 0;
+        for (i = 0; i < 9; i++) {
+          indx = 0;
+          exitg1 = false;
+          while ((!exitg1) && (indx < 2)) {
+            if ((imnhSubs[i + 9 * indx] < 1) || (imnhSubs[i + 9 * indx] >
+                 np_ImageSize[indx])) {
+              isInside[i] = false;
+              exitg1 = true;
             } else {
-              ck++;
+              indx++;
             }
           }
 
-          if (isInside[x]) {
-            b_trueCount++;
+          if (isInside[i]) {
+            loop_ub++;
           }
         }
 
-        ck = 0;
+        indx = 0;
         for (i = 0; i < 9; i++) {
           if (isInside[i]) {
-            b_imnhInds_data[ck] = av[i];
-            ck++;
+            imnhInds_data[indx] = av[i];
+            indx++;
           }
         }
 
-        for (ck = 0; ck < b_trueCount; ck++) {
-          imnh_data[ck] = varargin_1[b_imnhInds_data[ck] - 1];
+        if (isrow(varargin_1)) {
+          for (i = 0; i < loop_ub; i++) {
+            tmp_data[i] = imnhInds_data[i];
+          }
+
+          r = 1;
+          imnh_size_idx_1 = loop_ub;
+          for (i = 0; i < loop_ub; i++) {
+            imnh_data[i] = varargin_1->data[tmp_data[i] - 1];
+          }
+        } else {
+          r = loop_ub;
+          imnh_size_idx_1 = 1;
+          for (i = 0; i < loop_ub; i++) {
+            imnh_data[i] = varargin_1->data[imnhInds_data[i] - 1];
+          }
         }
 
-        pixel = varargin_1[pind];
-        continuePropagation = imParams_bw[pind];
-        if (imParams_bw[pind]) {
+        pixel = varargin_1->data[firstInd];
+        continuePropagation = imParams_bw->data[firstInd];
+        if (imParams_bw->data[firstInd]) {
           //  Pixel has not already been set as non-max
-          ck = 0;
-          exitg5 = false;
-          while ((!exitg5) && (ck <= b_trueCount - 1)) {
-            if (imnh_data[ck] > pixel) {
+          indx = 0;
+          exitg1 = false;
+          while ((!exitg1) && (indx <= r * imnh_size_idx_1 - 1)) {
+            if (imnh_data[indx] > pixel) {
               //  Set pixel to zero if any neighbor is greater
               continuePropagation = false;
-              exitg5 = true;
-            } else if ((imnh_data[ck] == pixel) &&
-                       (!imParams_bw[b_imnhInds_data[ck] - 1])) {
+              exitg1 = true;
+            } else if ((imnh_data[indx] == pixel) && (!imParams_bw->
+                        data[imnhInds_data[indx] - 1])) {
               //  Set pixel to zero if any equal neighbor is already set to zero 
               continuePropagation = false;
-              exitg5 = true;
+              exitg1 = true;
             } else {
-              ck++;
+              indx++;
             }
           }
         }
 
-        BW[pind] = continuePropagation;
+        BW->data[firstInd] = continuePropagation;
       }
+
+      secondInd = 1;
     }
 
-    for (secondInd = 1; secondInd < 1101; secondInd++) {
-      pind = (secondInd - 1) * 736;
-      for (i = 0; i < 9; i++) {
-        av[i] = (a[i] + pind) + 1;
-      }
-
-      r = pind - 736 * (pind / 736);
-      ck = pind - r;
-      if (ck >= 0) {
-        y = ck;
-      } else {
-        y = -ck;
-      }
-
-      i = y / 736;
-      x = y - i * 736;
-      if ((x > 0) && (x >= 368)) {
-        i++;
-      }
-
-      if (ck < 0) {
-        i = -i;
-      }
-
-      d_pixelSub[1] = i + 1;
-      d_pixelSub[0] = r + 1;
-      for (ck = 0; ck < 2; ck++) {
-        pixelSub[ck] = d_pixelSub[ck];
-      }
-
-      bsxfun(iv3, pixelSub, imnhSubs);
-      for (i = 0; i < 9; i++) {
-        isInside[i] = true;
-      }
-
-      c_trueCount = 0;
-      for (x = 0; x < 9; x++) {
-        ck = 0;
-        exitg4 = false;
-        while ((!exitg4) && (ck < 2)) {
-          if ((imnhSubs[x + 9 * ck] < 1) || (imnhSubs[x + 9 * ck] > 736 + 364 *
-               ck)) {
-            isInside[x] = false;
-            exitg4 = true;
-          } else {
-            ck++;
-          }
-        }
-
-        if (isInside[x]) {
-          c_trueCount++;
-        }
-      }
-
-      ck = 0;
-      for (i = 0; i < 9; i++) {
-        if (isInside[i]) {
-          c_imnhInds_data[ck] = av[i];
-          ck++;
-        }
-      }
-
-      for (ck = 0; ck < c_trueCount; ck++) {
-        imnh_data[ck] = varargin_1[c_imnhInds_data[ck] - 1];
-      }
-
-      pixel = varargin_1[pind];
-      continuePropagation = imParams_bw[pind];
-      if (imParams_bw[pind]) {
-        //  Pixel has not already been set as non-max
-        ck = 0;
-        exitg3 = false;
-        while ((!exitg3) && (ck <= c_trueCount - 1)) {
-          if (imnh_data[ck] > pixel) {
-            //  Set pixel to zero if any neighbor is greater
-            continuePropagation = false;
-            exitg3 = true;
-          } else if ((imnh_data[ck] == pixel) &&
-                     (!imParams_bw[c_imnhInds_data[ck] - 1])) {
-            //  Set pixel to zero if any equal neighbor is already set to zero
-            continuePropagation = false;
-            exitg3 = true;
-          } else {
-            ck++;
-          }
-        }
-      }
-
-      BW[pind] = continuePropagation;
+    u0 = np_ImageSize[0];
+    u1 = np_ImageSize[0];
+    if (u0 < u1) {
+      u1 = u0;
     }
 
-    for (secondInd = 1; secondInd < 1101; secondInd++) {
-      firstInd = iv4[0] + 1;
-      while (firstInd <= 736) {
-        pind = (secondInd - 1) * 736 + 735;
+    u0 = np_ImageSize[1];
+    minval = np_ImageSize[1];
+    if (u0 < minval) {
+      minval = u0;
+    }
+
+    u0 = (short)(imSize[1] + 1);
+    if (!(u0 > 1)) {
+      u0 = 1;
+    }
+
+    while (u0 <= minval) {
+      for (firstInd = 0; firstInd + 1 <= u1; firstInd++) {
+        pind = (u0 - 1) * np_ImageSize[0] + firstInd;
         for (i = 0; i < 9; i++) {
-          av[i] = (a[i] + pind) + 1;
+          av[i] = (loffsets[i] + pind) + 1;
         }
 
-        r = pind - 736 * (pind / 736);
-        ck = pind - r;
-        if (ck >= 0) {
-          y = ck;
+        if (np_ImageSize[0] == 0) {
+          r = 0;
         } else {
-          y = -ck;
+          r = pind - np_ImageSize[0] * div_s32(pind, (int)np_ImageSize[0]);
         }
 
-        i = y / 736;
-        x = y - i * 736;
-        if ((x > 0) && (x >= 368)) {
-          i++;
+        loop_ub = pind - r;
+        if (np_ImageSize[0] == 0) {
+          if (loop_ub == 0) {
+            i = 0;
+          } else if (loop_ub < 0) {
+            i = MIN_int32_T;
+          } else {
+            i = MAX_int32_T;
+          }
+        } else if (np_ImageSize[0] == 1) {
+          i = loop_ub;
+        } else {
+          if (loop_ub >= 0) {
+            indx = loop_ub;
+          } else if (loop_ub == MIN_int32_T) {
+            indx = MAX_int32_T;
+          } else {
+            indx = -loop_ub;
+          }
+
+          i = div_s32(indx, (int)np_ImageSize[0]);
+          indx -= i * np_ImageSize[0];
+          if ((indx > 0) && (indx >= (np_ImageSize[0] >> 1) + (np_ImageSize[0] &
+                1))) {
+            i++;
+          }
+
+          if (loop_ub < 0) {
+            i = -i;
+          }
         }
 
-        if (ck < 0) {
-          i = -i;
+        c_pixelSub[1] = i + 1;
+        c_pixelSub[0] = r + 1;
+        for (i = 0; i < 2; i++) {
+          pixelSub[i] = c_pixelSub[i];
+        }
+
+        bsxfun(np_NeighborSubscriptOffsets, pixelSub, imnhSubs);
+        for (i = 0; i < 9; i++) {
+          isInside[i] = true;
+        }
+
+        loop_ub = 0;
+        for (i = 0; i < 9; i++) {
+          indx = 0;
+          exitg1 = false;
+          while ((!exitg1) && (indx < 2)) {
+            if ((imnhSubs[i + 9 * indx] < 1) || (imnhSubs[i + 9 * indx] >
+                 np_ImageSize[indx])) {
+              isInside[i] = false;
+              exitg1 = true;
+            } else {
+              indx++;
+            }
+          }
+
+          if (isInside[i]) {
+            loop_ub++;
+          }
+        }
+
+        indx = 0;
+        for (i = 0; i < 9; i++) {
+          if (isInside[i]) {
+            b_imnhInds_data[indx] = av[i];
+            indx++;
+          }
+        }
+
+        if (isrow(varargin_1)) {
+          for (i = 0; i < loop_ub; i++) {
+            tmp_data[i] = b_imnhInds_data[i];
+          }
+
+          r = 1;
+          imnh_size_idx_1 = loop_ub;
+          for (i = 0; i < loop_ub; i++) {
+            imnh_data[i] = varargin_1->data[tmp_data[i] - 1];
+          }
+        } else {
+          r = loop_ub;
+          imnh_size_idx_1 = 1;
+          for (i = 0; i < loop_ub; i++) {
+            imnh_data[i] = varargin_1->data[b_imnhInds_data[i] - 1];
+          }
+        }
+
+        pixel = varargin_1->data[pind];
+        continuePropagation = imParams_bw->data[pind];
+        if (imParams_bw->data[pind]) {
+          //  Pixel has not already been set as non-max
+          indx = 0;
+          exitg1 = false;
+          while ((!exitg1) && (indx <= r * imnh_size_idx_1 - 1)) {
+            if (imnh_data[indx] > pixel) {
+              //  Set pixel to zero if any neighbor is greater
+              continuePropagation = false;
+              exitg1 = true;
+            } else if ((imnh_data[indx] == pixel) && (!imParams_bw->
+                        data[b_imnhInds_data[indx] - 1])) {
+              //  Set pixel to zero if any equal neighbor is already set to zero 
+              continuePropagation = false;
+              exitg1 = true;
+            } else {
+              indx++;
+            }
+          }
+        }
+
+        BW->data[pind] = continuePropagation;
+      }
+
+      u0++;
+    }
+
+    if (np_ImageSize[0] > 1) {
+      minval = 1;
+    } else {
+      minval = np_ImageSize[0];
+    }
+
+    u0 = np_ImageSize[1];
+    u1 = np_ImageSize[1];
+    if (u0 < u1) {
+      u1 = u0;
+    }
+
+    for (secondInd = 1; secondInd <= u1; secondInd++) {
+      firstInd = 0;
+      while (firstInd <= (signed char)minval - 1) {
+        pind = (secondInd - 1) * np_ImageSize[0];
+        for (i = 0; i < 9; i++) {
+          av[i] = (loffsets[i] + pind) + 1;
+        }
+
+        if (np_ImageSize[0] == 0) {
+          r = 0;
+        } else {
+          r = pind - np_ImageSize[0] * div_s32(pind, (int)np_ImageSize[0]);
+        }
+
+        loop_ub = pind - r;
+        if (np_ImageSize[0] == 0) {
+          if (loop_ub == 0) {
+            i = 0;
+          } else if (loop_ub < 0) {
+            i = MIN_int32_T;
+          } else {
+            i = MAX_int32_T;
+          }
+        } else if (np_ImageSize[0] == 1) {
+          i = loop_ub;
+        } else {
+          if (loop_ub >= 0) {
+            indx = loop_ub;
+          } else if (loop_ub == MIN_int32_T) {
+            indx = MAX_int32_T;
+          } else {
+            indx = -loop_ub;
+          }
+
+          i = div_s32(indx, (int)np_ImageSize[0]);
+          indx -= i * np_ImageSize[0];
+          if ((indx > 0) && (indx >= (np_ImageSize[0] >> 1) + (np_ImageSize[0] &
+                1))) {
+            i++;
+          }
+
+          if (loop_ub < 0) {
+            i = -i;
+          }
+        }
+
+        d_pixelSub[1] = i + 1;
+        d_pixelSub[0] = r + 1;
+        for (i = 0; i < 2; i++) {
+          pixelSub[i] = d_pixelSub[i];
+        }
+
+        bsxfun(np_NeighborSubscriptOffsets, pixelSub, imnhSubs);
+        for (i = 0; i < 9; i++) {
+          isInside[i] = true;
+        }
+
+        loop_ub = 0;
+        for (i = 0; i < 9; i++) {
+          indx = 0;
+          exitg1 = false;
+          while ((!exitg1) && (indx < 2)) {
+            if ((imnhSubs[i + 9 * indx] < 1) || (imnhSubs[i + 9 * indx] >
+                 np_ImageSize[indx])) {
+              isInside[i] = false;
+              exitg1 = true;
+            } else {
+              indx++;
+            }
+          }
+
+          if (isInside[i]) {
+            loop_ub++;
+          }
+        }
+
+        indx = 0;
+        for (i = 0; i < 9; i++) {
+          if (isInside[i]) {
+            c_imnhInds_data[indx] = av[i];
+            indx++;
+          }
+        }
+
+        if (isrow(varargin_1)) {
+          for (i = 0; i < loop_ub; i++) {
+            tmp_data[i] = c_imnhInds_data[i];
+          }
+
+          r = 1;
+          imnh_size_idx_1 = loop_ub;
+          for (i = 0; i < loop_ub; i++) {
+            imnh_data[i] = varargin_1->data[tmp_data[i] - 1];
+          }
+        } else {
+          r = loop_ub;
+          imnh_size_idx_1 = 1;
+          for (i = 0; i < loop_ub; i++) {
+            imnh_data[i] = varargin_1->data[c_imnhInds_data[i] - 1];
+          }
+        }
+
+        pixel = varargin_1->data[pind];
+        continuePropagation = imParams_bw->data[pind];
+        if (imParams_bw->data[pind]) {
+          //  Pixel has not already been set as non-max
+          indx = 0;
+          exitg1 = false;
+          while ((!exitg1) && (indx <= r * imnh_size_idx_1 - 1)) {
+            if (imnh_data[indx] > pixel) {
+              //  Set pixel to zero if any neighbor is greater
+              continuePropagation = false;
+              exitg1 = true;
+            } else if ((imnh_data[indx] == pixel) && (!imParams_bw->
+                        data[c_imnhInds_data[indx] - 1])) {
+              //  Set pixel to zero if any equal neighbor is already set to zero 
+              continuePropagation = false;
+              exitg1 = true;
+            } else {
+              indx++;
+            }
+          }
+        }
+
+        BW->data[pind] = continuePropagation;
+        firstInd = 1;
+      }
+    }
+
+    u0 = (short)(imSize[0] + 1);
+    if (!(u0 > 1)) {
+      u0 = 1;
+    }
+
+    loop_ub = np_ImageSize[0];
+    u1 = np_ImageSize[0];
+    if (loop_ub < u1) {
+      u1 = loop_ub;
+    }
+
+    loop_ub = np_ImageSize[1];
+    minval = np_ImageSize[1];
+    if (loop_ub < minval) {
+      minval = loop_ub;
+    }
+
+    for (secondInd = 1; secondInd <= minval; secondInd++) {
+      for (firstInd = u0; firstInd <= u1; firstInd++) {
+        pind = ((secondInd - 1) * np_ImageSize[0] + firstInd) - 1;
+        for (i = 0; i < 9; i++) {
+          av[i] = (loffsets[i] + pind) + 1;
+        }
+
+        if (np_ImageSize[0] == 0) {
+          r = 0;
+        } else {
+          r = pind - np_ImageSize[0] * div_s32(pind, (int)np_ImageSize[0]);
+        }
+
+        loop_ub = pind - r;
+        if (np_ImageSize[0] == 0) {
+          if (loop_ub == 0) {
+            i = 0;
+          } else if (loop_ub < 0) {
+            i = MIN_int32_T;
+          } else {
+            i = MAX_int32_T;
+          }
+        } else if (np_ImageSize[0] == 1) {
+          i = loop_ub;
+        } else {
+          if (loop_ub >= 0) {
+            indx = loop_ub;
+          } else if (loop_ub == MIN_int32_T) {
+            indx = MAX_int32_T;
+          } else {
+            indx = -loop_ub;
+          }
+
+          i = div_s32(indx, (int)np_ImageSize[0]);
+          indx -= i * np_ImageSize[0];
+          if ((indx > 0) && (indx >= (np_ImageSize[0] >> 1) + (np_ImageSize[0] &
+                1))) {
+            i++;
+          }
+
+          if (loop_ub < 0) {
+            i = -i;
+          }
         }
 
         e_pixelSub[1] = i + 1;
         e_pixelSub[0] = r + 1;
-        for (ck = 0; ck < 2; ck++) {
-          pixelSub[ck] = e_pixelSub[ck];
+        for (i = 0; i < 2; i++) {
+          pixelSub[i] = e_pixelSub[i];
         }
 
-        bsxfun(iv3, pixelSub, imnhSubs);
+        bsxfun(np_NeighborSubscriptOffsets, pixelSub, imnhSubs);
         for (i = 0; i < 9; i++) {
           isInside[i] = true;
         }
 
-        d_trueCount = 0;
-        for (x = 0; x < 9; x++) {
-          ck = 0;
-          exitg2 = false;
-          while ((!exitg2) && (ck < 2)) {
-            if ((imnhSubs[x + 9 * ck] < 1) || (imnhSubs[x + 9 * ck] > 736 + 364 *
-                 ck)) {
-              isInside[x] = false;
-              exitg2 = true;
+        loop_ub = 0;
+        for (i = 0; i < 9; i++) {
+          indx = 0;
+          exitg1 = false;
+          while ((!exitg1) && (indx < 2)) {
+            if ((imnhSubs[i + 9 * indx] < 1) || (imnhSubs[i + 9 * indx] >
+                 np_ImageSize[indx])) {
+              isInside[i] = false;
+              exitg1 = true;
             } else {
-              ck++;
+              indx++;
             }
           }
 
-          if (isInside[x]) {
-            d_trueCount++;
+          if (isInside[i]) {
+            loop_ub++;
           }
         }
 
-        ck = 0;
+        indx = 0;
         for (i = 0; i < 9; i++) {
           if (isInside[i]) {
-            d_imnhInds_data[ck] = av[i];
-            ck++;
+            d_imnhInds_data[indx] = av[i];
+            indx++;
           }
         }
 
-        for (ck = 0; ck < d_trueCount; ck++) {
-          imnh_data[ck] = varargin_1[d_imnhInds_data[ck] - 1];
+        if (isrow(varargin_1)) {
+          for (i = 0; i < loop_ub; i++) {
+            tmp_data[i] = d_imnhInds_data[i];
+          }
+
+          r = 1;
+          imnh_size_idx_1 = loop_ub;
+          for (i = 0; i < loop_ub; i++) {
+            imnh_data[i] = varargin_1->data[tmp_data[i] - 1];
+          }
+        } else {
+          r = loop_ub;
+          imnh_size_idx_1 = 1;
+          for (i = 0; i < loop_ub; i++) {
+            imnh_data[i] = varargin_1->data[d_imnhInds_data[i] - 1];
+          }
         }
 
-        pixel = varargin_1[pind];
-        continuePropagation = imParams_bw[pind];
-        if (imParams_bw[pind]) {
+        pixel = varargin_1->data[pind];
+        continuePropagation = imParams_bw->data[pind];
+        if (imParams_bw->data[pind]) {
           //  Pixel has not already been set as non-max
-          ck = 0;
+          indx = 0;
           exitg1 = false;
-          while ((!exitg1) && (ck <= d_trueCount - 1)) {
-            if (imnh_data[ck] > pixel) {
+          while ((!exitg1) && (indx <= r * imnh_size_idx_1 - 1)) {
+            if (imnh_data[indx] > pixel) {
               //  Set pixel to zero if any neighbor is greater
               continuePropagation = false;
               exitg1 = true;
-            } else if ((imnh_data[ck] == pixel) &&
-                       (!imParams_bw[d_imnhInds_data[ck] - 1])) {
+            } else if ((imnh_data[indx] == pixel) && (!imParams_bw->
+                        data[d_imnhInds_data[indx] - 1])) {
               //  Set pixel to zero if any equal neighbor is already set to zero 
               continuePropagation = false;
               exitg1 = true;
             } else {
-              ck++;
+              indx++;
             }
           }
         }
 
-        BW[pind] = continuePropagation;
-        firstInd = 737;
+        BW->data[pind] = continuePropagation;
       }
     }
 
     continuePropagation = !isequal(bwpre, BW);
   }
+
+  emxFree_boolean_T(&imParams_bw);
+  emxFree_boolean_T(&bwpre);
 }
 
 //

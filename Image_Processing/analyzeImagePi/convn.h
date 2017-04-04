@@ -4,8 +4,8 @@
 // government, commercial, or other organizational use.
 // File: convn.h
 //
-// MATLAB Coder version            : 3.2
-// C/C++ source code generated on  : 14-Feb-2017 14:49:57
+// MATLAB Coder version            : 3.3
+// C/C++ source code generated on  : 02-Apr-2017 22:04:47
 //
 #ifndef CONVN_H
 #define CONVN_H
@@ -23,8 +23,9 @@
 #include "analyzeImage_types.h"
 
 // Function Declarations
-extern void b_convn(const double A[813276], const double B[9], double C[813276]);
-extern void convn(const double A[820652], const double B[36], double C[820652]);
+extern void b_convn(const emxArray_real_T *A, emxArray_real_T *C);
+extern void c_convn(const emxArray_real_T *A, emxArray_real_T *C);
+extern void convn(const emxArray_real_T *A, emxArray_real_T *C);
 
 #endif
 
