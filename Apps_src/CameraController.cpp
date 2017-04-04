@@ -159,13 +159,15 @@ void CameraController::readImage(std::string imgFilename) {
     cv::Mat image;
     image = cv::imread(imgFilename, cv::IMREAD_COLOR);
     
-    
     if(!image.data){
         fprintf(logFile, "Read Image ERROR: Could not open or find the image\n");
         throw InvalidFileName("ReadImage() no Image Name in directory");
     } else {
         fprintf(logFile, "Read Image: Image Name Valid\n");
     }
+    
+    imageMessage->resizeImageArray(img.cols * img.rows * 3);
+    imageMessage->currentImageSize = img.cols * img.rows * 3;
     
     // Allocate variables
     unsigned char* imIn = (unsigned char*) imageMessage->getImagePointer(); // <--- Change this to be compatible with msg
@@ -180,13 +182,13 @@ void CameraController::readImage(std::string imgFilename) {
             uchar green = intensity.val[1];
             uchar red = intensity.val[2];
             imIn[counter] = red;
-            imIn[counter + 809600] = green;
-            imIn[counter + 2 * 809600] = blue;
+            imIn[counter + img.cols * img.rows] = green;
+            imIn[counter + 2 * img.cols * img.rows] = blue;
             counter++;
         }
     }
     
-    imageMessage -> currentImageSize = 2428800;
+    
     fprintf(logFile, "Read Image: Finished Image Read\n");
 }
 
@@ -281,16 +283,16 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         
         // TODO: Need to get these parameters from somewhere, maybe config file?
         //********************************
-        int currentImageSize = IMAGE_SIZE;
-        double pix_deg[2] {72, 72};
-        int cameraWidth = 4160;
-        int cameraHeight = 3120;
+       // CHANGE int currentImageSize = IMAGE_SIZE;
+       // PUT IN CONFIG FILE double pix_deg[2] {72, 72};
+       // CONFIG OR CV READ int cameraWidth = 4160;
+       // CONFIG OR CV READ int cameraHeight = 3120;
         imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
         
         //******************************
         
         // Send Image Message to Image Processor
-        if (imageProc != nullptr) {
+        if ((imageProc != nullptr) && (imageProc.isConnected() == true)) {
             imageProc->sendMessage(imageMessage);
             fprintf(logFile, "Sent Message: ImageMessage to ImageProcessor\n");
         }
@@ -305,6 +307,7 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         // CameraController::canCaptureImage(CaptureImageRequest* msg)
         // Take an Image
         // void CameraController::captureImage()
+        throw "ImageProcessor::handleCaptureImageRequest() Live Mode not implemented";
     }
 }
 
