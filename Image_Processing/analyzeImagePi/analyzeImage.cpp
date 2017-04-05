@@ -22,8 +22,16 @@
 
 //
 #include <stdio.h>
+#include <string>
+#include <iostream>
+#include <unistd.h>
+#include <fstream>
 #include <ctime>
 #include "../../include/Exception/OSPRE_Exceptions.h"
+
+// OpenCV
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 // Function Definitions
 
@@ -365,6 +373,19 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     sprintf(logString,"Exception Time = %ld, Expected to find celestial body but did not find anything; \
             radius guess: [%f %f], sensVal: %f", time(0), radiusRangeGuess[0], radiusRangeGuess[1],
             sensVal);
+
+    // Output image to file
+    cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC1, *(imIn->data));
+    cv::imshow("image", tempMat);
+    cv::waitKey(0);
+
+    imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage.bmp", tempMat);
+
+    std::cout << "------------NO BODY IN IMAGE----------" << std::endl;
+    std::cout << "Exception time " << time(0) << std::endl;
+    std::cout << "Radius Guess: " << radiusRangeGuess[0] << ", " << radiusRangeGuess[1] << std::endl;
+    std::cout << "SensVal: " << sensVal << std::endl;
+
     throw NoBodyInImage(logString);
   } else {
     //  Return found information

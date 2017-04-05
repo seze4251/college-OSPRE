@@ -165,7 +165,7 @@ static void main_analyzeImage()
   std::cout << "Reading image with OpenCV" << std::endl;
   Mat image;
   Vec3b intensity;
-  image = imread("moonTest.jpg", IMREAD_COLOR);
+  image = imread("0p0flat.jpg", IMREAD_COLOR);
   std::cout << "Finished image read with OpenCV" << std::endl;
 
   int counter = 0;
@@ -195,17 +195,29 @@ static void main_analyzeImage()
   //argInit_1x2_real_T(dv1);
   //argInit_1x2_real_T(dv2);
 
+  std::cout << "Outputing image" << std::endl;
+  cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC1, *(imIn->data));
+  cv::imshow("image", tempMat);
+  cv::waitKey(0);
+
+  imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage.bmp", tempMat);
+
   std::cout << "Starting analyze image call" << std::endl;
-  start = std::clock();
-  analyzeImage( imIn, radiusRangeGuess, sensVal,
-                pxDeg, imgWidth, imgHeight, centerPt_data,
-                centerPt_size, &radius, &numCirc,
-                &alpha, &beta, &theta);
-    // imIn, radiusRangeGuess,
-    //               sensVal, centerPt_data, centerPt_size,
-    //               &radius, &numCirc, 
-    //               &alpha, &beta, &theta,  
-    //               pxDeg, imgWidth, imgHeight);
+  try{
+    start = std::clock();
+    analyzeImage( imIn, radiusRangeGuess, sensVal,
+                  pxDeg, imgWidth, imgHeight, centerPt_data,
+                  centerPt_size, &radius, &numCirc,
+                  &alpha, &beta, &theta);
+      // imIn, radiusRangeGuess,
+      //               sensVal, centerPt_data, centerPt_size,
+      //               &radius, &numCirc, 
+      //               &alpha, &beta, &theta,  
+      //               pxDeg, imgWidth, imgHeight);
+  } catch(const char*){
+    std::cout << "analyzeImage failed" << std::endl;
+    return;
+  }
 
   std::cout << "Time: " << (std::clock() - start) /(double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
   std::cout << "Finished analyze image call" << std::endl;

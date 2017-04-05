@@ -174,7 +174,7 @@ BUILD_TYPE = "Static Library"
 ## INCLUDE PATHS
 ###########################################################################
 
-INCLUDES_BUILDINFO = -I./
+INCLUDES_BUILDINFO = -I./ -I/usr/include/opencv -I/usr/include/opencv2
 
 INCLUDES = $(INCLUDES_BUILDINFO)
 
@@ -214,7 +214,9 @@ PREBUILT_OBJS =
 ## LIBRARIES
 ###########################################################################
 
-LIBS = 
+LIBS = -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video \
+	-lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy \
+	lopencv_stitching
 
 ###########################################################################
 ## SYSTEM LIBRARIES
