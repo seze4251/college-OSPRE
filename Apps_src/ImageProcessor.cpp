@@ -96,7 +96,7 @@ void ImageProcessor::open() {
     
     // Log Application Starting
     fprintf(resultFile, "\n\nNew Image Processor Run: Time = %ld\n", time(0));
-
+    
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
     
@@ -254,22 +254,24 @@ void ImageProcessor::processImage(ImageMessage* msg) {
      */
     
     img_holder.data = (unsigned char*) msg->getImagePointer();
-    img_holder.size = new int[3];
+    img_holder.size = new int[2];
     img_holder.allocatedSize = msg->imageBufferSize;
-    img_holder.size[0] = 0;
-    img_holder.size[1] = 0;
-    img_holder.size[2] = 0;
-    img_holder.numDimensions = 3;
+    img_holder.size[0] = msg->cameraWidth;
+    img_holder.size[1] = msg->cameraHeight;
+    img_holder.numDimensions = 2;
     img_holder.canFreeData = false;
-
+    
     // TEMP Till I find out why IP is coreing
     fflush(logFile);
     std::cout << "MADE IT HERE" << std::endl;
     
-    // TEMP Till I find out why IP is coreing
-   analyzeImage(&img_holder, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
     
-     std::cout << "MADE IT HERE: After analyzeImage" << std::endl;
+    // TEMP Till I find out why IP is coreing
+    analyzeImage(&img_holder, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
+    
+    std::cout << "MADE IT HERE: After analyzeImage" << std::endl;
+    
+    delete[] img_holder.size;
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     

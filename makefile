@@ -74,14 +74,14 @@ INC := -I include $(INCLIST) -I /usr/local/include
 
 # Platform Specific Compiler Flags
 ifeq ($(UNAME_S),Linux)
-    CFLAGS += -std=gnu++11 -O2 # -fPIC
+    CFLAGS += -std=gnu++11 -g #-O2 # -fPIC
 
     # PostgreSQL Special
     PG_VER := 9.3
     INC += -I /usr/pgsql-$(PG_VER)/include
     LIB += -L /usr/pgsql-$(PG_VER)/lib
 else
-  CFLAGS += -std=c++11 -stdlib=libc++ -O2
+  CFLAGS += -std=c++11 -stdlib=libc++ -g #-O2
 endif
 
 #WATCHDOG

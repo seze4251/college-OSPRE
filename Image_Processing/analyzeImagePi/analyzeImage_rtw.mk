@@ -121,10 +121,10 @@ ASFLAGS              = -c \
                        $(INCLUDES)
 CFLAGS               = -c \
                        -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -O0
+                       -g #-O0
 CPPFLAGS             = -c \
                        -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -O2 \
+                       -g #-O2 \
                        -std=c++0x
 CPP_LDFLAGS          = -lrt -lpthread -ldl
 CPP_SHAREDLIB_LDFLAGS  = -shared  \
