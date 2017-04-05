@@ -376,10 +376,10 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
 
     // Output image to file
     cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC1, *(imIn->data));
-    cv::imshow("image", tempMat);
-    cv::waitKey(0);
+    //cv::imshow("image", tempMat);
+    //cv::waitKey(0);
 
-    imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage.bmp", tempMat);
+    imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage2.bmp", tempMat);
 
     std::cout << "------------NO BODY IN IMAGE----------" << std::endl;
     std::cout << "Exception time " << time(0) << std::endl;

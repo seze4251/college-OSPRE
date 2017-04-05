@@ -166,6 +166,10 @@ static void main_analyzeImage()
   Mat image;
   Vec3b intensity;
   image = imread("0p0flat.jpg", IMREAD_COLOR);
+  cv::namedWindow("Direct Image from OpenCV", WINDOW_NORMAL);
+  cv::imshow("Direct Image from OpenCV", image);
+  //cv::resizeWindow("Display frame", 600, 600);
+  cv::waitKey(0);
   std::cout << "Finished image read with OpenCV" << std::endl;
 
   int counter = 0;
@@ -196,13 +200,18 @@ static void main_analyzeImage()
   //argInit_1x2_real_T(dv2);
 
   std::cout << "Outputing image" << std::endl;
-  cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC1, *(imIn->data));
-  cv::imshow("image", tempMat);
+  cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC1, (imIn->data));
+
+  cv::namedWindow("Image After Conversion", WINDOW_NORMAL);
+  cv::imshow("Image After Conversion", tempMat);
+  //cv::resizeWindow("Display frame", 600, 600);
   cv::waitKey(0);
 
-  imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage.bmp", tempMat);
+  imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage-Main.bmp", tempMat);
 
   std::cout << "Starting analyze image call" << std::endl;
+  return;
+
   try{
     start = std::clock();
     analyzeImage( imIn, radiusRangeGuess, sensVal,
