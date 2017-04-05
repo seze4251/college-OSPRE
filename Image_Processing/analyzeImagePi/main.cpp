@@ -54,7 +54,7 @@ using namespace cv;
 
 // Function Declarations
 static void argInit_1x2_real_T(double result[2]);
-static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(cv::Mat imageIn);
+static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(unsigned char*);
 static double argInit_real_T();
 static unsigned char argInit_uint8_T();
 static void main_analyzeImage();
@@ -81,7 +81,7 @@ static void argInit_1x2_real_T(double result[2])
 // Arguments    : void
 // Return Type  : emxArray_uint8_T *
 //
-static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(cv::Mat imageIn)
+static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(unsigned char* imInput)
 {
   emxArray_uint8_T *result;
   static int iv5[3] = { 2, 2, 3 };
@@ -90,27 +90,32 @@ static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(cv::Mat imageIn)
   int idx1;
   int idx2;
 
-  int imgPartitionVal = (result->size[0U])*(result->size[1U]);
+  //int imgPartitionVal = (result->size[0U])*(result->size[1U]);
 
   // Set the size of the array.
   // Change this size to the value that the application requires.
   result = emxCreateND_uint8_T(3, *(int (*)[3])&iv5[0]);
 
+  //Initalize temp variables
+  Vec3b intensity;
+
   // Loop over the array to initialize each element.
-  for (idx0 = 0; idx0 < result->size[0U]; idx0++) {
-    for (idx1 = 0; idx1 < result->size[1U]; idx1++) {
-      for (idx2 = 0; idx2 < 3; idx2++) {
-        // Find pixel value
-        intensity = imageIn.at<Vec3b>(idx1, idx0);
-        // Set the value of the array element.
-        // Change this value to the value that the application requires.
-        result->data[(idx0 + result->size[0] * idx1) + result->size[0] *
-         result->size[1] * idx2] = intensity.val[idx2]; //argInit_uint8_T();
+  // for (idx0 = 0; idx0 < result->size[0U]; idx0++) {
+  //   for (idx1 = 0; idx1 < result->size[1U]; idx1++) {
+  //     for (idx2 = 0; idx2 < 3; idx2++) {
+  //       // Set the value of the array element.
+  //       // Change this value to the value that the application requires.
+  //       result->data[(idx0 + result->size[0] * idx1) + result->size[0] *
+  //        result->size[1] * idx2] = *(imInput + idx2*13431200);
+  //       // result->data[(idx0 + result->size[0] * idx1) + result->size[0] *
+  //       //  result->size[1] * idx2] = *(imInput + (idx0 + result->size[0] * idx1) + result->size[0] *
+  //       //  result->size[1] * idx2);
 
-      }
-    }
-  }
+  //     }
+  //   }
+  // }
 
+  result->data = imInput;
   return result;
 }
 
@@ -139,7 +144,7 @@ static unsigned char argInit_uint8_T()
 static void main_analyzeImage()
 {
   emxArray_uint8_T *imIn;
-  double radiusRangeGuess[2] = {157, 167};
+  double radiusRangeGuess[2] = {58, 63};
   double pxDeg[2] = {67, 67};
   double centerPt_data[2];
   int centerPt_size[2];
@@ -148,16 +153,41 @@ static void main_analyzeImage()
   double alpha;
   double beta;
   double theta;
+  double sensVal = 0.97;
 
-  int imgWidth = 4160; int imgHeight = 3120;
+  double imgWidth = 4160; double imgHeight = 3120;
   std::clock_t start;
+
+  unsigned char* imInC = new unsigned char[402936000];
 
   // Initialize function 'analyzeImage' input arguments.
   // Load image with OpenCV
+  std::cout << "Reading image with OpenCV" << std::endl;
   Mat image;
-  image = imread(argv[1], IMREAD_COLOR);
+  Vec3b intensity;
+  image = imread("moonTest.jpg", IMREAD_COLOR);
+  std::cout << "Finished image read with OpenCV" << std::endl;
+
+  int counter = 0;
+  // Loop through image and convert
+  std::cout << "Converting image to unsigned char[]" << std::endl;
+  for(int i=0; i< image.cols; i++){
+    for(int j=0; j < image.rows; j++){
+      intensity = image.at<Vec3b>(j,i);
+      uchar blue = intensity.val[0];
+      uchar green = intensity.val[1];
+      uchar red = intensity.val[2];
+      *(imInC + counter) = red;
+      *(imInC + counter + image.cols*image.rows) = green;
+      *(imInC + counter + 2*image.cols*image.rows) = blue;
+      counter++;
+    }
+  }
+  std::cout << "Finished image conversion" << std::endl;
   // Initialize function input argument 'imIn'.
-  imIn = argInit_d3120xd4160x3_uint8_T(image);
+  std::cout << "Translating image into emxArray" << std::endl;
+  imIn = argInit_d3120xd4160x3_uint8_T(imInC);
+  std::cout << "Finished image translation" << std::endl;
 
   // Initialize function input argument 'radiusRangeGuess'.
   // Initialize function input argument 'pxDeg'.
@@ -167,11 +197,15 @@ static void main_analyzeImage()
 
   std::cout << "Starting analyze image call" << std::endl;
   start = std::clock();
-  analyzeImage(   imIn, radiusRangeGuess,
-                  sensVal, centerPt_data, centerPt_size,
-                  &radius, &numCirc, 
-                  &alpha, &beta, &theta,  
-                  pxDeg, imgWidth, imgHeight);
+  analyzeImage( imIn, radiusRangeGuess, sensVal,
+                pxDeg, imgWidth, imgHeight, centerPt_data,
+                centerPt_size, &radius, &numCirc,
+                &alpha, &beta, &theta);
+    // imIn, radiusRangeGuess,
+    //               sensVal, centerPt_data, centerPt_size,
+    //               &radius, &numCirc, 
+    //               &alpha, &beta, &theta,  
+    //               pxDeg, imgWidth, imgHeight);
 
   std::cout << "Time: " << (std::clock() - start) /(double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
   std::cout << "Finished analyze image call" << std::endl;

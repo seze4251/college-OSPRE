@@ -14,4 +14,4 @@ make -f analyzeImage_rtw.mk
 cp analyzeImage.lib ../../lib/analyzeImage.lib
 
 # Clean all object / library / derived files (not including end product)
-rm *.o *.dep *.lib
+rm *.o *.dep
