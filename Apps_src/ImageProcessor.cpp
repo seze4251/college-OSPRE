@@ -263,7 +263,7 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     
     // TEMP Till I find out why IP is coreing
     fflush(logFile);
-    std::cout << "MADE IT HERE" << std::endl;
+    std::cout << "MADE IT HERE It Pre Analyze Image" << std::endl;
     
     
     // TEMP Till I find out why IP is coreing

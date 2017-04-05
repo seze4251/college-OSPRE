@@ -46,3 +46,75 @@ New GNC Run: Time = 1491359991
 
 
 New GNC Run: Time = 1491360562
+
+
+New GNC Run: Time = 1491429733
+
+
+New GNC Run: Time = 1491429830
+
+
+New GNC Run: Time = 1491429858
+
+
+New GNC Run: Time = 1491430051
+
+
+New GNC Run: Time = 1491430124
+
+
+New GNC Run: Time = 1491430398
+
+
+New GNC Run: Time = 1491430601
+
+
+New GNC Run: Time = 1491430822
+
+
+New GNC Run: Time = 1491430976
+
+
+New GNC Run: Time = 1491431079
+
+
+New GNC Run: Time = 1491431114
+
+
+New GNC Run: Time = 1491431278
+
+
+New GNC Run: Time = 1491431320
+
+
+New GNC Run: Time = 1491431591
+
+
+New GNC Run: Time = 1491431747
+
+
+New GNC Run: Time = 1491432192
+
+
+New GNC Run: Time = 1491432308
+
+
+New GNC Run: Time = 1491432395
+
+
+New GNC Run: Time = 1491432415
+
+
+New GNC Run: Time = 1491432438
+
+
+New GNC Run: Time = 1491432480
+
+
+New GNC Run: Time = 1491433196
+
+
+New GNC Run: Time = 1491433304
+
+
+New GNC Run: Time = 1491433404

@@ -107,6 +107,7 @@ void Server::readOSPREServerConfigFile() {
     
     // Read in bool to determine whether we are in config mode or live mode
     file >> holder;
+    
     if (holder == 1) {
         liveMode = true;
         fprintf(logFile, "MODE Choice: OSPRE in LIVE mode\n");
@@ -119,9 +120,9 @@ void Server::readOSPREServerConfigFile() {
         throw "ServerInternal::readOSPREServerConfigFile, invalid mode input, please put 1 or 2";
     }
     
-    std::getline(file, line);
-    std::getline(file, line);
     
+    std::getline(file, line);
+    std::getline(file, line);
     file >> testDIR;
     
     if (testDIR.empty() == true) {
