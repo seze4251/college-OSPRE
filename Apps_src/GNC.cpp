@@ -46,7 +46,6 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     // Initialize All GNC Specific App Members
     //**************************************
     
-    // Potentially TEMP!
     // From Config File
     range_EarthRangeCutoff = -1;
     range_AnglesCutoff = -1;
@@ -56,6 +55,20 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     velSC[0] = -1;
     velSC[1] = -1;
     velSC[2] = -1;
+    
+    for (int i = 0; i < 36; i++) {
+        phi[i] = -1;
+        P[i] = -1;
+    }
+    
+    for (int i = 0; i < 9; i++) {
+        R[i] = -1;
+    }
+    
+    for (int i = 0; i < 6; i++) {
+        X_hat[i] = -1;
+        X_ref[i] = -1;
+    }
 }
 
 GNC::~GNC() {
@@ -162,6 +175,7 @@ void GNC::open() {
         fprintf(logFile, "Error: read_ConfigFile Unknown Type of Exception Caught\n");
         throw;
     }
+    
     flushLog();
 }
 
@@ -262,17 +276,24 @@ void GNC::handleTimeout() {
 // double X_est [6] (Position and Velocity Output)
 // ******************************************************
 
-void GNC::kalmanFilterWrapper(double* x_hat, double* phi, double* P, double* Y, double* R, double satTime, double* ephem) {
-    
-    // Get Reference Trajectory
-    double X_ref[6];
-    get_Reference_Trajectory(X_ref, ref_traj, satTime);
-    fprintf(logFile, "ComputeSolution: Reference Trajectory Results: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
+void GNC::kalmanFilterWrapper(double* Y, double satTime, double* ephem) {
+    if (liveMode == false) {
+        // SIM MODE
+        // Read in Data from file
+        fprintf(logFile, "Getting Kalman Filter Data in Sim Mode");
+        readInInitialKalmanFilterTraj();
+        
+    } else {
+        // Live Mode
+        fprintf(logFile, "Getting Kalman Filter Data in Sim Mode");
+        get_Reference_Trajectory(X_ref, ref_traj, satTime);
+        fprintf(logFile, "ComputeSolution: Reference Trajectory Results: [0] %f, [1] %f, [2] %f, [3] %f, [4] %f, [5] %f \n", X_ref[0], X_ref[1], X_ref[2], X_ref[3], X_ref[4], X_ref[5]);
+    }
     
     // Perform Kalman Filter Call
     std::cout << "Start: Kalman Filter Call" << std::endl;
     double X_est[6];
-    Kalman_Filter_Iteration(x_hat, phi, P, Y, R, X_ref, satTime, X_est);
+    Kalman_Filter_Iteration(X_hat, phi, P, Y, R, X_ref, satTime, X_est);
     std::cout << "End: Kalman Filter Call" << std::endl;
     
     // Log Output from Kalman Filter
@@ -281,7 +302,7 @@ void GNC::kalmanFilterWrapper(double* x_hat, double* phi, double* P, double* Y, 
     fprintf(resultFile, "ComputeSolution(): Kalman Filter Results: Time: %f X =  %f Y = %f, Z = %f, V_X =  %f V_Y = %f, V_Z = %f,\n", satTime, X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5]);
     
     // Find E/Sc/M Angle and Log it
-    double earthScMoonAngle = Earth_SC_Moon_Angle(r_E_SC, ephem);
+    double earthScMoonAngle = Earth_SC_Moon_Angle(X_est, ephem);
     fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
     fprintf(resultFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
     
@@ -305,436 +326,448 @@ void GNC::kalmanFilterWrapper(double* x_hat, double* phi, double* P, double* Y, 
         scComms -> sendMessage(solutionMessage);
         fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
     }
-    
-    //*************************
-    // TODO: COMPLETE
-    //*************************
-    if (liveMode == false) {
-        // Need to Reset Kalman Filter Matrixes to what they where before
     }
-    //*************************
-}
-
-
-// ******************************************************
-// TODO: Figure out deal with inputs to Camerons function
-// ** CONST in Func means that you cannot update value in Kalman Filter funciton **
-// We have a problem if we are not setting the values outside of kalman filter funciton and the value is CONST in your function
-// Not Currently Setting:
-// ------------------------------
-// double x_hat[6] (reference trajectory deviance)
-// double phi[36] (state transition matrix)  <----- CONST in Func
-// double P[36] (covariance matrix)
-// double R[9] (state error covariance)     <----- CONST in Func
-
-// Currently Setting:
-// ------------------------------
-// double X_ref[6] (Reference Trajectory from input file)  <----- CONST in Func
-// double Y[3] (Position from 1 of 3 methods)     <----- CONST in Func
-
-// OUTPUT
-// ------------------------------
-// double X_est [6] (Position and Velocity Output)
-// ******************************************************
-
-void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procMessage) {
-    std::cout << "Starting Compute Solution" << std::endl;
     
-    if (norm(r_E_SC) < range_EarthRangeCutoff) {
-        std::cout << "Start: Earth Ranging" << std::endl;
-        fprintf(logFile, "ComputeSolution: Earth Ranging\n");
+    
+    // ******************************************************
+    // TODO: Figure out deal with inputs to Camerons function
+    // ** CONST in Func means that you cannot update value in Kalman Filter funciton **
+    // We have a problem if we are not setting the values outside of kalman filter funciton and the value is CONST in your function
+    // Not Currently Setting:
+    // ------------------------------
+    // double x_hat[6] (reference trajectory deviance)
+    // double phi[36] (state transition matrix)  <----- CONST in Func
+    // double P[36] (covariance matrix)
+    // double R[9] (state error covariance)     <----- CONST in Func
+    
+    // Currently Setting:
+    // ------------------------------
+    // double X_ref[6] (Reference Trajectory from input file)  <----- CONST in Func
+    // double Y[3] (Position from 1 of 3 methods)     <----- CONST in Func
+    
+    // OUTPUT
+    // ------------------------------
+    // double X_est [6] (Position and Velocity Output)
+    // ******************************************************
+    
+    void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procMessage) {
+        std::cout << "Starting Compute Solution" << std::endl;
         
-        // Set Pointing
-        point = PEM_Earth;
-        
-        // Perform Earth Ranging
-        double earthRangePosition[3];
-        Position_From_Earth_Range(dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage->theta, earthRangePosition);
-        
-        // Log Position Earth Range Output
-        fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, earthRangePosition[0], earthRangePosition[1], earthRangePosition[2]);
-        
-        
-        //************************
-        // TODO: SET THESE VARS:
-        // Not Currently Setting:
-        // ------------------------------
-        // double x_hat[6] (reference trajectory deviance)
-        // double phi[36] (state transition matrix)  <----- CONST in Func
-        // double P[36] (covariance matrix)
-        // double R[9] (state error covariance)     <----- CONST in Func
-        
-        double x_hat[6];
-        double phi[36];
-        double P[36];
-        double R[9];
-        //************************
-        
-        // Call Kalman Filter Iteration Wrapper Function With Proper Inputs
-        kalmanFilterWrapper(x_hat, phi, P, earthRangePosition, R, (double) dataMessage->satTime, dataMessage->ephem);
-        
-    } else if ( norm(r_E_SC) < range_AnglesCutoff) {
-        // Angles Method to find Position
-        // Change Pointing
-        if (procMessage->point == PEM_Earth) {
-            fprintf(logFile, "ComputeSolution: Angles Method, First Image, Saving Data and Leaving Angles Method\n");
+        if (norm(r_E_SC) < range_EarthRangeCutoff) {
+            std::cout << "Start: Earth Ranging" << std::endl;
+            fprintf(logFile, "ComputeSolution: Earth Ranging\n");
+            
+            // Set Pointing
+            point = PEM_Earth;
+            
+            // Perform Earth Ranging
+            double earthRangePosition[3];
+            Position_From_Earth_Range(dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage->theta, earthRangePosition);
+            
+            // Log Position Earth Range Output
+            fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, earthRangePosition[0], earthRangePosition[1], earthRangePosition[2]);
+            
+            // Call Kalman Filter Iteration Wrapper Function With Proper Inputs
+            std::cout << "Start: Kalman Filter From Earth Range" << std::endl;
+            kalmanFilterWrapper(earthRangePosition, (double) dataMessage->satTime, dataMessage->ephem);
+            std::cout << "END: Kalman Filter From Earth Range" << std::endl;
+            
+        } else if ( norm(r_E_SC) < range_AnglesCutoff) {
+            // Angles Method to find Position
+            // Change Pointing
+            if (procMessage->point == PEM_Earth) {
+                fprintf(logFile, "ComputeSolution: Angles Method, First Image, Saving Data and Leaving Angles Method\n");
+                point = PEM_Moon;
+                memcpy((void*) &dataMessage_FirstImage, (void*) dataMessage, sizeof(DataMessage));
+                memcpy((void*) &procMessage_FirstImage, (void*) procMessage, sizeof(ProcessedImageMessage));
+                return;
+            }
+            
+            fprintf(logFile, "ComputeSolution: Angles Method, Second Image, Computing Solution\n");
+            
+            // Point back at earth
+            point = PEM_Earth;
+            
+            // ASSUMPTION: dataMessage_FirstImage / procMessage_FirstImage == First Image == Point at Earth
+            // ASSUMPTION: dataMessage / procMessage == Second Image == Pointing at Moon
+            
+            double pictureOnePosition[3];
+            double pictureTwoPosition[3];
+            std::cout << "Start: Position From ANGLES" << std::endl;
+            Position_From_Angles_Slew(dataMessage->ephem, dataMessage_FirstImage.quat, dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage_FirstImage.alpha, procMessage_FirstImage.beta, velSC, (double) (procMessage->timeStamp - procMessage_FirstImage.timeStamp), pictureOnePosition, pictureTwoPosition);
+            std::cout << "END: Position From ANGLES" << std::endl;
+            
+            // First Kalman Filter Call
+            std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
+            kalmanFilterWrapper(pictureOnePosition, (double) procMessage_FirstImage.timeStamp, dataMessage_FirstImage.ephem);
+            std::cout << "END: Angles First Kalman Filter Call" << std::endl;
+            
+            // Second Kalman Filter Call
+            std::cout << "Start: Angles Second Kalman Filter Call" << std::endl;
+            kalmanFilterWrapper(pictureTwoPosition, (double) procMessage->timeStamp, dataMessage->ephem);
+            std::cout << "End: Angles Second Kalman Filter Call" << std::endl;
+            
+        } else {
+            // Moon Ranging to find Position
+            fprintf(logFile, "ComputeSolution: Moon Ranging\n");
+            
+            // Set Pointing
             point = PEM_Moon;
-            memcpy((void*) &dataMessage_FirstImage, (void*) dataMessage, sizeof(DataMessage));
-            memcpy((void*) &procMessage_FirstImage, (void*) procMessage, sizeof(ProcessedImageMessage));
+            
+            // Log Inputs to Moon Range
+            fprintf(logFile, "ComputeSolution: Moon Ranging: INPUTS: quat: [%f, %f, %f, %f],\n alpha = %f, beta = %f, theta = %f \n", dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, procMessage->beta, procMessage->theta);
+            
+            // Get Moon Range
+            std::cout << "Start: MOON RANGING: Position From Moon Range" << std::endl;
+            double moonRangePosition[3];
+            Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, moonRangePosition);
+            std::cout << "End: MOON RANGING: Position From Moon Range" << std::endl;
+            
+            // Log Outputs for Moon Range
+            fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, moonRangePosition[0], moonRangePosition[1], moonRangePosition[2]);
+            
+            std::cout << "Start: Moon Ranging Kalman Filter Call" << std::endl;
+            kalmanFilterWrapper(moonRangePosition, (double) dataMessage->satTime, dataMessage->ephem);
+            std::cout << "End: Moon Ranging Kalman Filter Call" << std::endl;
+            
+        }
+        
+        std::cout << "Ending Compute Solution" << std::endl;
+    }
+    
+    //
+    // Spacecraft-Moon position vector
+    // Arguments    : const double r_E_SC[3]
+    //                const double r_E_M[3]
+    // Return Type  : double
+    //
+    
+    double GNC::norm(double* vec) {
+        fprintf(logFile, "ComputeSolution: Norm Function\n");
+        return sqrt(pow(vec[0],2) + pow(vec[1],2) + pow(vec[2],2));
+    }
+    
+    double GNC::Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3]) {
+        std::cout << "Starting SC Earth Moon ANgle" << std::endl;
+        fprintf(logFile, "Earth_SC_Moon_Angle: Entered Earth_SC_Moon_Angle Function\n");
+        double c;
+        double r_SC_M[3];
+        double r_SC_E[3];
+        int k;
+        double b_r_SC_M;
+        
+        //  Earth-Spacecraft-Moon Angle Function
+        //   Calculates the Earth-Spacecraft-Moon angle from the spacecraft and moon
+        //   positions.
+        //
+        //   Author:   Cameron Maywood
+        //   Created:  3/8/2017
+        //   Modified: 3/8/2017
+        //             _____________________________________________________________
+        //   Inputs:  |          r_E_SC         |  Spacecraft ECI position vector   |
+        //            |          r_E_M          |  Moon ECI position vector         |
+        //            |_________________________|___________________________________|
+        //   Outputs: |   angle_Earth_SC_Moon   |   Earth-spacecraft-moon angle     |
+        //            |_________________________|___________________________________|
+        //  Spacecraft-Earth position vector
+        //  Earth-spacecraft-Moon angle
+        c = 0.0;
+        for (k = 0; k < 3; k++) {
+            b_r_SC_M = r_E_M[k] - r_E_SC[k];
+            c += b_r_SC_M * -r_E_SC[k];
+            r_SC_M[k] = b_r_SC_M;
+            r_SC_E[k] = -r_E_SC[k];
+        }
+        
+        fprintf(logFile, "Earth_SC_Moon_Angle: Leaving Earth_SC_Moon_Angle Function\n");
+        std::cout << "Starting SC Earth Moon ANgle" << std::endl;
+        return 57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)));
+    }
+    
+    
+    //
+    // Arguments    : const double X_ref[6]
+    //                const double X_est[6]
+    //                double posError[3]
+    //                double velError[3]
+    // Return Type  : void
+    //
+    void GNC::State_Error(const double X_ref[6], const double X_est[6], double posError[3], double velError[3]) {
+        int i;
+        std::cout << "Starting State Error" << std::endl;
+        fprintf(logFile, "State_Error: Entered State_Error Function\n");
+        
+        //  State Error Function
+        //   Calculates the state error given the reference state and estimated
+        //   state.
+        //
+        //   Author:   Cameron Maywood
+        //   Created:  3/9/2017
+        //   Modified: 3/9/2017
+        //             _________________________________________________
+        //   Inputs:  |     X_ref     |   Spacecraft reference state.   |
+        //            |     X_est     |   Spacecraft estimated state.   |
+        //            |_______________|_________________________________|
+        //   Outputs: |    posError   |   Spacecraft position error.    |
+        //            |    velError   |   Spacecraft velocity error.    |
+        //            |_______________|_________________________________|
+        for (i = 0; i < 3; i++) {
+            posError[i] = X_ref[i] - X_est[i];
+            velError[i] = X_ref[i + 3] - X_est[i + 3];
+        }
+        fprintf(logFile, "State_Error: Leaving State_Error Function\n");
+        std::cout << "Ending State Error" << std::endl;
+    }
+    
+    void GNC::read_ConfigFile(std::string config_file) {
+        std::ifstream file(config_file);
+        
+        if (!file) {
+            fprintf(logFile, "Error: read Config File File %s could not be opened for reading\n", config_file.c_str());
+            throw "File Could Not Be Opened for Reading";
+        }
+        
+        std::string line;
+        std::getline(file, line);
+        file >> r_E_SC[0];
+        file >> r_E_SC[1];
+        file >> r_E_SC[2];
+        
+        std::getline(file, line);
+        std::getline(file, line);
+        file >> range_EarthRangeCutoff;
+        
+        std::getline(file, line);
+        std::getline(file, line);
+        file >> range_AnglesCutoff;
+    }
+    // Read Reference Trajectory
+    void GNC::read_referencTraj(std::string ref_trajectory_file) {
+        std::ifstream file(ref_trajectory_file);
+        
+        if (!file) {
+            fprintf(logFile, "Error: ReadReference Trajectory: File %s could not be opened for reading\n", ref_trajectory_file.c_str());
+            throw "File Could Not Be Opened for Reading";
+        }
+        
+        double number;
+        int column = 1;
+        
+        while(file){
+            file >> number;
+            if(column == 1){
+                ref_traj.time.push_back(number);
+                ++column;
+            }
+            else if(column == 2){
+                ref_traj.X.push_back(number);
+                ++column;
+            }
+            else if(column == 3){
+                ref_traj.Y.push_back(number);
+                ++column;
+            }
+            else if(column == 4){
+                ref_traj.Z.push_back(number);
+                ++column;
+            }
+            else if(column == 5){
+                ref_traj.VX.push_back(number);
+                ++column;
+            }
+            else if(column == 6){
+                ref_traj.VY.push_back(number);
+                ++column;
+            }
+            else{
+                ref_traj.VZ.push_back(number);
+                column = 1;
+            }
+        }
+    }
+    
+    void GNC::readInInitialKalmanFilterTraj() {
+        fprintf(logFile, "Reading in Kalman Filter Inital Trajectory\n");
+        std::ifstream file(testDIR + "/Test_Data/KalmanFilter_InitialState.txt");
+        
+        if (!file) {
+            fprintf(logFile, "Error: readInInitialKalmanFilterTraj: File %s could not be opened for reading\n", std::string(testDIR + "/Test_Data/KalmanFilter_InitialState.txt").c_str());
+            throw "File Could Not Be Opened for Reading";
+        }
+        
+        std::string line;
+        char hold;
+        
+        // Read in X_hat
+        std::getline(file, line);
+        fprintf(logFile, "X_hat = [");
+        for (int i = 0; i < 6; i++) {
+            file >> X_hat[i];
+            file >> hold;
+            fprintf(logFile, "%f ", X_hat[i]);
+        }
+        fprintf(logFile, "]\n");
+        
+        std::getline(file, line);
+        
+        // Read in Phi
+        fprintf(logFile, "phi = [");
+        for (int i = 0; i < 36; i++) {
+            file >> phi[i];
+            file >> hold;
+            fprintf(logFile, "%f ", phi[i]);
+        }
+        fprintf(logFile, "]\n");
+        
+        std::getline(file, line);
+        
+        // Read in P
+        fprintf(logFile, "P = [");
+        for (int i = 0; i < 36; i++) {
+            file >> P[i];
+            file >> hold;
+            fprintf(logFile, "%f ", P[i]);
+        }
+        fprintf(logFile, "]\n");
+        
+        std::getline(file, line);
+        
+        // Read in R
+        fprintf(logFile, "R = [");
+        for (int i = 0; i < 9; i++) {
+            file >> R[i];
+            file >> hold;
+            fprintf(logFile, "%f ", R[i]);
+        }
+        fprintf(logFile, "]\n");
+        
+        std::getline(file, line);
+        
+        // Read in X_ref
+        fprintf(logFile, "X_ref = [");
+        for (int i = 0; i < 6; i++) {
+            file >> X_ref[i];
+            file >> hold;
+            fprintf(logFile, "%f ", X_ref[i]);
+        }
+        fprintf(logFile, "]\n");
+    }
+    
+    
+    //*******************************
+    //
+    // Message Handlers: Supported by GNC
+    //
+    //********************************
+    /*
+     Send Status to WatchDog
+     */
+    void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
+        fprintf(logFile, "Received Message: ProcessHealthAndStatusRequest from WatchDog\n");
+        msg->print(logFile);
+        
+        // Update ProcessHealthAndStatusResponse Message
+        processHealthMessage->update(localError);
+        
+        // Send Status Message
+        service->sendMessage(processHealthMessage);
+        fprintf(logFile, "Sent Message: StatusAndHealthResponse to WatchDog\n");
+        
+        // Reset Error Enum
+        localError = PE_AllHealthy;
+    }
+    
+    /*
+     1. Store the Data Message in circular buffer
+     */
+    void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
+        fprintf(logFile, "Received Message: DataMessage from ScComms\n");
+        //msg->print(logFile);
+        
+        // Put Data Into Circular Buffer
+        circBuf.put(msg);
+    }
+    
+    /*
+     1. Get Spacecraft Data Message
+     2. Call Compute
+     3. Send a Solution Message
+     */
+    void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
+        fprintf(logFile, "Received Message: ProcessedImageMessage from ScComms\n");
+        msg->print(logFile);
+        
+        std::cout << "STARTING: Handle Processed Image Message" << std::endl;
+        DataMessage* scData;
+        std::cout << "Attempting to Find Data Message" << std::endl;
+        
+        try {
+            scData = circBuf.get(msg->timeStamp);
+            fprintf(logFile, "HandleProcessedImageMessage: Corresponding Data Message Found\n");
+        } catch (const char* exception) {
+            fprintf(logFile, "Error: Data Message Not Received, Exception: %s\n", exception);
             return;
         }
         
-        fprintf(logFile, "ComputeSolution: Angles Method, Second Image, Computing Solution\n");
-        
-        // Point back at earth
-        point = PEM_Earth;
-        
-        // ASSUMPTION: dataMessage_FirstImage / procMessage_FirstImage == First Image == Point at Earth
-        // ASSUMPTION: dataMessage / procMessage == Second Image == Pointing at Moon
-        
-        double pictureOnePosition[3];
-        double pictureTwoPosition[3];
-        std::cout << "Start: Position From ANGLES" << std::endl;
-        Position_From_Angles_Slew(dataMessage->ephem, dataMessage_FirstImage.quat, dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage_FirstImage.alpha, procMessage_FirstImage.beta, velSC, (double) (procMessage->timeStamp - procMessage_FirstImage.timeStamp), pictureOnePosition, pictureTwoPosition);
-        std::cout << "END: Position From ANGLES" << std::endl;
-        
-        // First Image
-        //************************
-        // TODO: SET THESE VARS:
-        // Not Currently Setting:
-        // ------------------------------
-        // double x_hat[6] (reference trajectory deviance)
-        // double phi[36] (state transition matrix)  <----- CONST in Func
-        // double P[36] (covariance matrix)
-        // double R[9] (state error covariance)     <----- CONST in Func
-        
-        double x_hat[6];
-        double phi[36];
-        double P[36];
-        double R[9];
-        //************************
-        
-        kalmanFilterWrapper(x_hat, phi, P, pictureOnePosition, R, (double) procMessage_FirstImage.timeStamp, dataMessage_FirstImage.ephem);
-        
-        //************************
-        // TODO: SET THESE VARS:
-        // Not Currently Setting:
-        // ------------------------------
-        // double x_hat[6] (reference trajectory deviance)
-        // double phi[36] (state transition matrix)  <----- CONST in Func
-        // double P[36] (covariance matrix)
-        // double R[9] (state error covariance)     <----- CONST in Func
-        //************************
-        
-        kalmanFilterWrapper(x_hat, phi, P, pictureTwoPosition, R, (double) procMessage->timeStamp, dataMessage->ephem);
-        
-    } else {
-        // Moon Ranging to find Position
-        fprintf(logFile, "ComputeSolution: Moon Ranging\n");
-        
-        // Set Pointing
-        point = PEM_Moon;
-        
-        // Log Inputs to Moon Range
-        fprintf(logFile, "ComputeSolution: Moon Ranging: INPUTS: quat: [%f, %f, %f, %f],\n alpha = %f, beta = %f, theta = %f \n", dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, procMessage->beta, procMessage->theta);
-        
-        // Get Moon Range
-        std::cout << "Start: MOON RANGING: Position From Moon Range" << std::endl;
-        double moonRangePosition[3];
-        Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, moonRangePosition);
-        std::cout << "End: MOON RANGING: Position From Moon Range" << std::endl;
-        
-        // Log Outputs for Moon Range
-        fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, moonRangePosition[0], moonRangePosition[1], moonRangePosition[2]);
-        
-        //************************
-        // TODO: SET THESE VARS:
-        // Not Currently Setting:
-        // ------------------------------
-        // double x_hat[6] (reference trajectory deviance)
-        // double phi[36] (state transition matrix)  <----- CONST in Func
-        // double P[36] (covariance matrix)
-        // double R[9] (state error covariance)     <----- CONST in Func
-        
-        double x_hat[6];
-        double phi[36];
-        double P[36];
-        double R[9];
-        //************************
-        
-        kalmanFilterWrapper(x_hat, phi, P, moonRangePosition, R, (double) dataMessage->satTime, dataMessage->ephem);
-        
+        std::cout << "Attempting to Compute Solution" << std::endl;
+        // Compute Solution and Update Solution Message
+        try {
+            fprintf(logFile, "HandleProcessedImageMessage: Calling Compute Solution\n");
+            computeSolution(scData, msg);
+            
+        } catch (InvalidInputs &e) {
+            fprintf(logFile, "Error: HandleProcessedImageMessage() InvalidInputs Exception Caught: %s\n", e.what());
+            localError = PE_InvalidInputs;
+            return;
+            
+        } catch (InvalidOutput &e) {
+            fprintf(logFile, "Error: HandleProcessedImageMessage() InvalidOutput Exception Caught: %s\n", e.what());
+            localError = PE_InvalidOutput;
+            return;
+            
+        } catch(std::exception &exception) {
+            fprintf(logFile, "Error: HandleProcessedImageMessage() Exception Caught: %s\n", exception.what());
+            localError = PE_NotHealthy;
+            throw;
+            
+        } catch (...) {
+            fprintf(logFile, "Error: HandleProcessedImageMessage() Unknown Type of Exception Caught\n");
+            throw;
+        }
     }
     
-    std::cout << "Ending Compute Solution" << std::endl;
-}
-
-//
-// Spacecraft-Moon position vector
-// Arguments    : const double r_E_SC[3]
-//                const double r_E_M[3]
-// Return Type  : double
-//
-
-double GNC::norm(double* vec) {
-    fprintf(logFile, "ComputeSolution: Norm Function\n");
-    return sqrt(pow(vec[0],2) + pow(vec[1],2) + pow(vec[2],2));
-}
-
-double GNC::Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3]) {
-    std::cout << "Starting SC Earth Moon ANgle" << std::endl;
-    fprintf(logFile, "Earth_SC_Moon_Angle: Entered Earth_SC_Moon_Angle Function\n");
-    double c;
-    double r_SC_M[3];
-    double r_SC_E[3];
-    int k;
-    double b_r_SC_M;
     
-    //  Earth-Spacecraft-Moon Angle Function
-    //   Calculates the Earth-Spacecraft-Moon angle from the spacecraft and moon
-    //   positions.
+    // *******************************
     //
-    //   Author:   Cameron Maywood
-    //   Created:  3/8/2017
-    //   Modified: 3/8/2017
-    //             _____________________________________________________________
-    //   Inputs:  |          r_E_SC         |  Spacecraft ECI position vector   |
-    //            |          r_E_M          |  Moon ECI position vector         |
-    //            |_________________________|___________________________________|
-    //   Outputs: |   angle_Earth_SC_Moon   |   Earth-spacecraft-moon angle     |
-    //            |_________________________|___________________________________|
-    //  Spacecraft-Earth position vector
-    //  Earth-spacecraft-Moon angle
-    c = 0.0;
-    for (k = 0; k < 3; k++) {
-        b_r_SC_M = r_E_M[k] - r_E_SC[k];
-        c += b_r_SC_M * -r_E_SC[k];
-        r_SC_M[k] = b_r_SC_M;
-        r_SC_E[k] = -r_E_SC[k];
-    }
-    
-    fprintf(logFile, "Earth_SC_Moon_Angle: Leaving Earth_SC_Moon_Angle Function\n");
-    std::cout << "Starting SC Earth Moon ANgle" << std::endl;
-    return 57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)));
-}
-
-
-//
-// Arguments    : const double X_ref[6]
-//                const double X_est[6]
-//                double posError[3]
-//                double velError[3]
-// Return Type  : void
-//
-void GNC::State_Error(const double X_ref[6], const double X_est[6], double posError[3], double velError[3]) {
-    int i;
-    std::cout << "Starting State Error" << std::endl;
-    fprintf(logFile, "State_Error: Entered State_Error Function\n");
-    
-    //  State Error Function
-    //   Calculates the state error given the reference state and estimated
-    //   state.
+    // Message Handlers: Not Supported by GNC
     //
-    //   Author:   Cameron Maywood
-    //   Created:  3/9/2017
-    //   Modified: 3/9/2017
-    //             _________________________________________________
-    //   Inputs:  |     X_ref     |   Spacecraft reference state.   |
-    //            |     X_est     |   Spacecraft estimated state.   |
-    //            |_______________|_________________________________|
-    //   Outputs: |    posError   |   Spacecraft position error.    |
-    //            |    velError   |   Spacecraft velocity error.    |
-    //            |_______________|_________________________________|
-    for (i = 0; i < 3; i++) {
-        posError[i] = X_ref[i] - X_est[i];
-        velError[i] = X_ref[i + 3] - X_est[i + 3];
+    // ********************************
+    void GNC::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
+        fprintf(logFile, "Error: Invalid Message Recived: OSPRE Status, Closing Connection\n");
+        service->closeConnection();
     }
-    fprintf(logFile, "State_Error: Leaving State_Error Function\n");
-    std::cout << "Ending State Error" << std::endl;
-}
-
-void GNC::read_ConfigFile(std::string config_file) {
-    std::ifstream file(config_file);
-    
-    if (!file) {
-        fprintf(logFile, "Error: read Config File File %s could not be opened for reading\n", config_file.c_str());
-        throw "File Could Not Be Opened for Reading";
+    void GNC::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
+        fprintf(logFile, "Error: Invalid Message Recived: ResponseMessage, Closing Connection\n");
+        service->closeConnection();
     }
-    
-    std::string line;
-    std::getline(file, line);
-    file >> r_E_SC[0];
-    file >> r_E_SC[1];
-    file >> r_E_SC[2];
-    
-    std::getline(file, line);
-    std::getline(file, line);
-    file >> range_EarthRangeCutoff;
-    
-    std::getline(file, line);
-    std::getline(file, line);
-    file >> range_AnglesCutoff;
-}
-// Read Reference Trajectory
-void GNC::read_referencTraj(std::string ref_trajectory_file) {
-    std::ifstream file(ref_trajectory_file);
-    
-    if (!file) {
-        fprintf(logFile, "Error: ReadReference Trajectory: File %s could not be opened for reading\n", ref_trajectory_file.c_str());
-        throw "File Could Not Be Opened for Reading";
+    void GNC::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
+        fprintf(logFile, "Error: Invalid Message Recived: CaptureImageRequest, Closing Connection\n");
+        service->closeConnection();
+    }
+    void GNC::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
+        fprintf(logFile, "Error: Invalid Message Recived: ImageAdjustmentMessage, Closing Connection\n");
+        service->closeConnection();
+    }
+    void GNC::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
+        fprintf(logFile, "Error: Invalid Message Recived: ImageMessage, Closing Connection\n");
+        service->closeConnection();
+    }
+    void GNC::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
+        fprintf(logFile, "Error: Invalid Message Recived: PointingRequest, Closing Connection\n");
+        service->closeConnection();
+    }
+    void GNC::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
+        fprintf(logFile, "Error: Invalid Message Recived: SolutionMessage, Closing Connection\n");
+        service->closeConnection();
     }
     
-    double number;
-    int column = 1;
-    
-    while(file){
-        file >> number;
-        if(column == 1){
-            ref_traj.time.push_back(number);
-            ++column;
-        }
-        else if(column == 2){
-            ref_traj.X.push_back(number);
-            ++column;
-        }
-        else if(column == 3){
-            ref_traj.Y.push_back(number);
-            ++column;
-        }
-        else if(column == 4){
-            ref_traj.Z.push_back(number);
-            ++column;
-        }
-        else if(column == 5){
-            ref_traj.VX.push_back(number);
-            ++column;
-        }
-        else if(column == 6){
-            ref_traj.VY.push_back(number);
-            ++column;
-        }
-        else{
-            ref_traj.VZ.push_back(number);
-            column = 1;
-        }
-    }
-}
-
-
-//*******************************
-//
-// Message Handlers: Supported by GNC
-//
-//********************************
-/*
- Send Status to WatchDog
- */
-void GNC::handleProcessHealthAndStatusRequest(ProcessHealthAndStatusRequest* msg, ServiceInternal* service) {
-    fprintf(logFile, "Received Message: ProcessHealthAndStatusRequest from WatchDog\n");
-    msg->print(logFile);
-    
-    // Update ProcessHealthAndStatusResponse Message
-    processHealthMessage->update(localError);
-    
-    // Send Status Message
-    service->sendMessage(processHealthMessage);
-    fprintf(logFile, "Sent Message: StatusAndHealthResponse to WatchDog\n");
-    
-    // Reset Error Enum
-    localError = PE_AllHealthy;
-}
-
-/*
- 1. Store the Data Message in circular buffer
- */
-void GNC::handleDataMessage(DataMessage* msg, ServiceInternal* service) {
-    fprintf(logFile, "Received Message: DataMessage from ScComms\n");
-    //msg->print(logFile);
-    
-    // Put Data Into Circular Buffer
-    circBuf.put(msg);
-}
-
-/*
- 1. Get Spacecraft Data Message
- 2. Call Compute
- 3. Send a Solution Message
- */
-void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service) {
-    fprintf(logFile, "Received Message: ProcessedImageMessage from ScComms\n");
-    msg->print(logFile);
-    
-    std::cout << "STARTING: Handle Processed Image Message" << std::endl;
-    DataMessage* scData;
-    std::cout << "Attempting to Find Data Message" << std::endl;
-    
-    try {
-        scData = circBuf.get(msg->timeStamp);
-        fprintf(logFile, "HandleProcessedImageMessage: Corresponding Data Message Found\n");
-    } catch (const char* exception) {
-        fprintf(logFile, "Error: Data Message Not Received, Exception: %s\n", exception);
-        return;
-    }
-    
-    std::cout << "Attempting to Compute Solution" << std::endl;
-    // Compute Solution and Update Solution Message
-    try {
-        fprintf(logFile, "HandleProcessedImageMessage: Calling Compute Solution\n");
-        computeSolution(scData, msg);
-        
-    } catch (InvalidInputs &e) {
-        fprintf(logFile, "Error: HandleProcessedImageMessage() InvalidInputs Exception Caught: %s\n", e.what());
-        localError = PE_InvalidInputs;
-        return;
-        
-    } catch (InvalidOutput &e) {
-        fprintf(logFile, "Error: HandleProcessedImageMessage() InvalidOutput Exception Caught: %s\n", e.what());
-        localError = PE_InvalidOutput;
-        return;
-        
-    } catch(std::exception &exception) {
-        fprintf(logFile, "Error: HandleProcessedImageMessage() Exception Caught: %s\n", exception.what());
-        localError = PE_NotHealthy;
-        throw;
-        
-    } catch (...) {
-        fprintf(logFile, "Error: HandleProcessedImageMessage() Unknown Type of Exception Caught\n");
-        throw;
-    }
-}
-
-
-// *******************************
-//
-// Message Handlers: Not Supported by GNC
-//
-// ********************************
-void GNC::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
-    fprintf(logFile, "Error: Invalid Message Recived: OSPRE Status, Closing Connection\n");
-    service->closeConnection();
-}
-void GNC::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
-    fprintf(logFile, "Error: Invalid Message Recived: ResponseMessage, Closing Connection\n");
-    service->closeConnection();
-}
-void GNC::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
-    fprintf(logFile, "Error: Invalid Message Recived: CaptureImageRequest, Closing Connection\n");
-    service->closeConnection();
-}
-void GNC::handleImageAdjustment(ImageAdjustment* msg, ServiceInternal* service) {
-    fprintf(logFile, "Error: Invalid Message Recived: ImageAdjustmentMessage, Closing Connection\n");
-    service->closeConnection();
-}
-void GNC::handleImageMessage(ImageMessage* msg, ServiceInternal* service) {
-    fprintf(logFile, "Error: Invalid Message Recived: ImageMessage, Closing Connection\n");
-    service->closeConnection();
-}
-void GNC::handlePointingRequest(PointingRequest* msg, ServiceInternal* service) {
-    fprintf(logFile, "Error: Invalid Message Recived: PointingRequest, Closing Connection\n");
-    service->closeConnection();
-}
-void GNC::handleSolutionMessage(SolutionMessage* msg, ServiceInternal* service){
-    fprintf(logFile, "Error: Invalid Message Recived: SolutionMessage, Closing Connection\n");
-    service->closeConnection();
-}
-
