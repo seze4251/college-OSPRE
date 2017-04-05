@@ -166,8 +166,8 @@ void CameraController::readImage(std::string imgFilename) {
         fprintf(logFile, "Read Image: Image Name Valid\n");
     }
     
-    imageMessage->resizeImageArray(img.cols * img.rows * 3);
-    imageMessage->currentImageSize = img.cols * img.rows * 3;
+    imageMessage->resizeImageArray(image.cols * image.rows * 3);
+    imageMessage->currentImageSize = image.cols * image.rows * 3;
     
     // Allocate variables
     unsigned char* imIn = (unsigned char*) imageMessage->getImagePointer(); // <--- Change this to be compatible with msg
@@ -182,8 +182,8 @@ void CameraController::readImage(std::string imgFilename) {
             uchar green = intensity.val[1];
             uchar red = intensity.val[2];
             imIn[counter] = red;
-            imIn[counter + img.cols * img.rows] = green;
-            imIn[counter + 2 * img.cols * img.rows] = blue;
+            imIn[counter + image.cols * image.rows] = green;
+            imIn[counter + 2 * image.cols * image.rows] = blue;
             counter++;
         }
     }
@@ -283,16 +283,16 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         
         // TODO: Need to get these parameters from somewhere, maybe config file?
         //********************************
-       // CHANGE int currentImageSize = IMAGE_SIZE;
-       // PUT IN CONFIG FILE double pix_deg[2] {72, 72};
-       // CONFIG OR CV READ int cameraWidth = 4160;
-       // CONFIG OR CV READ int cameraHeight = 3120;
+        int currentImageSize = IMAGE_SIZE; // CHANGE
+        double pix_deg[2] {72, 72};  // PUT IN CONFIG FILE
+        int cameraWidth = 4160; // CONFIG OR CV READ
+        int cameraHeight = 3120; // CONFIG OR CV READ
         imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
         
         //******************************
         
         // Send Image Message to Image Processor
-        if ((imageProc != nullptr) && (imageProc.isConnected() == true)) {
+        if ((imageProc != nullptr) && (imageProc->isConnected() == true)) {
             imageProc->sendMessage(imageMessage);
             fprintf(logFile, "Sent Message: ImageMessage to ImageProcessor\n");
         }

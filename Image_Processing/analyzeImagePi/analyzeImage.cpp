@@ -19,6 +19,7 @@
 #include "isfinite.h"
 #include "imhist.h"
 #include "analyzeImage_rtwutil.h"
+
 //
 #include <stdio.h>
 #include <ctime>
@@ -43,11 +44,10 @@
 //                double *theta
 // Return Type  : void
 //
-void analyzeImage(const emxArray_uint8_T *imIn, const double radiusRangeGuess[2],
-                  double sensVal, double centerPt_data[], int centerPt_size[2],
-                  double *radius, double *numCirc, 
-                  double *alpha, double *beta, double *theta,  
-                  const double pxDeg[2], double imgWidth, double imgHeight)
+void analyzeImage(const emxArray_uint8_T *imIn, const double
+                  radiusRangeGuess[2], double sensVal, const double pxDeg[2], double imgWidth,
+                  double imgHeight, double centerPt_data[], int centerPt_size[2], double *radius,
+                  double *numCirc, double *alpha, double *beta, double *theta)
 {
   int i0;
   emxArray_uint8_T *im;

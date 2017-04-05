@@ -12,12 +12,19 @@
 #include <string>
 #include <cmath>
 
+#include "analyzeImage_emxutil.h"
 #include "rt_nonfinite.h"
 #include "analyzeImage.h"
 #include "analyzeImage_terminate.h"
 #include "analyzeImage_initialize.h"
 #include "ImageProcessor.h"
 #include "Service.h"
+
+
+#include "analyzeImage_terminate.h"
+#include "analyzeImage_emxAPI.h"
+#include "analyzeImage_initialize.h"
+
 
 #define MOON_RADIUS 1736.0
 #define EARTH_RADIUS 6371.0
@@ -237,10 +244,29 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     
     fprintf(logFile, "dv3 = %f  %f, sens = %f, \npix_deg %f  %f, camera Width %d  camera height %d\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], msg->cameraWidth, msg->cameraHeight);
     
+    emxArray_uint8_T img_holder;
+    /*
+     unsigned char *data;
+     int *size;
+     int allocatedSize;
+     int numDimensions;
+     boolean_T canFreeData;
+     */
     
+    img_holder.data = (unsigned char*) msg->getImagePointer();
+    img_holder.size = new int[3];
+    img_holder.allocatedSize = msg->imageBufferSize;
+    img_holder.size[0] = 0;
+    img_holder.size[1] = 0;
+    img_holder.size[2] = 0;
+    img_holder.numDimensions = 3;
+    img_holder.canFreeData = false;
 
+    // Old First Argument (unsigned char*) msg->getImagePointer()
     
-    analyzeImage((unsigned char*) msg->getImagePointer(), dv3, sensitivity, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta, msg->pix_deg, msg->cameraWidth, msg->cameraHeight);
+   analyzeImage(&img_holder, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
+    
+//T _analyzeImage(emxArray_uint8_T const*, double const*, double, double*, int*, double*, double*, double*, double*, double*, double const*, double, double)
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
