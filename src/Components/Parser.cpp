@@ -315,7 +315,6 @@ Message* Parser::parseImageMessage() {
     
     int imageLength = messageLength - (HEADER_MESSAGE_SIZE + 3*sizeof(int) + 8*sizeof(double));
     
-    
     if( imageLength > image->imageBufferSize) {
         image->resizeImageArray(2*buf.used());
     }

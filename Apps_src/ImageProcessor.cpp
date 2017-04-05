@@ -262,11 +262,14 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     img_holder.numDimensions = 3;
     img_holder.canFreeData = false;
 
-    // Old First Argument (unsigned char*) msg->getImagePointer()
+    // TEMP Till I find out why IP is coreing
+    fflush(logFile);
+    std::cout << "MADE IT HERE" << std::endl;
     
+    // TEMP Till I find out why IP is coreing
    analyzeImage(&img_holder, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
     
-//T _analyzeImage(emxArray_uint8_T const*, double const*, double, double*, int*, double*, double*, double*, double*, double*, double const*, double, double)
+     std::cout << "MADE IT HERE: After analyzeImage" << std::endl;
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
@@ -330,6 +333,8 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     msg->print(logFile);
     
     try {
+        fprintf(logFile, "made it 0.5\n");
+        flushLog();
         processImage(msg);
         
         // Send Processed Image Message to GNC

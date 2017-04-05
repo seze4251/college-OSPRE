@@ -13,12 +13,14 @@
 #define IMAGE_SIZE 2428800
 
 #include "Message.h"
+#include "Server.h"
 
 class ImageMessage : public Message {
 public:
     ImageMessage() : Message(getMessageID(), time(0)), point(PEM_NA){
         image = new char[IMAGE_SIZE];
         imageBufferSize = IMAGE_SIZE;
+        currentImageSize = 0;
     }
     
     ~ImageMessage() {
@@ -64,14 +66,14 @@ public:
     }
     
     void resizeImageArray(int newSize) {
-        if (currentImageSize > newSize) {
+        if (imageBufferSize > newSize) {
             return;
         }
         
         delete[] image;
         image = new char[newSize];
         imageBufferSize = newSize;
-        std::cout << "\n\n\n Resizing Image Message b/c it is bigger than expected \n\n\n";
+        fprintf(Server::getAppl()->getLogFileID(), "Resizing Image Message from: %d, to %d b/c it is bigger than expected\n", currentImageSize, newSize);
     }
     
     char* getImagePointer() {

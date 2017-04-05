@@ -74,6 +74,10 @@ private:
     ProcessError localError;
     
     ImageNameReader imageReader;
+    
+    //TEMP
+    int tempCurrentImageSize;
+    //TEMP
 };
 
 #endif

@@ -188,6 +188,7 @@ void CameraController::readImage(std::string imgFilename) {
         }
     }
     
+    tempCurrentImageSize = image.cols * image.rows * 3;
     
     fprintf(logFile, "Read Image: Finished Image Read\n");
 }
@@ -283,11 +284,10 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         
         // TODO: Need to get these parameters from somewhere, maybe config file?
         //********************************
-        int currentImageSize = IMAGE_SIZE; // CHANGE
         double pix_deg[2] {72, 72};  // PUT IN CONFIG FILE
         int cameraWidth = 4160; // CONFIG OR CV READ
         int cameraHeight = 3120; // CONFIG OR CV READ
-        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
+        imageMessage->update(msg->point, tempCurrentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
         
         //******************************
         
