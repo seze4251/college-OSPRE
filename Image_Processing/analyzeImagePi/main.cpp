@@ -200,7 +200,7 @@ static void main_analyzeImage()
   //argInit_1x2_real_T(dv2);
 
   std::cout << "Outputing image" << std::endl;
-  cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC1, (imIn->data));
+  cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, (imIn->data));
 
   cv::namedWindow("Image After Conversion", WINDOW_NORMAL);
   cv::imshow("Image After Conversion", tempMat);
