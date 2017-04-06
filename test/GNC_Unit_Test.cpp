@@ -2,21 +2,26 @@
 // Author:  Cameron Maywood
 
 #include <stdio.h>
-#include "../../include/Exception/OSPRE_Exceptions.h"
 #include <iostream>
 
+#include "../../include/Exception/OSPRE_Exceptions.h"
+#include "Kalman_Filter_Iteration.h"
+
+
 #include "Kalman_Filter_Iteration_rtwutil.cpp"
-#include "sind.cpp"
-#include "tand.cpp"
-#include "cosd.cpp"
-#include "norm.cpp"
-#include "State_Error.cpp"
-#include "Kalman_Filter_Iteration.cpp"
-#include "Quaternion_To_Attitude.cpp"
-#include "Position_From_Earth_Range.cpp"
-#include "Position_From_Moon_Range.cpp"
-#include "Position_From_Angles_Slew.cpp"
+//#include "sind.cpp"
+//#include "tand.cpp"
+//#include "cosd.cpp"
+//#include "norm.cpp"
+//#include "State_Error.cpp"
+//#include "Kalman_Filter_Iteration.cpp"
+#include "Quaternion_To_Attitude.h"
+#include "Position_From_Earth_Range.h"
+#include "Position_From_Moon_Range.h"
+#include "Position_From_Angles_Slew.h"
 #include "Earth_SC_Moon_Angle.cpp"
+
+
 using namespace std;
 
 int main(int, const char * const [])

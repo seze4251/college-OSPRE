@@ -42,6 +42,10 @@ TARGET_AnalyzeImage := $(TARGETDIR)/$(EXECUTABLE_AnalyzeImage)
 EXECUTABLE_testImageReading := testImageReading
 TARGET_testImageReading := $(TARGETDIR)/$(EXECUTABLE_testImageReading)
 
+#GNC_Unit_Test
+EXECUTABLE_GNC_Unit_Test := GNC_Unit_Test
+TARGET_GNC_Unit_Test := $(TARGETDIR)/$(EXECUTABLE_GNC_Unit_Test)
+
 #
 # Main OBJS
 MAINDIR := test
@@ -100,6 +104,13 @@ $(TARGET_AnalyzeImage):
 $(TARGET_testImageReading):
 	@mkdir -p $(TARGETDIR);
 	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) -o $(TARGET_AnalyzeImage) test/testImageReading.cpp $(INC) -I./Image_Processing/analyzeImagePi ./lib/analyzeImage.lib -I/usr/local/include/ -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs
+
+
+#GNC_Unit_Test
+$(TARGET_GNC_Unit_Test):
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_GNC_Unit_Test)"; $(CC) -o $(TARGET_GNC_Unit_Test) test/GNC_Unit_Test.cpp -I ./GNC/Kalman_Filter_Iteration/ ./lib/Kalman_Filter_Iteration.lib
+
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDLIST);

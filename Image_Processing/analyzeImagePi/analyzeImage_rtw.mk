@@ -385,7 +385,7 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 
 
 %.cpp.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+	$(CPP) $(CPPFLAGS) -o "$@" "$<" 
 
 
 %.c.o : %.c
@@ -397,7 +397,7 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 
 
 %.cpp.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+	$(CPP) $(CPPFLAGS) -o "$@" "$<" -I/usr/local/include/ -L /usr/local/lib
 
 
 ###########################################################################
