@@ -213,7 +213,7 @@ int main(int, const char * const [])
       Kalman_Filter_Iteration(x_hat1, phi1, P1, Y1, R1, X_ref8, time1, X_est1);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Kalman_Filter_Iteration() input exception successfully caught.\n";
       test = "Kalman_Filter_Iteration";
   }
   catch (...) {
@@ -223,15 +223,15 @@ int main(int, const char * const [])
   } 
   // ******************** Test #2 Results ********************
   if(test == "pass"){
-      cout << "FAILURE: INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
+      cout << "FAILURE: Kalman_Filter_Iteration() INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else if(test == "Kalman_Filter_Iteration"){
-      cout << "SUCCESS: INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
+      cout << "SUCCESS: Kalman_Filter_Iteration() INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else {
-      cout << "FAILURE: UNKNOWN ERROR OCCURRED.\n";
+      cout << "FAILURE: Kalman_Filter_Iteration() UNKNOWN ERROR OCCURRED.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
 
@@ -247,7 +247,7 @@ int main(int, const char * const [])
       State_Error(X_ref9, X_est2, posError2, velError2);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: State_Error() input exception successfully caught.\n";
       test = "State_Error";
   }
   catch (...) {
@@ -261,7 +261,7 @@ int main(int, const char * const [])
       State_Error(X_ref2, X_est9, posError2, velError2);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: State_Error() input exception successfully caught.\n";
       test2 = "State_Error";
   }
   catch (...) {
@@ -272,15 +272,15 @@ int main(int, const char * const [])
   
   // ******************** Test #3 Results ********************
   if(test == "pass" | test2 == "pass"){
-      cout << "FAILURE: INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
+      cout << "FAILURE: State_Error() INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else if(test == "State_Error" & test2 == "State_Error"){
-      cout << "SUCCESS: INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
+      cout << "SUCCESS: State_Error() INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else {
-      cout << "FAILURE: UNKNOWN ERROR OCCURRED.\n";
+      cout << "FAILURE: State_Error() UNKNOWN ERROR OCCURRED.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
 
@@ -295,7 +295,7 @@ int main(int, const char * const [])
       Quaternion_To_Attitude(q10, r_SC_body3);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Quaternion_To_Attitude() input exception successfully caught.\n";
       test = "Quaternion_To_Attitude";
   }
   catch (...) {
@@ -305,15 +305,15 @@ int main(int, const char * const [])
   }
   // ******************** Test #4 Results ********************
   if(test == "pass"){
-      cout << "FAILURE: INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
+      cout << "FAILURE: Quaternion_To_Attitude() INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else if(test == "Quaternion_To_Attitude"){
-      cout << "SUCCESS: INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
+      cout << "SUCCESS: Quaternion_To_Attitude() INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else {
-      cout << "FAILURE: UNKNOWN ERROR OCCURRED.\n";
+      cout << "FAILURE: Quaternion_To_Attitude() UNKNOWN ERROR OCCURRED.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
 
@@ -331,7 +331,7 @@ int main(int, const char * const [])
       Position_From_Earth_Range(q_E11, alpha4, beta4, theta4, r_E_SC4);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Position_From_Earth_Range() input exception successfully caught.\n";
       test = "Position_From_Earth_Range";
   }
   catch (...) {
@@ -345,7 +345,7 @@ int main(int, const char * const [])
       Position_From_Earth_Range(q_E4, alpha11, beta4, theta4, r_E_SC4);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Position_From_Earth_Range() input exception successfully caught.\n";
       test2 = "Position_From_Earth_Range";
   }
   catch (...) {
@@ -359,7 +359,7 @@ int main(int, const char * const [])
       Position_From_Earth_Range(q_E4, alpha4, beta11, theta4, r_E_SC4);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Position_From_Earth_Range() input exception successfully caught.\n";
       test3 = "Position_From_Earth_Range";
   }
   catch (...) {
@@ -373,7 +373,7 @@ int main(int, const char * const [])
       Position_From_Earth_Range(q_E4, alpha4, beta4, theta11, r_E_SC4);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Position_From_Earth_Range() input exception successfully caught.\n";
       test4 = "Position_From_Earth_Range";
   }
   catch (...) {
@@ -385,15 +385,15 @@ int main(int, const char * const [])
 
   // ******************** Test #5 Results ********************
   if(test == "pass" | test2 == "pass" | test3 == "pass" | test4 == "pass"){
-      cout << "FAILURE: INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
+      cout << "FAILURE: Position_From_Earth_Range() INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else if(test == "Position_From_Earth_Range" & test2 == "Position_From_Earth_Range" & test3 == "Position_From_Earth_Range" & test4 == "Position_From_Earth_Range"){
-      cout << "SUCCESS: INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
+      cout << "SUCCESS: Position_From_Earth_Range() INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else {
-      cout << "FAILURE: UNKNOWN ERROR OCCURRED.\n";
+      cout << "FAILURE: Position_From_Earth_Range() UNKNOWN ERROR OCCURRED.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
 
@@ -411,7 +411,7 @@ int main(int, const char * const [])
       Position_From_Moon_Range(r_E_M5, q_M12, alpha5, beta5, theta5, r_E_SC5);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Position_From_Moon_Range() input exception successfully caught.\n";
       test = "Position_From_Moon_Range";
   }
   catch (...) {
@@ -425,7 +425,7 @@ int main(int, const char * const [])
       Position_From_Moon_Range(r_E_M5, q_M5, alpha12, beta5, theta5, r_E_SC5);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Position_From_Moon_Range() input exception successfully caught.\n";
       test2 = "Position_From_Moon_Range";
   }
   catch (...) {
@@ -439,7 +439,7 @@ int main(int, const char * const [])
       Position_From_Moon_Range(r_E_M5, q_M5, alpha5, beta12, theta5, r_E_SC5);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Position_From_Moon_Range() input exception successfully caught.\n";
       test3 = "Position_From_Moon_Range";
   }
   catch (...) {
@@ -453,7 +453,7 @@ int main(int, const char * const [])
       Position_From_Moon_Range(r_E_M5, q_M5, alpha5, beta5, theta12, r_E_SC5);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Position_From_Moon_Range() input exception successfully caught.\n";
       test4 = "Position_From_Moon_Range";
   }
   catch (...) {
@@ -465,15 +465,15 @@ int main(int, const char * const [])
 
   // ******************** Test #6 Results ********************
   if(test == "pass" | test2 == "pass" | test3 == "pass" | test4 == "pass"){
-      cout << "FAILURE: INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
+      cout << "FAILURE: Position_From_Moon_Range() INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else if(test == "Position_From_Moon_Range" & test2 == "Position_From_Moon_Range" & test3 == "Position_From_Moon_Range" & test4 == "Position_From_Moon_Range"){
-      cout << "SUCCESS: INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
+      cout << "SUCCESS: Position_From_Moon_Range() INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else {
-      cout << "FAILURE: UNKNOWN ERROR OCCURRED.\n";
+      cout << "FAILURE: Position_From_Moon_Range() UNKNOWN ERROR OCCURRED.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
 
@@ -488,7 +488,7 @@ int main(int, const char * const [])
       Earth_SC_Moon_Angle(r_E_SC13, r_E_M5);
   }
   catch (InvalidInputs &e) {
-      cout << e.what();
+      cout << "SUCCESS: Earth_SC_Moon_Angle() input exception successfully caught.\n";
       test = "Earth_SC_Moon_Angle";
   }
   catch (...) {
@@ -499,15 +499,15 @@ int main(int, const char * const [])
 
   // ******************** Test #7 Results ********************
   if(test == "pass"){
-      cout << "FAILURE: INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
+      cout << "FAILURE: Earth_SC_Moon_Angle() INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else if(test == "Earth_SC_Moon_Angle"){
-      cout << "SUCCESS: INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
+      cout << "SUCCESS: Earth_SC_Moon_Angle() INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else {
-      cout << "FAILURE: UNKNOWN ERROR OCCURRED.\n";
+      cout << "FAILURE: Earth_SC_Moon_Angle() UNKNOWN ERROR OCCURRED.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
 
