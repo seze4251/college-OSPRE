@@ -53,22 +53,22 @@ void Position_From_Moon_Range(const double r_E_M[3], const double q_M[4], double
   // INPUT EXCEPTIONS
   if (sqrt(pow(q_M[0], 2) + pow(q_M[1], 2) + pow(q_M[2], 2) + pow(q_M[3], 2)) - 1 > 0.0001) {
       char logString[100];
-      sprintf(logString, "ERROR IN: Position_From_Moon_Range.cpp\nInvalid spacecraft-Moon quaternion.");
+      sprintf(logString, "ERROR: Position_From_Moon_Range(). Invalid spacecraft-Moon quaternion.\n");
       throw InvalidInputs(logString);
   }
   if (alpha < 0 | alpha > 360) {
       char logString[100];
-      sprintf(logString, "ERROR IN: Position_From_Moon_Range.cpp\nMoon alpha angle not in valid range.");
+      sprintf(logString, "ERROR: Position_From_Moon_Range(). Moon alpha angle not in valid range.\n");
       throw InvalidInputs(logString);
   }
   if (beta < 0 | beta > 360) {
       char logString[100];
-      sprintf(logString, "ERROR IN: Position_From_Moon_Range.cpp\nMoon beta angle not in valid range.");
+      sprintf(logString, "ERROR: Position_From_Moon_Range(). Moon beta angle not in valid range.\n");
       throw InvalidInputs(logString);
   }
   if (theta < 0 | theta > 180) {
       char logString[100];
-      sprintf(logString, "ERROR IN: Position_From_Moon_Range.cpp\nMoon theta angle not in valid range.");
+      sprintf(logString, "ERROR: Position_From_Moon_Range(). Moon theta angle not in valid range.\n");
       throw InvalidInputs(logString);
   }
 

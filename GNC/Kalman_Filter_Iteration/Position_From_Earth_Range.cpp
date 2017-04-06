@@ -51,22 +51,22 @@ void Position_From_Earth_Range(const double q_E[4], double alpha, double beta,
   // INPUT EXCEPTIONS
   if (sqrt(pow(q_E[0], 2) + pow(q_E[1], 2) + pow(q_E[2], 2) + pow(q_E[3], 2)) - 1 > 0.0001) {
       char logString[100];
-      sprintf(logString, "ERROR IN: Position_From_Earth_Range.cpp\nInvalid spacecraft-Earth quaternion.");
+      sprintf(logString, "ERROR: Position_From_Earth_Range(). Invalid spacecraft-Earth quaternion.\n");
       throw InvalidInputs(logString);
   }
   if (alpha < 0 | alpha > 360) {
       char logString[100];
-      sprintf(logString, "ERROR IN: Position_From_Earth_Range.cpp\nEarth alpha angle not in valid range.");
+      sprintf(logString, "ERROR: Position_From_Earth_Range(). Earth alpha angle not in valid range.\n");
       throw InvalidInputs(logString);
   }
   if (beta < 0 | beta > 360) {
       char logString[100];
-      sprintf(logString, "ERROR IN: Position_From_Earth_Range.cpp\nEarth beta angle not in valid range.");
+      sprintf(logString, "ERROR: Position_From_Earth_Range(). Earth beta angle not in valid range.\n");
       throw InvalidInputs(logString);
   }
   if (theta < 0 | theta > 180) {
       char logString[100];
-      sprintf(logString, "ERROR IN: Position_From_Earth_Range.cpp\nEarth theta angle not in valid range.");
+      sprintf(logString, "ERROR: Position_From_Earth_Range(). Earth theta angle not in valid range.\n");
       throw InvalidInputs(logString);
   }
 
