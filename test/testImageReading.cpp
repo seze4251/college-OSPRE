@@ -12,13 +12,19 @@ testImageReading.cpp
 #include "../Image_Processing/analyzeImagePi/analyzeImage_initialize.h"
 
 // OpenCV
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/opencv2.hpp>
+// #include <opencv2/core/core.hpp>
+// #include <opencv2/highgui/highgui.hpp>
+// #include <opencv2/imgproc/imgproc.hpp>
+// #include <opencv2/imgcodecs/img_codecs.hpp>
 
 #include <iostream>
 
 // Add timing functionality
 #include <ctime>
+
+// Namespaces
+//using namespace cv;
 
 // Function Declarations
 static void argInit_1x2_real_T(double result[2]);
@@ -65,7 +71,7 @@ static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(unsigned char* imInput)
   result = emxCreateND_uint8_T(3, *(int (*)[3])&iv5[0]);
 
   //Initalize temp variables
-  Vec3b intensity;
+  cv::Vec3b intensity;
 
   // Loop over the array to initialize each element.
   // for (idx0 = 0; idx0 < result->size[0U]; idx0++) {
@@ -119,11 +125,11 @@ static void main_imageRead()
 
   // Load image with OpenCV
   std::cout << "Reading image with OpenCV" << std::endl;
-  Mat image;
-  Vec3b intensity;
-  image = imread("0p0flat.jpg", IMREAD_COLOR);
+  cv::Mat image;
+  cv::Vec3b intensity;
+  image = cv::imread("TestImages/moonTest.jpg", CV_LOAD_IMAGE_COLOR);
   std::cout << "Displaying image..." << std::endl;
-  cv::namedWindow("Direct Image from OpenCV", WINDOW_NORMAL);
+  cv::namedWindow("Direct Image from OpenCV", CV_WINDOW_NORMAL);
   cv::imshow("Direct Image from OpenCV", image);
   cv::waitKey(0);
   std::cout << "...finished image display" << std::endl;
@@ -133,7 +139,7 @@ static void main_imageRead()
   std::cout << "Converting image to unsigned char[]" << std::endl;
   for(int i=0; i< image.cols; i++){
     for(int j=0; j < image.rows; j++){
-      intensity = image.at<Vec3b>(j,i);
+      intensity = image.at<cv::Vec3b>(j,i);
       uchar blue = intensity.val[0];
       uchar green = intensity.val[1];
       uchar red = intensity.val[2];
@@ -158,7 +164,7 @@ static void main_imageRead()
   std::cout << "Displaying emxArray image..." << std::endl;
   cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, (imIn->data));
 
-  cv::namedWindow("Image After Conversion", WINDOW_NORMAL);
+  cv::namedWindow("Image After Conversion", CV_WINDOW_NORMAL);
   cv::imshow("Image After Conversion", tempMat);
   //cv::resizeWindow("Display frame", 600, 600);
   cv::waitKey(0);

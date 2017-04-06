@@ -38,6 +38,10 @@ TARGET_testExternalBuilderParser := $(TARGETDIR)/$(EXECUTABLE_testExternalBuilde
 EXECUTABLE_AnalyzeImage := testAnalyzeImage
 TARGET_AnalyzeImage := $(TARGETDIR)/$(EXECUTABLE_AnalyzeImage)
 
+#testImageReading
+EXECUTABLE_testImageReading := testImageReading
+TARGET_testImageReading := $(TARGETDIR)/$(EXECUTABLE_testImageReading)
+
 #
 # Main OBJS
 MAINDIR := test
@@ -91,6 +95,11 @@ $(TARGET_testInternalBuilderParser): $(OBJECTS) $(MAINOBJ_DIR)/testInternalBuild
 $(TARGET_AnalyzeImage):
 	@mkdir -p $(TARGETDIR);
 	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) -o $(TARGET_AnalyzeImage) test/testAnalyzeImage.cpp $(INC) -I./Image_Processing/analyzeImagePi ./lib/analyzeImage.lib -I/usr/local/include/ -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs
+
+#testImageReading
+$(TARGET_testImageReading):
+	@mkdir -p $(TARGETDIR);
+	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) -o $(TARGET_AnalyzeImage) test/testImageReading.cpp $(INC) -I./Image_Processing/analyzeImagePi ./lib/analyzeImage.lib -I/usr/local/include/ -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDLIST);

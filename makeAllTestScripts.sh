@@ -14,6 +14,7 @@ mkdir -p build_test
 mkdir -p bin_test
 echo "Compiling OSPRE"
 make -j --file=makeTestScripts bin_test/testAnalyzeImage
+make -j --file=makeTestScripts bin_test/testImageReading
 make -j --file=makeTestScripts bin_test/testByteBuffer
 make -j --file=makeTestScripts bin_test/testCircularBuffer
 make -j --file=makeTestScripts bin_test/testExternalBuilderParser
