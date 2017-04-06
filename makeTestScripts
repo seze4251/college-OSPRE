@@ -103,7 +103,7 @@ $(TARGET_AnalyzeImage):
 #testImageReading
 $(TARGET_testImageReading):
 	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) -o $(TARGET_AnalyzeImage) test/testImageReading.cpp $(INC) -I./Image_Processing/analyzeImagePi ./lib/analyzeImage.lib -I/usr/local/include/ -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs
+	@echo "	 Linking $(TARGET_testImageReading)"; $(CC) -o $(TARGET_testImageReading) test/testImageReading.cpp $(INC) -I./Image_Processing/analyzeImagePi ./lib/analyzeImage.lib -I/usr/local/include/ -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs
 
 
 #GNC_Unit_Test

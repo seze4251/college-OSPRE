@@ -12,7 +12,9 @@ testImageReading.cpp
 #include "../Image_Processing/analyzeImagePi/analyzeImage_initialize.h"
 
 // OpenCV
-#include <opencv2/opencv2.hpp>
+//#include <opencv2/opencv2.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 // #include <opencv2/core/core.hpp>
 // #include <opencv2/highgui/highgui.hpp>
 // #include <opencv2/imgproc/imgproc.hpp>
