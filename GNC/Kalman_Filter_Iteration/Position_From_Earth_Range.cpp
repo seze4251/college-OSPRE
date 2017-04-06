@@ -49,7 +49,7 @@ void Position_From_Earth_Range(const double q_E[4], double alpha, double beta,
 {
 
   // INPUT EXCEPTIONS
-  if (sqrt(pow(q_E[0], 2) + pow(q_E[1], 2) + pow(q_E[2], 2) + pow(q_E[3], 2)) != 1) {
+  if (sqrt(pow(q_E[0], 2) + pow(q_E[1], 2) + pow(q_E[2], 2) + pow(q_E[3], 2)) - 1 > 0.0001) {
       char logString[100];
       sprintf(logString, "ERROR IN: Position_From_Earth_Range.cpp\nInvalid spacecraft-Earth quaternion.");
       throw InvalidInputs(logString);

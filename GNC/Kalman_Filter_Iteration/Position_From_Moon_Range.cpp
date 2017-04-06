@@ -51,7 +51,7 @@ void Position_From_Moon_Range(const double r_E_M[3], const double q_M[4], double
 {
 
   // INPUT EXCEPTIONS
-  if (sqrt(pow(q_M[0], 2) + pow(q_M[1], 2) + pow(q_M[2], 2) + pow(q_M[3], 2)) != 1) {
+  if (sqrt(pow(q_M[0], 2) + pow(q_M[1], 2) + pow(q_M[2], 2) + pow(q_M[3], 2)) - 1 > 0.0001) {
       char logString[100];
       sprintf(logString, "ERROR IN: Position_From_Moon_Range.cpp\nInvalid spacecraft-Moon quaternion.");
       throw InvalidInputs(logString);
