@@ -5,11 +5,11 @@ testImageReading.cpp
 */
 
 // Include Files
-#include "../Image_Processing/analyzeImagePi/rt_nonfinite.h"
+#include "rt_nonfinite.h"
 #include "testImageReading.h"
-#include "../Image_Processing/analyzeImagePi/analyzeImage_terminate.h"
-#include "../Image_Processing/analyzeImagePi/analyzeImage_emxAPI.h"
-#include "../Image_Processing/analyzeImagePi/analyzeImage_initialize.h"
+#include "analyzeImage_terminate.h"
+#include "analyzeImage_emxAPI.h"
+#include "analyzeImage_initialize.h"
 
 // OpenCV
 //#include <opencv2/opencv2.hpp>
@@ -30,7 +30,7 @@ testImageReading.cpp
 
 // Function Declarations
 static void argInit_1x2_real_T(double result[2]);
-static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(unsigned char*);
+static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(unsigned char* imInput);
 static double argInit_real_T();
 static unsigned char argInit_uint8_T();
 static void main_imageRead();
@@ -70,10 +70,11 @@ static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(unsigned char* imInput)
 
   // Set the size of the array.
   // Change this size to the value that the application requires.
-  result = emxCreateND_uint8_T(3, *(int (*)[3])&iv5[0]);
+  //result = emxCreateND_uint8_T(3, *(int (*)[3])&iv5[0]);
+  result = emxCreateWrapperND_uint8_T(imInput, 3, *(int (*)[3])&iv5[0]);
 
   //Initalize temp variables
-  cv::Vec3b intensity;
+  //cv::Vec3b intensity;
 
   // Loop over the array to initialize each element.
   // for (idx0 = 0; idx0 < result->size[0U]; idx0++) {
@@ -91,7 +92,7 @@ static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(unsigned char* imInput)
   //   }
   // }
 
-  result->data = imInput;
+  //result->data = imInput;
   return result;
 }
 
@@ -129,7 +130,8 @@ static void main_imageRead()
   std::cout << "Reading image with OpenCV" << std::endl;
   cv::Mat image;
   cv::Vec3b intensity;
-  image = cv::imread("TestImages/moonTest.jpg", CV_LOAD_IMAGE_COLOR);
+  //image = cv::imread("TestImages/moonTest.jpg", CV_LOAD_IMAGE_COLOR);
+  image = cv::imread("TestImages/blueMoon.jpg", CV_LOAD_IMAGE_COLOR);
   std::cout << "Displaying image..." << std::endl;
   cv::namedWindow("Direct Image from OpenCV", CV_WINDOW_NORMAL);
   cv::imshow("Direct Image from OpenCV", image);
@@ -154,17 +156,17 @@ static void main_imageRead()
   std::cout << "Finished image conversion" << std::endl;
   // Initialize function input argument 'imIn'.
   std::cout << "Translating image into emxArray" << std::endl;
-  imIn = argInit_d3120xd4160x3_uint8_T(imInC);
+  //imIn = argInit_d3120xd4160x3_uint8_T(imInC);
+  imIn = argInit_d3120xd4160x3_uint8_T(image.data);
   std::cout << "Finished image translation" << std::endl;
 
-  // Initialize function input argument 'radiusRangeGuess'.
-  // Initialize function input argument 'pxDeg'.
-  // Call the entry-point 'analyzeImage'.
-  //argInit_1x2_real_T(dv1);
-  //argInit_1x2_real_T(dv2);
+
+  // Test against known working method
+
 
   std::cout << "Displaying emxArray image..." << std::endl;
-  cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, (imIn->data));
+  // cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, (imIn->data));
+  cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, *image.data);
 
   cv::namedWindow("Image After Conversion", CV_WINDOW_NORMAL);
   cv::imshow("Image After Conversion", tempMat);
@@ -172,7 +174,7 @@ static void main_imageRead()
   cv::waitKey(0);
   std::cout << "...finished emxArray display. Writing image to \"errorImage-main.bmp\"" << std::endl;
 
-  imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage-Main.bmp", tempMat);
+  imwrite("TestImages/errorImage-Main.bmp", tempMat);
 
   std::cout << "Starting analyze image call" << std::endl;
 

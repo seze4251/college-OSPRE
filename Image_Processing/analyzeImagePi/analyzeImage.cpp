@@ -375,7 +375,7 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
             sensVal);
 
     // Output image to file
-    cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC1, *(imIn->data));
+    cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, (imIn->data));
     //cv::imshow("image", tempMat);
     //cv::waitKey(0);
 
@@ -385,6 +385,9 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     std::cout << "Exception time " << time(0) << std::endl;
     std::cout << "Radius Guess: " << radiusRangeGuess[0] << ", " << radiusRangeGuess[1] << std::endl;
     std::cout << "SensVal: " << sensVal << std::endl;
+
+    emxFree_real_T(&radii);
+    emxFree_real_T(&centers);
 
     throw NoBodyInImage(logString);
   } else {
@@ -417,30 +420,36 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     double validThetaDelta = (radiusRangeGuess[1]-radiusRangeGuess[0])*(pxDeg[0] + pxDeg[1])*0.5; // Calculate the change in theta to calculate valide range space
     // TODO:
     // - combine this into it's own function
-    if(*alpha > validAlpha){
-      // throw alpha out of range
-      char logString[50];
-      sprintf(logString, "Excpetion Time = %ld, Invalid alpha found; alpha: %f \
-              radius guess: [%f %f], sensVal: %f", time(0), *alpha, radiusRangeGuess[0], radiusRangeGuess[1],
-              sensVal);
-      throw InvalidAlphaBetaTheta(logString);
-    }
-    if(*beta > validBeta){
-      // throw beta out of range
-      char logString[50];
-      sprintf(logString,"Excpetion Time = %ld, Invalid beta found; beta: %f \
-              radius guess: [%f %f], sensVal: %f", time(0), *beta, radiusRangeGuess[0], radiusRangeGuess[1],
-              sensVal);
-      throw InvalidAlphaBetaTheta(logString);
-    }
-    if(*theta > (validTheta + validThetaDelta) || *theta < (validTheta - validThetaDelta)){
-      // throw theta out of range error
-      char logString[50];
-      sprintf(logString,"Excpetion Time = %ld, Invalid theta found; theta: %f \
-              radius guess: [%f %f], sensVal: %f", time(0), *theta, radiusRangeGuess[0], radiusRangeGuess[1],
-              sensVal);
-      throw InvalidAlphaBetaTheta(logString);
-    }
+    // if(*alpha > validAlpha){
+    //   // throw alpha out of range
+    //   char logString[50];
+    //   sprintf(logString, "Excpetion Time = %ld, Invalid alpha found; alpha: %f \
+    //           radius guess: [%f %f], sensVal: %f", time(0), *alpha, radiusRangeGuess[0], radiusRangeGuess[1],
+    //           sensVal);
+    //   emxFree_real_T(&radii);
+    //   emxFree_real_T(&centers);
+    //   throw InvalidAlphaBetaTheta(logString);
+    // }
+    // if(*beta > validBeta){
+    //   // throw beta out of range
+    //   char logString[50];
+    //   sprintf(logString,"Excpetion Time = %ld, Invalid beta found; beta: %f \
+    //           radius guess: [%f %f], sensVal: %f", time(0), *beta, radiusRangeGuess[0], radiusRangeGuess[1],
+    //           sensVal);
+    //   emxFree_real_T(&radii);
+    //   emxFree_real_T(&centers);
+    //   throw InvalidAlphaBetaTheta(logString);
+    // }
+    // if(*theta > (validTheta + validThetaDelta) || *theta < (validTheta - validThetaDelta)){
+    //   // throw theta out of range error
+    //   char logString[50];
+    //   sprintf(logString,"Excpetion Time = %ld, Invalid theta found; theta: %f \
+    //           radius guess: [%f %f], sensVal: %f", time(0), *theta, radiusRangeGuess[0], radiusRangeGuess[1],
+    //           sensVal);
+    //   emxFree_real_T(&radii);
+    //   emxFree_real_T(&centers);
+    //   throw InvalidAlphaBetaTheta(logString);
+    // }
 
     *numCirc = i;
   }

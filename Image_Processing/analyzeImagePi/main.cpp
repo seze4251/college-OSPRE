@@ -38,6 +38,7 @@
 #include "main.h"
 #include "analyzeImage_terminate.h"
 #include "analyzeImage_emxAPI.h"
+#include "analyzeImage_emxutil.h"
 #include "analyzeImage_initialize.h"
 
 // OpenCV
@@ -94,10 +95,11 @@ static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(unsigned char* imInput)
 
   // Set the size of the array.
   // Change this size to the value that the application requires.
-  result = emxCreateND_uint8_T(3, *(int (*)[3])&iv5[0]);
+  //result = emxCreateND_uint8_T(3, *(int (*)[3])&iv5[0]);
+  result = emxCreateWrapperND_uint8_T(imInput, 3, *(int (*)[3])&iv5[0]);
 
   //Initalize temp variables
-  Vec3b intensity;
+  //Vec3b intensity;
 
   // Loop over the array to initialize each element.
   // for (idx0 = 0; idx0 < result->size[0U]; idx0++) {
@@ -115,7 +117,7 @@ static emxArray_uint8_T *argInit_d3120xd4160x3_uint8_T(unsigned char* imInput)
   //   }
   // }
 
-  result->data = imInput;
+  //result->data = imInput;
   return result;
 }
 
@@ -164,57 +166,93 @@ static void main_analyzeImage()
   // Load image with OpenCV
   std::cout << "Reading image with OpenCV" << std::endl;
   Mat image;
-  Vec3b intensity;
+  // Vec3b intensity;
   image = imread("0p0flat.jpg", IMREAD_COLOR);
-  cv::namedWindow("Direct Image from OpenCV", WINDOW_NORMAL);
-  cv::imshow("Direct Image from OpenCV", image);
-  //cv::resizeWindow("Display frame", 600, 600);
-  cv::waitKey(0);
-  std::cout << "Finished image read with OpenCV" << std::endl;
+  // cv::namedWindow("Direct Image from OpenCV", WINDOW_NORMAL);
+  // cv::imshow("Direct Image from OpenCV", image);
+  // //cv::resizeWindow("Display frame", 600, 600);
+  // cv::waitKey(0);
+  // std::cout << "Finished image read with OpenCV" << std::endl;
 
-  int counter = 0;
-  // Loop through image and convert
-  std::cout << "Converting image to unsigned char[]" << std::endl;
-  for(int i=0; i< image.cols; i++){
-    for(int j=0; j < image.rows; j++){
-      intensity = image.at<Vec3b>(j,i);
-      uchar blue = intensity.val[0];
-      uchar green = intensity.val[1];
-      uchar red = intensity.val[2];
-      *(imInC + counter) = red;
-      *(imInC + counter + image.cols*image.rows) = green;
-      *(imInC + counter + 2*image.cols*image.rows) = blue;
-      counter++;
+  // int counter = 0;
+  // // Loop through image and convert
+  // std::cout << "Converting image to unsigned char[]" << std::endl;
+  // for(int i=0; i< image.cols; i++){
+  //   for(int j=0; j < image.rows; j++){
+  //     intensity = image.at<Vec3b>(j,i);
+  //     uchar blue = intensity.val[0];
+  //     uchar green = intensity.val[1];
+  //     uchar red = intensity.val[2];
+  //     *(imInC + counter) = red;
+  //     *(imInC + counter + image.cols*image.rows) = green;
+  //     *(imInC + counter + 2*image.cols*image.rows) = blue;
+  //     counter++;
+  //   }
+  // }
+  // std::cout << "Finished image conversion" << std::endl;
+  // // Initialize function input argument 'imIn'.
+  // std::cout << "Translating image into emxArray" << std::endl;
+  // imIn = argInit_d3120xd4160x3_uint8_T(imInC);
+  // std::cout << "Finished image translation" << std::endl;
+
+  // // Initialize function input argument 'radiusRangeGuess'.
+  // // Initialize function input argument 'pxDeg'.
+  // // Call the entry-point 'analyzeImage'.
+  // //argInit_1x2_real_T(dv1);
+  // //argInit_1x2_real_T(dv2);
+
+  // std::cout << "Outputing image" << std::endl;
+  // cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, (imIn->data));
+
+  // cv::namedWindow("Image After Conversion", WINDOW_NORMAL);
+  // cv::imshow("Image After Conversion", tempMat);
+  // //cv::resizeWindow("Display frame", 600, 600);
+  // cv::waitKey(0);
+
+  // imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage-Main.bmp", tempMat);
+
+  // std::cout << "Starting analyze image call" << std::endl;
+  //return;
+
+  // Tyring something from mathworks.com/matlabcentral/answers/314818-how-matlab-coder-convert-the-image-to-unsinged-char
+  std::cout << "Converting image to emxArray" << std::endl;
+  emxArray_uint8_T *I;
+  emxInitArray_uint8_T(&I, 3);
+
+  Vec3b intensity;
+  int sizeimage, counter;
+  int rows = image.rows;
+  int cols = image.cols;
+  sizeimage = rows*cols;
+  I->size[0] = rows;
+  I->size[1] = cols;
+  I->size[2] = 3;
+
+  std::cout << "Converting..." << std::endl;
+  emxEnsureCapacity((emxArray__common *)I, 0, (int)sizeof(unsigned char));
+  try{
+    counter = 0;
+    for (int i=0; i < cols; i++){
+      for (int j=0; j < rows; j++){
+        intensity = image.at<Vec3b>(j,i);
+        uchar blue = intensity.val[0];
+        uchar green = intensity.val[1];
+        uchar red = intensity.val[2];
+        *(I->data + counter) = red;
+        *(I->data + counter + sizeimage) = green;
+        *(I->data + counter + 2*sizeimage) = blue;
+        counter++;
+      }
     }
+  } catch(...) {
+    std::cout << "FAILED" << std::endl;
+    return;
   }
-  std::cout << "Finished image conversion" << std::endl;
-  // Initialize function input argument 'imIn'.
-  std::cout << "Translating image into emxArray" << std::endl;
-  imIn = argInit_d3120xd4160x3_uint8_T(imInC);
-  std::cout << "Finished image translation" << std::endl;
 
-  // Initialize function input argument 'radiusRangeGuess'.
-  // Initialize function input argument 'pxDeg'.
-  // Call the entry-point 'analyzeImage'.
-  //argInit_1x2_real_T(dv1);
-  //argInit_1x2_real_T(dv2);
-
-  std::cout << "Outputing image" << std::endl;
-  cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, (imIn->data));
-
-  cv::namedWindow("Image After Conversion", WINDOW_NORMAL);
-  cv::imshow("Image After Conversion", tempMat);
-  //cv::resizeWindow("Display frame", 600, 600);
-  cv::waitKey(0);
-
-  imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage-Main.bmp", tempMat);
-
-  std::cout << "Starting analyze image call" << std::endl;
-  return;
-
+  std::cout << "Starting analyzeImage call" << std::endl;
   try{
     start = std::clock();
-    analyzeImage( imIn, radiusRangeGuess, sensVal,
+    analyzeImage( I, radiusRangeGuess, sensVal,
                   pxDeg, imgWidth, imgHeight, centerPt_data,
                   centerPt_size, &radius, &numCirc,
                   &alpha, &beta, &theta);
@@ -225,6 +263,10 @@ static void main_analyzeImage()
       //               pxDeg, imgWidth, imgHeight);
   } catch(const char*){
     std::cout << "analyzeImage failed" << std::endl;
+    std::cout << "Found " << numCirc << " object(s)!" << std::endl;
+    std::cout << "Center: " << centerPt_data[0] << ", " << centerPt_data[1] << std::endl;
+    std::cout << "Radius: " << radius << std::endl;
+    std::cout << "Alpha: " << alpha << " Beta: " << beta << " Theta: " << theta << std::endl;
     return;
   }
 
