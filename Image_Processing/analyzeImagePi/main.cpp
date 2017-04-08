@@ -145,7 +145,12 @@ static unsigned char argInit_uint8_T()
 //
 static void main_analyzeImage()
 {
+  //Working values for blueMoon.jpg:
+  // radiusRangeGuess[2] = {157, 167};
+  // sensVal = 0.99;
+
   emxArray_uint8_T *imIn;
+  //double radiusRangeGuess[2] = {157, 167};
   double radiusRangeGuess[2] = {58, 63};
   double pxDeg[2] = {67, 67};
   double centerPt_data[2];
@@ -155,11 +160,14 @@ static void main_analyzeImage()
   double alpha;
   double beta;
   double theta;
+  //double sensVal = 0.99;
   double sensVal = 0.97;
 
   double imgWidth = 4160; double imgHeight = 3120;
+  //double imgWidth = 1100; double imgHeight = 736;
   std::clock_t start;
 
+  //unsigned char* imInC = new unsigned char[2428800];
   unsigned char* imInC = new unsigned char[402936000];
 
   // Initialize function 'analyzeImage' input arguments.
@@ -167,7 +175,12 @@ static void main_analyzeImage()
   std::cout << "Reading image with OpenCV" << std::endl;
   Mat image;
   // Vec3b intensity;
+  // image = imread("blueMoon.jpg", IMREAD_COLOR);
   image = imread("0p0flat.jpg", IMREAD_COLOR);
+  if(!image.data){
+    std::cout << "Could not read image" << std::endl;
+    return;
+  }
   // cv::namedWindow("Direct Image from OpenCV", WINDOW_NORMAL);
   // cv::imshow("Direct Image from OpenCV", image);
   // //cv::resizeWindow("Display frame", 600, 600);
@@ -249,7 +262,7 @@ static void main_analyzeImage()
     return;
   }
 
-  std::cout << "Starting analyzeImage call" << std::endl;
+  std::cout << "\nStarting analyzeImage call" << std::endl;
   try{
     start = std::clock();
     analyzeImage( I, radiusRangeGuess, sensVal,
@@ -272,6 +285,10 @@ static void main_analyzeImage()
 
   std::cout << "Time: " << (std::clock() - start) /(double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
   std::cout << "Finished analyze image call" << std::endl;
+  std::cout << "Found " << numCirc << " object(s)!" << std::endl;
+  std::cout << "Center: " << centerPt_data[0] << ", " << centerPt_data[1] << std::endl;
+  std::cout << "Radius: " << radius << std::endl;
+  std::cout << "Alpha: " << alpha << " Beta: " << beta << " Theta: " << theta << std::endl;
 
   emxDestroyArray_uint8_T(imIn);
   // Print info
