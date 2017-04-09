@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
 	emxArray_uint8_T *imIn;
 	//double radiusRangeGuess[2] = {157, 167};
 	double radiusRangeGuess[2] = {58, 63};
-	double pxDeg[2] = {67, 67};
+	double pix_deg[2] = {67, 67};
 	double centerPt_data[2];
 	int centerPt_size[2];
 	double radius;
@@ -55,8 +55,7 @@ int main(int argc, char **argv) {
 	double alpha;
 	double beta;
 	double theta;
-	//double sensVal = 0.99;
-	double sensVal = 0.97;
+	double sensitivity = 0.97;
 
 	double imgWidth = 4160; double imgHeight = 3120;
 	//double imgWidth = 1100; double imgHeight = 736;
@@ -68,25 +67,19 @@ int main(int argc, char **argv) {
 	// Initialize function 'analyzeImage' input arguments.
 	// Load image with OpenCV
 	std::cout << "Reading image with OpenCV" << std::endl;
-	Mat image;
+    cv::Mat image;
 	// Vec3b intensity;
 	// image = imread("blueMoon.jpg", IMREAD_COLOR);
-	image = imread("0p0flat.jpg", IMREAD_COLOR);
+    image = imread("0p0flat.jpg", cv::IMREAD_COLOR);
 	if(!image.data){
 	std::cout << "Could not read image" << std::endl;
-	return;
+	return -1;
 	}
-
-	//Output variables
-	double centerPt_data[2];
-	int centerPt_size[2];
-	double radius;
-	double numCirc;
-	double alpha, beta, theta;
+    
 
 	try{
-		analyzeImage(imIn, radGuessIn, sensitivity, centerPt_data, centerPt_size, 
-			&radius, &numCirc, &alpha, &beta, &theta, pix_deg, cameraWidth, cameraHeight);
+		analyzeImage(imIn, radiusRangeGuess, sensitivity, pix_deg, imgWidth, imgHeight, centerPt_data, centerPt_size,
+			&radius, &numCirc, &alpha, &beta, &theta);
 	} catch (const char*){
 		std::cout << "Call to analyzeImage failed" << std::endl;
 		return -1;
@@ -121,6 +114,7 @@ int main(int argc, char **argv) {
 		std::cout << "Calculated theta is incorrect" << std::endl;
 		std::cout << "Expected 1.7867 +/- 1e-4 but instead found: " << theta << std::endl;
 	}
+    return 0;
 }
 
 // *******************************
