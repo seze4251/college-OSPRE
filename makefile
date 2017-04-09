@@ -107,7 +107,7 @@ $(TARGET_CameraController): $(OBJECTS) $(MAINOBJ_DIR)/mainCameraController.o Bui
 $(TARGET_IMAGEPROC): $(OBJECTS) $(MAINOBJ_DIR)/mainImageProcessor.o Build_Apps/ImageProcessor.o
 	@mkdir -p $(TARGETDIR)
 	@echo "Linking..."
-	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC) -I./Image_Processing/analyzeImagePi/ ./lib/analyzeImage.lib
+	@echo "	 Linking $(TARGET_IMAGEPROC)\n"; $(CC) $^ -o $(TARGET_IMAGEPROC) -I./Image_Processing/analyzeImagePi/ ./lib/analyzeImage.lib -I /usr/local/include/ -L /usr/local/lib -lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs
 
 #GNC
 $(TARGET_GNC): $(OBJECTS) $(MAINOBJ_DIR)/mainGNC.o Build_Apps/GNC.o

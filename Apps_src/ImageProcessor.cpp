@@ -13,18 +13,12 @@
 #include <cmath>
 
 #include "analyzeImage_emxutil.h"
-#include "rt_nonfinite.h"
+//#include "rt_nonfinite.h"
 #include "analyzeImage.h"
-#include "analyzeImage_terminate.h"
-#include "analyzeImage_initialize.h"
+//#include "analyzeImage_terminate.h"
+//#include "analyzeImage_initialize.h"
 #include "ImageProcessor.h"
 #include "Service.h"
-
-
-#include "analyzeImage_terminate.h"
-#include "analyzeImage_emxAPI.h"
-#include "analyzeImage_initialize.h"
-
 
 #define MOON_RADIUS 1736.0
 #define EARTH_RADIUS 6371.0
@@ -254,7 +248,8 @@ void ImageProcessor::processImage(ImageMessage* msg) {
      */
     
     img_holder.data = (unsigned char*) msg->getImagePointer();
-    img_holder.size = new int[2];
+    int temp[2];
+    img_holder.size = temp;
     img_holder.allocatedSize = msg->imageBufferSize;
     img_holder.size[0] = msg->cameraWidth;
     img_holder.size[1] = msg->cameraHeight;
@@ -270,8 +265,6 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     analyzeImage(&img_holder, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
     
     std::cout << "MADE IT HERE: After analyzeImage" << std::endl;
-    
-    delete[] img_holder.size;
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
