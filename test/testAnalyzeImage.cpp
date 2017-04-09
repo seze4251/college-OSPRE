@@ -39,33 +39,43 @@ void calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* 
 MAIN SCRIPT
 */
 int main(int argc, char **argv) {
-	std::cout << "Starting main" << std::endl;
+	std::cout << "Starting testAnalyzeImage" << std::endl;
 	//Setup time
 	time_t rawtime;
 	struct tm * timinfo;
 
-	// Set up analysis variables
-	double pix_deg[2] = {72, 72};
-	double cameraWidth = 4120.0;
-	double cameraHeight = 3260.0;
+	emxArray_uint8_T *imIn;
+	//double radiusRangeGuess[2] = {157, 167};
+	double radiusRangeGuess[2] = {58, 63};
+	double pxDeg[2] = {67, 67};
+	double centerPt_data[2];
+	int centerPt_size[2];
+	double radius;
+	double numCirc;
+	double alpha;
+	double beta;
+	double theta;
+	//double sensVal = 0.99;
+	double sensVal = 0.97;
 
-	double estPos[3] = {21212.105392, 25545.913981, 7945.349932};
-	double moonEphem[3] = {-20878.747372, 347641.764991, 132624.248850};
-	PointEarthMoon emPt = PEM_Earth;
+	double imgWidth = 4160; double imgHeight = 3120;
+	//double imgWidth = 1100; double imgHeight = 736;
+	std::clock_t start;
 
-	double sensitivity = 0.97;
-	double radGuessIn[2] = {58, 63};
+	//unsigned char* imInC = new unsigned char[2428800];
+	//unsigned char* imInC = new unsigned char[402936000];
 
-	//setImageParameters(emPt, pix_deg, estPos, moonEphem, sensitivity, radGuessIn);
-
-	std::cout << "Allocating image memory" << std::endl;
-	//unsigned char imIn[2428800];
-	unsigned char* imIn = new unsigned char[40293600];
-
-	readImage("test/TestImages/moonTest_old.jpg", imIn);
-
-	//cv::imshow("Image", &imIn);
-	//cv::waitKey(0);
+	// Initialize function 'analyzeImage' input arguments.
+	// Load image with OpenCV
+	std::cout << "Reading image with OpenCV" << std::endl;
+	Mat image;
+	// Vec3b intensity;
+	// image = imread("blueMoon.jpg", IMREAD_COLOR);
+	image = imread("0p0flat.jpg", IMREAD_COLOR);
+	if(!image.data){
+	std::cout << "Could not read image" << std::endl;
+	return;
+	}
 
 	//Output variables
 	double centerPt_data[2];
