@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <exception>
 
 #include "SpacecraftDataReader.h"
 #include "Server.h"
