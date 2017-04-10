@@ -72,8 +72,8 @@ int testNominal(bool vOut) {
 	time_t rawtime;
 	struct tm * timinfo;
 
-	//double radiusRangeGuess[2] = {157, 167};
-	double radiusRangeGuess[2] = {58, 63};
+	double radiusRangeGuess[2] = {157, 167};
+	//double radiusRangeGuess[2] = {58, 63};
 	double pix_deg[2] = {67, 67};
 	double centerPt_data[2];
 	int centerPt_size[2];
@@ -82,9 +82,9 @@ int testNominal(bool vOut) {
 	double alpha;
 	double beta;
 	double theta;
-	double sensitivity = 0.97;
+	double sensitivity = 0.99;
 
-	double imgWidth = 4160; double imgHeight = 3120;
+	double imgWidth = 1100; double imgHeight = 736;
 	
 
 	// Initialize function 'analyzeImage' input arguments.
@@ -95,7 +95,7 @@ int testNominal(bool vOut) {
     
     cv::Mat image;
     std::cout << "Starting Image Read" << std::endl;
-    image = imread("test/TestImages/nomTest.jpg", IMREAD_COLOR);
+    image = imread("test/TestImages/blueMoon.jpg", IMREAD_COLOR);
     std::cout << "Finished Image Read" << std::endl;
     
 	if(!image.data){

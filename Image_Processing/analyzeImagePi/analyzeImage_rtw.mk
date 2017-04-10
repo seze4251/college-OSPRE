@@ -93,19 +93,19 @@ MAKE = make
 # Directives/Utilities
 #-------------------------
 
-ASDEBUG             = -g
-AS_OUTPUT_FLAG      = -o
-CDEBUG              = -g
-C_OUTPUT_FLAG       = -o
-LDDEBUG             = -g
-OUTPUT_FLAG         = -o
-CPPDEBUG            = -g
-CPP_OUTPUT_FLAG     = -o
+ASDEBUG             = -g 
+AS_OUTPUT_FLAG      = -o 
+CDEBUG              = -g 
+C_OUTPUT_FLAG       = -o 
+LDDEBUG             = -g 
+OUTPUT_FLAG         = -o 
+CPPDEBUG            = -g 
+CPP_OUTPUT_FLAG     = -o 
 CPPLDDEBUG          = -g
-OUTPUT_FLAG         = -o
+OUTPUT_FLAG         = -o 
 ARDEBUG             =
 STATICLIB_OUTPUT_FLAG =
-MEX_DEBUG           = -g
+MEX_DEBUG           = -g -pg
 RM                  =
 ECHO                = echo
 MV                  =
@@ -121,10 +121,10 @@ ASFLAGS              = -c \
                        $(INCLUDES)
 CFLAGS               = -c \
                        -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -g #-O0
+                       -g -pg #-O0
 CPPFLAGS             = -c \
                        -MMD -MP -MF"$(@:%.o=%.dep)" -MT"$@"  \
-                       -g #-O2 \
+                       -g  -pg #-O2 \
                        -std=c++0x
 CPP_LDFLAGS          = -lrt -lpthread -ldl
 CPP_SHAREDLIB_LDFLAGS  = -shared  \
