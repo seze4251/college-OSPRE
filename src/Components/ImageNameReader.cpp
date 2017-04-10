@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <exception>
+#include <stdexcept>
 
 #include "Server.h"
 #include "ImageNameReader.h"

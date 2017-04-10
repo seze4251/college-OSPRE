@@ -325,9 +325,11 @@ void GNC::kalmanFilterWrapper(double* Y, double satTime, double* ephem) {
     std::cout << "Updating Solution Message" << std::endl;
     solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
     
-    // Update Stored Velocity and Stored Position
-    memcpy(velSC, X_est+3, 3* sizeof(double));
-    memcpy(r_E_SC, X_est, 3*sizeof(double));
+    // Update Stored Velocity and Stored Position in live mode only
+    if (liveMode == true) {
+        memcpy(velSC, X_est+3, 3* sizeof(double));
+        memcpy(r_E_SC, X_est, 3*sizeof(double));
+    }
     
     if (scComms != nullptr) {
         std::cout << "Sending Solution Message" << std::endl;

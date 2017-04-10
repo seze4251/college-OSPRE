@@ -130,8 +130,8 @@ static void main_imageRead()
   std::cout << "Reading image with OpenCV" << std::endl;
   cv::Mat image;
   cv::Vec3b intensity;
-  //image = cv::imread("TestImages/moonTest.jpg", CV_LOAD_IMAGE_COLOR);
-  //image = cv::imread("TestImages/blueMoon.jpg", CV_LOAD_IMAGE_COLOR);
+  image = cv::imread("test/TestImages/moonTest.jpg", CV_LOAD_IMAGE_COLOR);
+  //image = cv::imread("test/TestImages/blueMoon.jpg", CV_LOAD_IMAGE_COLOR);
   std::cout << "Displaying image..." << std::endl;
   cv::namedWindow("Direct Image from OpenCV", CV_WINDOW_NORMAL);
   cv::imshow("Direct Image from OpenCV", image);
