@@ -153,6 +153,37 @@ int main(int, const char * const [])
   }
 
   // ******************** Position_From_Angles_Slew ********************
+  double r_E_M6[3] = {-360101.580495076, -84763.1966941876, -3350.51824141205};
+  double q_E6[4] = {0.885284119122919, 0.449779312794365, 0.048439355531499, 0.107815708719459};
+  double q_M6[4] = {0.0198126375367951, -0.0663267632246944, -0.793751185720293, -0.604290720631717};
+  double alpha_M6 = 0.982618176397098;
+  double beta_M6 = 1.02141009296004;
+  double alpha_E6 = 0.982618176397098;
+  double beta_E6 = 1.02141009296004;
+  double vel6[3] = {-0.026168117534891, 0.335493648690941, 0.138914771326375};
+  double time6 = 120;
+  double r_E_SC16[3];
+  double r_E_SC26[3];
+  try {
+      Position_From_Angles_Slew(r_E_M6, q_E6, q_M6, alpha_M6, beta_M6, alpha_E6, beta_E6, vel6, time6, r_E_SC16, r_E_SC26);
+      if((abs(r_E_SC16[0] + 343097.273628845) < 10) &
+        (abs(r_E_SC16[1] + 89007.0757972061) < 10) &
+        (abs(r_E_SC16[2] - 2165.17653152067) < 10) &
+        (abs(r_E_SC26[0] + 343100.413802949) < 10) &
+        (abs(r_E_SC26[1] + 88966.8165593632) < 10) &
+        (abs(r_E_SC26[2] - 2181.84630407984) < 10)) {
+          cout << "SUCCESS: Position_From_Angles_Slew() ran without error.\n";        
+      }
+      else {
+          cout << "ERROR: Position_From_Angles_Slew() did not run successfully.\n";
+          test = "Position_From_Angles_Slew";
+      }
+  }
+  catch (...) {
+      cout << "ERROR: Position_From_Angles_Slew() unknown exception caught.\n";
+      throw;
+  }  
+
 
   // ******************** Earth_SC_Moon_Angle ********************
   double r_E_SC7[3] = {-64632.7721864894, 70129.5993496471, 31482.4083087272};
@@ -195,6 +226,10 @@ int main(int, const char * const [])
   }
   else if(test == "Position_From_Moon_Range"){
       cout << "FAILURE: Test #1 was failed in Position_From_Moon_Range().\n";
+      cout << "------------------------------------------------------------------------------------------\n\n";
+  }
+  else if(test == "Position_From_Angles_Slew"){
+      cout << "FAILURE: Test #1 was failed in Position_From_Angles_Slew().\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
   }
   else if(test == "Earth_SC_Moon_Angle"){
@@ -484,13 +519,142 @@ int main(int, const char * const [])
 
   ////////////////////////////////// TEST #7 ////////////////////////////////////////////////////////////////////
   test = "pass";
-  cout << "                 Test #7: Earth_SC_Moon_Angle() Input Exceptions\n";
+  test2 = "pass";
+  test3 = "pass";
+  test4 = "pass";
+  string test5 = "pass";
+  string test6 = "pass";
+  string test7 = "pass";
+  cout << "                 Test #7: Position_From_Angles_Slew() Input Exceptions\n"; 
+  cout << "------------------------------------------------------------------------------------------\n";
+
+  // ******************** Position_From_Angles_Slew ********************
+  double time13 = -10;
+  try {
+      Position_From_Angles_Slew(r_E_M6, q_E6, q_M6, alpha_M6, beta_M6, alpha_E6, beta_E6, vel6, time13, r_E_SC16, r_E_SC26);
+  }
+  catch (InvalidInputs &e) {
+      cout << "SUCCESS: Position_From_Angles_Slew() input exception successfully caught.\n";
+      test = "Position_From_Angles_Slew";
+  }
+  catch (...) {
+      cout << "ERROR: Position_From_Angles_Slew() unknown exception caught.\n";
+      test = "fail";
+      throw;
+  }
+
+  double q_E13[4] = {1, 1, 1, 1};
+  try {
+      Position_From_Angles_Slew(r_E_M6, q_E13, q_M6, alpha_M6, beta_M6, alpha_E6, beta_E6, vel6, time6, r_E_SC16, r_E_SC26);
+  }
+  catch (InvalidInputs &e) {
+      cout << "SUCCESS: Position_From_Angles_Slew() input exception successfully caught.\n";
+      test2 = "Position_From_Angles_Slew";
+  }
+  catch (...) {
+      cout << "ERROR: Position_From_Angles_Slew() unknown exception caught.\n";
+      test2 = "fail";
+      throw;
+  }
+
+  double q_M13[4] = {1, 1, 1, 1};
+  try {
+      Position_From_Angles_Slew(r_E_M6, q_E6, q_M13, alpha_M6, beta_M6, alpha_E6, beta_E6, vel6, time6, r_E_SC16, r_E_SC26);
+  }
+  catch (InvalidInputs &e) {
+      cout << "SUCCESS: Position_From_Angles_Slew() input exception successfully caught.\n";
+      test3 = "Position_From_Angles_Slew";
+  }
+  catch (...) {
+      cout << "ERROR: Position_From_Angles_Slew() unknown exception caught.\n";
+      test3 = "fail";
+      throw;
+  }
+
+  double alpha_M13 = 361;
+  try {
+      Position_From_Angles_Slew(r_E_M6, q_E6, q_M6, alpha_M13, beta_M6, alpha_E6, beta_E6, vel6, time6, r_E_SC16, r_E_SC26);
+  }
+  catch (InvalidInputs &e) {
+      cout << "SUCCESS: Position_From_Angles_Slew() input exception successfully caught.\n";
+      test4 = "Position_From_Angles_Slew";
+  }
+  catch (...) {
+      cout << "ERROR: Position_From_Angles_Slew() unknown exception caught.\n";
+      test4 = "fail";
+      throw;
+  }
+
+  double alpha_E13 = 361;
+  try {
+      Position_From_Angles_Slew(r_E_M6, q_E6, q_M6, alpha_M6, beta_M6, alpha_E13, beta_E6, vel6, time6, r_E_SC16, r_E_SC26);
+  }
+  catch (InvalidInputs &e) {
+      cout << "SUCCESS: Position_From_Angles_Slew() input exception successfully caught.\n";
+      test5 = "Position_From_Angles_Slew";
+  }
+  catch (...) {
+      cout << "ERROR: Position_From_Angles_Slew() unknown exception caught.\n";
+      test5 = "fail";
+      throw;
+  }
+
+  double beta_M13 = 361;
+  try {
+      Position_From_Angles_Slew(r_E_M6, q_E6, q_M6, alpha_M6, beta_M13, alpha_E6, beta_E6, vel6, time6, r_E_SC16, r_E_SC26);
+  }
+  catch (InvalidInputs &e) {
+      cout << "SUCCESS: Position_From_Angles_Slew() input exception successfully caught.\n";
+      test6 = "Position_From_Angles_Slew";
+  }
+  catch (...) {
+      cout << "ERROR: Position_From_Angles_Slew() unknown exception caught.\n";
+      test6 = "fail";
+      throw;
+  }
+
+  double beta_E13 = 361;
+  try {
+      Position_From_Angles_Slew(r_E_M6, q_E6, q_M6, alpha_M6, beta_M6, alpha_E6, beta_E13, vel6, time6, r_E_SC16, r_E_SC26);
+  }
+  catch (InvalidInputs &e) {
+      cout << "SUCCESS: Position_From_Angles_Slew() input exception successfully caught.\n";
+      test7 = "Position_From_Angles_Slew";
+  }
+  catch (...) {
+      cout << "ERROR: Position_From_Angles_Slew() unknown exception caught.\n";
+      test7 = "fail";
+      throw;
+  }
+
+
+
+
+  // ******************** Test #7 Results ********************
+  if(test == "pass" | test2 == "pass" | test3 == "pass" | test4 == "pass" | test5 == "pass" | test6 == "pass" | test7 == "pass"){
+      cout << "FAILURE: Position_From_Moon_Range() INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
+      cout << "------------------------------------------------------------------------------------------\n\n";
+  }
+  else if(test == "Position_From_Angles_Slew" & test2 == "Position_From_Angles_Slew" & test3 == "Position_From_Angles_Slew" & 
+          test4 == "Position_From_Angles_Slew" & test5 == "Position_From_Angles_Slew" & test6 == "Position_From_Angles_Slew" & 
+          test7 == "Position_From_Angles_Slew"){
+      cout << "SUCCESS: Position_From_Angles_Slew() INPUT EXCEPTIONS WERE SUCCESSFULLY THROWN.\n";
+      cout << "------------------------------------------------------------------------------------------\n\n";
+  }
+  else {
+      cout << "FAILURE: Position_From_Angles_Slew() UNKNOWN ERROR OCCURRED.\n";
+      cout << "------------------------------------------------------------------------------------------\n\n";
+  }
+
+  ////////////////////////////////// TEST #8 ////////////////////////////////////////////////////////////////////
+  test = "pass";
+  cout << "                 Test #8: Earth_SC_Moon_Angle() Input Exceptions\n";
   cout << "------------------------------------------------------------------------------------------\n";
 
   // ******************** Earth_SC_Moon_Angle ********************
-  double r_E_SC13[3] = {3000, 3000, 3000};
+  double r_E_SC14[3] = {3000, 3000, 3000};
   try {
-      Earth_SC_Moon_Angle(r_E_SC13, r_E_M5);
+      Earth_SC_Moon_Angle(r_E_SC14, r_E_M5);
   }
   catch (InvalidInputs &e) {
       cout << "SUCCESS: Earth_SC_Moon_Angle() input exception successfully caught.\n";
@@ -502,7 +666,7 @@ int main(int, const char * const [])
       throw;
   } 
 
-  // ******************** Test #7 Results ********************
+  // ******************** Test #8 Results ********************
   if(test == "pass"){
       cout << "FAILURE: Earth_SC_Moon_Angle() INPUT EXCEPTIONS WERE NOT SUCCESSFULLY THROWN.\n";
       cout << "------------------------------------------------------------------------------------------\n\n";
