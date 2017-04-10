@@ -99,7 +99,7 @@ $(TARGET_testInternalBuilderParser): $(OBJECTS) $(MAINOBJ_DIR)/testInternalBuild
 #-lopencv_core -lopencv_highgui -lopencv_ml -lopencv_imgcodecs
 $(TARGET_AnalyzeImage):
 	@mkdir -p $(TARGETDIR);
-	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) -o $(TARGET_AnalyzeImage) test/testAnalyzeImage.cpp $(INC) -I./Image_Processing/analyzeImagePi ./lib/analyzeImage.lib `pkg-config --cflags --libs opencv` -I/usr/local/include/ -L /usr/local/lib -pg
+	@echo "	 Linking $(TARGET_AnalyzeImage)"; $(CC) -o $(TARGET_AnalyzeImage) test/testAnalyzeImage.cpp $(INC) -I./Image_Processing/analyzeImagePi ./lib/analyzeImage.lib `pkg-config --cflags --libs opencv` -I/usr/local/include/ -L /usr/local/lib
 
 #testImageReading
 $(TARGET_testImageReading):
