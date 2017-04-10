@@ -135,8 +135,8 @@ int testNominal(bool vOut) {
 
 	std::clock_t start;
 	try{
-		analyzeImage( I, radiusRangeGuess, sensVal,
-                  pxDeg, imgWidth, imgHeight, centerPt_data,
+		analyzeImage( I, radiusRangeGuess, sensitivity,
+                  pix_deg, imgWidth, imgHeight, centerPt_data,
                   centerPt_size, &radius, &numCirc,
                   &alpha, &beta, &theta);
 	} catch (const char*){
