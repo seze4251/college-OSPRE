@@ -73,6 +73,10 @@ static void printMessageID(MessageID ID, FILE* logFile) {
             fprintf(logFile, "Solution Message\n");
             break;
             
+        case I_ProcessedImageMessage:
+            fprintf(logFile, "Processed Image Message\n");
+            break;
+            
         case E_OSPREStatus:
             fprintf(logFile, "External OSPRE Status Message\n");
             break;

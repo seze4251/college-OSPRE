@@ -95,6 +95,10 @@ DataMessage* CircularBuffer::get(time_t satTime) {
 // 3:  This method is only going to be used for SIM cases, not livemode in order to make testing easier
 //***************************
 DataMessage* CircularBuffer::getNextSimMessage() {
+    if (nextSimMessage->satTime == 0) {
+        return nullptr;
+    }
+    
     return nextSimMessage++;
     
 }

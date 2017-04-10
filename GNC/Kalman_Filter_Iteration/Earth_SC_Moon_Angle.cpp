@@ -54,11 +54,8 @@ double Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3])
       char logString[100];
       sprintf(logString, "ERROR: Earth_SC_Moon_Angle(). Earth-spacecraft-Moon angle not in valid range.\n");
       throw InvalidOutput(logString);
-
-  return 57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)));
-
-
   }
+    return 57.295779513082323 * std::acos(c / (norm(r_SC_M) * norm(r_SC_E)));
 }
 
 //

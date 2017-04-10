@@ -96,9 +96,6 @@ private:
     // Applicaiton Functionality
     void kalmanFilterWrapper(double* Y, double satTime, double* ephem);
     void computeSolution(DataMessage*, ProcessedImageMessage*);
-    double norm(double*);
-    double Earth_SC_Moon_Angle(const double r_E_SC[3], const double r_E_M[3]);
-    void State_Error(const double X_ref[6], const double X_est[6], double posError[3], double velError[3]);
     void read_referencTraj(std::string);
     void read_ConfigFile(std::string);
     void readInInitialKalmanFilterTraj();

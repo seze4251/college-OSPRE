@@ -53,13 +53,13 @@ public:
             fprintf(logFile, " %f", velocity[i]);
             std::cout << velocity[i] << " ";
         }
-        fprintf(logFile, " (m/s)\n");
+        fprintf(logFile, " (km/s)\n");
         
         fprintf(logFile, "Velocity Error = ");
         for (int i = 0; i < 3; i++) {
             fprintf(logFile, " %f", velocityError[i]);
         }
-        fprintf(logFile, " (m/s)\n");
+        fprintf(logFile, " (km/s)\n");
         
         fprintf(logFile, "Earth-SC-Moon Angle = %f (degrees)", earthScMoonAngle);
     }

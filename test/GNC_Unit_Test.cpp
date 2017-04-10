@@ -13,13 +13,13 @@
 //#include "tand.cpp"
 //#include "cosd.cpp"
 //#include "norm.cpp"
-//#include "State_Error.cpp"
 //#include "Kalman_Filter_Iteration.cpp"
 #include "Quaternion_To_Attitude.h"
 #include "Position_From_Earth_Range.h"
 #include "Position_From_Moon_Range.h"
 #include "Position_From_Angles_Slew.h"
 #include "Earth_SC_Moon_Angle.cpp"
+#include "State_Error.cpp"
 
 
 using namespace std;

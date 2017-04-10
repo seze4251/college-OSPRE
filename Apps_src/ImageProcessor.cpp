@@ -328,10 +328,14 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     msg->print(logFile);
     
     try {
-        fprintf(logFile, "made it 0.5\n");
-        flushLog();
-        processImage(msg);
+       // fprintf(logFile, "made it start analyze image call\n");
+        //flushLog();
+        //processImage(msg);
         
+        // temp
+        //***************
+        processedImageMessage->update(1, 1, 5, 0, msg->point, msg->timeStamp);
+        //***************
         // Send Processed Image Message to GNC
         if (gnc != nullptr) {
             gnc->sendMessage(processedImageMessage);
