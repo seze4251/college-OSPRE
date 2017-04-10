@@ -136,7 +136,7 @@ int testNominal(bool vOut) {
 		return 0;
 	}
     
-    std::cout << "Finished Conversion to EMX array" << std::endl;
+    std::cout << "Finishedit Conversion to EMX array" << std::endl;
 
 
     std::cout << "Starting call to analyze image" << std::endl;
