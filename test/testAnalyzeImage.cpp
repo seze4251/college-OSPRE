@@ -92,9 +92,12 @@ int testNominal(bool vOut) {
 	if(vOut){
 		std::cout << "Reading image with OpenCV" << std::endl;
 	}
+    
     cv::Mat image;
-    image = imread("/home/anthony/Github/OSPRE/bin_test/TestImages/nomTest.jpg", IMREAD_COLOR);
-
+    std::cout << "Starting Image Read" << std::endl;
+    image = imread("test/TestImages/nomTest.jpg", IMREAD_COLOR);
+    std::cout << "Finished Image Read" << std::endl;
+    
 	if(!image.data){
 		std::cout << "Could not read image" << std::endl;
 		return 0;
@@ -111,6 +114,7 @@ int testNominal(bool vOut) {
 	I->size[1] = cols;
 	I->size[2] = 3;
 
+    std::cout << "Starting Conversion to EMX array" << std::endl;
 	// Convert image into emxArray
 	emxEnsureCapacity((emxArray__common *)I, 0, (int)sizeof(unsigned char));
     try{
@@ -131,8 +135,11 @@ int testNominal(bool vOut) {
 		std::cout << "Image conversion failed" << std::endl;
 		return 0;
 	}
+    
+    std::cout << "Finished Conversion to EMX array" << std::endl;
 
 
+    std::cout << "Starting call to analyze image" << std::endl;
 	std::clock_t start;
 	try{
 		analyzeImage( I, radiusRangeGuess, sensitivity,
@@ -143,7 +150,7 @@ int testNominal(bool vOut) {
 		std::cout << "Call to analyzeImage failed" << std::endl;
 		return 0;
 	}
-
+    std::cout << "Finished call to analyze image" << std::endl;
 	// Test that radius is within acceptable range
 	if(radius<(59.8545-1e-4) || radius>(59.8545+1e-4)){
 		std::cout << "Calculated radius is incorrect." << std::endl;
@@ -181,8 +188,10 @@ int testNominal(bool vOut) {
 	}
 
 	if(testFailed){
+        std::cout << "analyzeImage: Test has failed" << std::endl;
 		return 0;
 	} else {
+        std::cout << "analyzeImage: Test has Passed" << std::endl;
 		return 1;
 	}
     return 1;
