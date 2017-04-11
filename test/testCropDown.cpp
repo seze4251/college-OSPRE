@@ -45,6 +45,10 @@ int main(int argc, char* argv[]){
 		printf("Could not read image");
 		return -1;
 	}
+	namedWindow("Original", WINDOW_NORMAL);
+	imshow("Original", imIn);
+	resizeWindow("Original", 800, 800);
+	waitKey(0);
 
 	tmp = imIn;
 	dst = tmp;
@@ -55,10 +59,6 @@ int main(int argc, char* argv[]){
 
 	// Downsample image
 	pyrDown(imGray, imGrayDS, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE));
-	//namedWindow("Downsampled", WINDOW_NORMAL);
-	//imshow("Downsampled", imGrayDS);
-	//resizeWindow("Downsampled", 600, 600);
-	//waitKey(0);
 
 	// Find circle in downsampled image and time
 	clock_t startFind = clock();
