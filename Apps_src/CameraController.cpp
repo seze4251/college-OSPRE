@@ -30,6 +30,9 @@ CameraController::CameraController(std::string hostName, int localPort, bool rea
     // Initialize localError to healthy
     localError = PE_AllHealthy;
     logFile = nullptr;
+    currentImageSize = -1;
+    cameraHeight = -1;
+    cameraWidth = -1;
 }
 
 CameraController::~CameraController() {
@@ -167,7 +170,10 @@ void CameraController::readImage(std::string imgFilename) {
     }
     
     imageMessage->resizeImageArray(image.cols * image.rows * 3);
-    imageMessage->currentImageSize = image.cols * image.rows * 3;
+    currentImageSize = image.cols * image.rows * 3;
+    cameraHeight = image.rows;
+    cameraWidth = image.cols;
+    
     
     // Allocate variables
     unsigned char* imIn = (unsigned char*) imageMessage->getImagePointer(); // <--- Change this to be compatible with msg
@@ -187,8 +193,6 @@ void CameraController::readImage(std::string imgFilename) {
             counter++;
         }
     }
-    
-    tempCurrentImageSize = image.cols * image.rows * 3;
     
     fprintf(logFile, "Read Image: Finished Image Read\n");
 }
@@ -277,6 +281,10 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
             localError = PE_NotHealthy;
             throw;
             
+        } catch (const char * e) {
+            std::cout << "Const Char * exception caught" << std::endl;
+            fprintf(logFile, "ERROR: ReadImage: %s\n", e);
+            throw;
         } catch (...) {
             fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");
             throw;
@@ -284,12 +292,9 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         
         // TODO: Need to get these parameters from somewhere, maybe config file?
         //********************************
-        double pix_deg[2] {72, 72};  // PUT IN CONFIG FILE
-        int cameraWidth = 4160; // CONFIG OR CV READ
-        int cameraHeight = 3120; // CONFIG OR CV READ
-        imageMessage->update(msg->point, tempCurrentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
+        double pix_deg[2] {67, 67};  // PUT IN CONFIG FILE
         
-        //******************************
+        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
         
         // Send Image Message to Image Processor
         if ((imageProc != nullptr) && (imageProc->isConnected() == true)) {

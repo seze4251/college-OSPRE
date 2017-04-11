@@ -75,9 +75,9 @@ private:
     
     ImageNameReader imageReader;
     
-    //TEMP
-    int tempCurrentImageSize;
-    //TEMP
+    int currentImageSize;
+    int cameraHeight;
+    int cameraWidth;
 };
 
 #endif

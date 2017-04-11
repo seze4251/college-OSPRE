@@ -222,7 +222,7 @@ void ImageProcessor::calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon
 }
 
 double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
-    return (double) 0.97;
+    return (double) 0.99;
     
 }
 
@@ -236,8 +236,8 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     
     // TEMP HARDCODE
     //**************
-    dv3[0] = 58;
-    dv3[1] = 63;
+    //dv3[0] = 157;
+   // dv3[1] = 167;
     //**************
     
     
@@ -245,43 +245,15 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     // NEW
     emxArray_uint8_T *I;
     emxInitArray_uint8_T(&I, 3);
-    cv::Vec3b intensity;
-    int sizeimage, counter;
-    int rows = msg->cameraWidth;
-    int cols = msg->cameraHeight;
-    sizeimage = rows*cols;
-    I->size[0] = rows;
-    I->size[1] = cols;
+    I->size[0] = msg->cameraWidth;
+    I->size[1] = msg->cameraHeight;
     I->size[2] = 3;
+    I->data = (unsigned char*) msg->getImagePointer();
+
     
-    std::cout << "Starting Conversion to EMX array" << std::endl;
-    // Convert image into emxArray
-    emxEnsureCapacity((emxArray__common *)I, 0, (int)sizeof(unsigned char));
-    try{
-        counter = 0;
-        for (int i=0; i < cols; i++){
-            for (int j=0; j < rows; j++){
-                intensity = image.at<cv::Vec3b>(j,i);
-                uchar blue = intensity.val[0];
-                uchar green = intensity.val[1];
-                uchar red = intensity.val[2];
-                *(I->data + counter) = red;
-                *(I->data + counter + sizeimage) = green;
-                *(I->data + counter + 2*sizeimage) = blue;
-                counter++;
-            }
-        }
-    } catch(...) {
-        fprintf(logFile, "ImageProcessor::processImage() Conversion to EMX array failed");
-        throw;
-    }
-    std::cout << "Finishedit Conversion to EMX array" << std::endl;
-        fflush(logFile);
-    
-    std::cout << "Starting Analyze Image Call" << std::endl;
     
     // TEMP Till I find out why IP is coreing
-    analyzeImage(&img_holder, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
+    analyzeImage(I, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
     
     std::cout << "Ended Analyze Image call" << std::endl;
     

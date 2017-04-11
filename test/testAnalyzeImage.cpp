@@ -110,7 +110,7 @@ int testNominal(bool vOut) {
 	int rows = image.rows;
 	int cols = image.cols;
 	sizeimage = rows*cols;
-	I->size[0] = rows;
+    I->size[0] = rows;
 	I->size[1] = cols;
 	I->size[2] = 3;
 
