@@ -112,7 +112,6 @@ void GNC::open() {
     // Log Application Starting
     fprintf(resultFile, "\n\nNew GNC Run: Time = %ld\n", time(0));
     
-    
     // Set Timeout to 1 minute
     setTimeoutTime(10, 0);
     

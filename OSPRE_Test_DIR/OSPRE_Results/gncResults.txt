@@ -198,3 +198,9 @@ ComputeSolution(): Kalman Filter Results: Time: 5.000000 X =  -57332.502415 Y = 
 Compute Solution: Earth Spacecraft Moon Angle = 144.821932
 Compute Solution: Position Error: X_e = -7300.269771, Y_e = -33158.054377, Z_e = -11885.595629
  Velocity Error: VX_e = -0.115521, VY_e = -2.026324, VZ_e = -0.760272
+
+
+New GNC Run: Time = 1491890369
+
+
+New GNC Run: Time = 1491891299

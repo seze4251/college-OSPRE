@@ -12,13 +12,18 @@
 #include <string>
 #include <cmath>
 
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+
 #include "analyzeImage_emxutil.h"
-//#include "rt_nonfinite.h"
+#include "rt_nonfinite.h"
 #include "analyzeImage.h"
-//#include "analyzeImage_terminate.h"
-//#include "analyzeImage_initialize.h"
+#include "analyzeImage_terminate.h"
+#include "analyzeImage_initialize.h"
 #include "ImageProcessor.h"
 #include "Service.h"
+#include "analyzeImage_emxAPI.h"
 
 #define MOON_RADIUS 1736.0
 #define EARTH_RADIUS 6371.0
@@ -237,34 +242,48 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     
     
     fprintf(logFile, "dv3 = %f  %f, sens = %f, \npix_deg %f  %f, camera Width %d  camera height %d\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], msg->cameraWidth, msg->cameraHeight);
+    // NEW
+    emxArray_uint8_T *I;
+    emxInitArray_uint8_T(&I, 3);
+    cv::Vec3b intensity;
+    int sizeimage, counter;
+    int rows = msg->cameraWidth;
+    int cols = msg->cameraHeight;
+    sizeimage = rows*cols;
+    I->size[0] = rows;
+    I->size[1] = cols;
+    I->size[2] = 3;
     
-    emxArray_uint8_T img_holder;
-    /*
-     unsigned char *data;
-     int *size;
-     int allocatedSize;
-     int numDimensions;
-     boolean_T canFreeData;
-     */
+    std::cout << "Starting Conversion to EMX array" << std::endl;
+    // Convert image into emxArray
+    emxEnsureCapacity((emxArray__common *)I, 0, (int)sizeof(unsigned char));
+    try{
+        counter = 0;
+        for (int i=0; i < cols; i++){
+            for (int j=0; j < rows; j++){
+                intensity = image.at<cv::Vec3b>(j,i);
+                uchar blue = intensity.val[0];
+                uchar green = intensity.val[1];
+                uchar red = intensity.val[2];
+                *(I->data + counter) = red;
+                *(I->data + counter + sizeimage) = green;
+                *(I->data + counter + 2*sizeimage) = blue;
+                counter++;
+            }
+        }
+    } catch(...) {
+        fprintf(logFile, "ImageProcessor::processImage() Conversion to EMX array failed");
+        throw;
+    }
+    std::cout << "Finishedit Conversion to EMX array" << std::endl;
+        fflush(logFile);
     
-    img_holder.data = (unsigned char*) msg->getImagePointer();
-    int temp[2];
-    img_holder.size = temp;
-    img_holder.allocatedSize = msg->imageBufferSize;
-    img_holder.size[0] = msg->cameraWidth;
-    img_holder.size[1] = msg->cameraHeight;
-    img_holder.numDimensions = 2;
-    img_holder.canFreeData = false;
-    
-    // TEMP Till I find out why IP is coreing
-    fflush(logFile);
-    std::cout << "MADE IT HERE It Pre Analyze Image" << std::endl;
-    
+    std::cout << "Starting Analyze Image Call" << std::endl;
     
     // TEMP Till I find out why IP is coreing
     analyzeImage(&img_holder, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
     
-    std::cout << "MADE IT HERE: After analyzeImage" << std::endl;
+    std::cout << "Ended Analyze Image call" << std::endl;
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
@@ -329,12 +348,12 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     
     try {
        // fprintf(logFile, "made it start analyze image call\n");
-        //flushLog();
-        //processImage(msg);
+        flushLog();
+        processImage(msg);
         
         // temp
         //***************
-        processedImageMessage->update(1, 1, 5, 0, msg->point, msg->timeStamp);
+       // processedImageMessage->update(1, 1, 5, 0, msg->point, msg->timeStamp);
         //***************
         // Send Processed Image Message to GNC
         if (gnc != nullptr) {

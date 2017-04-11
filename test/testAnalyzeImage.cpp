@@ -23,12 +23,12 @@ TODO:
 #include <opencv2/highgui/highgui.hpp>
 
 // analyzeImage helpers
-#include "../Image_Processing/analyzeImagePi/rt_nonfinite.h"
-#include "../Image_Processing/analyzeImagePi/analyzeImage.h"
-#include "../Image_Processing/analyzeImagePi/analyzeImage_terminate.h"
-#include "../Image_Processing/analyzeImagePi/analyzeImage_initialize.h"
-#include "../Image_Processing/analyzeImagePi/analyzeImage_emxAPI.h"
-#include "../Image_Processing/analyzeImagePi/analyzeImage_emxutil.h"
+#include "rt_nonfinite.h"
+#include "analyzeImage.h"
+#include "analyzeImage_terminate.h"
+#include "analyzeImage_initialize.h"
+#include "analyzeImage_emxAPI.h"
+#include "analyzeImage_emxutil.h"
 
 // OSPRE helpers
 #include "PointEarthMoon.h"
