@@ -16,11 +16,12 @@
 #include <stdio.h>
 #include <string>
 #include <cmath>
-#include <ctime>
+#include <time.h>
 
 // OpenCV
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 // analyzeImage helpers
 #include "rt_nonfinite.h"
@@ -39,6 +40,8 @@ using namespace cv;
 // Define common values
 #define MOON_RADIUS 1736.0
 #define EARTH_RADIUS 6371.0
+#define DOWN_SAMPLE_SIZE 2
+#define CROP_SIZE 400
 
 // Pre Declare Functions:
 void readImage(std::string imgFilename, unsigned char* imIn);
@@ -93,11 +96,13 @@ int testNominal(bool vOut) {
         std::cout << "Reading image with OpenCV" << std::endl;
     }
     
-    cv::Mat image;
+    cv::Mat image, imageTmp, imGray, imGrayDS;
     std::cout << "Starting Image Read" << std::endl;
-    image = imread("test/TestImages/blueMoon.jpg", IMREAD_COLOR);
+    imageTmp = imread("test/TestImages/nomTest.jpg");
+    // imageTmp = imread("test/TestImages/blueMoon.jpg", IMREAD_COLOR);
     std::cout << "Finished Image Read" << std::endl;
     
+<<<<<<< HEAD
     if(!image.data){
         std::cout << "Could not read image" << std::endl;
         return 0;
@@ -110,6 +115,51 @@ int testNominal(bool vOut) {
     int rows = image.rows;
     int cols = image.cols;
     sizeimage = rows*cols;
+=======
+	if(!imageTmp.data){
+		std::cout << "Could not read image" << std::endl;
+		return 0;
+	}
+
+	// Downsample and crop
+	cvtColor(imageTmp, imGray, CV_BGR2GRAY);
+	// smooth image to improve finding accuracy and time
+	GaussianBlur(imGray, imGray, Size(9,9), 2, 2);
+
+	// Downsample image
+	pyrDown(imGray, imGrayDS, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE));
+
+	// Find circle in downsampled image and time
+	vector<Vec3f> circles;
+	HoughCircles(imGrayDS, circles, CV_HOUGH_GRADIENT, 2, imageTmp.rows/2, 200, 100);
+
+	if(circles.size() == 0 || !circles.size()){
+		std::cout << "No circles found!" << std::endl;
+		return -1;
+	}
+
+	// int CROP_SIZE = 3*DOWN_SAMPLE_SIZE*cvRound(circles[0][2]);
+
+	// Create crop area around found moon
+	cv::Rect myROI(cvRound(DOWN_SAMPLE_SIZE*circles[0][0]) - CROP_SIZE/2, //x
+				   cvRound(DOWN_SAMPLE_SIZE*circles[0][1]) - CROP_SIZE/2, //y
+				   CROP_SIZE, CROP_SIZE);
+
+	image = imageTmp(myROI);
+
+	namedWindow("Cropped", WINDOW_NORMAL);
+	imshow("Cropped", image);
+	resizeWindow("Cropped", 600, 600);
+	waitKey(0);
+
+	emxArray_uint8_T *I;
+	emxInitArray_uint8_T(&I, 3);
+	cv::Vec3b intensity;
+	int sizeimage, counter;
+	int rows = image.rows;
+	int cols = image.cols;
+	sizeimage = rows*cols;
+>>>>>>> 4a80f962136b3a07a7d8d94c9286a2a96dd49246
     I->size[0] = rows;
     I->size[1] = cols;
     I->size[2] = 3;
@@ -153,6 +203,7 @@ int testNominal(bool vOut) {
     }
     fflush(testCC);
     
+<<<<<<< HEAD
     std::cout << "Finishedit Conversion to EMX array" << std::endl;
     
     
@@ -208,6 +259,75 @@ int testNominal(bool vOut) {
     }
     
     if(testFailed){
+=======
+    std::cout << "Finished Conversion to EMX array" << std::endl;
+
+
+    std::cout << "Starting call to analyze image" << std::endl;
+	clock_t startFind = clock();
+	// try{
+		analyzeImage( I, radiusRangeGuess, sensitivity,
+                  pix_deg, imgWidth, imgHeight, centerPt_data,
+                  centerPt_size, &radius, &numCirc,
+                  &alpha, &beta, &theta);
+	// } catch (const char*){
+	// 	std::cout << "Call to analyzeImage failed" << std::endl;
+	// 	printf("ERROR ERROR ERROR\n");
+	// 	//return 0;
+	// }
+	clock_t endFind = clock();
+	double timeElapsed = (endFind - startFind)/CLOCKS_PER_SEC;
+
+    std::cout << "Finished call to analyze image" << std::endl;
+    std::cout << "Time elapsed = " << timeElapsed << std::endl;
+    std::cout << "" << std::endl;
+
+    // ----------- Convert output back -------------
+    double radius_Tmp = radius;
+    double centerPt_data_Tmp[2] = {centerPt_data[0], centerPt_data[1]};
+
+    radius = DOWN_SAMPLE_SIZE*radius_Tmp;
+    centerPt_data[0] = DOWN_SAMPLE_SIZE*centerPt_data_Tmp[0];
+    centerPt_data[1] = DOWN_SAMPLE_SIZE*centerPt_data_Tmp[1];
+
+	// Test that radius is within acceptable range
+	if(radius<(59.8545-1e-4) || radius>(59.8545+1e-4)){
+		std::cout << "Calculated radius is incorrect." << std::endl;
+		std::cout << "Expected 59.8545 +/- 1e-4, but instead found: " << radius << std::endl;
+		testFailed = 1;
+	}
+
+	// Test the calculated center point
+	if(centerPt_data[0] < (2078.8762-1e-4) || centerPt_data[0] > (2078.8762+1e-4)){
+		std::cout << "Calculated X center point is incorrect" << std::endl;
+		std::cout << "Expected 2078.8762 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+		testFailed = 1;
+	}
+	if(centerPt_data[1] < (1559.0764-1e-4) || centerPt_data[1] > (1559.0764+1e-4)){
+		std::cout << "Calculated Y center point is incorrect" << std::endl;
+		std::cout << "Expected 1559.0764 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+		testFailed = 1;
+	}
+
+	//Test alpha, beta, theta
+	if(alpha < (-0.0168-1e-4) || alpha > (-0.0168+1e-4)){
+		std::cout << "Calculated alpha is incorrect" << std::endl;
+		std::cout << "Expected -0.0168 +/- 1e-4 but instead found: " << alpha << std::endl;
+		testFailed = 1;
+	}
+	if(beta < (-0.0138-1e-4) || beta > (-0.0138+1e-4)){
+		std::cout << "Calculated beta is incorrect" << std::endl;
+		std::cout << "Expected -0.0138 +/- 1e-4 but instead found: " << beta << std::endl;
+		testFailed = 1;
+	}
+	if(theta < (1.7867-1e-4) || beta > (1.7867+1e-4)){
+		std::cout << "Calculated theta is incorrect" << std::endl;
+		std::cout << "Expected 1.7867 +/- 1e-4 but instead found: " << theta << std::endl;
+		testFailed = 1;
+	}
+
+	if(testFailed){
+>>>>>>> 4a80f962136b3a07a7d8d94c9286a2a96dd49246
         std::cout << "analyzeImage: Test has failed" << std::endl;
         return 0;
     } else {
