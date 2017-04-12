@@ -7,6 +7,7 @@
 //
 #include <iostream>
 #include <stdio.h>
+#include <fstream>
 
 #include "CameraController.h"
 #include "Service.h"
@@ -14,7 +15,6 @@
 // OpenCV
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-
 
 CameraController::CameraController(std::string hostName, int localPort, bool readImageFile) : ServerInternal(hostName, localPort, P_CameraController), pollTime(0), readImageFile(readImageFile) {
     setAppl(this);
@@ -33,6 +33,8 @@ CameraController::CameraController(std::string hostName, int localPort, bool rea
     currentImageSize = -1;
     cameraHeight = -1;
     cameraWidth = -1;
+    pix_deg[0] = -1;
+    pix_deg[1] = -1;
 }
 
 CameraController::~CameraController() {
@@ -50,8 +52,6 @@ CameraController::~CameraController() {
 // TODO: IMPLEMENT METHODS BELOW
 //
 // ********************************
-
-
 void CameraController::open() {
     // Create File Name
     time_t rawtime;
@@ -104,6 +104,10 @@ void CameraController::open() {
         fprintf(logFile, "Error: Unable to Connect to ImageProcessor\n");
         localError = PE_notConnected;
     }
+    
+    // Read Camera Controller Config File
+    read_ConfigFile("Text_Data/Camera_Controller_Config.txt");
+    std::cout << "pix_deg[0] = " << pix_deg[0] << " pix_deg[1] = " << pix_deg[1] << std::endl;
 }
 
 /*
@@ -148,6 +152,20 @@ void CameraController::handleTimeout() {
 // Application Functionality:
 //
 // ********************************
+void CameraController::read_ConfigFile(std::string config_file) {
+    std::ifstream file(config_file);
+    
+    if (!file) {
+        fprintf(logFile, "Error: read Config File File %s could not be opened for reading\n", config_file.c_str());
+        throw "File Could Not Be Opened for Reading";
+    }
+    
+    std::string line;
+    std::getline(file, line);
+    file >> pix_deg[0];
+    file >> pix_deg[1];
+}
+
 void CameraController::readImage(std::string imgFilename) {
     // Get image
     fprintf(logFile, "Read Image: Starting Image Read\n");
@@ -250,7 +268,6 @@ void CameraController::handleProcessHealthAndStatusRequest(ProcessHealthAndStatu
  Send WatchDog Reason why Camera Controller Cannot Take Picture
  Optional: Send Message to GNC stating that data cannot be gathered at this time, I can do this but do I need to?
  */
-
 void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, ServiceInternal* service) {
     
     if (liveMode == false) {
@@ -289,10 +306,6 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
             fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");
             throw;
         }
-        
-        // TODO: Need to get these parameters from somewhere, maybe config file?
-        //********************************
-        double pix_deg[2] {67, 67};  // PUT IN CONFIG FILE
         
         imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
         

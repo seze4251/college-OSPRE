@@ -468,6 +468,7 @@ void GNC::read_ConfigFile(std::string config_file) {
     std::getline(file, line);
     file >> range_AnglesCutoff;
 }
+
 // Read Reference Trajectory
 void GNC::read_referencTraj(std::string ref_trajectory_file) {
     std::ifstream file(ref_trajectory_file);

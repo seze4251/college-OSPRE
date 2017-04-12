@@ -229,33 +229,20 @@ double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, P
 
 void ImageProcessor::processImage(ImageMessage* msg) {
     setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
-    
-    
     fprintf(logFile, "Analyze Image: Starting Call to Analyze Image\n");
-    fprintf(logFile, "Analyze Image Inputs:\n");
     
-    // TEMP HARDCODE
-    //**************
-    //dv3[0] = 157;
-   // dv3[1] = 167;
-    //**************
-    
-    
-    fprintf(logFile, "dv3 = %f  %f, sens = %f, \npix_deg %f  %f, camera Width %d  camera height %d\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], msg->cameraWidth, msg->cameraHeight);
     // NEW
     emxArray_uint8_T *I;
     emxInitArray_uint8_T(&I, 3);
-    I->size[0] = msg->cameraWidth;
-    I->size[1] = msg->cameraHeight;
+    I->size[0] = msg->cameraHeight;
+    I->size[1] = msg->cameraWidth;
     I->size[2] = 3;
     I->data = (unsigned char*) msg->getImagePointer();
-
     
+    fprintf(logFile, "Analyze Image Inputs: dv3 = [%f  %f], sens = %f, pix_deg [%f  %f], I = [%d, %d, %d]\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], I->size[0], I->size[1], I->size[2]);
     
     // TEMP Till I find out why IP is coreing
     analyzeImage(I, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
-    
-    std::cout << "Ended Analyze Image call" << std::endl;
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
@@ -276,11 +263,11 @@ void ImageProcessor::processImage(ImageMessage* msg) {
         fprintf(logFile, "ERROR ERROR:No Bodies found in Image and exception not thrown, Major Error, statement should never print\n");
     }
     
-    
     // TEMP
     pixel_error = 0;
     // Update ProcessedImageMessage
     processedImageMessage->update(alpha, beta, theta, pixel_error, msg->point, msg->timeStamp);
+    flushLog();
 }
 
 
@@ -319,21 +306,14 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
     msg->print(logFile);
     
     try {
-       // fprintf(logFile, "made it start analyze image call\n");
-        flushLog();
         processImage(msg);
         
-        // temp
-        //***************
-       // processedImageMessage->update(1, 1, 5, 0, msg->point, msg->timeStamp);
-        //***************
         // Send Processed Image Message to GNC
         if (gnc != nullptr) {
             gnc->sendMessage(processedImageMessage);
             fprintf(logFile, "Sent Message: ProcessedImageMessage to GNC\n");
         }
-        
-        
+
     } catch (NoBodyInImage &e) {
         fprintf(logFile, "Error: HandleImageMessage() NoBodyInImage Exception Caught: %s\n", e.what());
         localError = PE_IP_noBodyInImage;

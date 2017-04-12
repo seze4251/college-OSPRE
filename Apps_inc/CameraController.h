@@ -78,6 +78,9 @@ private:
     int currentImageSize;
     int cameraHeight;
     int cameraWidth;
+    double pix_deg[2];
+    
+    void read_ConfigFile(std::string config_file);
 };
 
 #endif

@@ -42,6 +42,7 @@ void ImageNameReader::loadImageNames(std::string testDir) {
         std::getline(file, line);
         if (line.empty() == false) {
             data.push_back(testDir + "/Test_Images/" + line);
+            line.clear();
         }
     }
 }

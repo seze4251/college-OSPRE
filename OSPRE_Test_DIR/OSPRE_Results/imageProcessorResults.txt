@@ -67,3 +67,22 @@ New Image Processor Run: Time = 1491938498
 
 
 New Image Processor Run: Time = 1491938784
+
+
+New Image Processor Run: Time = 1491952118
+
+
+New Image Processor Run: Time = 1491952511
+
+
+New Image Processor Run: Time = 1491955643
+
+
+New Image Processor Run: Time = 1491955933
+
+
+New Image Processor Run: Time = 1491956723
+
+
+New Image Processor Run: Time = 1491956871
+Center (698.258683,260.022374), Radius 158.881025, Alpha = 2.212816, Beta = -1.611606, Theta = 4.742717
