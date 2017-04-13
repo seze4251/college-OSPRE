@@ -17,6 +17,7 @@ TODO:
 #include <string>
 #include <cmath>
 #include <time.h>
+ #include <iomanip>
 
 // OpenCV
 #include <opencv2/core/core.hpp>
@@ -54,7 +55,7 @@ Main Function
 int main(int argc, char* argv[]){
 	int nomCase = 1;
 
-	bool vOut = 1; // Verbose output
+	bool vOut = 0; // Verbose output
 
 	nomCase = testNominal(vOut);
 }
@@ -69,6 +70,8 @@ int testNominal(bool vOut) {
 	if(vOut){
 		std::cout << "Starting nominal case" << std::endl;
 	}
+
+	std::cout << std::scientific << std::setprecision(6) << std::endl;
 
 	bool testFailed = 0;
 	//Setup time
@@ -99,14 +102,19 @@ int testNominal(bool vOut) {
 	}
     
     cv::Mat imageTmp, imGray, imGrayDS;
-    std::cout << "Starting Image Read" << std::endl;
+
+    if(vOut){
+    	std::cout << "Starting Image Read" << std::endl;
+    }
     imageTmp = imread("test/TestImages/nomTest.jpg");
     // imageTmp = imread("test/TestImages/blueMoon.jpg", IMREAD_COLOR);
-    std::cout << "Finished Image Read" << std::endl;
+    if(vOut){
+    	std::cout << "Finished Image Read" << std::endl;
+    }
     
 	if(!imageTmp.data){
 		std::cout << "Could not read image" << std::endl;
-		return 0;
+		return -1;
 	}
 
 	// Downsample and crop
@@ -129,8 +137,11 @@ int testNominal(bool vOut) {
 	// int CROP_SIZE = 3*DOWN_SAMPLE_SIZE*cvRound(circles[0][2]);
 
 	// Create crop area around found moon
-	cv::Rect myROI(cvRound(DOWN_SAMPLE_SIZE*circles[0][0]) - CROP_SIZE/2, //x
-				   cvRound(DOWN_SAMPLE_SIZE*circles[0][1]) - CROP_SIZE/2, //y
+	int rectX = cvRound(DOWN_SAMPLE_SIZE*circles[0][0]) - CROP_SIZE/2;
+	int rectY = cvRound(DOWN_SAMPLE_SIZE*circles[0][1]) - CROP_SIZE/2;
+	int rectCoords[2] = {rectX, rectY};
+	cv::Rect myROI(rectX, //x
+				   rectY, //y
 				   CROP_SIZE, CROP_SIZE);
 
 	cv::Mat image = imageTmp(myROI);
@@ -151,7 +162,10 @@ int testNominal(bool vOut) {
 	I->size[1] = cols;
 	I->size[2] = 3;
 
-    std::cout << "Starting Conversion to EMX array" << std::endl;
+	if(vOut){
+		std::cout << "Image rows = " << rows << "\tImage cols = " << cols << std::endl;
+    	std::cout << "Starting Conversion to EMX array" << std::endl;
+    }
 	// Convert image into emxArray
 	emxEnsureCapacity((emxArray__common *)I, 0, (int)sizeof(unsigned char));
     try{
@@ -173,69 +187,92 @@ int testNominal(bool vOut) {
 		return 0;
 	}
     
-    std::cout << "Finished Conversion to EMX array" << std::endl;
+    if(vOut){
+    	std::cout << "Finished Conversion to EMX array" << std::endl;
+    	std::cout << "Starting call to analyze image" << std::endl;
+    }
 
-
-    std::cout << "Starting call to analyze image" << std::endl;
 	clock_t startFind = clock();
 	try{
 		analyzeImage( I, radiusRangeGuess, sensitivity,
                   pix_deg, imgWidth, imgHeight, centerPt_data,
                   centerPt_size, &radius, &numCirc,
-                  &alpha, &beta, &theta);
+                  &alpha, &beta, &theta, rectCoords);
 	} catch (const char*){
 		std::cout << "Call to analyzeImage failed" << std::endl;
-		printf("ERROR ERROR ERROR\n");
-		//return 0;
+		return -1;
 	}
 	clock_t endFind = clock();
 	double timeElapsed = (endFind - startFind)/CLOCKS_PER_SEC;
 
-    std::cout << "Finished call to analyze image" << std::endl;
-    std::cout << "Time elapsed = " << timeElapsed << std::endl;
-    std::cout << "" << std::endl;
+	if(vOut){
+	    std::cout << "Finished call to analyze image" << std::endl;
+	    std::cout << "Time elapsed = " << timeElapsed << std::endl;
+	    std::cout << "" << std::endl;
+	}
 
     // ----------- Convert output back -------------
     double radius_Tmp = radius;
-    double centerPt_data_Tmp[2] = {centerPt_data[0], centerPt_data[1]};
+    // double centerPt_data_Tmp[2] = {centerPt_data[0], centerPt_data[1]};
 
-    radius = DOWN_SAMPLE_SIZE*radius_Tmp;
-    centerPt_data[0] = DOWN_SAMPLE_SIZE*centerPt_data_Tmp[0];
-    centerPt_data[1] = DOWN_SAMPLE_SIZE*centerPt_data_Tmp[1];
+    // radius = radius_Tmp;
+
+    // std::cout << "Found x = " << centerPt_data[0] << std::endl;
+    // std::cout << "Found y = " << centerPt_data[1] << std::endl;
+    // std::cout << "rectX = " << rectX << "\trectY = " << rectY << std::endl;
+    // std::cout << "" << std::endl;
+
+    // centerPt_data[0] = centerPt_data[0] + rectX;
+    // centerPt_data[1] = centerPt_data[1] + rectY;
+
+    // alpha = (centerPt_data[0] - imgWidth / 2.0) / pix_deg[0];
+    // beta = (centerPt_data[1] - imgHeight / 2.0) / pix_deg[1];
 
 	// Test that radius is within acceptable range
-	if(radius<(59.8545-1e-4) || radius>(59.8545+1e-4)){
-		std::cout << "Calculated radius is incorrect." << std::endl;
-		std::cout << "Expected 59.8545 +/- 1e-4, but instead found: " << radius << std::endl;
+	if(radius<(59.8545-2e-2) || radius>(59.8545+2e-2)){
+		if(vOut){
+			std::cout << "Calculated radius is incorrect." << std::endl;
+			std::cout << "Expected 59.8545 +/- 0.02, but instead found: " << radius << std::endl;
+		}
 		testFailed = 1;
 	}
 
 	// Test the calculated center point
-	if(centerPt_data[0] < (2078.8762-1e-4) || centerPt_data[0] > (2078.8762+1e-4)){
-		std::cout << "Calculated X center point is incorrect" << std::endl;
-		std::cout << "Expected 2078.8762 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+	if(centerPt_data[0] < (2078.8762-6e-2) || centerPt_data[0] > (2078.8762+6e-2)){
+		if(vOut){
+			std::cout << "Calculated X center point is incorrect" << std::endl;
+			std::cout << "Expected 2078.8762 +/- 0.06 but instead found: " << centerPt_data[0] << std::endl;
+		}
 		testFailed = 1;
 	}
-	if(centerPt_data[1] < (1559.0764-1e-4) || centerPt_data[1] > (1559.0764+1e-4)){
-		std::cout << "Calculated Y center point is incorrect" << std::endl;
-		std::cout << "Expected 1559.0764 +/- 1e-4 but instead found: " << centerPt_data[0] << std::endl;
+	if(centerPt_data[1] < (1559.0764-6e-2) || centerPt_data[1] > (1559.0764+6e-2)){
+		if(vOut){
+			std::cout << "Calculated Y center point is incorrect" << std::endl;
+			std::cout << "Expected 1559.0764 +/- 0.06 but instead found: " << centerPt_data[1] << std::endl;
+		}
 		testFailed = 1;
 	}
 
 	//Test alpha, beta, theta
-	if(alpha < (-0.0168-1e-4) || alpha > (-0.0168+1e-4)){
-		std::cout << "Calculated alpha is incorrect" << std::endl;
-		std::cout << "Expected -0.0168 +/- 1e-4 but instead found: " << alpha << std::endl;
+	if(alpha < (-0.0168-1e-3) || alpha > (-0.0168+1e-3)){
+		if(vOut){
+			std::cout << "Calculated alpha is incorrect" << std::endl;
+			std::cout << "Expected -0.0168 +/- 1e-3 but instead found: " << alpha << std::endl;
+		}
 		testFailed = 1;
 	}
-	if(beta < (-0.0138-1e-4) || beta > (-0.0138+1e-4)){
-		std::cout << "Calculated beta is incorrect" << std::endl;
-		std::cout << "Expected -0.0138 +/- 1e-4 but instead found: " << beta << std::endl;
+	if(beta < (-0.0138-1e-3) || beta > (-0.0138+1e-3)){
+		if(vOut){
+			std::cout << "Calculated beta is incorrect" << std::endl;
+			std::cout << "Expected -0.0138 +/- 1e-3 but instead found: " << beta << std::endl;
+		}
 		testFailed = 1;
 	}
-	if(theta < (1.7867-1e-4) || beta > (1.7867+1e-4)){
-		std::cout << "Calculated theta is incorrect" << std::endl;
-		std::cout << "Expected 1.7867 +/- 1e-4 but instead found: " << theta << std::endl;
+	if(theta < (1.7867-1e-3) || beta > (1.7867+1e-3)){
+		if(vOut){
+			std::cout << "Calculated theta is incorrect" << std::endl;
+			std::cout << "Expected 1.7867 +/- 1e-3 but instead found: " << theta << std::endl;
+		}
 		testFailed = 1;
 	}
 
