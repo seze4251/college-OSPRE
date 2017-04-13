@@ -26,7 +26,7 @@
 extern void analyzeImage(const emxArray_uint8_T *imIn, const double
   radiusRangeGuess[2], double sensVal, const double pxDeg[2], double imgWidth,
   double imgHeight, double centerPt_data[], int centerPt_size[2], double *radius,
-  double *numCirc, double *alpha, double *beta, double *theta);
+  double *numCirc, double *alpha, double *beta, double *theta, int rectCoords[2]);
 
 
 #endif
