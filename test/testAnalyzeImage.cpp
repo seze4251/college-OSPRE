@@ -75,8 +75,8 @@ int testNominal(bool vOut) {
 	time_t rawtime;
 	struct tm * timinfo;
 
-	double radiusRangeGuess[2] = {157, 167};
-	//double radiusRangeGuess[2] = {58, 63};
+	// double radiusRangeGuess[2] = {157, 167};
+	double radiusRangeGuess[2] = {58, 63};
 	double pix_deg[2] = {67, 67};
 	double centerPt_data[2];
 	int centerPt_size[2];
@@ -85,9 +85,11 @@ int testNominal(bool vOut) {
 	double alpha;
 	double beta;
 	double theta;
-	double sensitivity = 0.99;
+	//double sensitivity = 0.99;
+	double sensitivity = 0.97;
 
-	double imgWidth = 1100; double imgHeight = 736;
+	//double imgWidth = 1100; double imgHeight = 736;
+	double imgWidth = 4160; double imgHeight = 3120;
 	
 
 	// Initialize function 'analyzeImage' input arguments.
@@ -96,7 +98,7 @@ int testNominal(bool vOut) {
 		std::cout << "Reading image with OpenCV" << std::endl;
 	}
     
-    cv::Mat image, imageTmp, imGray, imGrayDS;
+    cv::Mat imageTmp, imGray, imGrayDS;
     std::cout << "Starting Image Read" << std::endl;
     imageTmp = imread("test/TestImages/nomTest.jpg");
     // imageTmp = imread("test/TestImages/blueMoon.jpg", IMREAD_COLOR);
@@ -131,12 +133,12 @@ int testNominal(bool vOut) {
 				   cvRound(DOWN_SAMPLE_SIZE*circles[0][1]) - CROP_SIZE/2, //y
 				   CROP_SIZE, CROP_SIZE);
 
-	image = imageTmp(myROI);
+	cv::Mat image = imageTmp(myROI);
 
-	namedWindow("Cropped", WINDOW_NORMAL);
-	imshow("Cropped", image);
-	resizeWindow("Cropped", 600, 600);
-	waitKey(0);
+	// namedWindow("Cropped", WINDOW_NORMAL);
+	// imshow("Cropped", image);
+	// resizeWindow("Cropped", 600, 600);
+	// cv::waitKey(0);
 
 	emxArray_uint8_T *I;
 	emxInitArray_uint8_T(&I, 3);
@@ -176,16 +178,16 @@ int testNominal(bool vOut) {
 
     std::cout << "Starting call to analyze image" << std::endl;
 	clock_t startFind = clock();
-	// try{
+	try{
 		analyzeImage( I, radiusRangeGuess, sensitivity,
                   pix_deg, imgWidth, imgHeight, centerPt_data,
                   centerPt_size, &radius, &numCirc,
                   &alpha, &beta, &theta);
-	// } catch (const char*){
-	// 	std::cout << "Call to analyzeImage failed" << std::endl;
-	// 	printf("ERROR ERROR ERROR\n");
-	// 	//return 0;
-	// }
+	} catch (const char*){
+		std::cout << "Call to analyzeImage failed" << std::endl;
+		printf("ERROR ERROR ERROR\n");
+		//return 0;
+	}
 	clock_t endFind = clock();
 	double timeElapsed = (endFind - startFind)/CLOCKS_PER_SEC;
 

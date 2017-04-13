@@ -57,6 +57,8 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
                   double imgHeight, double centerPt_data[], int centerPt_size[2], double *radius,
                   double *numCirc, double *alpha, double *beta, double *theta)
 {
+  std::cout << "In analyzeImage" << std::endl;
+
   int i0;
   emxArray_uint8_T *im;
   short origSize[3];
@@ -135,6 +137,8 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
 
   //  Convert to BW, hreshold, and fill image
   //------------------Beginning of BW conversion--------------
+  std::cout << "Starting BW conversion" << std::endl;
+
   imhist(im, sigma_b_squared);
   sizeI = 0.0;
   for (k = 0; k < 256; k++) {
@@ -350,11 +354,17 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
   emxFree_uint8_T(&im);
   emxInit_real_T(&centers, 2);
   emxInit_real_T(&radii, 2);
+  std::cout << "End of BW conversion" << std::endl;
+
   //------------------End of BW conversion--------------
 
   //  Analyze image to find center point and radius
   //  Find circle fit through CHT
+  std::cout << "Calling imfindcircles" << std::endl;
+
   imfindcircles(bw, radiusRangeGuess, sensVal, centers, radii);
+
+  std::cout << "Finished imfindcircles" << std::endl;
 
   //  Check for valid find
   emxFree_boolean_T(&bw);
@@ -375,11 +385,11 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
             sensVal);
 
     // Output image to file
-    cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, (imIn->data));
+    //cv::Mat tempMat = cv::Mat((int)imgHeight, (int)imgWidth, CV_8UC3, (imIn->data));
     //cv::imshow("image", tempMat);
     //cv::waitKey(0);
 
-    imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage2.bmp", tempMat);
+    //imwrite("/home/anthony/Github/OSPRE/Image_Processing/analyzeImagePi/errorImage2.bmp", tempMat);
 
     std::cout << "------------NO BODY IN IMAGE----------" << std::endl;
     std::cout << "Exception time " << time(0) << std::endl;
@@ -391,6 +401,7 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
 
     throw NoBodyInImage(logString);
   } else {
+    std::cout << "Found body" << std::endl;
     //  Return found information
     b_centers[0] = centers->data[0];
     b_centers[1] = centers->data[1];
