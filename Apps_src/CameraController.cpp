@@ -107,7 +107,6 @@ void CameraController::open() {
     
     // Read Camera Controller Config File
     read_ConfigFile("Text_Data/Camera_Controller_Config.txt");
-    std::cout << "pix_deg[0] = " << pix_deg[0] << " pix_deg[1] = " << pix_deg[1] << std::endl;
 }
 
 /*

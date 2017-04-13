@@ -8198,3 +8198,1153 @@ Point at Earth
 
 
 New New Spacecraft Run: Time = 1491958251
+
+
+New New Spacecraft Run: Time = 1492110275
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 0
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 1
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 2
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 3
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 4
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 5
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 6
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 7
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 8
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+
+
+New New Spacecraft Run: Time = 1492110402
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 0
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 1
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 2
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 3
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 4
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 5
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 6
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 7
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 8
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 9
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 10
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+
+
+New New Spacecraft Run: Time = 1492110989
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 0
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 1
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 2
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 3
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 4
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 5
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 6
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 7
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 8
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 9
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 10
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+
+
+New New Spacecraft Run: Time = 1492111745
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 0
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 1
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 2
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 3
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 4
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 5
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 6
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 7
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 8
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 9
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 10
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 11
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 12
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 13
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 14
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+
+
+New New Spacecraft Run: Time = 1492112305
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 0
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 1
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 2
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 3
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 4
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 5
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 6
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+
+
+New New Spacecraft Run: Time = 1492112549
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 0
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 1
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 2
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 3
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 4
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 5
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 6
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 7
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 8
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 9
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 10
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 11
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 12
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 13
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 14
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 15
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 16
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 17
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 18
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+
+
+New New Spacecraft Run: Time = 1492113467
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 0
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 1
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 2
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 3
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 4
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 5
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 6
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 7
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 8
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected

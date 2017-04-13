@@ -192,6 +192,8 @@ void WatchDog::handleTimeout() {
         // Send OSPRE Status Message
         if ((scComms != nullptr) && (scComms->isConnected())) {
             
+            fprintf(logFile, "OSPRE HEALTH - SCCOMMS: %s GNC: %s IP: %s CC: %s ", healthyScComms ? "true" : "false", healthyScGnc ? "true" : "false", healthyImageProc ? "true" : "false",  healthyCameraControl ? "true" : "false");
+            
             if ((healthyScComms == true) && (healthyScGnc == true) && (healthyImageProc == true) &&(healthyCameraControl == true)) {
                 ospreStatusMessage->totalHealth = PE_AllHealthy;
             } else {
@@ -200,6 +202,9 @@ void WatchDog::handleTimeout() {
             
             scComms->sendMessage(ospreStatusMessage);
             fprintf(logFile, "Sent Message: OSPRE Status to ScComms\n");
+            
+            // Print OSPRE Status Message
+            ospreStatusMessage->print(logFile);
             
             // Set Received to False
             healthyScComms = false;
@@ -228,12 +233,13 @@ void WatchDog::handleTimeout() {
  When a response message is recived, diagnose if there are any issues with the processess and store them for the creation of the OSPRE status message
  */
 void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusResponse* msg, ServiceInternal* service) {
-    fprintf(logFile, "Received Message: ProcessHealthAndStatusResponse from *\n");
-    msg->print(logFile);
+    
     
     //Determine which client sent the message
     if (service == cameraControl) {
         fprintf(logFile, "Received Message: ProcessHealthAndStatusResponse from CameraController\n");
+        msg->print(logFile);
+        
         if (msg->error == PE_AllHealthy) {
             healthyCameraControl = true;
             
@@ -245,6 +251,7 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
         
     } else if(service == scComms) {
         fprintf(logFile, "Received Message: ProcessHealthAndStatusResponse from ScComms\n");
+        msg->print(logFile);
         
         if (msg->error == PE_AllHealthy) {
             healthyScComms = true;
@@ -257,6 +264,8 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
         
     } else if(service == gnc) {
         fprintf(logFile, "Received Message: ProcessHealthAndStatusResponse from GNC\n");
+        msg->print(logFile);
+        
         if (msg->error == PE_AllHealthy) {
             healthyScGnc = true;
         } else {
@@ -267,6 +276,8 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
         
     } else if(service == imageProc) {
         fprintf(logFile, "Received Message: ProcessHealthAndStatusResponse from ImageProcessor\n");
+        msg->print(logFile);
+        
         if (msg->error == PE_AllHealthy) {
             healthyImageProc = true;
         } else {
@@ -277,6 +288,7 @@ void WatchDog::handleProcessHealthAndStatusResponse(ProcessHealthAndStatusRespon
         
     } else {
         fprintf(logFile, "Error: Response Message Recivied from Unexcpected Client, Closing Connection...\n");
+        msg->print(logFile);
         service->closeConnection();
     }
 }

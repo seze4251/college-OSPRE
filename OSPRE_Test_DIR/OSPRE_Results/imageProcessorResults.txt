@@ -86,3 +86,31 @@ New Image Processor Run: Time = 1491956723
 
 New Image Processor Run: Time = 1491956871
 Center (698.258683,260.022374), Radius 158.881025, Alpha = 2.212816, Beta = -1.611606, Theta = 4.742717
+
+
+New Image Processor Run: Time = 1492110277
+Center (698.258683,260.022374), Radius 158.881025, Alpha = 2.212816, Beta = -1.611606, Theta = 4.742717
+
+
+New Image Processor Run: Time = 1492110404
+Center (698.258683,260.022374), Radius 158.881025, Alpha = 2.212816, Beta = -1.611606, Theta = 4.742717
+
+
+New Image Processor Run: Time = 1492110991
+Center (698.258683,260.022374), Radius 158.881025, Alpha = 2.212816, Beta = -1.611606, Theta = 4.742717
+
+
+New Image Processor Run: Time = 1492111747
+Center (698.258683,260.022374), Radius 158.881025, Alpha = 2.212816, Beta = -1.611606, Theta = 4.742717
+
+
+New Image Processor Run: Time = 1492112307
+Center (698.258683,260.022374), Radius 158.881025, Alpha = 2.212816, Beta = -1.611606, Theta = 4.742717
+
+
+New Image Processor Run: Time = 1492112551
+Center (698.258683,260.022374), Radius 158.881025, Alpha = 2.212816, Beta = -1.611606, Theta = 4.742717
+
+
+New Image Processor Run: Time = 1492113469
+Center (698.258683,260.022374), Radius 158.881025, Alpha = 2.212816, Beta = -1.611606, Theta = 4.742717

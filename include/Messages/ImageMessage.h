@@ -10,7 +10,7 @@
 #ifndef IMAGEMESSAGE_H
 #define IMAGEMESSAGE_H
 
-#define IMAGE_SIZE 2428800
+#define IMAGE_SIZE 38937600
 
 #include "Message.h"
 #include "Server.h"
