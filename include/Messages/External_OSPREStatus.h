@@ -38,6 +38,12 @@ public:
         error = msg->error;
     }
     
+    void clear() {
+        numProblemProcesses = 0;
+        pID.clear();
+        error.clear();
+    }
+    
     // Print Message
     void print(FILE* logFile) {
         fprintf(logFile, "Printing External OSPRE Status\n");

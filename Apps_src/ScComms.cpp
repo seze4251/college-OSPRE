@@ -202,6 +202,8 @@ void ScComms::handleOSPREStatus(OSPREStatus* msg, ServiceInternal* service) {
         spacecraft->sendMessage(externalOspreStatusMessage);
         fprintf(logFile, "Sent Message: ExternalOSPREStatus to Spacecraft\n");
     }
+    
+    externalOspreStatusMessage->clear();
 }
 
 /*

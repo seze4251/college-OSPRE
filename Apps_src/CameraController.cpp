@@ -299,8 +299,8 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
             
         } catch (const char * e) {
             std::cout << "Const Char * exception caught" << std::endl;
-            fprintf(logFile, "ERROR: ReadImage: %s\n", e);
-            throw;
+            fprintf(logFile, "ERROR: ReadImage: %s\n, Returning to select loop to allow Camera Controller to keep sending data to IP ", e);
+            return;
         } catch (...) {
             fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");
             throw;
