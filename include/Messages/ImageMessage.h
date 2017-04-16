@@ -87,7 +87,7 @@ public:
     double pix_deg[2]; // Pixel per degree
     double estimatedPosition[3];
     double moonEphem[3];
-    double cropCoords[2];
+    int cropCoords[2];
     
     // Do not send these variable below
     int currentImageSize;
