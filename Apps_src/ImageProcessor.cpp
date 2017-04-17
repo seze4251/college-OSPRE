@@ -242,7 +242,11 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     fprintf(logFile, "Analyze Image Inputs: dv3 = [%f  %f], sens = %f, pix_deg [%f  %f], I = [%d, %d, %d]\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], I->size[0], I->size[1], I->size[2]);
     
     // TEMP Till I find out why IP is coreing
+<<<<<<< HEAD
    // analyzeImage(I, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta);
+=======
+    analyzeImage(I, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta, msg->cropCoords);
+>>>>>>> 61616196a87a922a5f66ea2aaf69f60506ccc77b
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
     
