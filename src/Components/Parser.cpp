@@ -228,8 +228,7 @@ Message* Parser::parseOSPREStatus() {
     if (status == nullptr) {
         status = new OSPREStatus();
     } else {
-        status->pID.clear();
-        status->error.clear();
+        status->clear();
     }
     
     status->timeStamp = timeStamp;
