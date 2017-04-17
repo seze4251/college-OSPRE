@@ -16,6 +16,9 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+#define DOWN_SAMPLE_SIZE 2
+#define CROP_SIZE 400
+
 CameraController::CameraController(std::string hostName, int localPort, bool readImageFile) : ServerInternal(hostName, localPort, P_CameraController), pollTime(0), readImageFile(readImageFile) {
     setAppl(this);
     
@@ -35,6 +38,7 @@ CameraController::CameraController(std::string hostName, int localPort, bool rea
     cameraWidth = -1;
     pix_deg[0] = -1;
     pix_deg[1] = -1;
+    rectCoords[2] = {-1., -1.};
 }
 
 CameraController::~CameraController() {
@@ -176,7 +180,7 @@ void CameraController::readImage(std::string imgFilename) {
         fprintf(logFile, "Read Image: Input String: %s\n", imgFilename.c_str());
     }
     
-    cv::Mat image;
+    cv::Mat image, imGray, imGrayDS;
     image = cv::imread(imgFilename, cv::IMREAD_COLOR);
     
     if(!image.data){
@@ -185,7 +189,36 @@ void CameraController::readImage(std::string imgFilename) {
     } else {
         fprintf(logFile, "Read Image: Image Name Valid\n");
     }
+
+    /**
+    Downsample and crop image
+    TODO:
+     - Change CROP_SIZE to a function with position input
+    */
+    cv::cvtColor(image, imGray, CV_BGR2GRAY); // Convert to grayscale
+    cv::GaussianBlur(imGray, imGray, Size(9,9), 2, 2); // Smooth image to improve OpenCV circle finding
+    cv::pyrDown(imGray, imGray, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE)); // Downsample iamge
+    vector<Vec3f> circles;
+    cv::HoughCircles(imGrayDS, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 100); // Find circle
+
+    if(circles.size() == 0 || !circles.size()){
+        fprintf(logFile, "Read Image: Unable to find circles in downsampled image, reverting to full size image\n");
+        throw "CameraController:readImage(), no circles found for cropping";
+    } else {
+        fprintf(logFile, "Read Image: Successfully cropped image\n");
+    }
     
+    // Create crop area around found object
+    int rectX = cvRound(DOWN_SAMPLE_SIZE*circles[0][0]) - CROP_SIZE/2;
+    int rectY = cvRound(DOWN_SAMPLE_SIZE*circles[0][1]) - CROP_SIZE/2;
+    //int rectCoords[2] = {rectX, rectY};
+    imageMessage->cropCoords[2] = {rectX, rectY};
+    cv::Rect myROI(rectX, //x
+                   rectY, //y
+                   CROP_SIZE, CROP_SIZE);
+
+    image = image(myROI);
+
     imageMessage->resizeImageArray(image.cols * image.rows * 3);
     currentImageSize = image.cols * image.rows * 3;
     cameraHeight = image.rows;

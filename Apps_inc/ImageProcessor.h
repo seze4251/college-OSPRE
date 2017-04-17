@@ -77,6 +77,7 @@ private:
     double centerPt_data[2]; // Calculated Center (Pixels)
     int centerPt_size[2]; // Don't Know (Unused)
     double radius; // Output Radius (Pixels)
+    double rectCoords[2]; // Upper left (x,y) coordinates of crop rectangle
     
     // TEMP TEMP
     double pixel_error;
