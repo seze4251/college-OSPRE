@@ -172,7 +172,7 @@ int testNominal(bool vOut) {
 		counter = 0;
 		for (int i=0; i < cols; i++){
 		  for (int j=0; j < rows; j++){
-		    intensity = image.at<Vec3b>(j,i); 
+		    intensity = image.at<Vec3b>(j,i);
 	        uchar blue = intensity.val[0];
 	        uchar green = intensity.val[1];
 	        uchar red = intensity.val[2];

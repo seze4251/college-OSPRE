@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <cmath>
+#include <unistd.h>
 
 #include "CameraController.h"
 #include "Service.h"
@@ -202,17 +203,24 @@ void CameraController::readImage(std::string imgFilename) {
      - Change CROP_SIZE to a function with position input
     */
     cvtColor(image, imGray, CV_BGR2GRAY); // Convert to grayscale
+    
     if(!imGray.data){
         fprintf(logFile, "Read Image ERROR: could not convert image to grayscale\n");
         throw "CameraController::readImage(), error converting image to grayscale";
     } else {
-        fprintf(logFile, "Read Image: Image grayscale conversion error\n");
+        fprintf(logFile, "Read Image: Image grayscale conversion success\n");
     }
 
     GaussianBlur(imGray, imGray, Size(9,9), 2, 2); // Smooth image to improve OpenCV circle finding
+    std::cout << "Made it here" << std::endl;
+    
     pyrDown(imGray, imGray, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE)); // Downsample iamge
+    
+    std::cout << "Made it here 2" << std::endl;
     std::vector<Vec3f> circles;
-    HoughCircles(imGrayDS, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 100); // Find circle
+    HoughCircles(imGray, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 100); // Find circle
+    
+    std::cout << "Made it here3" << std::endl;
 
     if(circles.size() == 0 || !circles.size()){
         fprintf(logFile, "Read Image: Unable to find circles in downsampled image, reverting to full size image\n");
@@ -230,6 +238,8 @@ void CameraController::readImage(std::string imgFilename) {
     cv::Rect myROI(rectX, //x
                    rectY, //y
                    CROP_SIZE, CROP_SIZE);
+    
+    std::cout << "Made it here 4" << std::endl;
 
     image = image(myROI);
 
