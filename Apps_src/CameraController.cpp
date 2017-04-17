@@ -211,7 +211,7 @@ void CameraController::readImage(std::string imgFilename) {
 
     GaussianBlur(imGray, imGray, Size(9,9), 2, 2); // Smooth image to improve OpenCV circle finding
     pyrDown(imGray, imGray, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE)); // Downsample iamge
-    vector<Vec3f> circles;
+    std::vector<Vec3f> circles;
     HoughCircles(imGrayDS, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 100); // Find circle
 
     if(circles.size() == 0 || !circles.size()){
