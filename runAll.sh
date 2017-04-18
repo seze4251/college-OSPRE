@@ -7,7 +7,7 @@ ulimit -c unlimited
 bin/ScComms &
 bin/GNC &
 sleep 5
-bin/Spacecraft &
+bin/Spacecraft
 sleep 2
 bin/WatchDog &
 bin/CameraController &
