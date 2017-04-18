@@ -196,12 +196,12 @@ void CameraController::readImage(std::string imgFilename) {
     } else {
         fprintf(logFile, "Read Image: Image Name Valid\n");
     }
-
+    
     /**
-    Downsample and crop image
-    TODO:
+     Downsample and crop image
+     TODO:
      - Change CROP_SIZE to a function with position input
-    */
+     */
     cvtColor(image, imGray, CV_BGR2GRAY); // Convert to grayscale
     
     if(!imGray.data){
@@ -210,7 +210,7 @@ void CameraController::readImage(std::string imgFilename) {
     } else {
         fprintf(logFile, "Read Image: Image grayscale conversion success\n");
     }
-
+    
     GaussianBlur(imGray, imGray, Size(9,9), 2, 2); // Smooth image to improve OpenCV circle finding
     std::cout << "Made it here" << std::endl;
     
@@ -221,7 +221,7 @@ void CameraController::readImage(std::string imgFilename) {
     HoughCircles(imGray, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 100); // Find circle
     
     std::cout << "Made it here3" << std::endl;
-
+    
     if(circles.size() == 0 || !circles.size()){
         fprintf(logFile, "Read Image: Unable to find circles in downsampled image, reverting to full size image\n");
         throw "CameraController:readImage(), no circles found for cropping";
@@ -240,9 +240,9 @@ void CameraController::readImage(std::string imgFilename) {
                    CROP_SIZE, CROP_SIZE);
     
     std::cout << "Made it here 4" << std::endl;
-
+    
     image = image(myROI);
-
+    
     imageMessage->resizeImageArray(image.cols * image.rows * 3);
     currentImageSize = image.cols * image.rows * 3;
     cameraHeight = image.rows;
@@ -356,7 +356,8 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
             
         } catch (const char * e) {
             std::cout << "Const Char * exception caught" << std::endl;
-            fprintf(logFile, "ERROR: ReadImage: %s\n, Returning to select loop to allow Camera Controller to keep sending data to IP ", e);
+            fprintf(logFile, "ERROR: ReadImage: %s\n, Returning to select loop to allow Camera Controller to keep sending data to IP\n", e);
+            localError = PE_NoMoreImages;
             return;
         } catch (...) {
             fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");

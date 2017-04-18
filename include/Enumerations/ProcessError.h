@@ -32,7 +32,8 @@ enum ProcessError {
     PE_invalidData = 11,
     PE_divideByZero = 12,
     PE_SleepMode = 13,
-    PE_InvalidOutput = 14
+    PE_InvalidOutput = 14,
+    PE_NoMoreImages = 15
 };
 
 static void printProcessError(ProcessError p, FILE* logFile) {
@@ -85,6 +86,9 @@ static void printProcessError(ProcessError p, FILE* logFile) {
             break;
         case PE_InvalidOutput:
             fprintf(logFile, "Error: Invalid Output\n");
+            break;
+        case PE_NoMoreImages:
+            fprintf(logFile, "Error: No More Images\n");
             break;
         default:
             fprintf(logFile, "Error: Unknown Value of Process Error\n");
