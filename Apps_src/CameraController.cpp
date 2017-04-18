@@ -389,8 +389,8 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
             fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");
             throw;
         }
-        pix_deg[0] = cameraWidth/pix_deg[0];
-        pix_deg[1] = cameraHeight/pix_deg[1];
+        // pix_deg[0] = cameraWidth/pix_deg[0];
+        // pix_deg[1] = cameraHeight/pix_deg[1];
         
         imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
         
