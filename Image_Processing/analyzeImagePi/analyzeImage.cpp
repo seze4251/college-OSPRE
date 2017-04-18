@@ -346,8 +346,8 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
 
     throw NoBodyInImage(logString);
   } else {
-    centers->data[0] = centers->data[0]; // + rectCoords[0];
-    centers->data[1] = centers->data[1]; // + rectCoords[1];
+    centers->data[0] = centers->data[0] + rectCoords[0];
+    centers->data[1] = centers->data[1] + rectCoords[1];
     //  Return found information
     b_centers[0] = centers->data[0];
     b_centers[1] = centers->data[1];

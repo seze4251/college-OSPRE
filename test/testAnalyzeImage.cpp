@@ -55,7 +55,7 @@ Main Function
 int main(int argc, char* argv[]){
 	int nomCase = 1;
 
-	bool vOut = 0; // Verbose output
+	bool vOut = 1; // Verbose output
 
 	nomCase = testNominal(vOut);
 }
@@ -79,8 +79,10 @@ int testNominal(bool vOut) {
 	struct tm * timinfo;
 
 	// double radiusRangeGuess[2] = {157, 167};
-	double radiusRangeGuess[2] = {58, 63};
-	double pix_deg[2] = {67, 67};
+	// double radiusRangeGuess[2] = {58, 63};
+	double radiusRangeGuess[2] = {21, 23};
+	// double pix_deg[2] = {67, 67};
+	double pix_deg[2] = {67.9097, 64.0409};
 	double centerPt_data[2];
 	int centerPt_size[2];
 	double radius;
@@ -88,11 +90,11 @@ int testNominal(bool vOut) {
 	double alpha;
 	double beta;
 	double theta;
-	//double sensitivity = 0.99;
-	double sensitivity = 0.97;
+	double sensitivity = 0.99;
+	// double sensitivity = 0.97;
 
 	//double imgWidth = 1100; double imgHeight = 736;
-	double imgWidth = 4160; double imgHeight = 3120;
+	// double imgWidth = 4160; double imgHeight = 3120;
 	
 
 	// Initialize function 'analyzeImage' input arguments.
@@ -106,7 +108,8 @@ int testNominal(bool vOut) {
     if(vOut){
     	std::cout << "Starting Image Read" << std::endl;
     }
-    imageTmp = imread("test/TestImages/nomTest.jpg");
+    imageTmp = imread("test/TestImages/Full_Moon_Test_Iteration_One-01.jpg");
+    // imageTmp = imread("test/TestImages/nomTest.jpg");
     // imageTmp = imread("test/TestImages/blueMoon.jpg", IMREAD_COLOR);
     if(vOut){
     	std::cout << "Finished Image Read" << std::endl;
@@ -117,17 +120,20 @@ int testNominal(bool vOut) {
 		return -1;
 	}
 
+	double imgWidth = imageTmp.cols; double imgHeight = imageTmp.rows;
+
 	// Downsample and crop
 	cvtColor(imageTmp, imGray, CV_BGR2GRAY);
 	// smooth image to improve finding accuracy and time
 	GaussianBlur(imGray, imGray, Size(9,9), 2, 2);
 
 	// Downsample image
-	pyrDown(imGray, imGrayDS, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE));
+	// pyrDown(imGray, imGrayDS, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE));
+	cv::threshold(imGray, imGray, 64, 255, THRESH_BINARY);
 
 	// Find circle in downsampled image and time
 	vector<Vec3f> circles;
-	HoughCircles(imGrayDS, circles, CV_HOUGH_GRADIENT, 2, imageTmp.rows/2, 200, 100);
+	HoughCircles(imGray, circles, CV_HOUGH_GRADIENT, 2, imageTmp.rows/2, 200, 50);
 
 	if(circles.size() == 0 || !circles.size()){
 		std::cout << "No circles found!" << std::endl;
@@ -137,8 +143,8 @@ int testNominal(bool vOut) {
 	// int CROP_SIZE = 3*DOWN_SAMPLE_SIZE*cvRound(circles[0][2]);
 
 	// Create crop area around found moon
-	int rectX = cvRound(DOWN_SAMPLE_SIZE*circles[0][0]) - CROP_SIZE/2;
-	int rectY = cvRound(DOWN_SAMPLE_SIZE*circles[0][1]) - CROP_SIZE/2;
+	int rectX = cvRound(circles[0][0]) - CROP_SIZE/2;
+	int rectY = cvRound(circles[0][1]) - CROP_SIZE/2;
 	int rectCoords[2] = {rectX, rectY};
 	cv::Rect myROI(rectX, //x
 				   rectY, //y
