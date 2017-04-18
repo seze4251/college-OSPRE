@@ -16,8 +16,8 @@
 #include "sum.h"
 #include "imreconstruct.h"
 #include "padarray.h"
-#include "isfinite.h"
-#include "imhist.h"
+// #include "isfinite.h"
+// #include "imhist.h"
 #include "analyzeImage_rtwutil.h"
 
 //
@@ -57,39 +57,35 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
                   double imgHeight, double centerPt_data[], int centerPt_size[2], double *radius,
                   double *numCirc, double *alpha, double *beta, double *theta, int rectCoords[2])
 {
-
+  short origSize[3];
   int i0;
   emxArray_uint8_T *im;
-  short origSize[3];
   double sizeI;
   int i;
   emxArray_boolean_T *bw;
-  double sigma_b_squared[256];
-  double num_maxval;
-  int k;
-  double omega[256];
+  double idx2;
   static const double b[3] = { 0.29893602129377539, 0.58704307445112125,
     0.11402090425510336 };
 
-  double mu[256];
   unsigned char u0;
-  double maxval;
-  int loop_ub;
   emxArray_real_T *centers;
   emxArray_real_T *radii;
-  emxArray_uint8_T *maskPad;
   short sizeOutput[2];
+  emxArray_uint8_T *maskPad;
   double b_centers[2];
   emxArray_uint8_T *markerPad;
   emxArray_uint8_T *r0;
+  int mtmp;
   emxArray_uint8_T *r1;
   int i1;
   emxArray_uint8_T *r2;
-  emxArray_real_T *idx;
+  int idx_size_idx_0;
+  short idx_data[8320];
+  short i2;
   short tmp_data[4160];
-  double b_tmp_data[4160];
+  short b_tmp_data[4160];
+  boolean_T b_idx_data[4160];
   int idx_size[1];
-  boolean_T idx_data[4160];
   int b_idx_size[1];
 
   // Temporary variables for angular diameter calculation
@@ -137,62 +133,22 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
   //  Convert to BW, hreshold, and fill image
   //------------------Beginning of BW conversion--------------
 
-  imhist(im, sigma_b_squared);
-  sizeI = 0.0;
-  for (k = 0; k < 256; k++) {
-    sizeI += sigma_b_squared[k];
-  }
-
-  omega[0] = sigma_b_squared[0] / sizeI;
-  mu[0] = sigma_b_squared[0] / sizeI;
-  for (k = 0; k < 255; k++) {
-    num_maxval = sigma_b_squared[k + 1] / sizeI;
-    omega[k + 1] = omega[k] + num_maxval;
-    mu[k + 1] = mu[k] + num_maxval * (2.0 + (double)k);
-  }
-
-  maxval = rtMinusInf;
-  for (k = 0; k < 256; k++) {
-    sizeI = mu[255] * omega[k] - mu[k];
-    sizeI = sizeI * sizeI / (omega[k] * (1.0 - omega[k]));
-    if (!((maxval > sizeI) || rtIsNaN(sizeI))) {
-      maxval = sizeI;
-    }
-
-    sigma_b_squared[k] = sizeI;
-  }
-
-  if (b_isfinite(maxval)) {
-    sizeI = 0.0;
-    num_maxval = 0.0;
-    for (k = 0; k < 256; k++) {
-      sizeI += (double)((1 + k) * (sigma_b_squared[k] == maxval));
-      num_maxval += (double)(sigma_b_squared[k] == maxval);
-    }
-
-    sizeI /= num_maxval;
-    sizeI = (sizeI - 1.0) / 255.0;
-  } else {
-    sizeI = 0.0;
-  }
-
   i0 = bw->size[0] * bw->size[1];
   bw->size[0] = im->size[0];
   bw->size[1] = im->size[1];
-  emxEnsureCapacity((emxArray__common *)bw, i0, sizeof(boolean_T));
-  num_maxval = 255.0 * sizeI;
-  loop_ub = im->size[0] * im->size[1];
-  for (i0 = 0; i0 < loop_ub; i0++) {
-    bw->data[i0] = (im->data[i0] > num_maxval);
+  emxEnsureCapacity((emxArray__common *)bw, i0, (int)sizeof(boolean_T));
+  i = im->size[0] * im->size[1];
+  for (i0 = 0; i0 < i; i0++) {
+    bw->data[i0] = (im->data[i0] > 63.75);
   }
 
   if (!((bw->size[0] == 0) || (bw->size[1] == 0))) {
     i0 = im->size[0] * im->size[1];
     im->size[0] = bw->size[0];
     im->size[1] = bw->size[1];
-    emxEnsureCapacity((emxArray__common *)im, i0, sizeof(unsigned char));
-    loop_ub = bw->size[0] * bw->size[1];
-    for (i0 = 0; i0 < loop_ub; i0++) {
+    emxEnsureCapacity((emxArray__common *)im, i0, (int)sizeof(unsigned char));
+    i = bw->size[0] * bw->size[1];
+    for (i0 = 0; i0 < i; i0++) {
       im->data[i0] = bw->data[i0];
     }
 
@@ -204,7 +160,7 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     i0 = maskPad->size[0] * maskPad->size[1];
     maskPad->size[0] = sizeOutput[0];
     maskPad->size[1] = sizeOutput[1];
-    emxEnsureCapacity((emxArray__common *)maskPad, i0, sizeof(unsigned char));
+    emxEnsureCapacity((emxArray__common *)maskPad, i0, (int)sizeof(unsigned char));
     for (i0 = 0; i0 < 2; i0++) {
       sizeOutput[i0] = (short)((short)bw->size[i0] + 2);
     }
@@ -214,12 +170,13 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     i0 = markerPad->size[0] * markerPad->size[1];
     markerPad->size[0] = sizeOutput[0];
     markerPad->size[1] = sizeOutput[1];
-    emxEnsureCapacity((emxArray__common *)markerPad, i0, sizeof(unsigned char));
+    emxEnsureCapacity((emxArray__common *)markerPad, i0, (int)sizeof(unsigned
+      char));
     padarray(im, r0);
-    loop_ub = r0->size[1];
-    for (i0 = 0; i0 < loop_ub; i0++) {
-      i = r0->size[0];
-      for (i1 = 0; i1 < i; i1++) {
+    i = r0->size[1];
+    for (i0 = 0; i0 < i; i0++) {
+      mtmp = r0->size[0];
+      for (i1 = 0; i1 < mtmp; i1++) {
         maskPad->data[i1 + maskPad->size[0] * i0] = r0->data[i1 + r0->size[0] *
           i0];
       }
@@ -230,19 +187,19 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     i0 = r1->size[0] * r1->size[1];
     r1->size[0] = im->size[0];
     r1->size[1] = im->size[1];
-    emxEnsureCapacity((emxArray__common *)r1, i0, sizeof(unsigned char));
-    loop_ub = im->size[0] * im->size[1];
-    for (i0 = 0; i0 < loop_ub; i0++) {
+    emxEnsureCapacity((emxArray__common *)r1, i0, (int)sizeof(unsigned char));
+    i = im->size[0] * im->size[1];
+    for (i0 = 0; i0 < i; i0++) {
       r1->data[i0] = MAX_uint8_T;
     }
 
     emxInit_uint8_T(&r2, 2);
     padarray(r1, r2);
-    loop_ub = r2->size[1];
+    i = r2->size[1];
     emxFree_uint8_T(&r1);
-    for (i0 = 0; i0 < loop_ub; i0++) {
-      i = r2->size[0];
-      for (i1 = 0; i1 < i; i1++) {
+    for (i0 = 0; i0 < i; i0++) {
+      mtmp = r2->size[0];
+      for (i1 = 0; i1 < mtmp; i1++) {
         markerPad->data[i1 + markerPad->size[0] * i0] = r2->data[i1 + r2->size[0]
           * i0];
       }
@@ -253,100 +210,95 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
       sizeOutput[i0] = (short)markerPad->size[i0];
     }
 
-    k = sizeOutput[0];
+    mtmp = sizeOutput[0];
     if (sizeOutput[1] > sizeOutput[0]) {
-      k = sizeOutput[1];
+      mtmp = sizeOutput[1];
     }
 
-    emxInit_real_T(&idx, 2);
-    i0 = idx->size[0] * idx->size[1];
-    idx->size[0] = k - 2;
-    idx->size[1] = 2;
-    emxEnsureCapacity((emxArray__common *)idx, i0, sizeof(double));
-    loop_ub = (k - 2) << 1;
-    for (i0 = 0; i0 < loop_ub; i0++) {
-      idx->data[i0] = 0.0;
+    idx_size_idx_0 = mtmp - 2;
+    i = (mtmp - 2) << 1;
+    for (i0 = 0; i0 < i; i0++) {
+      idx_data[i0] = 0;
     }
 
-    for (k = 0; k < 2; k++) {
-      i0 = markerPad->size[k] - 2;
-      loop_ub = (short)((short)i0 - 1);
-      for (i1 = 0; i1 <= loop_ub; i1++) {
+    for (mtmp = 0; mtmp < 2; mtmp++) {
+      i0 = markerPad->size[mtmp] - 2;
+      i = (short)((short)i0 - 1);
+      for (i1 = 0; i1 <= i; i1++) {
         tmp_data[i1] = (short)i1;
       }
 
-      num_maxval = (double)markerPad->size[k] - 1.0;
-      loop_ub = (int)(num_maxval - 2.0);
-      for (i1 = 0; i1 <= loop_ub; i1++) {
-        b_tmp_data[i1] = 2.0 + (double)i1;
+      i2 = (short)((short)(markerPad->size[mtmp] - 1) - 2);
+      i = i2;
+      for (i1 = 0; i1 <= i; i1++) {
+        b_tmp_data[i1] = (short)(2 + i1);
       }
 
-      loop_ub = (short)((short)i0 - 1) + 1;
-      for (i0 = 0; i0 < loop_ub; i0++) {
-        idx->data[tmp_data[i0] + idx->size[0] * k] = b_tmp_data[i0];
+      i = (short)((short)i0 - 1) + 1;
+      for (i0 = 0; i0 < i; i0++) {
+        idx_data[tmp_data[i0] + idx_size_idx_0 * mtmp] = b_tmp_data[i0];
       }
     }
 
     i0 = maskPad->size[0] * maskPad->size[1];
-    emxEnsureCapacity((emxArray__common *)maskPad, i0, sizeof(unsigned char));
-    k = maskPad->size[0];
+    emxEnsureCapacity((emxArray__common *)maskPad, i0, (int)sizeof(unsigned char));
+    mtmp = maskPad->size[0];
     i = maskPad->size[1];
-    loop_ub = k * i;
-    for (i0 = 0; i0 < loop_ub; i0++) {
+    i *= mtmp;
+    for (i0 = 0; i0 < i; i0++) {
       maskPad->data[i0] = (unsigned char)(255U - maskPad->data[i0]);
     }
 
     i0 = markerPad->size[0] * markerPad->size[1];
-    emxEnsureCapacity((emxArray__common *)markerPad, i0, sizeof(unsigned char));
-    k = markerPad->size[0];
+    emxEnsureCapacity((emxArray__common *)markerPad, i0, (int)sizeof(unsigned
+      char));
+    mtmp = markerPad->size[0];
     i = markerPad->size[1];
-    loop_ub = k * i;
-    for (i0 = 0; i0 < loop_ub; i0++) {
+    i *= mtmp;
+    for (i0 = 0; i0 < i; i0++) {
       markerPad->data[i0] = (unsigned char)(255U - markerPad->data[i0]);
     }
 
     imreconstruct(markerPad, maskPad);
     i0 = markerPad->size[0] * markerPad->size[1];
-    emxEnsureCapacity((emxArray__common *)markerPad, i0, sizeof(unsigned char));
-    k = markerPad->size[0];
+    emxEnsureCapacity((emxArray__common *)markerPad, i0, (int)sizeof(unsigned
+      char));
+    mtmp = markerPad->size[0];
     i = markerPad->size[1];
-    loop_ub = k * i;
+    i *= mtmp;
     emxFree_uint8_T(&maskPad);
-    for (i0 = 0; i0 < loop_ub; i0++) {
+    for (i0 = 0; i0 < i; i0++) {
       markerPad->data[i0] = (unsigned char)(255U - markerPad->data[i0]);
     }
 
-    loop_ub = idx->size[0];
-    idx_size[0] = loop_ub;
-    for (i0 = 0; i0 < loop_ub; i0++) {
-      idx_data[i0] = (idx->data[i0] != 0.0);
+    idx_size[0] = idx_size_idx_0;
+    for (i0 = 0; i0 < idx_size_idx_0; i0++) {
+      b_idx_data[i0] = (idx_data[i0] != 0);
     }
 
-    sizeI = sum(idx_data, idx_size);
-    loop_ub = idx->size[0];
-    b_idx_size[0] = loop_ub;
-    for (i0 = 0; i0 < loop_ub; i0++) {
-      idx_data[i0] = (idx->data[i0 + idx->size[0]] != 0.0);
+    sizeI = sum(b_idx_data, idx_size);
+    b_idx_size[0] = idx_size_idx_0;
+    for (i0 = 0; i0 < idx_size_idx_0; i0++) {
+      b_idx_data[i0] = (idx_data[i0 + idx_size_idx_0] != 0);
     }
 
-    num_maxval = sum(idx_data, b_idx_size);
+    idx2 = sum(b_idx_data, b_idx_size);
     sizeOutput[0] = (short)(markerPad->size[0] - 2);
     sizeOutput[1] = (short)(markerPad->size[1] - 2);
     i0 = bw->size[0] * bw->size[1];
     bw->size[0] = sizeOutput[0];
     bw->size[1] = sizeOutput[1];
-    emxEnsureCapacity((emxArray__common *)bw, i0, sizeof(boolean_T));
+    emxEnsureCapacity((emxArray__common *)bw, i0, (int)sizeof(boolean_T));
     for (i = 0; i < (int)sizeI; i++) {
-      for (k = 0; k < (int)num_maxval; k++) {
-        bw->data[i + bw->size[0] * k] = (markerPad->data[((int)idx->data[i] +
-          markerPad->size[0] * ((int)idx->data[k + idx->size[0]] - 1)) - 1] != 0);
+      for (mtmp = 0; mtmp < (int)idx2; mtmp++) {
+        bw->data[i + bw->size[0] * mtmp] = (markerPad->data[(idx_data[i] +
+          markerPad->size[0] * (idx_data[mtmp + idx_size_idx_0] - 1)) - 1] != 0);
       }
     }
 
-    emxFree_real_T(&idx);
     emxFree_uint8_T(&markerPad);
     i0 = bw->size[0] * bw->size[1];
-    emxEnsureCapacity((emxArray__common *)bw, i0, sizeof(boolean_T));
+    emxEnsureCapacity((emxArray__common *)bw, i0, (int)sizeof(boolean_T));
   }
 
   emxFree_uint8_T(&im);
@@ -428,7 +380,7 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     if(*alpha > validAlpha || *alpha < -validAlpha){
       // throw alpha out of range
       char logString[50];
-      sprintf(logString, "Excpetion Time = %ld, Invalid alpha found; alpha: %f \
+      sprintf(logString, "Exception Time = %ld, Invalid alpha found; alpha: %f \
               radius guess: [%f %f], sensVal: %f", time(0), *alpha, radiusRangeGuess[0], radiusRangeGuess[1],
               sensVal);
       emxFree_real_T(&radii);
@@ -438,7 +390,7 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     if(*beta > validBeta || *beta < -validBeta){
       // throw beta out of range
       char logString[50];
-      sprintf(logString,"Excpetion Time = %ld, Invalid beta found; beta: %f \
+      sprintf(logString,"Exception Time = %ld, Invalid beta found; beta: %f \
               radius guess: [%f %f], sensVal: %f", time(0), *beta, radiusRangeGuess[0], radiusRangeGuess[1],
               sensVal);
       emxFree_real_T(&radii);
@@ -448,7 +400,7 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     if(*theta > (validTheta + validThetaDelta) || *theta < (-validTheta - validThetaDelta)){
       // throw theta out of range error
       char logString[50];
-      sprintf(logString,"Excpetion Time = %ld, Invalid theta found; theta: %f \
+      sprintf(logString,"Exception Time = %ld, Invalid theta found; theta: %f \
               radius guess: [%f %f], sensVal: %f", time(0), *theta, radiusRangeGuess[0], radiusRangeGuess[1],
               sensVal);
       emxFree_real_T(&radii);
