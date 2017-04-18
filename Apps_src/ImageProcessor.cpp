@@ -239,8 +239,8 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     I->size[2] = 3;
     I->data = (unsigned char*) msg->getImagePointer();
     
-    fprintf(logFile, "Analyze Image Inputs: dv3 = [%f  %f], sens = %f, pix_deg [%f  %f], I = [%d, %d, %d]\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], I->size[0], I->size[1], I->size[2]);
-    
+    fprintf(logFile, "Analyze Image Inputs: dv3 = [%f  %f], sens = %f, pix_deg [%f  %f], I = [%d, %d, %d], RectCoords = [%d, %d]\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], I->size[0], I->size[1], I->size[2], msg->cropCoords[0], msg->cropCoords[1]);
+
     analyzeImage(I, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta, msg->cropCoords);
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
