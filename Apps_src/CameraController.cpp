@@ -213,7 +213,9 @@ void CameraController::readImage(std::string imgFilename) {
     
     GaussianBlur(imGray, imGray, Size(9,9), 2, 2); // Smooth image to improve OpenCV circle finding
     
-    pyrDown(imGray, imGray, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE)); // Downsample iamge
+    // pyrDown(imGray, imGray, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE)); // Downsample iamge
+
+    cv::threshold(imGray, imGray, 64, 255, THRESH_BINARY);
     
     
     std::vector<Vec3f> circles;
@@ -222,7 +224,35 @@ void CameraController::readImage(std::string imgFilename) {
     
     if(circles.size() == 0 || !circles.size()){
         fprintf(logFile, "Read Image: Unable to find circles in downsampled image, reverting to full size image\n");
-        throw "CameraController:readImage(), no circles found for cropping";
+    
+        imageMessage->resizeImageArray(image.cols * image.rows * 3);
+        currentImageSize = image.cols * image.rows * 3;
+        cameraHeight = image.rows;
+        cameraWidth = image.cols;
+        
+        
+        // Allocate variables
+        unsigned char* imIn = (unsigned char*) imageMessage->getImagePointer(); // <--- Change this to be compatible with msg
+        cv::Vec3b intensity;
+        
+        int counter = 0;
+        // Loop through image and convert
+        for (int i = 0; i < image.cols; i++) {
+            for (int j = 0; j < image.rows; j++) {
+                intensity = image.at<cv::Vec3b>(j, i);
+                uchar blue = intensity.val[0];
+                uchar green = intensity.val[1];
+                uchar red = intensity.val[2];
+                imIn[counter] = red;
+                imIn[counter + image.cols * image.rows] = green;
+                imIn[counter + 2 * image.cols * image.rows] = blue;
+                counter++;
+            }
+        }
+        
+        fprintf(logFile, "Read Image: Finished Image Read\n");
+        // throw "CameraController:readImage(), no circles found for cropping";
+        return;
     } else {
         fprintf(logFile, "Read Image: Successfully cropped image\n");
     }
