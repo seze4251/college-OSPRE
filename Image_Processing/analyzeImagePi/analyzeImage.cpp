@@ -113,14 +113,14 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     origSize[0] = imIn->data[i];
     origSize[1] = imIn->data[(int)((1.0 + (double)i) + sizeI) - 1];
     origSize[2] = imIn->data[(int)((1.0 + (double)i) + 2.0 * sizeI) - 1];
-    num_maxval = 0.0;
+    idx2 = 0.0;
     for (i0 = 0; i0 < 3; i0++) {
-      num_maxval += (double)origSize[i0] * b[i0];
+      idx2 += (double)origSize[i0] * b[i0];
     }
 
-    num_maxval = rt_roundd_snf(num_maxval);
-    if (num_maxval < 256.0) {
-      u0 = (unsigned char)num_maxval;
+    idx2 = rt_roundd_snf(idx2);
+    if (idx2 < 256.0) {
+      u0 = (unsigned char)idx2;
     } else {
       u0 = MAX_uint8_T;
     }
@@ -364,10 +364,10 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
     if ((radii->size[0] == 0) || (radii->size[1] == 0)) {
       i = 0;
     } else {
-      k = radii->size[0];
+      mtmp = radii->size[0];
       i = radii->size[1];
-      if (k > i) {
-        i = k;
+      if(mtmp >= i){
+        i = mtmp;
       }
     }
 
