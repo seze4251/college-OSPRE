@@ -66,14 +66,15 @@ public:
     }
     
     void resizeImageArray(int newSize) {
-        if (imageBufferSize > newSize) {
+        std::cout << "Image Buffer Size = " << imageBufferSize << " newSize = " << newSize << " imageBufferSize >= newSize = " << (imageBufferSize >= newSize) << std::endl;
+        if (imageBufferSize >= newSize) {
             return;
         }
         
         delete[] image;
         image = new char[newSize];
         imageBufferSize = newSize;
-        fprintf(Server::getAppl()->getLogFileID(), "Resizing Image Message from: %d, to %d b/c it is bigger than expected\n", currentImageSize, newSize);
+        fprintf(Server::getAppl()->getLogFileID(), "Resizing Image Message from: %d, to %d b/c it is bigger than expected\n", imageBufferSize, newSize);
     }
     
     char* getImagePointer() {
