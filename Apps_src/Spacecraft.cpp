@@ -107,7 +107,10 @@ void Spacecraft::handleTimeout() {
             if (dataMessage == nullptr) {
                 fprintf(logFile, "No More Input: All Data Messages read and sent, no more data messages to send\n");
             } else {
+                // TEMP HARDCODE!!!!
+                //***********************
                 dataMessage->sleep = false;
+                //*************************
                 fprintf(logFile, "Sent Message: ExternalDataMessage to ScComms\n");
                 scComms->sendMessage(dataMessage);
             }

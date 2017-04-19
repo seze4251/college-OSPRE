@@ -85,12 +85,17 @@ private:
     double P[36];
     double R[9];
     
-    // Y is only for SIM mode
+    // SIM mode
     double Y[3];
+    double beta_E;
+    double alpha_E;
+    double q_E[4];
+    double r_E_M_SIM[3];
     
     // Outputs
     double r_E_SC[3];
     double velSC[3];
+
     
     // From Angles Method
     DataMessage dataMessage_FirstImage;

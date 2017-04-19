@@ -429,30 +429,19 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         } else {
             // SIM MODE
             fprintf(logFile, "ComputeSolution SIM MODE: Angles Method: \n");
-            
-            fprintf(logFile, "ComputeSolution: Angles Method, Second Image, Computing Solution\n");
-            
-            // Point back at earth
-            point = PEM_Earth;
-            
-            // ASSUMPTION: dataMessage_FirstImage / procMessage_FirstImage == First Image == Point at Earth
-            // ASSUMPTION: dataMessage / procMessage == Second Image == Pointing at Moon
-            
+
             double pictureOnePosition[3];
             double pictureTwoPosition[3];
-            std::cout << "Start: Position From ANGLES" << std::endl;
-            Position_From_Angles_Slew(dataMessage->ephem, dataMessage_FirstImage.quat, dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage_FirstImage.alpha, procMessage_FirstImage.beta, velSC, (double) (procMessage->timeStamp - procMessage_FirstImage.timeStamp), pictureOnePosition, pictureTwoPosition);
+            
+            std::cout << "Start: Position From ANGLES, ASSUME 2 MIN" << std::endl;
+            Position_From_Angles_Slew(dataMessage->ephem, q_E, dataMessage->quat, procMessage->alpha, procMessage->beta, alpha_E, beta_E, velSC, 2*60, pictureOnePosition, pictureTwoPosition);
             std::cout << "END: Position From ANGLES" << std::endl;
             
             // First Kalman Filter Call
             std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
-            kalmanFilterWrapper(pictureOnePosition, (double) procMessage_FirstImage.timeStamp, dataMessage_FirstImage.ephem);
+            kalmanFilterWrapper(pictureTwoPosition, (double) procMessage->timeStamp, dataMessage->ephem);
             std::cout << "END: Angles First Kalman Filter Call" << std::endl;
             
-            // Second Kalman Filter Call
-            std::cout << "Start: Angles Second Kalman Filter Call" << std::endl;
-            kalmanFilterWrapper(pictureTwoPosition, (double) procMessage->timeStamp, dataMessage->ephem);
-            std::cout << "End: Angles Second Kalman Filter Call" << std::endl;
         }
         
     } else {
@@ -629,6 +618,42 @@ void GNC::readInInitialKalmanFilterTraj() {
     }
     fprintf(logFile, "]\n");
     
+    std::getline(file, line);
+    
+    // Read in r_E_M_SIM for testing
+    fprintf(logFile, "r_E_M_SIM = [");
+    for (int i = 0; i < 3; i++) {
+        file >> r_E_M_SIM[i];
+        file >> hold;
+        fprintf(logFile, "%f ", r_E_M_SIM[i]);
+    }
+    fprintf(logFile, "]\n");
+    
+    std::getline(file, line);
+    
+    // Read in q_E for testing
+    fprintf(logFile, "q_E_SIM = [");
+    for (int i = 0; i < 4; i++) {
+        file >> q_E[i];
+        file >> hold;
+        fprintf(logFile, "%f ", q_E[i]);
+    }
+    fprintf(logFile, "]\n");
+    
+    std::getline(file, line);
+    
+    file >> alpha_E;
+    fprintf(logFile, "alpha_E = [%f]", alpha_E);
+    
+    std::getline(file, line);
+    std::getline(file, line);
+    std::getline(file, line);
+    
+    file >> beta_E;
+    fprintf(logFile, "beta_E = [%f]", beta_E);
+    
+    std::getline(file, line);
+    std::getline(file, line);
     std::getline(file, line);
     
     // Read in velSC
