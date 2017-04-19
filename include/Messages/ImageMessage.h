@@ -74,7 +74,7 @@ public:
         delete[] image;
         image = new char[newSize];
         imageBufferSize = newSize;
-        fprintf(Server::getAppl()->getLogFileID(), "Resizing Image Message from: %d, to %d b/c it is bigger than expected\n", imageBufferSize, newSize);
+        fprintf(Server::getAppl()->getLogFileID(), "Resizing Image Message (imageBufferSize) from: %d, to %d (newSize) b/c it is bigger than expected\n", imageBufferSize, newSize);
     }
     
     char* getImagePointer() {

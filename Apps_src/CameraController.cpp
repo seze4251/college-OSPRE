@@ -225,10 +225,12 @@ void CameraController::readImage(std::string imgFilename) {
     if(circles.size() == 0 || !circles.size()){
         fprintf(logFile, "Read Image: Unable to find circles in downsampled image, reverting to full size image\n");
     
-        imageMessage->resizeImageArray(image.cols * image.rows * 3);
+        
         currentImageSize = image.cols * image.rows * 3;
         cameraHeight = image.rows;
         cameraWidth = image.cols;
+        std::cout << "Printing Image CUrrent Size in CC:  " << currentImageSize << std::endl;
+        imageMessage->resizeImageArray(currentImageSize);
         
         
         // Allocate variables
@@ -269,6 +271,7 @@ void CameraController::readImage(std::string imgFilename) {
     
     image = image(myROI);
     
+    std::cout << "HERE IN CC WHICH IS BAD!  " << std::endl;
     imageMessage->resizeImageArray(image.cols * image.rows * 3);
     currentImageSize = image.cols * image.rows * 3;
     cameraHeight = image.rows;
@@ -359,7 +362,9 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
         // TODO: Update readImage call to not be hardcoded
         try {
             if (data.sleep == false) {
+                std::cout << "Start Read Image" << std::endl;
                 readImage(imageReader.getNextImageName());
+                std::cout << "Start End Image" << std::endl;
             } else {
                 localError = PE_SleepMode;
                 return;
