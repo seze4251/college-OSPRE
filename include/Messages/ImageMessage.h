@@ -66,7 +66,6 @@ public:
     }
     
     void resizeImageArray(int newSize) {
-        std::cout << "Image Buffer Size = " << imageBufferSize << " newSize = " << newSize << " imageBufferSize >= newSize = " << (imageBufferSize >= newSize) << std::endl;
         if (imageBufferSize >= newSize) {
             return;
         }
