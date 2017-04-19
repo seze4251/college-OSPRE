@@ -94,6 +94,11 @@ void ImageProcessor::open() {
     std::string resultFileName = testDIR + "/OSPRE_Results/imageProcessorResults.txt";
     resultFile = fopen(resultFileName.c_str(), "a+");
     
+    if (resultFile <= 0) {
+        std::cout << "Result File did not open sucessfully" << std::endl;
+        throw "Result File did not open sucessfully";
+    }
+    
     // Log Application Starting
     fprintf(resultFile, "\n\nNew Image Processor Run: Time = %ld\n", time(0));
     
