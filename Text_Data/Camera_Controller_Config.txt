@@ -1,2 +1,2 @@
 #Pixel Per Degree Measurment of Camera
-67 67
+61.729 48.469

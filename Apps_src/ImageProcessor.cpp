@@ -216,13 +216,13 @@ void ImageProcessor::calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon
      ans[1] = pxDiam[1] / 2 + 2;
      } */
     
-    ans[0] = 58;
-    ans[1] = 63;
+    ans[0] = 21;
+    ans[1] = 23;
     
 }
 
 double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
-    return (double) 0.97;
+    return (double) 0.99;
     
 }
 
