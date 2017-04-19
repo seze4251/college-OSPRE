@@ -54,13 +54,14 @@ public:
         fprintf(logFile, " (km)\n");
     }
     
-    void update(PointEarthMoon point, int currentImageSize, double* pix_deg, double* estimatedPosition, double* moonEphem, int cameraWidth, int cameraHeight, time_t satTime) {
+    void update(PointEarthMoon point, int currentImageSize, double* pix_deg, double* estimatedPosition, double* moonEphem, int cameraWidth, int cameraHeight, time_t satTime, int* cropCoords) {
         this->timeStamp = satTime;
         this->point = point;
         this->currentImageSize = currentImageSize;
         memcpy(this->pix_deg, pix_deg, 2 * sizeof(double));
         memcpy(this->estimatedPosition, estimatedPosition, 3 * sizeof(double));
         memcpy(this->moonEphem, moonEphem, 3 * sizeof(double));
+        memcpy(this->cropCoords, cropCoords, 2 * sizeof(int));
         this->cameraWidth = cameraWidth;
         this->cameraHeight = cameraHeight;
     }

@@ -80,6 +80,7 @@ private:
     int cameraWidth;
     double pix_deg[2];
     int rectCoords[2];
+    int cropCoords[2];
 
     void read_ConfigFile(std::string config_file);
 };

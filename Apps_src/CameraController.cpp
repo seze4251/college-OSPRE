@@ -46,6 +46,8 @@ CameraController::CameraController(std::string hostName, int localPort, bool rea
     pix_deg[1] = -1;
     rectCoords[0] = -1.;
     rectCoords[1] = -1.;
+    cropCoords[0] = -1.;
+    cropCoords[1] = -1.;
 }
 
 CameraController::~CameraController() {
@@ -262,8 +264,8 @@ void CameraController::readImage(std::string imgFilename) {
     int rectX = cvRound(circles[0][0]) - CROP_SIZE/2;
     int rectY = cvRound(circles[0][1]) - CROP_SIZE/2;
     //int rectCoords[2] = {rectX, rectY};
-    imageMessage->cropCoords[0] = rectX;
-    imageMessage->cropCoords[1] = rectY;
+    cropCoords[0] = rectX;
+    cropCoords[1] = rectY;
     cv::Rect myROI(rectX, //x
                    rectY, //y
                    CROP_SIZE, CROP_SIZE);
@@ -389,10 +391,8 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
             fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");
             throw;
         }
-        // pix_deg[0] = cameraWidth/pix_deg[0];
-        // pix_deg[1] = cameraHeight/pix_deg[1];
         
-        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
+        imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp, cropCoords);
         
         // Send Image Message to Image Processor
         if ((imageProc != nullptr) && (imageProc->isConnected() == true)) {

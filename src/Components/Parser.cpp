@@ -300,8 +300,14 @@ Message* Parser::parseImageMessage() {
     image->cameraWidth = buf.getInt();
     image->cameraHeight = buf.getInt();
     
+    // Pix Per Deg
     for (int i = 0; i < 2; i++) {
         image->pix_deg[i] = buf.getDouble();
+    }
+    
+    // Crop Coords
+    for (int i = 0; i < 2; i++) {
+        image->cropCoords[i] = buf.getInt();
     }
     
     for (int i = 0; i < 3; i++) {
@@ -312,7 +318,7 @@ Message* Parser::parseImageMessage() {
         image->moonEphem[i] = buf.getDouble();
     }
     
-    int imageLength = messageLength - (HEADER_MESSAGE_SIZE + 3*sizeof(int) + 8*sizeof(double));
+    int imageLength = messageLength - (HEADER_MESSAGE_SIZE + 5*sizeof(int) + 8*sizeof(double));
     
     if( imageLength > image->imageBufferSize) {
         image->resizeImageArray(3*imageLength);

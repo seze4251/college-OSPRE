@@ -193,7 +193,7 @@ void Builder::buildProcessedImageMessage(ProcessedImageMessage &msg) {
 }
 
 void Builder::buildImageMessage(ImageMessage &msg) {
-    int messageSize = msg.currentImageSize + HEADER_MESSAGE_SIZE + 3*sizeof(int) + 8*sizeof(double);
+    int messageSize = msg.currentImageSize + HEADER_MESSAGE_SIZE + 5*sizeof(int) + 8*sizeof(double);
     
     // Check Buffer Has Enough Room to write message
     if (buf.remaining() < messageSize) {
@@ -209,6 +209,11 @@ void Builder::buildImageMessage(ImageMessage &msg) {
     // pix_deg
     for (int i = 0; i < 2; i++) {
         buf.putDouble(msg.pix_deg[i]);
+    }
+    
+    // cropCord
+    for (int i = 0; i < 2; i++) {
+        buf.putInt(msg.cropCoords[i]);
     }
     
     // estimated position
