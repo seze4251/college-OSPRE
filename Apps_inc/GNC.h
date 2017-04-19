@@ -85,6 +85,9 @@ private:
     double P[36];
     double R[9];
     
+    // Y is only for SIM mode
+    double Y[3];
+    
     // Outputs
     double r_E_SC[3];
     double velSC[3];

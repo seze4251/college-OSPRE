@@ -212,15 +212,13 @@ void CameraController::readImage(std::string imgFilename) {
     }
     
     GaussianBlur(imGray, imGray, Size(9,9), 2, 2); // Smooth image to improve OpenCV circle finding
-    std::cout << "Made it here" << std::endl;
     
     pyrDown(imGray, imGray, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE)); // Downsample iamge
     
-    std::cout << "Made it here 2" << std::endl;
+    
     std::vector<Vec3f> circles;
     HoughCircles(imGray, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 100); // Find circle
     
-    std::cout << "Made it here3" << std::endl;
     
     if(circles.size() == 0 || !circles.size()){
         fprintf(logFile, "Read Image: Unable to find circles in downsampled image, reverting to full size image\n");
@@ -238,8 +236,6 @@ void CameraController::readImage(std::string imgFilename) {
     cv::Rect myROI(rectX, //x
                    rectY, //y
                    CROP_SIZE, CROP_SIZE);
-    
-    std::cout << "Made it here 4" << std::endl;
     
     image = image(myROI);
     
@@ -355,7 +351,6 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
             throw;
             
         } catch (const char * e) {
-            std::cout << "Const Char * exception caught" << std::endl;
             fprintf(logFile, "ERROR: ReadImage: %s\n, Returning to select loop to allow Camera Controller to keep sending data to IP\n", e);
             localError = PE_NoMoreImages;
             return;

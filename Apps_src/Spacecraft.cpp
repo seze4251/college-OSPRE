@@ -50,21 +50,26 @@ void Spacecraft::open() {
     // Log Application Starting
     fprintf(logFile, "Spacecraft Application Started, Time = %ld\n", time(0));
     
+    std::cout << "Made it to 1" << std::endl;
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
-    
+
+    std::cout << "Made it to 2" << std::endl;
     // Open Results File
     std::string resultFileName = testDIR + "/OSPRE_Results/spacecraftResults.txt";
     resultFile = fopen(resultFileName.c_str(), "a+");
     
+    std::cout << "Made it to 3" << std::endl;
     // Log Application Starting
     fprintf(resultFile, "\n\nNew New Spacecraft Run: Time = %ld\n", time(0));
     
     // Read in Spacecraft DataFile
-    scDataReader.readDataFile("OSPRE_Test_DIR/Test_Data/Satellite_Data.txt");
+    std::string dataFileName = testDIR + "/Test_Data/Satellite_Data.txt";
+    scDataReader.readDataFile(dataFileName);
     fprintf(logFile, "File Input: Read Spacecraft Data File\n");
     
+    std::cout << "Made it to 4" << std::endl;
     // Set Timeout to half a second
     setTimeoutTime(0, 500000);
     

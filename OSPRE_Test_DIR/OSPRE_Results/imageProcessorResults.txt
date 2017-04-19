@@ -1,6 +1,0 @@
-
-
-New Image Processor Run: Time = 1492541434
-
-
-New Image Processor Run: Time = 1492547714

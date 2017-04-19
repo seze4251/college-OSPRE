@@ -1,6 +1,6 @@
-# Initial Position Guess (km)
+# Initial Position Guess (km) (Decides what method we use for angles and sim mode(SIM MODE / Live Mode)
 21212.105392 25545.913981 7945.349932
 #Earth Ranging Cutoff (km)
-80000
+118000
 #Angles Ranging Cutoff (km)
-350000
+346400

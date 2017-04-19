@@ -51,25 +51,27 @@ GNC::GNC(std::string hostName, int localPort) : ServerInternal(hostName, localPo
     // From Config File
     range_EarthRangeCutoff = -1;
     range_AnglesCutoff = -1;
-    r_E_SC[0] = -1;
-    r_E_SC[1] = -1;
-    r_E_SC[2] = -1;
-    velSC[0] = -1;
-    velSC[1] = -1;
-    velSC[2] = -1;
     
-    for (int i = 0; i < 36; i++) {
-        phi[i] = -1;
-        P[i] = -1;
+    
+    for (int i = 0; i < 3; i++) {
+        velSC[i] = -1;
+        r_E_SC[i] = -1;
+        Y[i] = -1;
+    }
+    
+    
+    for (int i = 0; i < 6; i++) {
+        X_hat[i] = -1;
+        X_ref[i] = -1;
     }
     
     for (int i = 0; i < 9; i++) {
         R[i] = -1;
     }
     
-    for (int i = 0; i < 6; i++) {
-        X_hat[i] = -1;
-        X_ref[i] = -1;
+    for (int i = 0; i < 36; i++) {
+        phi[i] = -1;
+        P[i] = -1;
     }
 }
 
@@ -175,6 +177,11 @@ void GNC::open() {
     } catch (...) {
         fprintf(logFile, "Error: read_ConfigFile Unknown Type of Exception Caught\n");
         throw;
+    }
+    
+    if (liveMode == false) {
+        // SIM MODE
+        readInInitialKalmanFilterTraj();
     }
     
     flushLog();
@@ -383,39 +390,70 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
     } else if ( norm(r_E_SC) < range_AnglesCutoff) {
         // Angles Method to find Position
         // Change Pointing
-        if (procMessage->point == PEM_Earth) {
+        
+        if (liveMode == true) {
+            // LIVE MODE
+            if (procMessage->point == PEM_Earth) {
+                std::cout << "Start: LIVE MODE Angles Method First Picture" << std::endl;
+                fprintf(logFile, "ComputeSolution LIVE MODE: Angles Method, First Image, Saving Data and Leaving Angles Method\n");
+                point = PEM_Moon;
+                memcpy((void*) &dataMessage_FirstImage, (void*) dataMessage, sizeof(DataMessage));
+                memcpy((void*) &procMessage_FirstImage, (void*) procMessage, sizeof(ProcessedImageMessage));
+                return;
+            }
             
-            std::cout << "Start: Angles Method First Picture" << std::endl;
-            fprintf(logFile, "ComputeSolution: Angles Method, First Image, Saving Data and Leaving Angles Method\n");
-            point = PEM_Moon;
-            memcpy((void*) &dataMessage_FirstImage, (void*) dataMessage, sizeof(DataMessage));
-            memcpy((void*) &procMessage_FirstImage, (void*) procMessage, sizeof(ProcessedImageMessage));
-            return;
+            fprintf(logFile, "ComputeSolution: Angles Method, Second Image, Computing Solution\n");
+            
+            // Point back at earth
+            point = PEM_Earth;
+            
+            // ASSUMPTION: dataMessage_FirstImage / procMessage_FirstImage == First Image == Point at Earth
+            // ASSUMPTION: dataMessage / procMessage == Second Image == Pointing at Moon
+            
+            double pictureOnePosition[3];
+            double pictureTwoPosition[3];
+            std::cout << "Start: Position From ANGLES" << std::endl;
+            Position_From_Angles_Slew(dataMessage->ephem, dataMessage_FirstImage.quat, dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage_FirstImage.alpha, procMessage_FirstImage.beta, velSC, (double) (procMessage->timeStamp - procMessage_FirstImage.timeStamp), pictureOnePosition, pictureTwoPosition);
+            std::cout << "END: Position From ANGLES" << std::endl;
+            
+            // First Kalman Filter Call
+            std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
+            kalmanFilterWrapper(pictureOnePosition, (double) procMessage_FirstImage.timeStamp, dataMessage_FirstImage.ephem);
+            std::cout << "END: Angles First Kalman Filter Call" << std::endl;
+            
+            // Second Kalman Filter Call
+            std::cout << "Start: Angles Second Kalman Filter Call" << std::endl;
+            kalmanFilterWrapper(pictureTwoPosition, (double) procMessage->timeStamp, dataMessage->ephem);
+            std::cout << "End: Angles Second Kalman Filter Call" << std::endl;
+            
+        } else {
+            // SIM MODE
+            fprintf(logFile, "ComputeSolution SIM MODE: Angles Method: \n");
+            
+            fprintf(logFile, "ComputeSolution: Angles Method, Second Image, Computing Solution\n");
+            
+            // Point back at earth
+            point = PEM_Earth;
+            
+            // ASSUMPTION: dataMessage_FirstImage / procMessage_FirstImage == First Image == Point at Earth
+            // ASSUMPTION: dataMessage / procMessage == Second Image == Pointing at Moon
+            
+            double pictureOnePosition[3];
+            double pictureTwoPosition[3];
+            std::cout << "Start: Position From ANGLES" << std::endl;
+            Position_From_Angles_Slew(dataMessage->ephem, dataMessage_FirstImage.quat, dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage_FirstImage.alpha, procMessage_FirstImage.beta, velSC, (double) (procMessage->timeStamp - procMessage_FirstImage.timeStamp), pictureOnePosition, pictureTwoPosition);
+            std::cout << "END: Position From ANGLES" << std::endl;
+            
+            // First Kalman Filter Call
+            std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
+            kalmanFilterWrapper(pictureOnePosition, (double) procMessage_FirstImage.timeStamp, dataMessage_FirstImage.ephem);
+            std::cout << "END: Angles First Kalman Filter Call" << std::endl;
+            
+            // Second Kalman Filter Call
+            std::cout << "Start: Angles Second Kalman Filter Call" << std::endl;
+            kalmanFilterWrapper(pictureTwoPosition, (double) procMessage->timeStamp, dataMessage->ephem);
+            std::cout << "End: Angles Second Kalman Filter Call" << std::endl;
         }
-        
-        fprintf(logFile, "ComputeSolution: Angles Method, Second Image, Computing Solution\n");
-        
-        // Point back at earth
-        point = PEM_Earth;
-        
-        // ASSUMPTION: dataMessage_FirstImage / procMessage_FirstImage == First Image == Point at Earth
-        // ASSUMPTION: dataMessage / procMessage == Second Image == Pointing at Moon
-        
-        double pictureOnePosition[3];
-        double pictureTwoPosition[3];
-        std::cout << "Start: Position From ANGLES" << std::endl;
-        Position_From_Angles_Slew(dataMessage->ephem, dataMessage_FirstImage.quat, dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage_FirstImage.alpha, procMessage_FirstImage.beta, velSC, (double) (procMessage->timeStamp - procMessage_FirstImage.timeStamp), pictureOnePosition, pictureTwoPosition);
-        std::cout << "END: Position From ANGLES" << std::endl;
-        
-        // First Kalman Filter Call
-        std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
-        kalmanFilterWrapper(pictureOnePosition, (double) procMessage_FirstImage.timeStamp, dataMessage_FirstImage.ephem);
-        std::cout << "END: Angles First Kalman Filter Call" << std::endl;
-        
-        // Second Kalman Filter Call
-        std::cout << "Start: Angles Second Kalman Filter Call" << std::endl;
-        kalmanFilterWrapper(pictureTwoPosition, (double) procMessage->timeStamp, dataMessage->ephem);
-        std::cout << "End: Angles Second Kalman Filter Call" << std::endl;
         
     } else {
         // Moon Ranging to find Position
@@ -515,7 +553,7 @@ void GNC::read_referencTraj(std::string ref_trajectory_file) {
 }
 
 void GNC::readInInitialKalmanFilterTraj() {
-    fprintf(logFile, "Reading in Kalman Filter Inital Trajectory\n");
+    fprintf(logFile, "SIM MODE: Read In Kalman Filter Initial State after certin amount of time\n");
     std::ifstream file(testDIR + "/Test_Data/KalmanFilter_InitialState.txt");
     
     if (!file) {
@@ -577,6 +615,28 @@ void GNC::readInInitialKalmanFilterTraj() {
         file >> X_ref[i];
         file >> hold;
         fprintf(logFile, "%f ", X_ref[i]);
+    }
+    fprintf(logFile, "]\n");
+    
+    std::getline(file, line);
+    
+    // Read in Y for testing
+    fprintf(logFile, "Y = [");
+    for (int i = 0; i < 3; i++) {
+        file >> Y[i];
+        file >> hold;
+        fprintf(logFile, "%f ", Y[i]);
+    }
+    fprintf(logFile, "]\n");
+    
+    std::getline(file, line);
+    
+    // Read in velSC
+    fprintf(logFile, "velSC = [");
+    for (int i = 0; i < 3; i++) {
+        file >> velSC[i];
+        file >> hold;
+        fprintf(logFile, "%f ", velSC[i]);
     }
     fprintf(logFile, "]\n");
 }
