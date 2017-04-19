@@ -90,6 +90,7 @@ void ImageProcessor::open() {
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Open Results File
+    std::cout << "Test Dir: <" << testDIR << ">" << std::endl;
     std::string resultFileName = testDIR + "/OSPRE_Results/imageProcessorResults.txt";
     resultFile = fopen(resultFileName.c_str(), "a+");
     
