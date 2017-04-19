@@ -228,6 +228,14 @@ void CameraController::readImage(std::string imgFilename) {
         fprintf(logFile, "Read Image: Unable to find circles in downsampled image, reverting to full size image\n");
         
         
+        cropCoords[0] = 0;
+        cropCoords[1] = 0;
+        cv::Rect myROI(0, //x
+                       0, //y
+                       4160, 3104);
+        
+        image = image(myROI);
+
         currentImageSize = image.cols * image.rows * 3;
         cameraHeight = image.rows;
         cameraWidth = image.cols;
