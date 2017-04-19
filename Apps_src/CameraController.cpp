@@ -219,7 +219,7 @@ void CameraController::readImage(std::string imgFilename) {
     
     
     std::vector<Vec3f> circles;
-    HoughCircles(imGray, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 100); // Find circle
+    HoughCircles(imGray, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 50); // Find circle
     
     
     if(circles.size() == 0 || !circles.size()){
@@ -260,8 +260,8 @@ void CameraController::readImage(std::string imgFilename) {
     }
     
     // Create crop area around found object
-    int rectX = cvRound(DOWN_SAMPLE_SIZE*circles[0][0]) - CROP_SIZE/2;
-    int rectY = cvRound(DOWN_SAMPLE_SIZE*circles[0][1]) - CROP_SIZE/2;
+    int rectX = cvRound(circles[0][0]) - CROP_SIZE/2;
+    int rectY = cvRound(circles[0][1]) - CROP_SIZE/2;
     //int rectCoords[2] = {rectX, rectY};
     imageMessage->cropCoords[0] = rectX;
     imageMessage->cropCoords[1] = rectY;
