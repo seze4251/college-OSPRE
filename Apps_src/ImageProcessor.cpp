@@ -249,6 +249,10 @@ void ImageProcessor::processImage(ImageMessage* msg) {
 
     msg->cameraWidth = 4192;
     msg->cameraHeight = 3104;
+    
+    // TEMP
+    fflush(logFile);
+    
     analyzeImage(I, dv3, sensitivity, msg->pix_deg, (double) msg->cameraWidth, (double) msg->cameraHeight, centerPt_data, centerPt_size, &radius, &numCirc, &alpha, &beta, &theta, msg->cropCoords);
     
     fprintf(logFile, "Analyze Image: Ended Call to Analyze Image\n");
