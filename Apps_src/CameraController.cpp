@@ -214,7 +214,7 @@ void CameraController::readImage(std::string imgFilename) {
     GaussianBlur(imGray, imGray, Size(9,9), 2, 2); // Smooth image to improve OpenCV circle finding
     
     // pyrDown(imGray, imGray, Size(imGray.cols/DOWN_SAMPLE_SIZE, imGray.rows/DOWN_SAMPLE_SIZE)); // Downsample iamge
-
+    
     cv::threshold(imGray, imGray, 64, 255, THRESH_BINARY);
     
     
@@ -224,7 +224,7 @@ void CameraController::readImage(std::string imgFilename) {
     
     if(circles.size() == 0 || !circles.size()){
         fprintf(logFile, "Read Image: Unable to find circles in downsampled image, reverting to full size image\n");
-    
+        
         
         currentImageSize = image.cols * image.rows * 3;
         cameraHeight = image.rows;
@@ -389,6 +389,8 @@ void CameraController::handleCaptureImageRequest(CaptureImageRequest* msg, Servi
             fprintf(logFile, "Error: readImage() Unknown Type of Exception Caught\n");
             throw;
         }
+        pix_deg[0] = cameraWidth/pix_deg[0];
+        pix_deg[1] = cameraHeight/pix_deg[1];
         
         imageMessage->update(msg->point, currentImageSize, pix_deg, msg->estimatedPosition, data.ephem, cameraWidth, cameraHeight, msg->timeStamp);
         
