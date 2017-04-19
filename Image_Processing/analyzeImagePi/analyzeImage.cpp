@@ -80,11 +80,16 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
   int i1;
   emxArray_uint8_T *r2;
   int idx_size_idx_0;
-  short idx_data[8320];
+  // short idx_data[8320];
+  short idx_data[8384];
   short i2;
-  short tmp_data[4160];
-  short b_tmp_data[4160];
-  boolean_T b_idx_data[4160];
+  // short tmp_data[4160];
+  // short b_tmp_data[4160];
+  // boolean_T b_idx_data[4160];
+  short tmp_data[4192];
+  short b_tmp_data[4192];
+  boolean_T b_idx_data[4192];
+
   int idx_size[1];
   int b_idx_size[1];
 
