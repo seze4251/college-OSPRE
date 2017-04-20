@@ -225,9 +225,14 @@ void CameraController::readImage(std::string imgFilename) {
 
     // Try again with higher sensitivity
     if(circles.size() == 0 || !circles.size()){
-        fprintf(logFile, "Read Image: Unable to find circles in downsampled image,  trying again with higher sensitivity\n");
+        fprintf(logFile, "Read Image: Unable to find circles in downsampled image,  trying again with higher sensitivity 1\n");
         
         HoughCircles(imGray, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 25); // Find circle
+    }
+    if(circles.size() == 0 || !circles.size()){
+        fprintf(logFile, "Read Image: Unable to find circles in downsampled image,  trying again with higher sensitivity 2\n");
+        
+        HoughCircles(imGray, circles, CV_HOUGH_GRADIENT, 2, image.rows/2, 200, 5); // Find circle
     }
     
     
