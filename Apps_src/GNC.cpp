@@ -116,7 +116,8 @@ void GNC::open() {
         throw "Result File did not open sucessfully";
     }
     // Log Application Starting
-    fprintf(resultFile, "\n\nNew GNC Run: Time = %ld\n", time(0));
+    fprintf(resultFile, "#New GNC Run: Time = %ld\n", time(0));
+    fprintf(resultFile, "# X (km) \t Y (km) \t Z (km) \t V_X (km/s) \t V_Y (km/s) \t V_Z (km/s) \t earthScMoonAngle (deg) \t X_err (km) \t Y_err (km) \t Z_err (km) \t V_x_err (km/s)\t V_y_err (km/s) \t V_Z_err (km/s)\n");
     
     // Set Timeout to 1 minute
     setTimeoutTime(10, 0);
@@ -317,23 +318,21 @@ void GNC::kalmanFilterWrapper(double* Y, double satTime, double* ephem) {
     // Log Output from Kalman Filter to log and results file
     fprintf(logFile, "ComputeSolution(): Kalman Filter Results: X =  %f (km), Y = %f (km), Z = %f (km), V_X =  %f (km/s), V_Y = %f (km/s), V_Z = %f (km/s),\n", X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5]);
     
-    fprintf(resultFile, "ComputeSolution(): Kalman Filter Results: Time: %f X =  %f Y = %f, Z = %f, V_X =  %f V_Y = %f, V_Z = %f,\n", satTime, X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5]);
-    
     // Find E/Sc/M Angle and Log it
     double earthScMoonAngle = Earth_SC_Moon_Angle(X_est, ephem);
     fprintf(logFile, "Compute Solution: Earth Spacecraft Moon Angle = %f (deg)\n", earthScMoonAngle);
-    fprintf(resultFile, "Compute Solution: Earth Spacecraft Moon Angle = %f\n", earthScMoonAngle);
-    
+
     // Find Error in State and Log Outputs
     double positionError[3];
     double velocityError[3];
     State_Error(X_ref, X_est, positionError, velocityError);
     fprintf(logFile, "Compute Solution: Position Error: X_e = %f (km), Y_e = %f (km), Z_e = %f (km)\n Velocity Error: VX_e = %f (km/s), VY_e = %f (km/s), VZ_e = %f (km/s) \n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
-    fprintf(resultFile, "Compute Solution: Position Error: X_e = %f, Y_e = %f, Z_e = %f\n Velocity Error: VX_e = %f, VY_e = %f, VZ_e = %f\n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
     
     // Update Solution Message
     std::cout << "Updating Solution Message" << std::endl;
     solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
+    
+     fprintf(logFile, "%f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t  %f \t %f \t %f \t %f \n", X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5], earthScMoonAngle, positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
     
     // Update Stored Velocity and Stored Position in live mode only
     if (liveMode == true) {
