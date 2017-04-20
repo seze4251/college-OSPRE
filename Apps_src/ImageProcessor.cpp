@@ -28,6 +28,8 @@
 #define MOON_RADIUS 1736.0
 #define EARTH_RADIUS 6371.0
 
+#define CROP_SIZE 400
+
 ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_ImageProcessor), pollTime(0) {
     setAppl(this);
     gnc = nullptr;
@@ -233,6 +235,26 @@ double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, P
     
 }
 
+void ImageProcessor::updatePxDeg(ImageMessage* msg){
+    msg->pix_deg[0] = calcHorzPxDeg(msg);
+    msg->pix_deg[1] = calcVertPxDeg(msg);
+
+}
+
+double ImageProcessor::calcHorzPxDeg(ImageMessage* msg){
+    double xCtr = std::abs((msg->cropCoords[0]+CROP_SIZE/2) - msg->cameraWidth/2);
+
+    return 1./(h_p1*std::pow(xCtr, 6.) + h_p2*std::pow(xCtr, 5.) + h_p3*std::pow(xCtr, 4.) + h_p4*std::pow(xCtr, 3.) + 
+           h_p5*std::pow(xCtr, 2.) + h_p6*xCtr + h_p7);
+}
+
+double ImageProcessor::calcVertPxDeg(ImageMessage* msg){
+    double yCtr = std::abs((msg->cropCoords[1]+CROP_SIZE/2) - msg->cameraHeight/2);
+
+    return 1./(v_p1*std::pow(yCtr, 6.) + v_p2*std::pow(yCtr, 5.) + v_p3*std::pow(yCtr, 4.) + v_p4*std::pow(yCtr, 3.) + 
+           v_p5*std::pow(yCtr, 2.) + v_p6*yCtr + h_p7);
+}
+
 
 void ImageProcessor::processImage(ImageMessage* msg) {
     setImageParameters(msg->point, msg->pix_deg, msg->estimatedPosition, msg->moonEphem);
@@ -251,6 +273,11 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     msg->cameraWidth = 4192;
     msg->cameraHeight = 3104;
     
+    // Update px/deg
+    updatePxDeg(msg);
+
+    // std::cout << "New px/deg = [" << msg->pix_deg[0] << ", " << msg->pix_deg[1] << "] " << std::endl;
+    fprintf(logFile, "Analyze Image Inputs: new pix_deg [%f  %f]", msg->pix_deg[0], msg->pix_deg[1]);
     // TEMP
     fflush(logFile);
     
