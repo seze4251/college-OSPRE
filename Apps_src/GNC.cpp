@@ -753,6 +753,8 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
         fprintf(logFile, "Error: HandleProcessedImageMessage() Unknown Type of Exception Caught\n");
         throw;
     }
+    
+    fflush(resultFile);
 }
 
 

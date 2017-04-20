@@ -354,6 +354,8 @@ void ImageProcessor::handleImageMessage(ImageMessage* msg, ServiceInternal* serv
         fprintf(logFile, "Error: HandleImageMessage() Unknown Type of Exception Caught\n");
         throw;
     }
+    
+    fflush(resultFile);
 }
 
 // *******************************

@@ -176,7 +176,7 @@ void Spacecraft::handleExternalSolutionMessage(External_SolutionMessage* msg, Se
     fprintf(logFile, "Received Message: ExternalSolution Message from ScComms\n");
     msg->print(logFile);
     msg->print(resultFile);
-    
+    fflush(resultFile);
 }
 
 void Spacecraft::handleExternalDataMessage(External_DataMessage* msg, ServiceExternal* service) {
