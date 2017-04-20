@@ -92,7 +92,7 @@ void ImageProcessor::open() {
     // Open Results File
     std::cout << "Test Dir: <" << testDIR << ">" << std::endl;
     std::string resultFileName = testDIR + "/OSPRE_Results/imageProcessorResults.txt";
-    resultFile = fopen(resultFileName.c_str(), "a+");
+    resultFile = fopen(resultFileName.c_str(), "w");
     
     if (resultFile <= 0) {
         std::cout << "Result File did not open sucessfully" << std::endl;
