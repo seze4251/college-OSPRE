@@ -362,8 +362,8 @@ void analyzeImage(const emxArray_uint8_T *imIn, const double
       centerPt_data[i0] = b_centers[i0];
     }
 
-    *alpha = (centers->data[0] - imgWidth / 2.0) / pxDeg[0];
-    *beta = (centers->data[1] - imgHeight / 2.0) / pxDeg[1];
+    *alpha = -(centers->data[0] - imgWidth / 2.0) / pxDeg[0];
+    *beta = -(centers->data[1] - imgHeight / 2.0) / pxDeg[1];
     *radius = radii->data[0];
     *theta = 2.0 * radii->data[0] / ((pxDeg[0] + pxDeg[1]) / 2.0);
     if ((radii->size[0] == 0) || (radii->size[1] == 0)) {
