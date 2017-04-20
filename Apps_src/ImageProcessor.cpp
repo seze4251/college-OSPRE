@@ -100,7 +100,8 @@ void ImageProcessor::open() {
     }
     
     // Log Application Starting
-    fprintf(resultFile, "\n\nNew Image Processor Run: Time = %ld\n", time(0));
+    fprintf(resultFile, "#New Image Processor Run: Time = %ld\n", time(0));
+    fprintf(resultFile, "#Alpha \t Beta \t Theta \t Radius \t Center Point x \t Center Point y \n");
     
     // Set Timeout to 1 minute
     setTimeoutTime(60, 0);
@@ -266,10 +267,7 @@ void ImageProcessor::processImage(ImageMessage* msg) {
         fprintf(logFile, "Alpha = %f, Beta = %f,  Theta = %f\n", alpha, beta, theta);
         
         // To Results File
-        fprintf(resultFile, "Center (%f,%f), ", centerPt_data[0],centerPt_data[1]);
-        fprintf(resultFile, "Radius %f, ", radius);
-        fprintf(resultFile, "Alpha = %f, Beta = %f, Theta = %f\n", alpha, beta, theta);
-        
+        fprintf(resultFile, " %f \t %f \t %f \t %f \t %f \t %f \n", alpha, beta, theta, radius, centerPt_data[0],  centerPt_data[1]);
     } else {
         fprintf(logFile, "ERROR ERROR:No Bodies found in Image and exception not thrown, Major Error, statement should never print\n");
     }
