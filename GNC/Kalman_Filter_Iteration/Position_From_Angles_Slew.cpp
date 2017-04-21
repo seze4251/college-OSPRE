@@ -78,6 +78,7 @@ void Position_From_Angles_Slew(const double r_E_M[3], const double q_E[4], const
       sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nInvalid spacecraft-Moon quaternion.");
       throw InvalidInputs(logString);
   }
+    /*
   if (alpha_M < 0 | alpha_M > 360) {
       char logString[100];
       sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nMoon alpha angle not in valid range.");
@@ -98,7 +99,7 @@ void Position_From_Angles_Slew(const double r_E_M[3], const double q_E[4], const
       sprintf(logString, "ERROR IN: Position_From_Angles_Slew.cpp\nEarth beta angle not in valid range.");
       throw InvalidInputs(logString);
   }
-
+*/
 
   double d0;
   double d1;
