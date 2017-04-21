@@ -112,7 +112,7 @@ void GNC::open() {
     resultFile = fopen(resultFileName.c_str(), "w");
     
     if (resultFile <= 0) {
-        std::cout << "Result File did not open sucessfully" << std::endl;
+        //std::cout << "Result File did not open sucessfully" << std::endl;
         throw "Result File did not open sucessfully";
     }
     // Log Application Starting
@@ -310,10 +310,10 @@ void GNC::kalmanFilterWrapper(double* Y, double satTime, double* ephem) {
     }
     
     // Perform Kalman Filter Call
-    std::cout << "Start: Kalman Filter Call" << std::endl;
+    //std::cout << "Start: Kalman Filter Call" << std::endl;
     double X_est[6];
     Kalman_Filter_Iteration(X_hat, phi, P, Y, R, X_ref, satTime, X_est);
-    std::cout << "End: Kalman Filter Call" << std::endl;
+    //std::cout << "End: Kalman Filter Call" << std::endl;
     
     // Log Output from Kalman Filter to log and results file
     fprintf(logFile, "ComputeSolution(): Kalman Filter Results: X =  %f (km), Y = %f (km), Z = %f (km), V_X =  %f (km/s), V_Y = %f (km/s), V_Z = %f (km/s),\n", X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5]);
@@ -329,10 +329,10 @@ void GNC::kalmanFilterWrapper(double* Y, double satTime, double* ephem) {
     fprintf(logFile, "Compute Solution: Position Error: X_e = %f (km), Y_e = %f (km), Z_e = %f (km)\n Velocity Error: VX_e = %f (km/s), VY_e = %f (km/s), VZ_e = %f (km/s) \n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
     
     // Update Solution Message
-    std::cout << "Updating Solution Message" << std::endl;
+    //std::cout << "Updating Solution Message" << std::endl;
     solutionMessage->update(X_est, positionError, X_est+3, velocityError, earthScMoonAngle);
     
-     fprintf(logFile, "%f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t  %f \t %f \t %f \t %f \n", X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5], earthScMoonAngle, positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
+     fprintf(resultFile, "%f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t  %f \t %f \t %f \t %f \n", X_est[0], X_est[1], X_est[2], X_est[3], X_est[4], X_est[5], earthScMoonAngle, positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
     
     // Update Stored Velocity and Stored Position in live mode only
     if (liveMode == true) {
@@ -341,7 +341,7 @@ void GNC::kalmanFilterWrapper(double* Y, double satTime, double* ephem) {
     }
     
     if (scComms != nullptr) {
-        std::cout << "Sending Solution Message" << std::endl;
+        //std::cout << "Sending Solution Message" << std::endl;
         scComms -> sendMessage(solutionMessage);
         fprintf(logFile, "Sent Message: SolutionMessage to ScComms\n");
     }
@@ -371,7 +371,7 @@ void GNC::kalmanFilterWrapper(double* Y, double satTime, double* ephem) {
 
 void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procMessage) {
     if (norm(r_E_SC) < range_EarthRangeCutoff) {
-        std::cout << "Start: Earth Ranging" << std::endl;
+        //std::cout << "Start: Earth Ranging" << std::endl;
         fprintf(logFile, "ComputeSolution: Earth Ranging\n");
         
         // Set Pointing
@@ -386,9 +386,9 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         fprintf(logFile, "ComputeSolution: Calculated Earth Range: Kalman Filter Call Inputs: Time: %ld r_earth[0] = %f (km), r_earth[1] = %f (km), r_earth[2] = %f (km)\n", dataMessage->satTime, earthRangePosition[0], earthRangePosition[1], earthRangePosition[2]);
         
         // Call Kalman Filter Iteration Wrapper Function With Proper Inputs
-        std::cout << "Start: Kalman Filter From Earth Range" << std::endl;
+        //std::cout << "Start: Kalman Filter From Earth Range" << std::endl;
         kalmanFilterWrapper(earthRangePosition, (double) dataMessage->satTime, dataMessage->ephem);
-        std::cout << "END: Kalman Filter From Earth Range" << std::endl;
+       // std::cout << "END: Kalman Filter From Earth Range" << std::endl;
         
     } else if ( norm(r_E_SC) < range_AnglesCutoff) {
         // Angles Method to find Position
@@ -397,7 +397,7 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         if (liveMode == true) {
             // LIVE MODE
             if (procMessage->point == PEM_Earth) {
-                std::cout << "Start: LIVE MODE Angles Method First Picture" << std::endl;
+               // std::cout << "Start: LIVE MODE Angles Method First Picture" << std::endl;
                 fprintf(logFile, "ComputeSolution LIVE MODE: Angles Method, First Image, Saving Data and Leaving Angles Method\n");
                 point = PEM_Moon;
                 memcpy((void*) &dataMessage_FirstImage, (void*) dataMessage, sizeof(DataMessage));
@@ -415,19 +415,19 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
             
             double pictureOnePosition[3];
             double pictureTwoPosition[3];
-            std::cout << "Start: Position From ANGLES" << std::endl;
+            //std::cout << "Start: Position From ANGLES" << std::endl;
             Position_From_Angles_Slew(dataMessage->ephem, dataMessage_FirstImage.quat, dataMessage->quat, procMessage->alpha, procMessage->beta, procMessage_FirstImage.alpha, procMessage_FirstImage.beta, velSC, (double) (procMessage->timeStamp - procMessage_FirstImage.timeStamp), pictureOnePosition, pictureTwoPosition);
-            std::cout << "END: Position From ANGLES" << std::endl;
+           // std::cout << "END: Position From ANGLES" << std::endl;
             
             // First Kalman Filter Call
-            std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
+           // std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
             kalmanFilterWrapper(pictureOnePosition, (double) procMessage_FirstImage.timeStamp, dataMessage_FirstImage.ephem);
-            std::cout << "END: Angles First Kalman Filter Call" << std::endl;
+            //std::cout << "END: Angles First Kalman Filter Call" << std::endl;
             
             // Second Kalman Filter Call
-            std::cout << "Start: Angles Second Kalman Filter Call" << std::endl;
+           // std::cout << "Start: Angles Second Kalman Filter Call" << std::endl;
             kalmanFilterWrapper(pictureTwoPosition, (double) procMessage->timeStamp, dataMessage->ephem);
-            std::cout << "End: Angles Second Kalman Filter Call" << std::endl;
+           // std::cout << "End: Angles Second Kalman Filter Call" << std::endl;
             
         } else {
             // SIM MODE
@@ -436,14 +436,16 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
             double pictureOnePosition[3];
             double pictureTwoPosition[3];
             
-            std::cout << "Start: Position From ANGLES, ASSUME 2 MIN" << std::endl;
+            //std::cout << "Start: Position From ANGLES, ASSUME 2 MIN" << std::endl;
+            fprintf(logFile, "INPUTS: Moon Ephem: [%f, %f, %f], qE: [%f, %f, %f, %f], qM: [%f, %f, %f, %f], alphaM = %f, betaM = %f, alphaE = %f, betaE = %f, velSC = [%f,%f,%f], time = %d\n", dataMessage->ephem[0], dataMessage->ephem[1], dataMessage->ephem[2], q_E[0], q_E[1], q_E[2], q_E[3], dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, procMessage->beta, alpha_E, beta_E, velSC[0], velSC[1], velSC[2], 2*60);
+            
             Position_From_Angles_Slew(dataMessage->ephem, q_E, dataMessage->quat, procMessage->alpha, procMessage->beta, alpha_E, beta_E, velSC, 2*60, pictureOnePosition, pictureTwoPosition);
-            std::cout << "END: Position From ANGLES" << std::endl;
+            //std::cout << "END: Position From ANGLES" << std::endl;
             
             // First Kalman Filter Call
-            std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
+            //std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
             kalmanFilterWrapper(pictureTwoPosition, (double) procMessage->timeStamp, dataMessage->ephem);
-            std::cout << "END: Angles First Kalman Filter Call" << std::endl;
+            //std::cout << "END: Angles First Kalman Filter Call" << std::endl;
             
         }
         
@@ -459,21 +461,21 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
         fprintf(logFile, "ComputeSolution: Moon Ranging: INPUTS: quat: [%f, %f, %f, %f],\n alpha = %f, beta = %f, theta = %f \n", dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, procMessage->beta, procMessage->theta);
         
         // Get Moon Range
-        std::cout << "Start: MOON RANGING: Position From Moon Range" << std::endl;
+        //std::cout << "Start: MOON RANGING: Position From Moon Range" << std::endl;
         double moonRangePosition[3];
         Position_From_Moon_Range(dataMessage->ephem, dataMessage->quat, procMessage->alpha, procMessage->alpha, procMessage->theta, moonRangePosition);
-        std::cout << "End: MOON RANGING: Position From Moon Range" << std::endl;
+        //std::cout << "End: MOON RANGING: Position From Moon Range" << std::endl;
         
         // Log Outputs for Moon Range
         fprintf(logFile, "ComputeSolution: Earth Range: Kalman Filter Call Inputs: Time: %ld R[0] = %f, R[1] = %f, R[2] = %f\n", dataMessage->satTime, moonRangePosition[0], moonRangePosition[1], moonRangePosition[2]);
         
-        std::cout << "Start: Moon Ranging Kalman Filter Call" << std::endl;
+        //std::cout << "Start: Moon Ranging Kalman Filter Call" << std::endl;
         kalmanFilterWrapper(moonRangePosition, (double) dataMessage->satTime, dataMessage->ephem);
-        std::cout << "End: Moon Ranging Kalman Filter Call" << std::endl;
+        //std::cout << "End: Moon Ranging Kalman Filter Call" << std::endl;
         
     }
     
-    std::cout << "Ending Compute Solution" << std::endl;
+   // std::cout << "Ending Compute Solution" << std::endl;
 }
 
 void GNC::read_ConfigFile(std::string config_file) {
@@ -713,9 +715,9 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     fprintf(logFile, "Received Message: ProcessedImageMessage from ScComms\n");
     msg->print(logFile);
     
-    std::cout << "STARTING: Handle Processed Image Message" << std::endl;
+    //std::cout << "STARTING: Handle Processed Image Message" << std::endl;
     DataMessage* scData;
-    std::cout << "Attempting to Find Data Message" << std::endl;
+    //std::cout << "Attempting to Find Data Message" << std::endl;
     
     try {
         scData = circBuf.get(msg->timeStamp);
@@ -729,9 +731,9 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
     // Compute Solution and Update Solution Message
     try {
         fprintf(logFile, "HandleProcessedImageMessage: Calling Compute Solution\n");
-        std::cout << "Starting Compute Solution" << std::endl;
+       // std::cout << "Starting Compute Solution" << std::endl;
         computeSolution(scData, msg);
-        std::cout << "Ending Compute Solution" << std::endl;
+        //std::cout << "Ending Compute Solution" << std::endl;
         
     } catch (InvalidInputs &e) {
         fprintf(logFile, "Error: HandleProcessedImageMessage() InvalidInputs Exception Caught: %s\n", e.what());
@@ -753,6 +755,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
         throw;
     }
     
+    flushLog();
     fflush(resultFile);
 }
 
