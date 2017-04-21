@@ -727,7 +727,7 @@ void GNC::handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInterna
         return;
     }
     
-    std::cout << "Attempting to Compute Solution" << std::endl;
+   // std::cout << "Attempting to Compute Solution" << std::endl;
     // Compute Solution and Update Solution Message
     try {
         fprintf(logFile, "HandleProcessedImageMessage: Calling Compute Solution\n");
