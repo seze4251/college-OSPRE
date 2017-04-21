@@ -2,4 +2,3 @@
 2
 #OSPRE SERVER Test Directory for SIM Mode
 OSPRE_HALF_MOON_TEST_DIR
-
