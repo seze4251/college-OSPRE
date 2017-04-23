@@ -42,7 +42,7 @@ void Spacecraft::open() {
     
     rawtime = time(0);
     timeinfo = localtime(&rawtime);
-    strftime(buffer, 80,"./log/SpacecraftLog_%d-%m-%Y.log",timeinfo);
+    strftime(buffer, 80,"./log/SpacecraftLog_%I_%M%p_%d-%m-%Y.log",timeinfo);
     
     // Open Log File
     logFile = fopen(buffer, "a+");
