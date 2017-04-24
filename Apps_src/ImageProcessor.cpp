@@ -79,7 +79,7 @@ void ImageProcessor::open() {
     
     rawtime = time(0);
     timeinfo = localtime(&rawtime);
-    strftime(buffer, 80,"./log/ImageProcessorLog_%I_%M%p_%d-%m-%Y.log",timeinfo);
+    strftime(buffer, 80,"./log/ImageProcessorLog_%d-%m-%Y.log",timeinfo);
     
     // Open Log File
     logFile = fopen(buffer, "a+");

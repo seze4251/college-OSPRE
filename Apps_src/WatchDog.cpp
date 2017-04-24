@@ -49,7 +49,7 @@ void WatchDog::open() {
     
     rawtime = time(0);
     timeinfo = localtime(&rawtime);
-    strftime(buffer, 80,"./log/WatchDogLog_%I_%M%p_%d-%m-%Y.log",timeinfo);
+    strftime(buffer, 80,"./log/WatchDogLog_%d-%m-%Y.log",timeinfo);
     
     // Open Log File
     logFile = fopen(buffer, "a+");
