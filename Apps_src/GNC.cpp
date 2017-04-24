@@ -109,7 +109,7 @@ void GNC::open() {
     
     // Open Results File
     std::string resultFileName = testDIR + "/OSPRE_Results/gncResults.txt";
-    resultFile = fopen(resultFileName.c_str(), "w");
+    resultFile = fopen(resultFileName.c_str(), "a+");
     
     if (resultFile <= 0) {
         //std::cout << "Result File did not open sucessfully" << std::endl;

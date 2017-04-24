@@ -92,9 +92,8 @@ void ImageProcessor::open() {
     fprintf(logFile, "File Input: Read OSPRE Config File\n");
     
     // Open Results File
-    std::cout << "Test Dir: <" << testDIR << ">" << std::endl;
     std::string resultFileName = testDIR + "/OSPRE_Results/imageProcessorResults.txt";
-    resultFile = fopen(resultFileName.c_str(), "w");
+    resultFile = fopen(resultFileName.c_str(), "a+");
     
     if (resultFile <= 0) {
         std::cout << "Result File did not open sucessfully" << std::endl;
@@ -102,7 +101,7 @@ void ImageProcessor::open() {
     }
     
     // Log Application Starting
-    fprintf(resultFile, "#New Image Processor Run: Time = %ld\n", time(0));
+    fprintf(resultFile, "\n\n\n #New Image Processor Run: Time = %ld\n", time(0));
     fprintf(resultFile, "#Alpha \t Beta \t Theta \t Radius \t Center Point x \t Center Point y \n");
     
     // Set Timeout to 1 minute
