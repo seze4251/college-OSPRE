@@ -442,6 +442,8 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
             Position_From_Angles_Slew(dataMessage->ephem, q_E, dataMessage->quat, procMessage->alpha, procMessage->beta, alpha_E, beta_E, velSC, 2*60, pictureOnePosition, pictureTwoPosition);
             //std::cout << "END: Position From ANGLES" << std::endl;
             
+            std::cout << "Kalman Filter INPUT:: X = " <<pictureTwoPosition[0] << " Y = " << pictureTwoPosition[1] << " Z = " << pictureTwoPosition[2] << std::endl;
+            
             // First Kalman Filter Call
             //std::cout << "Start: Angles First Kalman Filter Call" << std::endl;
             kalmanFilterWrapper(pictureTwoPosition, (double) procMessage->timeStamp, dataMessage->ephem);
