@@ -56,7 +56,7 @@ void Spacecraft::open() {
 
     // Open Results File
     std::string resultFileName = testDIR + "/OSPRE_Results/spacecraftResults.txt";
-    resultFile = fopen(resultFileName.c_str(), "a+");
+    resultFile = fopen(resultFileName.c_str(), "w");
     
     
     if (resultFile <= 0) {
