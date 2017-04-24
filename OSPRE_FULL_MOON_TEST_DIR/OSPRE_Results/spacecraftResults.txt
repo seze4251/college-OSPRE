@@ -1806,4 +1806,43 @@ Position =  -161404.978527 75109.667079 40970.217933 (km)
 Position Error =  27.303458 -1602.738332 -601.965533 (km)
 Velocity =  -1.586582 -0.100918 0.086642 (km/s)
 Velocity Error =  0.013770 -0.043528 -0.017214 (km/s)
-Earth-SC-Moon Angle = 105.712469 (degrees)
+Earth-SC-Moon Angle = 105.712469 (degrees)Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 116
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 117
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Solution Message
+Printing Message ID Enumeration:
+External Solution Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 118
+PacketDataLength = 107
+Position =  -161405.024345 75112.205351 40971.171683 (km)
+Position Error =  27.349276 -1605.276604 -602.919283 (km)
+Velocity =  -1.586603 -0.100849 0.086669 (km/s)
+Velocity Error =  0.013791 -0.043597 -0.017241 (km/s)
+Earth-SC-Moon Angle = 105.713091 (degrees)
