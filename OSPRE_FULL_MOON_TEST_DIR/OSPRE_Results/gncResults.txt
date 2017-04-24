@@ -1,0 +1,6 @@
+
+
+
+#New GNC Run: Time = 1493067761
+# X (km) 	 Y (km) 	 Z (km) 	 V_X (km/s) 	 V_Y (km/s) 	 V_Z (km/s) 	 earthScMoonAngle (deg) 	 X_err (km) 	 Y_err (km) 	 Z_err (km) 	 V_x_err (km/s)	 V_y_err (km/s) 	 V_Z_err (km/s)
+-161404.842570 	 75102.135184 	 40967.387844 	 -1.586517 	 -0.101123 	 0.086561 	 105.706710 	 27.167501 	 -1595.206437 	  -599.135444 	 0.013705 	 -0.043324 	 -0.017133 

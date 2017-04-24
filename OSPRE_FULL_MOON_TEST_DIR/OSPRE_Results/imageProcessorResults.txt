@@ -1,0 +1,6 @@
+
+
+
+#New Image Processor Run: Time = 1493067768
+#Alpha 	 Beta 	 Theta 	 Radius 	 Center Point x 	 Center Point y 
+ 0.044020 	 6.366109 	 0.657756 	 21.048018 	 2093.000000 	 1171.000000 

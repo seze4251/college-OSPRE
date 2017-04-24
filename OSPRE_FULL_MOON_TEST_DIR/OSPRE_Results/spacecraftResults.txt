@@ -1,0 +1,60 @@
+
+
+
+New New Spacecraft Run: Time = 1493067766
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 0
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 1
+PacketDataLength = 15
+Printing ProcessError Enumeration:
+OSPRE is Sick
+Number of Processes with Errors = 1
+Printing ProcessID Enumeration:
+GNC
+Printing ProcessError Enumeration:
+Error: Process Not Connected
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 2
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External Solution Message
+Printing Message ID Enumeration:
+External Solution Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 3
+PacketDataLength = 107
+Position =  -161404.842569 75102.135184 40967.387843 (km)
+Position Error =  27.167500 -1595.206437 -599.135443 (km)
+Velocity =  -1.586517 -0.101123 0.086561 (km/s)
+Velocity Error =  0.013705 -0.043323 -0.017133 (km/s)
+Earth-SC-Moon Angle = 105.706709 (degrees)

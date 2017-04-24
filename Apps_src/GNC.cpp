@@ -295,7 +295,7 @@ void GNC::handleTimeout() {
 // double X_est [6] (Position and Velocity Output)
 // ******************************************************
 
-void GNC::kalmanFilterWrapper(double* Y, double satTime, double* ephem) {
+void GNC::kalmanFilterWrapper(double* Y_p, double satTime, double* ephem) {
     if (liveMode == false) {
         // SIM MODE
         // Read in Data from file
@@ -312,7 +312,7 @@ void GNC::kalmanFilterWrapper(double* Y, double satTime, double* ephem) {
     // Perform Kalman Filter Call
     //std::cout << "Start: Kalman Filter Call" << std::endl;
     double X_est[6];
-    Kalman_Filter_Iteration(X_hat, phi, P, Y, R, X_ref, satTime, X_est);
+    Kalman_Filter_Iteration(X_hat, phi, P, Y_p, R, X_ref, satTime, X_est);
     //std::cout << "End: Kalman Filter Call" << std::endl;
     
     // Log Output from Kalman Filter to log and results file
@@ -437,7 +437,7 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
             double pictureTwoPosition[3];
             
             //std::cout << "Start: Position From ANGLES, ASSUME 2 MIN" << std::endl;
-            fprintf(logFile, "INPUTS: Moon Ephem: [%f, %f, %f], qE: [%f, %f, %f, %f], qM: [%f, %f, %f, %f], alphaM = %f, betaM = %f, alphaE = %f, betaE = %f, velSC = [%f,%f,%f], time = %d\n", dataMessage->ephem[0], dataMessage->ephem[1], dataMessage->ephem[2], q_E[0], q_E[1], q_E[2], q_E[3], dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, procMessage->beta, alpha_E, beta_E, velSC[0], velSC[1], velSC[2], 2*60);
+            fprintf(logFile, "INPUTS: Moon Ephem: [%f, %f, %f], qE: [%f, %f, %f, %f], qM: [%f, %f, %f, %f], alphaM = %f, betaM = %f, alphaE = %f, betaE = %f, velSC = [%f,%f,%f], time = %d\n", dataMessage->ephem[0], dataMessage->ephem[1], dataMessage->ephem[2], q_E[0], q_E[1], q_E[2], q_E[3], dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, -procMessage->beta, alpha_E, beta_E, velSC[0], velSC[1], velSC[2], 2*60);
             
             Position_From_Angles_Slew(dataMessage->ephem, q_E, dataMessage->quat, procMessage->alpha, procMessage->beta, alpha_E, beta_E, velSC, 2*60, pictureOnePosition, pictureTwoPosition);
             //std::cout << "END: Position From ANGLES" << std::endl;
