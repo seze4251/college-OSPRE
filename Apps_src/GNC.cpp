@@ -101,7 +101,7 @@ void GNC::open() {
     logFile = fopen(buffer, "a+");
     
     // Log Application Starting
-    fprintf(logFile, "GNC Application Started, Time = %ld\n", time(0));
+    fprintf(logFile, "\n\n\nGNC Application Started, Time = %ld\n", time(0));
     
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
@@ -109,14 +109,14 @@ void GNC::open() {
     
     // Open Results File
     std::string resultFileName = testDIR + "/OSPRE_Results/gncResults.txt";
-    resultFile = fopen(resultFileName.c_str(), "w");
+    resultFile = fopen(resultFileName.c_str(), "a+");
     
     if (resultFile <= 0) {
         //std::cout << "Result File did not open sucessfully" << std::endl;
         throw "Result File did not open sucessfully";
     }
     // Log Application Starting
-    fprintf(resultFile, "#New GNC Run: Time = %ld\n", time(0));
+    fprintf(resultFile, "\n\n\n#New GNC Run: Time = %ld\n", time(0));
     fprintf(resultFile, "# X (km) \t Y (km) \t Z (km) \t V_X (km/s) \t V_Y (km/s) \t V_Z (km/s) \t earthScMoonAngle (deg) \t X_err (km) \t Y_err (km) \t Z_err (km) \t V_x_err (km/s)\t V_y_err (km/s) \t V_Z_err (km/s)\n");
     
     // Set Timeout to 1 minute

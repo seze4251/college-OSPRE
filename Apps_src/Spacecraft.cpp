@@ -48,7 +48,7 @@ void Spacecraft::open() {
     logFile = fopen(buffer, "a+");
     
     // Log Application Starting
-    fprintf(logFile, "Spacecraft Application Started, Time = %ld\n", time(0));
+    fprintf(logFile, "\n\n\nSpacecraft Application Started, Time = %ld\n", time(0));
     
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
@@ -56,7 +56,7 @@ void Spacecraft::open() {
 
     // Open Results File
     std::string resultFileName = testDIR + "/OSPRE_Results/spacecraftResults.txt";
-    resultFile = fopen(resultFileName.c_str(), "w");
+    resultFile = fopen(resultFileName.c_str(), "a+");
     
     
     if (resultFile <= 0) {
@@ -65,7 +65,7 @@ void Spacecraft::open() {
     }
     
     // Log Application Starting
-    fprintf(resultFile, "\n\nNew New Spacecraft Run: Time = %ld\n", time(0));
+    fprintf(resultFile, "\n\n\nNew New Spacecraft Run: Time = %ld\n", time(0));
     
     // Read in Spacecraft DataFile
     std::string dataFileName = testDIR + "/Test_Data/Satellite_Data.txt";

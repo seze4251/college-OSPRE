@@ -79,7 +79,7 @@ void CameraController::open() {
     logFile = fopen(buffer, "a+");
     
     // Log Application Starting
-    fprintf(logFile, "Camera Controller Application Started, Time = %ld\n", time(0));
+    fprintf(logFile, "\n\n\nCamera Controller Application Started, Time = %ld\n", time(0));
     
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();

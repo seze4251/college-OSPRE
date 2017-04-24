@@ -1,5 +1,9 @@
 #!/bin/bash
-rm log/*
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd "$parent_path"
+
+#rm log/*
+
 mkdir -p log
 ulimit -c unlimited
 

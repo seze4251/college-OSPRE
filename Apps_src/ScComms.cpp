@@ -63,7 +63,7 @@ void ScComms::open() {
     logFile = fopen(buffer, "a+");
     
     // Log Application Starting
-    fprintf(logFile, "ScComms Application Started, Time = %ld", time(0));
+    fprintf(logFile, "\n\nScComms Application Started, Time = %ld", time(0));
     
     // Read in OSPRE CONFIG File
     readOSPREServerConfigFile();
