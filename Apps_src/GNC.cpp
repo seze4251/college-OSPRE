@@ -325,6 +325,8 @@ void GNC::kalmanFilterWrapper(double* Y_p, double satTime, double* ephem) {
     // Find Error in State and Log Outputs
     double positionError[3];
     double velocityError[3];
+    fprintf(logFile, "State Error Input: X_Ref = [%f %f %f %f %f %f], X_est[%f %f %f %f %f %f]",X_ref[0], X_ref[1],X_ref[2], X_ref[3],X_ref[4],X_ref[5],X_est[0],X_est[1],X_est[2],X_est[3],X_est[4],X_est[5] );
+    
     State_Error(X_ref, X_est, positionError, velocityError);
     fprintf(logFile, "Compute Solution: Position Error: X_e = %f (km), Y_e = %f (km), Z_e = %f (km)\n Velocity Error: VX_e = %f (km/s), VY_e = %f (km/s), VZ_e = %f (km/s) \n", positionError[0], positionError[1], positionError[2], velocityError[0], velocityError[1], velocityError[2]);
     
@@ -439,7 +441,7 @@ void GNC::computeSolution(DataMessage* dataMessage, ProcessedImageMessage* procM
             //std::cout << "Start: Position From ANGLES, ASSUME 2 MIN" << std::endl;
             fprintf(logFile, "INPUTS: Moon Ephem: [%f, %f, %f], qE: [%f, %f, %f, %f], qM: [%f, %f, %f, %f], alphaM = %f, betaM = %f, alphaE = %f, betaE = %f, velSC = [%f,%f,%f], time = %d\n", dataMessage->ephem[0], dataMessage->ephem[1], dataMessage->ephem[2], q_E[0], q_E[1], q_E[2], q_E[3], dataMessage->quat[0], dataMessage->quat[1], dataMessage->quat[2], dataMessage->quat[3], procMessage->alpha, -procMessage->beta, alpha_E, beta_E, velSC[0], velSC[1], velSC[2], 2*60);
             
-            Position_From_Angles_Slew(dataMessage->ephem, q_E, dataMessage->quat, procMessage->alpha, procMessage->beta, alpha_E, beta_E, velSC, 2*60, pictureOnePosition, pictureTwoPosition);
+            Position_From_Angles_Slew(dataMessage->ephem, q_E, dataMessage->quat, procMessage->alpha, -procMessage->beta, alpha_E, beta_E, velSC, 2*60, pictureOnePosition, pictureTwoPosition);
             //std::cout << "END: Position From ANGLES" << std::endl;
             
             std::cout << "Kalman Filter INPUT:: X = " <<pictureTwoPosition[0] << " Y = " << pictureTwoPosition[1] << " Z = " << pictureTwoPosition[2] << std::endl;

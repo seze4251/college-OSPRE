@@ -198,6 +198,27 @@ void WatchDog::handleTimeout() {
                 ospreStatusMessage->totalHealth = PE_AllHealthy;
             } else {
                 ospreStatusMessage->totalHealth = PE_NotHealthy;
+                
+                if (healthyScComms == false) {
+                    ospreStatusMessage->numProblemProcesses++;
+                    ospreStatusMessage->update(PE_notConnected, P_ScComms);
+                    
+                }
+                
+                if (healthyScGnc == false) {
+                    ospreStatusMessage->numProblemProcesses++;
+                    ospreStatusMessage->update(PE_notConnected, P_GNC);
+                }
+                
+                if (healthyImageProc == false) {
+                    ospreStatusMessage->numProblemProcesses++;
+                    ospreStatusMessage->update(PE_notConnected, P_ImageProcessor);
+                }
+                
+                if (healthyCameraControl == false) {
+                    ospreStatusMessage->numProblemProcesses++;
+                    ospreStatusMessage->update(PE_notConnected, P_CameraController);
+                }
             }
             
             scComms->sendMessage(ospreStatusMessage);
