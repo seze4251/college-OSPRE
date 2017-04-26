@@ -1,7 +1,7 @@
 
 
 
-New New Spacecraft Run: Time = 1493244955
+New New Spacecraft Run: Time = 1493246526
 Printing External Pointing Request
 Printing Message ID Enumeration:
 External Pointing Request Message
@@ -57,11 +57,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 3
 PacketDataLength = 107
-Position =  -161179.900406 73444.186913 40327.233725 (km)
-Position Error =  -8.960012 80.040531 32.668045 (km)
-Velocity =  -1.573236 -0.146142 0.068796 (km/s)
-Velocity Error =  -0.000862 0.002277 0.000952 (km/s)
-Earth-SC-Moon Angle = 105.368026 (degrees)Printing External OSPRE Status
+Position =  -161197.828834 73604.362253 40391.351914 (km)
+Position Error =  8.968415 -80.134808 -31.450143 (km)
+Velocity =  -1.574972 -0.141598 0.070687 (km/s)
+Velocity Error =  0.000873 -0.002266 -0.000938 (km/s)
+Earth-SC-Moon Angle = 105.402864 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -96,11 +96,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 6
 PacketDataLength = 107
-Position =  -161181.509220 73458.560306 40332.987394 (km)
-Position Error =  -7.351198 65.667137 26.914376 (km)
-Velocity =  -1.573392 -0.145734 0.068966 (km/s)
-Velocity Error =  -0.000706 0.001869 0.000782 (km/s)
-Earth-SC-Moon Angle = 105.371154 (degrees)Printing External Pointing Request
+Position =  -161199.126113 73615.952343 40395.991427 (km)
+Position Error =  10.265694 -91.724898 -36.089656 (km)
+Velocity =  -1.575098 -0.141269 0.070823 (km/s)
+Velocity Error =  0.000999 -0.002595 -0.001074 (km/s)
+Earth-SC-Moon Angle = 105.405383 (degrees)Printing External Pointing Request
 Printing Message ID Enumeration:
 External Pointing Request Message
 Printing Message Header:
@@ -135,11 +135,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 9
 PacketDataLength = 107
-Position =  -161177.761569 73425.078214 40319.584513 (km)
-Position Error =  -11.098849 99.149230 40.317257 (km)
-Velocity =  -1.573029 -0.146684 0.068571 (km/s)
-Velocity Error =  -0.001069 0.002819 0.001177 (km/s)
-Earth-SC-Moon Angle = 105.363865 (degrees)Printing External Pointing Request
+Position =  -161198.139138 73607.134557 40392.461667 (km)
+Position Error =  9.278719 -82.907112 -32.559896 (km)
+Velocity =  -1.575002 -0.141519 0.070719 (km/s)
+Velocity Error =  0.000903 -0.002345 -0.000970 (km/s)
+Earth-SC-Moon Angle = 105.403467 (degrees)Printing External Pointing Request
 Printing Message ID Enumeration:
 External Pointing Request Message
 Printing Message Header:
@@ -161,11 +161,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 11
 PacketDataLength = 107
-Position =  -161172.480349 73377.894985 40300.697066 (km)
-Position Error =  -16.380068 146.332459 59.204704 (km)
-Velocity =  -1.572518 -0.148022 0.068014 (km/s)
-Velocity Error =  -0.001580 0.004157 0.001734 (km/s)
-Earth-SC-Moon Angle = 105.353589 (degrees)Printing External OSPRE Status
+Position =  -161204.788975 73666.545226 40416.243758 (km)
+Position Error =  15.928556 -142.317781 -56.341987 (km)
+Velocity =  -1.575646 -0.139834 0.071420 (km/s)
+Velocity Error =  0.001547 -0.004029 -0.001671 (km/s)
+Earth-SC-Moon Angle = 105.416373 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -200,11 +200,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 14
 PacketDataLength = 107
-Position =  -161177.594553 73423.586071 40318.987208 (km)
-Position Error =  -11.265865 100.641373 40.914562 (km)
-Velocity =  -1.573013 -0.146726 0.068553 (km/s)
-Velocity Error =  -0.001085 0.002861 0.001195 (km/s)
-Earth-SC-Moon Angle = 105.363541 (degrees)Printing External OSPRE Status
+Position =  -161197.992939 73605.828394 40391.938810 (km)
+Position Error =  9.132520 -81.600949 -32.037039 (km)
+Velocity =  -1.574988 -0.141556 0.070704 (km/s)
+Velocity Error =  0.000889 -0.002308 -0.000955 (km/s)
+Earth-SC-Moon Angle = 105.403183 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -239,11 +239,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 17
 PacketDataLength = 107
-Position =  -161177.607014 73423.697396 40319.031771 (km)
-Position Error =  -11.253404 100.530048 40.869999 (km)
-Velocity =  -1.573014 -0.146723 0.068555 (km/s)
-Velocity Error =  -0.001084 0.002858 0.001193 (km/s)
-Earth-SC-Moon Angle = 105.363565 (degrees)Printing External OSPRE Status
+Position =  -161201.508816 73637.239772 40404.512784 (km)
+Position Error =  12.648397 -113.012327 -44.611013 (km)
+Velocity =  -1.575329 -0.140665 0.071074 (km/s)
+Velocity Error =  0.001230 -0.003199 -0.001325 (km/s)
+Earth-SC-Moon Angle = 105.410008 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -278,11 +278,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 20
 PacketDataLength = 107
-Position =  -161178.080628 73427.928733 40320.725575 (km)
-Position Error =  -10.779790 96.298711 39.176195 (km)
-Velocity =  -1.573060 -0.146603 0.068605 (km/s)
-Velocity Error =  -0.001038 0.002738 0.001143 (km/s)
-Earth-SC-Moon Angle = 105.364486 (degrees)Printing External OSPRE Status
+Position =  -161198.293854 73608.516811 40393.014983 (km)
+Position Error =  9.433435 -84.289366 -33.113211 (km)
+Velocity =  -1.575017 -0.141480 0.070736 (km/s)
+Velocity Error =  0.000918 -0.002384 -0.000987 (km/s)
+Earth-SC-Moon Angle = 105.403767 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -307,6 +307,19 @@ PacketSequence = 22
 PacketDataLength = 7
 Printing Point Earth Moon Enumeration:
 Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 23
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
 Printing External Solution Message
 Printing Message ID Enumeration:
 External Solution Message
@@ -315,26 +328,13 @@ PacketType = 0
 SecondaryHeader = 0
 ApplicationProcessID = 1
 SequenceFlags = 3
-PacketSequence = 23
-PacketDataLength = 107
-Position =  -161179.441074 73440.083170 40325.590996 (km)
-Position Error =  -9.419344 84.144274 34.310774 (km)
-Velocity =  -1.573192 -0.146258 0.068748 (km/s)
-Velocity Error =  -0.000906 0.002393 0.001000 (km/s)
-Earth-SC-Moon Angle = 105.367132 (degrees)Printing External OSPRE Status
-Printing Message ID Enumeration:
-External OSPRE Status Message
-Printing Message Header:
-PacketType = 0
-SecondaryHeader = 0
-ApplicationProcessID = 1
-SequenceFlags = 3
 PacketSequence = 24
-PacketDataLength = 11
-Printing ProcessError Enumeration:
-OSPRE is Healthy
-Number of Processes with Errors = 0
-Printing External Pointing Request
+PacketDataLength = 107
+Position =  -161197.488250 73601.319418 40390.133867 (km)
+Position Error =  8.627831 -77.091973 -30.232096 (km)
+Velocity =  -1.574939 -0.141684 0.070651 (km/s)
+Velocity Error =  0.000840 -0.002180 -0.000902 (km/s)
+Earth-SC-Moon Angle = 105.402203 (degrees)Printing External Pointing Request
 Printing Message ID Enumeration:
 External Pointing Request Message
 Printing Message Header:
@@ -356,11 +356,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 26
 PacketDataLength = 107
-Position =  -161178.347678 73430.314606 40321.680640 (km)
-Position Error =  -10.512740 93.912838 38.221130 (km)
-Velocity =  -1.573086 -0.146535 0.068633 (km/s)
-Velocity Error =  -0.001012 0.002670 0.001115 (km/s)
-Earth-SC-Moon Angle = 105.365006 (degrees)Printing External OSPRE Status
+Position =  -161199.903019 73622.893340 40398.769908 (km)
+Position Error =  11.042600 -98.665895 -38.868137 (km)
+Velocity =  -1.575173 -0.141072 0.070905 (km/s)
+Velocity Error =  0.001074 -0.002792 -0.001156 (km/s)
+Earth-SC-Moon Angle = 105.406891 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -395,11 +395,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 29
 PacketDataLength = 107
-Position =  -161180.733087 73451.626212 40330.211676 (km)
-Position Error =  -8.127331 72.601232 29.690094 (km)
-Velocity =  -1.573317 -0.145931 0.068884 (km/s)
-Velocity Error =  -0.000781 0.002066 0.000864 (km/s)
-Earth-SC-Moon Angle = 105.369645 (degrees)Printing External OSPRE Status
+Position =  -161216.996286 73775.607220 40459.901274 (km)
+Position Error =  28.135867 -251.379775 -99.999503 (km)
+Velocity =  -1.576828 -0.136740 0.072707 (km/s)
+Velocity Error =  0.002729 -0.007124 -0.002958 (km/s)
+Earth-SC-Moon Angle = 105.440043 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -434,11 +434,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 32
 PacketDataLength = 107
-Position =  -161178.186175 73428.871711 40321.103050 (km)
-Position Error =  -10.674243 95.355733 38.798720 (km)
-Velocity =  -1.573070 -0.146576 0.068616 (km/s)
-Velocity Error =  -0.001028 0.002711 0.001132 (km/s)
-Earth-SC-Moon Angle = 105.364691 (degrees)Printing External OSPRE Status
+Position =  -161197.728122 73603.462470 40390.991731 (km)
+Position Error =  8.867703 -79.235025 -31.089960 (km)
+Velocity =  -1.574963 -0.141624 0.070676 (km/s)
+Velocity Error =  0.000864 -0.002240 -0.000927 (km/s)
+Earth-SC-Moon Angle = 105.402669 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -463,6 +463,19 @@ PacketSequence = 34
 PacketDataLength = 7
 Printing Point Earth Moon Enumeration:
 Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 35
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
 Printing External Solution Message
 Printing Message ID Enumeration:
 External Solution Message
@@ -471,26 +484,13 @@ PacketType = 0
 SecondaryHeader = 0
 ApplicationProcessID = 1
 SequenceFlags = 3
-PacketSequence = 35
-PacketDataLength = 107
-Position =  -161177.338338 73421.297004 40318.070894 (km)
-Position Error =  -11.522080 102.930440 41.830876 (km)
-Velocity =  -1.572988 -0.146791 0.068526 (km/s)
-Velocity Error =  -0.001110 0.002926 0.001222 (km/s)
-Earth-SC-Moon Angle = 105.363042 (degrees)Printing External OSPRE Status
-Printing Message ID Enumeration:
-External OSPRE Status Message
-Printing Message Header:
-PacketType = 0
-SecondaryHeader = 0
-ApplicationProcessID = 1
-SequenceFlags = 3
 PacketSequence = 36
-PacketDataLength = 11
-Printing ProcessError Enumeration:
-OSPRE is Healthy
-Number of Processes with Errors = 0
-Printing External Pointing Request
+PacketDataLength = 107
+Position =  -161197.209108 73598.825521 40389.135560 (km)
+Position Error =  8.348689 -74.598076 -29.233789 (km)
+Velocity =  -1.574912 -0.141755 0.070621 (km/s)
+Velocity Error =  0.000813 -0.002109 -0.000872 (km/s)
+Earth-SC-Moon Angle = 105.401661 (degrees)Printing External Pointing Request
 Printing Message ID Enumeration:
 External Pointing Request Message
 Printing Message Header:
@@ -512,11 +512,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 38
 PacketDataLength = 107
-Position =  -161177.788670 73425.320339 40319.681435 (km)
-Position Error =  -11.071748 98.907105 40.220335 (km)
-Velocity =  -1.573032 -0.146677 0.068574 (km/s)
-Velocity Error =  -0.001066 0.002812 0.001174 (km/s)
-Earth-SC-Moon Angle = 105.363918 (degrees)Printing External OSPRE Status
+Position =  -161197.443013 73600.915262 40389.972083 (km)
+Position Error =  8.582594 -76.687817 -30.070312 (km)
+Velocity =  -1.574935 -0.141696 0.070646 (km/s)
+Velocity Error =  0.000836 -0.002168 -0.000897 (km/s)
+Earth-SC-Moon Angle = 105.402115 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -551,11 +551,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 41
 PacketDataLength = 107
-Position =  -161175.927817 73408.695192 40313.026389 (km)
-Position Error =  -12.932601 115.532252 46.875381 (km)
-Velocity =  -1.572852 -0.147149 0.068378 (km/s)
-Velocity Error =  -0.001246 0.003284 0.001370 (km/s)
-Earth-SC-Moon Angle = 105.360298 (degrees)Printing External OSPRE Status
+Position =  -161195.472604 73583.311326 40382.925227 (km)
+Position Error =  6.612185 -59.083881 -23.023456 (km)
+Velocity =  -1.574744 -0.142195 0.070438 (km/s)
+Velocity Error =  0.000645 -0.001669 -0.000689 (km/s)
+Earth-SC-Moon Angle = 105.398289 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -590,11 +590,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 44
 PacketDataLength = 107
-Position =  -161180.639799 73450.792763 40329.878046 (km)
-Position Error =  -8.220618 73.434681 30.023724 (km)
-Velocity =  -1.573308 -0.145954 0.068874 (km/s)
-Velocity Error =  -0.000790 0.002089 0.000874 (km/s)
-Earth-SC-Moon Angle = 105.369464 (degrees)Printing External OSPRE Status
+Position =  -161198.465218 73610.047799 40393.627838 (km)
+Position Error =  9.604799 -85.820354 -33.726067 (km)
+Velocity =  -1.575034 -0.141437 0.070754 (km/s)
+Velocity Error =  0.000935 -0.002427 -0.001005 (km/s)
+Earth-SC-Moon Angle = 105.404100 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -629,11 +629,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 47
 PacketDataLength = 107
-Position =  -161177.823968 73425.635695 40319.807672 (km)
-Position Error =  -11.036450 98.591749 40.094098 (km)
-Velocity =  -1.573035 -0.146668 0.068577 (km/s)
-Velocity Error =  -0.001063 0.002803 0.001171 (km/s)
-Earth-SC-Moon Angle = 105.363987 (degrees)Printing External OSPRE Status
+Position =  -161199.367154 73618.105836 40396.853470 (km)
+Position Error =  10.506735 -93.878391 -36.951699 (km)
+Velocity =  -1.575121 -0.141208 0.070849 (km/s)
+Velocity Error =  0.001021 -0.002656 -0.001100 (km/s)
+Earth-SC-Moon Angle = 105.405851 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -668,11 +668,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 50
 PacketDataLength = 107
-Position =  -161180.089499 73445.876302 40327.909987 (km)
-Position Error =  -8.770919 78.351142 31.991783 (km)
-Velocity =  -1.573255 -0.146094 0.068816 (km/s)
-Velocity Error =  -0.000843 0.002229 0.000932 (km/s)
-Earth-SC-Moon Angle = 105.368393 (degrees)Printing External OSPRE Status
+Position =  -161202.073943 73642.288705 40406.533873 (km)
+Position Error =  13.213524 -118.061260 -46.632102 (km)
+Velocity =  -1.575383 -0.140522 0.071134 (km/s)
+Velocity Error =  0.001284 -0.003342 -0.001385 (km/s)
+Earth-SC-Moon Angle = 105.411104 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -707,11 +707,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 53
 PacketDataLength = 107
-Position =  -161179.803729 73443.323189 40326.887976 (km)
-Position Error =  -9.056689 80.904255 33.013793 (km)
-Velocity =  -1.573227 -0.146166 0.068786 (km/s)
-Velocity Error =  -0.000871 0.002301 0.000962 (km/s)
-Earth-SC-Moon Angle = 105.367838 (degrees)Printing External OSPRE Status
+Position =  -161199.451581 73618.860125 40397.155412 (km)
+Position Error =  10.591162 -94.632680 -37.253641 (km)
+Velocity =  -1.575130 -0.141187 0.070858 (km/s)
+Velocity Error =  0.001031 -0.002677 -0.001109 (km/s)
+Earth-SC-Moon Angle = 105.406014 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -746,11 +746,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 56
 PacketDataLength = 107
-Position =  -161178.462610 73431.341420 40322.091674 (km)
-Position Error =  -10.397808 92.886024 37.810096 (km)
-Velocity =  -1.573097 -0.146506 0.068645 (km/s)
-Velocity Error =  -0.001000 0.002641 0.001103 (km/s)
-Earth-SC-Moon Angle = 105.365229 (degrees)Printing External OSPRE Status
+Position =  -161195.368840 73582.384288 40382.554134 (km)
+Position Error =  6.508421 -58.156843 -22.652363 (km)
+Velocity =  -1.574734 -0.142221 0.070427 (km/s)
+Velocity Error =  0.000635 -0.001643 -0.000678 (km/s)
+Earth-SC-Moon Angle = 105.398088 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -785,11 +785,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 59
 PacketDataLength = 107
-Position =  -161180.408970 73448.730505 40329.052525 (km)
-Position Error =  -8.451448 75.496939 30.849245 (km)
-Velocity =  -1.573286 -0.146013 0.068850 (km/s)
-Velocity Error =  -0.000812 0.002148 0.000898 (km/s)
-Earth-SC-Moon Angle = 105.369015 (degrees)Printing External OSPRE Status
+Position =  -161198.811633 73613.142732 40394.866739 (km)
+Position Error =  9.951214 -88.915287 -34.964968 (km)
+Velocity =  -1.575068 -0.141349 0.070790 (km/s)
+Velocity Error =  0.000969 -0.002515 -0.001041 (km/s)
+Earth-SC-Moon Angle = 105.404772 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -814,19 +814,6 @@ PacketSequence = 61
 PacketDataLength = 7
 Printing Point Earth Moon Enumeration:
 Point at Earth
-Printing External OSPRE Status
-Printing Message ID Enumeration:
-External OSPRE Status Message
-Printing Message Header:
-PacketType = 0
-SecondaryHeader = 0
-ApplicationProcessID = 1
-SequenceFlags = 3
-PacketSequence = 62
-PacketDataLength = 11
-Printing ProcessError Enumeration:
-OSPRE is Healthy
-Number of Processes with Errors = 0
 Printing External Solution Message
 Printing Message ID Enumeration:
 External Solution Message
@@ -835,13 +822,26 @@ PacketType = 0
 SecondaryHeader = 0
 ApplicationProcessID = 1
 SequenceFlags = 3
-PacketSequence = 63
+PacketSequence = 62
 PacketDataLength = 107
-Position =  -161176.990231 73418.186963 40316.825945 (km)
-Position Error =  -11.870187 106.040481 43.075825 (km)
-Velocity =  -1.572955 -0.146879 0.068490 (km/s)
-Velocity Error =  -0.001143 0.003014 0.001258 (km/s)
-Earth-SC-Moon Angle = 105.362365 (degrees)Printing External Pointing Request
+Position =  -161200.508153 73628.299703 40400.934075 (km)
+Position Error =  11.647734 -104.072258 -41.032304 (km)
+Velocity =  -1.575232 -0.140919 0.070969 (km/s)
+Velocity Error =  0.001133 -0.002945 -0.001220 (km/s)
+Earth-SC-Moon Angle = 105.408065 (degrees)Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 63
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
 Printing Message ID Enumeration:
 External Pointing Request Message
 Printing Message Header:
@@ -863,11 +863,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 65
 PacketDataLength = 107
-Position =  -161178.783236 73434.205943 40323.238342 (km)
-Position Error =  -10.077182 90.021501 36.663428 (km)
-Velocity =  -1.573128 -0.146425 0.068679 (km/s)
-Velocity Error =  -0.000970 0.002560 0.001069 (km/s)
-Earth-SC-Moon Angle = 105.365853 (degrees)Printing External OSPRE Status
+Position =  -161211.680068 73728.111309 40440.888661 (km)
+Position Error =  22.819649 -203.883864 -80.986890 (km)
+Velocity =  -1.576314 -0.138088 0.072147 (km/s)
+Velocity Error =  0.002215 -0.005776 -0.002398 (km/s)
+Earth-SC-Moon Angle = 105.429738 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -892,6 +892,19 @@ PacketSequence = 67
 PacketDataLength = 7
 Printing Point Earth Moon Enumeration:
 Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 68
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
 Printing External Solution Message
 Printing Message ID Enumeration:
 External Solution Message
@@ -900,26 +913,13 @@ PacketType = 0
 SecondaryHeader = 0
 ApplicationProcessID = 1
 SequenceFlags = 3
-PacketSequence = 68
-PacketDataLength = 107
-Position =  -161180.733704 73451.631730 40330.213885 (km)
-Position Error =  -8.126714 72.595714 29.687885 (km)
-Velocity =  -1.573317 -0.145931 0.068884 (km/s)
-Velocity Error =  -0.000781 0.002066 0.000864 (km/s)
-Earth-SC-Moon Angle = 105.369646 (degrees)Printing External OSPRE Status
-Printing Message ID Enumeration:
-External OSPRE Status Message
-Printing Message Header:
-PacketType = 0
-SecondaryHeader = 0
-ApplicationProcessID = 1
-SequenceFlags = 3
 PacketSequence = 69
-PacketDataLength = 11
-Printing ProcessError Enumeration:
-OSPRE is Healthy
-Number of Processes with Errors = 0
-Printing External Pointing Request
+PacketDataLength = 107
+Position =  -161198.760507 73612.685960 40394.683894 (km)
+Position Error =  9.900088 -88.458515 -34.782123 (km)
+Velocity =  -1.575063 -0.141362 0.070785 (km/s)
+Velocity Error =  0.000964 -0.002502 -0.001036 (km/s)
+Earth-SC-Moon Angle = 105.404673 (degrees)Printing External Pointing Request
 Printing Message ID Enumeration:
 External Pointing Request Message
 Printing Message Header:
@@ -931,6 +931,19 @@ PacketSequence = 70
 PacketDataLength = 7
 Printing Point Earth Moon Enumeration:
 Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 71
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
 Printing External Solution Message
 Printing Message ID Enumeration:
 External Solution Message
@@ -939,26 +952,13 @@ PacketType = 0
 SecondaryHeader = 0
 ApplicationProcessID = 1
 SequenceFlags = 3
-PacketSequence = 71
-PacketDataLength = 107
-Position =  -161177.817407 73425.577083 40319.784210 (km)
-Position Error =  -11.043011 98.650361 40.117560 (km)
-Velocity =  -1.573035 -0.146670 0.068577 (km/s)
-Velocity Error =  -0.001063 0.002805 0.001171 (km/s)
-Earth-SC-Moon Angle = 105.363974 (degrees)Printing External OSPRE Status
-Printing Message ID Enumeration:
-External OSPRE Status Message
-Printing Message Header:
-PacketType = 0
-SecondaryHeader = 0
-ApplicationProcessID = 1
-SequenceFlags = 3
 PacketSequence = 72
-PacketDataLength = 11
-Printing ProcessError Enumeration:
-OSPRE is Healthy
-Number of Processes with Errors = 0
-Printing External Pointing Request
+PacketDataLength = 107
+Position =  -161209.416157 73707.885181 40432.792142 (km)
+Position Error =  20.555738 -183.657736 -72.890371 (km)
+Velocity =  -1.576094 -0.138661 0.071908 (km/s)
+Velocity Error =  0.001994 -0.005203 -0.002159 (km/s)
+Earth-SC-Moon Angle = 105.425348 (degrees)Printing External Pointing Request
 Printing Message ID Enumeration:
 External Pointing Request Message
 Printing Message Header:
@@ -980,11 +980,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 74
 PacketDataLength = 107
-Position =  -161176.664522 73415.277029 40315.661098 (km)
-Position Error =  -12.195896 108.950415 44.240672 (km)
-Velocity =  -1.572923 -0.146962 0.068455 (km/s)
-Velocity Error =  -0.001175 0.003097 0.001293 (km/s)
-Earth-SC-Moon Angle = 105.361731 (degrees)Printing External OSPRE Status
+Position =  -161207.401857 73689.889111 40425.588315 (km)
+Position Error =  18.541438 -165.661666 -65.686544 (km)
+Velocity =  -1.575899 -0.139172 0.071696 (km/s)
+Velocity Error =  0.001800 -0.004692 -0.001947 (km/s)
+Earth-SC-Moon Angle = 105.421442 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1019,11 +1019,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 77
 PacketDataLength = 107
-Position =  -161186.699653 73504.932437 40351.550158 (km)
-Position Error =  -2.160765 19.295007 8.351611 (km)
-Velocity =  -1.573895 -0.144419 0.069513 (km/s)
-Velocity Error =  -0.000203 0.000554 0.000235 (km/s)
-Earth-SC-Moon Angle = 105.381245 (degrees)Printing External OSPRE Status
+Position =  -161199.210828 73616.709195 40396.294394 (km)
+Position Error =  10.350409 -92.481750 -36.392623 (km)
+Velocity =  -1.575106 -0.141248 0.070832 (km/s)
+Velocity Error =  0.001007 -0.002616 -0.001083 (km/s)
+Earth-SC-Moon Angle = 105.405547 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1058,11 +1058,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 80
 PacketDataLength = 107
-Position =  -161181.210289 73455.889610 40331.918315 (km)
-Position Error =  -7.650129 68.337834 27.983455 (km)
-Velocity =  -1.573363 -0.145810 0.068934 (km/s)
-Velocity Error =  -0.000735 0.001945 0.000814 (km/s)
-Earth-SC-Moon Angle = 105.370573 (degrees)Printing External OSPRE Status
+Position =  -161204.402040 73663.088285 40414.859944 (km)
+Position Error =  15.541621 -138.860840 -54.958173 (km)
+Velocity =  -1.575609 -0.139932 0.071379 (km/s)
+Velocity Error =  0.001510 -0.003931 -0.001630 (km/s)
+Earth-SC-Moon Angle = 105.415622 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1097,11 +1097,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 83
 PacketDataLength = 107
-Position =  -161180.578167 73450.242135 40329.657630 (km)
-Position Error =  -8.282251 73.985309 30.244140 (km)
-Velocity =  -1.573302 -0.145970 0.068868 (km/s)
-Velocity Error =  -0.000796 0.002105 0.000880 (km/s)
-Earth-SC-Moon Angle = 105.369344 (degrees)Printing External OSPRE Status
+Position =  -161202.996809 73650.533731 40409.834356 (km)
+Position Error =  14.136390 -126.306286 -49.932585 (km)
+Velocity =  -1.575473 -0.140288 0.071231 (km/s)
+Velocity Error =  0.001374 -0.003576 -0.001482 (km/s)
+Earth-SC-Moon Angle = 105.412895 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1136,11 +1136,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 86
 PacketDataLength = 107
-Position =  -161178.299096 73429.880563 40321.506893 (km)
-Position Error =  -10.561322 94.346881 38.394877 (km)
-Velocity =  -1.573081 -0.146548 0.068628 (km/s)
-Velocity Error =  -0.001016 0.002683 0.001120 (km/s)
-Earth-SC-Moon Angle = 105.364911 (degrees)Printing External OSPRE Status
+Position =  -161207.391527 73689.796819 40425.551371 (km)
+Position Error =  18.531108 -165.569374 -65.649600 (km)
+Velocity =  -1.575898 -0.139174 0.071695 (km/s)
+Velocity Error =  0.001799 -0.004690 -0.001946 (km/s)
+Earth-SC-Moon Angle = 105.421421 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1175,11 +1175,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 89
 PacketDataLength = 107
-Position =  -161181.274456 73456.462884 40332.147796 (km)
-Position Error =  -7.585962 67.764560 27.753974 (km)
-Velocity =  -1.573369 -0.145794 0.068941 (km/s)
-Velocity Error =  -0.000729 0.001929 0.000807 (km/s)
-Earth-SC-Moon Angle = 105.370698 (degrees)Printing External OSPRE Status
+Position =  -161201.208826 73634.559621 40403.439920 (km)
+Position Error =  12.348407 -110.332176 -43.538149 (km)
+Velocity =  -1.575300 -0.140741 0.071043 (km/s)
+Velocity Error =  0.001201 -0.003123 -0.001294 (km/s)
+Earth-SC-Moon Angle = 105.409425 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1214,11 +1214,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 92
 PacketDataLength = 107
-Position =  -161182.894509 73470.936692 40337.941661 (km)
-Position Error =  -5.965909 53.290752 21.960109 (km)
-Velocity =  -1.573526 -0.145383 0.069112 (km/s)
-Velocity Error =  -0.000572 0.001518 0.000636 (km/s)
-Earth-SC-Moon Angle = 105.373848 (degrees)Printing External OSPRE Status
+Position =  -161210.799856 73720.247357 40437.740721 (km)
+Position Error =  21.939437 -196.019912 -77.838950 (km)
+Velocity =  -1.576228 -0.138311 0.072054 (km/s)
+Velocity Error =  0.002129 -0.005553 -0.002305 (km/s)
+Earth-SC-Moon Angle = 105.428031 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1253,11 +1253,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 95
 PacketDataLength = 107
-Position =  -161179.010039 73436.232233 40324.049467 (km)
-Position Error =  -9.850379 87.995211 35.852303 (km)
-Velocity =  -1.573150 -0.146367 0.068703 (km/s)
-Velocity Error =  -0.000948 0.002502 0.001045 (km/s)
-Earth-SC-Moon Angle = 105.366294 (degrees)Printing External OSPRE Status
+Position =  -161201.566866 73637.758403 40404.720392 (km)
+Position Error =  12.706447 -113.530958 -44.818621 (km)
+Velocity =  -1.575334 -0.140651 0.071081 (km/s)
+Velocity Error =  0.001235 -0.003213 -0.001332 (km/s)
+Earth-SC-Moon Angle = 105.410120 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1292,11 +1292,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 98
 PacketDataLength = 107
-Position =  -161182.085050 73463.704864 40335.046761 (km)
-Position Error =  -6.775368 60.522580 24.855009 (km)
-Velocity =  -1.573448 -0.145588 0.069027 (km/s)
-Velocity Error =  -0.000650 0.001723 0.000721 (km/s)
-Earth-SC-Moon Angle = 105.372274 (degrees)Printing External OSPRE Status
+Position =  -161200.439566 73627.686930 40400.688782 (km)
+Position Error =  11.579147 -103.459485 -40.787011 (km)
+Velocity =  -1.575225 -0.140936 0.070962 (km/s)
+Velocity Error =  0.001126 -0.002928 -0.001213 (km/s)
+Earth-SC-Moon Angle = 105.407932 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1321,19 +1321,6 @@ PacketSequence = 100
 PacketDataLength = 7
 Printing Point Earth Moon Enumeration:
 Point at Earth
-Printing External OSPRE Status
-Printing Message ID Enumeration:
-External OSPRE Status Message
-Printing Message Header:
-PacketType = 0
-SecondaryHeader = 0
-ApplicationProcessID = 1
-SequenceFlags = 3
-PacketSequence = 101
-PacketDataLength = 11
-Printing ProcessError Enumeration:
-OSPRE is Healthy
-Number of Processes with Errors = 0
 Printing External Solution Message
 Printing Message ID Enumeration:
 External Solution Message
@@ -1342,13 +1329,26 @@ PacketType = 0
 SecondaryHeader = 0
 ApplicationProcessID = 1
 SequenceFlags = 3
-PacketSequence = 102
+PacketSequence = 101
 PacketDataLength = 107
-Position =  -161179.887317 73444.069973 40327.186914 (km)
-Position Error =  -8.973101 80.157471 32.714855 (km)
-Velocity =  -1.573235 -0.146145 0.068795 (km/s)
-Velocity Error =  -0.000863 0.002280 0.000953 (km/s)
-Earth-SC-Moon Angle = 105.368000 (degrees)Printing External Pointing Request
+Position =  -161201.740136 73639.306421 40405.340064 (km)
+Position Error =  12.879717 -115.078976 -45.438293 (km)
+Velocity =  -1.575351 -0.140607 0.071099 (km/s)
+Velocity Error =  0.001252 -0.003257 -0.001350 (km/s)
+Earth-SC-Moon Angle = 105.410457 (degrees)Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 102
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
 Printing Message ID Enumeration:
 External Pointing Request Message
 Printing Message Header:
@@ -1370,11 +1370,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 104
 PacketDataLength = 107
-Position =  -161181.672900 73460.022648 40333.572770 (km)
-Position Error =  -7.187518 64.204796 26.329000 (km)
-Velocity =  -1.573408 -0.145693 0.068983 (km/s)
-Velocity Error =  -0.000690 0.001828 0.000765 (km/s)
-Earth-SC-Moon Angle = 105.371473 (degrees)Printing External OSPRE Status
+Position =  -161202.309151 73644.390092 40407.375058 (km)
+Position Error =  13.448732 -120.162647 -47.473287 (km)
+Velocity =  -1.575406 -0.140463 0.071159 (km/s)
+Velocity Error =  0.001307 -0.003401 -0.001410 (km/s)
+Earth-SC-Moon Angle = 105.411561 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1409,11 +1409,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 107
 PacketDataLength = 107
-Position =  -161184.735506 73487.384440 40344.525695 (km)
-Position Error =  -4.124912 36.843004 15.376075 (km)
-Velocity =  -1.573705 -0.144916 0.069306 (km/s)
-Velocity Error =  -0.000393 0.001051 0.000442 (km/s)
-Earth-SC-Moon Angle = 105.377427 (degrees)Printing External OSPRE Status
+Position =  -161199.423863 73618.612486 40397.056282 (km)
+Position Error =  10.563444 -94.385041 -37.154511 (km)
+Velocity =  -1.575127 -0.141194 0.070855 (km/s)
+Velocity Error =  0.001028 -0.002670 -0.001106 (km/s)
+Earth-SC-Moon Angle = 105.405961 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1448,11 +1448,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 110
 PacketDataLength = 107
-Position =  -161182.171074 73464.473407 40335.354408 (km)
-Position Error =  -6.689344 59.754037 24.547362 (km)
-Velocity =  -1.573456 -0.145566 0.069036 (km/s)
-Velocity Error =  -0.000642 0.001701 0.000712 (km/s)
-Earth-SC-Moon Angle = 105.372441 (degrees)Printing External OSPRE Status
+Position =  -161199.488017 73619.185642 40397.285716 (km)
+Position Error =  10.627598 -94.958197 -37.383945 (km)
+Velocity =  -1.575133 -0.141178 0.070861 (km/s)
+Velocity Error =  0.001034 -0.002686 -0.001112 (km/s)
+Earth-SC-Moon Angle = 105.406085 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1487,11 +1487,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 113
 PacketDataLength = 107
-Position =  -161177.851704 73425.883492 40319.906866 (km)
-Position Error =  -11.008714 98.343952 39.994904 (km)
-Velocity =  -1.573038 -0.146661 0.068580 (km/s)
-Velocity Error =  -0.001060 0.002796 0.001168 (km/s)
-Earth-SC-Moon Angle = 105.364041 (degrees)Printing External OSPRE Status
+Position =  -161196.577626 73593.183764 40386.877164 (km)
+Position Error =  7.717207 -68.956319 -26.975393 (km)
+Velocity =  -1.574851 -0.141915 0.070555 (km/s)
+Velocity Error =  0.000752 -0.001949 -0.000806 (km/s)
+Earth-SC-Moon Angle = 105.400435 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1526,11 +1526,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 116
 PacketDataLength = 107
-Position =  -161183.759798 73478.667320 40341.036232 (km)
-Position Error =  -5.100620 45.560124 18.865538 (km)
-Velocity =  -1.573610 -0.145164 0.069203 (km/s)
-Velocity Error =  -0.000488 0.001299 0.000545 (km/s)
-Earth-SC-Moon Angle = 105.375530 (degrees)Printing External OSPRE Status
+Position =  -161200.507050 73628.289849 40400.930130 (km)
+Position Error =  11.646631 -104.062404 -41.028359 (km)
+Velocity =  -1.575232 -0.140919 0.070969 (km/s)
+Velocity Error =  0.001133 -0.002945 -0.001220 (km/s)
+Earth-SC-Moon Angle = 105.408063 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1565,11 +1565,11 @@ ApplicationProcessID = 1
 SequenceFlags = 3
 PacketSequence = 119
 PacketDataLength = 107
-Position =  -161184.555798 73485.778899 40343.882997 (km)
-Position Error =  -4.304620 38.448545 16.018773 (km)
-Velocity =  -1.573687 -0.144962 0.069287 (km/s)
-Velocity Error =  -0.000411 0.001097 0.000461 (km/s)
-Earth-SC-Moon Angle = 105.377078 (degrees)Printing External OSPRE Status
+Position =  -161199.169971 73616.344174 40396.148277 (km)
+Position Error =  10.309552 -92.116729 -36.246506 (km)
+Velocity =  -1.575102 -0.141258 0.070828 (km/s)
+Velocity Error =  0.001003 -0.002606 -0.001079 (km/s)
+Earth-SC-Moon Angle = 105.405468 (degrees)Printing External OSPRE Status
 Printing Message ID Enumeration:
 External OSPRE Status Message
 Printing Message Header:
@@ -1857,3 +1857,540 @@ PacketDataLength = 11
 Printing ProcessError Enumeration:
 OSPRE is Healthy
 Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 143
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 144
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 145
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 146
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 147
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 148
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 149
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 150
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 151
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 152
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 153
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 154
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 155
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 156
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 157
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 158
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 159
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 160
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 161
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 162
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 163
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 164
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 165
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 166
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 167
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 168
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 169
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 170
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 171
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 172
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 173
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 174
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 175
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 176
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 177
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 178
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 179
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 180
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 181
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 182
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 183
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
+Printing External OSPRE Status
+Printing Message ID Enumeration:
+External OSPRE Status Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 184
+PacketDataLength = 11
+Printing ProcessError Enumeration:
+OSPRE is Healthy
+Number of Processes with Errors = 0
+Printing External Pointing Request
+Printing Message ID Enumeration:
+External Pointing Request Message
+Printing Message Header:
+PacketType = 0
+SecondaryHeader = 0
+ApplicationProcessID = 1
+SequenceFlags = 3
+PacketSequence = 185
+PacketDataLength = 7
+Printing Point Earth Moon Enumeration:
+Point at Earth
