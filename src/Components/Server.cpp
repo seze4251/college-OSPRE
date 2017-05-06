@@ -84,7 +84,6 @@ int Server::run() {
         tempTimeVal = t_val;
         if (sel.select(&tempTimeVal) == -1) {
             throw "Server::run() select() error";
-            break;
         }
         
         handleTimeout();

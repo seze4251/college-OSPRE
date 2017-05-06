@@ -32,8 +32,6 @@ private:
     //Members
     ByteBuffer& buf;
     
-    void buildMessageHeader();
-    
     unsigned int sequence : 14;
     
 };

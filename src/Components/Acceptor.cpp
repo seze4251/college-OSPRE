@@ -52,6 +52,7 @@ void Acceptor::registerCallback(void (*callbackFunc)(int)) {
 void Acceptor::closeConnection() {
     if (fd != -1) {
         ::close(fd);
+        getSelector().unregisterService(fd);
         fd = -1;
     }
 }
