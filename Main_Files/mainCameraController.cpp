@@ -13,11 +13,10 @@
 
 int main(int, char**) {
     int serverPort = 10000;
-    bool readImageFile = true;
     std::string host("localhost");
     
     std::cout << "CameraController Application Starting\n";
-    CameraController controller(host, serverPort, readImageFile);
+    CameraController controller(host, serverPort);
     
     FILE* logFile;
     

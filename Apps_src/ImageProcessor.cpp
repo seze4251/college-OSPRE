@@ -30,7 +30,7 @@
 
 #define CROP_SIZE 400
 
-ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_ImageProcessor), pollTime(0) {
+ImageProcessor::ImageProcessor(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_ImageProcessor) {
     setAppl(this);
     gnc = nullptr;
     
@@ -180,28 +180,28 @@ void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, d
         //
         // Use emperically determined correlation function to determine the necessary sensitivity based on phase of moon and position
         //
-        
+        /*
         double dist = sqrt(pow((moonEphem[0] - estPos[0]),2) + pow((moonEphem[1] - estPos[1]),2) + pow((moonEphem[2] - estPos[2]),2)); // km
         double angDiam = atan(MOON_RADIUS / dist) * 180 / M_PI * 2; // [deg]
-        double moonPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Moon in height and width
-        
+        //double moonPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Moon in height and width
+        */
         // Get radius guess
-        calcRadGuess(moonPxDiam, estPos, point, dv3);
+        calcRadGuess(dv3);
         
         // Get analysis sensitivity
-        sensitivity = calcSens(moonPxDiam, estPos, point); // This function needs to be emperically determined
+        sensitivity = calcSens(); // This function needs to be emperically determined
         
     } else if (point == PEM_Moon) {
         // Evaluate on the assumption that we're pointing at the Moon
-        
+       /*
         double dist = sqrt(pow(estPos[0],2) + pow(estPos[1], 2) + pow(estPos[2], 2));
         double angDiam = atan(EARTH_RADIUS / dist) * 180 / M_PI * 2; // [deg]
         double earthPxDiam[2] = { angDiam*pix_deg[0], angDiam*pix_deg[1] }; // [px], diam of Earth in height and width
-        
-        calcRadGuess(earthPxDiam, estPos, point, dv3);
+       */
+        calcRadGuess(dv3);
         
         // Get analysis sensitivity
-        sensitivity = calcSens(earthPxDiam, estPos, point); // This function needs to be emperically determined
+        sensitivity = calcSens(); // This function needs to be emperically determined
     }
 }
 
@@ -214,7 +214,7 @@ void ImageProcessor::setImageParameters(PointEarthMoon point, double* pix_deg, d
  TODO:
  - Create emperical function describing estimated radius
  - */
-void ImageProcessor::calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon point, double* ans) {
+void ImageProcessor::calcRadGuess(double* ans) {
     /*if (point == PEM_Earth) {
      // Plug in estimated position to Earth emperical function
      ans[0] = pxDiam[0] / 2 - 2;
@@ -230,7 +230,7 @@ void ImageProcessor::calcRadGuess(double* pxDiam, double* estPos, PointEarthMoon
     
 }
 
-double ImageProcessor::calcSens(double* moonPxDiam, double* estimatedPosition, PointEarthMoon point) {
+double ImageProcessor::calcSens() {
     return (double) 0.99;
     
 }
@@ -268,7 +268,7 @@ void ImageProcessor::processImage(ImageMessage* msg) {
     I->size[2] = 3;
     I->data = (unsigned char*) msg->getImagePointer();
     
-    fprintf(logFile, "Analyze Image Inputs: dv3 = [%f  %f], sens = %f, pix_deg [%f  %f], I = [%d, %d, %d], RectCoords = [%d, %d]\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], I->size[0], I->size[1], I->size[2], msg->cropCoords[0], msg->cropCoords[1]);
+    fprintf(logFile, "Analyze Image Inputs: dv3 = [%f  %f], sens = %f, pix_deg [%f  %f], I = [%d, %d, %d], CropCoords = [%d, %d]\n", dv3[0], dv3[1], sensitivity, msg->pix_deg[0], msg->pix_deg[1], I->size[0], I->size[1], I->size[2], msg->cropCoords[0], msg->cropCoords[1]);
 
     msg->cameraWidth = 4192;
     msg->cameraHeight = 3104;

@@ -49,10 +49,7 @@ private:
     Parser parse;
 
     // Callback Function
-    void (*messageCallBack)(Message*, ServiceInternal*);
-    bool partialMessage;
-
-    
+    void (*messageCallBack)(Message*, ServiceInternal*); 
 };
 
 #endif

@@ -58,8 +58,8 @@ public:
     
 protected:
     Acceptor accept;
-    std::string hostName;
     int localPort;
+    std::string hostName;
     static ServiceInternal *connections[MaxClients];
     
     

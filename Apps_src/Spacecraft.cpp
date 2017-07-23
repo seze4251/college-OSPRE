@@ -14,7 +14,7 @@
 
 ServiceExternal* Spacecraft::scComms;
 
-Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : scDataReader(Spacecraft_APPL_ID), pollTime(0), ospreHostName(ospreHostName), osprePort(osprePort) {
+Spacecraft::Spacecraft(std::string ospreHostName, int osprePort) : ospreHostName(ospreHostName), osprePort(osprePort), pollTime(0), scDataReader() {
     setAppl(this);
     
     // Initialize scComms

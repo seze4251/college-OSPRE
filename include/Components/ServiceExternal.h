@@ -52,8 +52,6 @@ private:
     
     // Callback Function
     void (*messageCallBack)(Message_External*, ServiceExternal*);
-    bool partialMessage;
-    
 };
 
 #endif

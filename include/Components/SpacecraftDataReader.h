@@ -18,7 +18,7 @@
 
 class SpacecraftDataReader {
 public:
-    SpacecraftDataReader(unsigned int applicationProcessID);
+    SpacecraftDataReader();
     
     void readDataFile(std::string);
     External_DataMessage* getNextDataMessage();

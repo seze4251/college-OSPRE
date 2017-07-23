@@ -15,7 +15,7 @@
 
 ServiceExternal* ScComms::spacecraft;
 
-ScComms::ScComms( std::string hostName, int localPort, int externalPort) : ServerInternal(hostName, localPort, P_ScComms), external_accept(getSelector()), externalPort(externalPort), pollTime(0) {
+ScComms::ScComms( std::string hostName, int localPort, int externalPort) : ServerInternal(hostName, localPort, P_ScComms), external_accept(getSelector()), externalPort(externalPort) {
     setAppl(this);
     external_accept.registerCallback(handleExternalConnection);
     spacecraft = nullptr;

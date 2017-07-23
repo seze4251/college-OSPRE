@@ -13,7 +13,7 @@
 #include "SpacecraftDataReader.h"
 #include "Server.h"
 
-SpacecraftDataReader::SpacecraftDataReader(unsigned int applicationProcessID) : messageNum(0) {}
+SpacecraftDataReader::SpacecraftDataReader() : messageNum(0) {}
 
 External_DataMessage* SpacecraftDataReader::getNextDataMessage() {
     External_DataMessage* msg;

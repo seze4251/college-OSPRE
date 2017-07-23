@@ -24,7 +24,7 @@
 class CameraController : public ServerInternal {
 public:
     // Constructor
-    CameraController(std::string hostName, int localPort, bool readImageFile);
+    CameraController(std::string hostName, int localPort);
     
     // Destructor
     ~CameraController();
@@ -53,16 +53,8 @@ public:
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
 private:
-    time_t pollTime;
     ServiceInternal* imageProc;
     ServiceInternal* scComms;
-    
-    // If readImageFile == true, then reads in a Image from file
-    // if readImageFile == false, then takes a picture
-    bool readImageFile;
-    
-    //Pointer to Image
-    char* image;
     
     // Pointer To Hold Messages that are being sent
     ImageMessage* imageMessage;

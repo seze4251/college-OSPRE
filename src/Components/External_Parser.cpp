@@ -36,10 +36,7 @@ External_Parser::~External_Parser() {
     }
 }
 
-Message_External* External_Parser::parseMessage(bool* partialMessage) {
-    // Set this equal to true now, if false later then change
-    *partialMessage = false;
-    
+Message_External* External_Parser::parseMessage() {
     // If there is not a full header + message ID, do not parse header
     if (buf.used() < 10 ) {
         return nullptr;
@@ -49,9 +46,8 @@ Message_External* External_Parser::parseMessage(bool* partialMessage) {
     messageID = (MessageID) buf.getInt();
     
     // If there is a partial Message, rewind buffer and return null ptr
-    if (buf.used() < (1 + messageHeader.header.header_struct.packetDataLength - sizeof(int)) ) {
+    if (buf.used() < (1 + messageHeader.header.header_struct.packetDataLength - int(sizeof(int))) ) {
         buf.rewind(10);
-        *partialMessage = true;
         return nullptr;
     }
     

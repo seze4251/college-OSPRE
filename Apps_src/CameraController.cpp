@@ -25,7 +25,7 @@ using namespace cv;
 #define DOWN_SAMPLE_SIZE 2
 #define CROP_SIZE 400
 
-CameraController::CameraController(std::string hostName, int localPort, bool readImageFile) : ServerInternal(hostName, localPort, P_CameraController), pollTime(0), readImageFile(readImageFile) {
+CameraController::CameraController(std::string hostName, int localPort) : ServerInternal(hostName, localPort, P_CameraController) {
     setAppl(this);
     
     // Set pointers to services to NULL

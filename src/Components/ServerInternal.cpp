@@ -16,7 +16,7 @@ ServiceInternal* ServerInternal::connections[ServerInternal::MaxClients];
 ProcessID ServerInternal::p_ID_Static;
 
 // Constructors
-ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_ID) : accept(getSelector()), hostName(hostName), localPort(localPort), p_ID(p_ID) {
+ServerInternal::ServerInternal(std::string hostName, int localPort, ProcessID p_ID) : p_ID(p_ID), accept(getSelector()), localPort(localPort), hostName(hostName) {
     accept.registerCallback(handleConnectionRequest);
     
     for (int i = 0; i < MaxClients; i++) {

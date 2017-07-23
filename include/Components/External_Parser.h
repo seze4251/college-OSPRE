@@ -22,7 +22,7 @@ public:
     //Destructor
     ~External_Parser();
     
-    Message_External* parseMessage(bool* partialMessage);
+    Message_External* parseMessage();
     
 private:
     ByteBuffer &buf;

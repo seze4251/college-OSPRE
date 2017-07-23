@@ -59,8 +59,6 @@ public:
     virtual void handleProcessedImageMessage(ProcessedImageMessage* msg, ServiceInternal* service);
     
 private:
-    time_t pollTime;
-    
     Acceptor external_accept;
     int externalPort;
     

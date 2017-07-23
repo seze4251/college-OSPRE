@@ -15,8 +15,7 @@
 #include "Server.h"
 
 // Constructor
-ServiceExternal::ServiceExternal(Selector& sel, int fd, int buffSize) : Service(sel), fd(fd), readbuf(buffSize), writebuf(buffSize), build(writebuf), parse(readbuf),  partialMessage(false)  {
-}
+ServiceExternal::ServiceExternal(Selector& sel, int fd, int buffSize) : Service(sel), fd(fd), readbuf(buffSize), writebuf(buffSize), build(writebuf), parse(readbuf) {}
 
 // Destructor
 ServiceExternal::~ServiceExternal() {}
@@ -83,7 +82,7 @@ void ServiceExternal::handleRead() {
     readbuf.flip();
     
     while (true) {
-        msg = parse.parseMessage(&partialMessage);
+        msg = parse.parseMessage();
         if (msg == nullptr) {
             break;
         }
@@ -95,11 +94,6 @@ void ServiceExternal::handleRead() {
     //Compact and flip buffer
     readbuf.compact();
     readbuf.flip();
-    
-    if ((count == 0) && (partialMessage = false)) {
-        closeConnection();
-        throw "ServiceExternal::handleRead(): Message is big for buffer";
-    }
 }
 
 

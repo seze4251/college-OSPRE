@@ -68,10 +68,9 @@ Parser::~Parser() {
     }
 }
 
-Message* Parser::parseMessage(bool* partialMessage) {
+Message* Parser::parseMessage() {
     // If there is not a full header, do not parse header
     if (buf.used() < HEADER_MESSAGE_SIZE ) {
-        *partialMessage = false;
         return nullptr;
     }
     
@@ -79,9 +78,8 @@ Message* Parser::parseMessage(bool* partialMessage) {
     messageLength = buf.getInt();
     
     // If there is a partial Message, rewind buffer and return null ptr
-    if (buf.used() < (messageLength - 2 * sizeof(int)) ) {
+    if (buf.used() < (messageLength - 2 * int(sizeof(int)))) {
         buf.rewind((2 * sizeof(int) ));
-        *partialMessage = true;
         return nullptr;
     }
     
